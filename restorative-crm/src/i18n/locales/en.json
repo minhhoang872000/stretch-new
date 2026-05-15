@@ -1,0 +1,94 @@
+{
+  "common": {
+    "dashboard": "Dashboard",
+    "leads": "Leads",
+    "bookings": "Bookings",
+    "categories": "Categories",
+    "calendar": "Calendar",
+    "blog": "Blog",
+    "services": "Services",
+    "seoSettings": "SEO Settings",
+    "settings": "Settings",
+    "support": "Support",
+    "search": "Search...",
+    "add": "Add",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "status": "Status",
+    "actions": "Actions"
+  },
+  "dashboard": {
+    "registrations": "Total Registrations",
+    "newToday": "New Today",
+    "unreadForms": "Unread Forms",
+    "activeServices": "Active Services"
+  },
+  "calendar": {
+    "title": "Appointment Calendar",
+    "newBooking": "New Booking",
+    "addPatient": "Add Patient",
+    "month": "Month",
+    "week": "Week",
+    "day": "Day",
+    "allProviders": "All Providers",
+    "allServices": "All Services",
+    "appointmentDetails": "Appointment Details",
+    "serviceType": "Service Type",
+    "provider": "Provider",
+    "duration": "Duration",
+    "notes": "Notes",
+    "markCompleted": "Mark as Completed",
+    "selectAppointment": "Select an appointment",
+    "clickPill": "Click on any appointment pill to view details."
+  },
+  "blog": {
+    "title": "Editorial Hub",
+    "newPost": "Create New Post",
+    "totalPublished": "Total Published",
+    "scheduled": "Scheduled",
+    "drafts": "Drafts",
+    "views": "Views",
+    "contentRepo": "Content Repository",
+    "postTitle": "Post Title",
+    "category": "Category",
+    "author": "Author",
+    "publishPost": "Publish Post",
+    "categories": {
+      "physio": "Physical Health",
+      "neuro": "Neurology",
+      "joint": "Joint Health",
+      "nutrition": "Nutrition"
+    }
+  },
+  "services": {
+    "title": "Service Catalog",
+    "newService": "Create New Service",
+    "clinicalInventory": "Clinical Inventory",
+    "catalog": "Service Catalog",
+    "description": "Manage your clinical offerings, treatment protocols, and specialized wellness programs.",
+    "categories": {
+      "all": "All Services",
+      "physio": "Physiotherapy",
+      "manual": "Manual Therapy",
+      "diagnostics": "Diagnostics",
+      "wellness": "Wellness Packs"
+    }
+  },
+  "seo": {
+    "title": "Global SEO Controls",
+    "health": "Optimization Health",
+    "patterns": "Global Meta Patterns",
+    "pages": "Page-Specific Management",
+    "visibilityHealthy": "Your Digital Visibility is",
+    "healthy": "Healthy",
+    "healthDescription": "98% of pages have valid meta titles and descriptions. The sitemap was last pinged to Google Search Console 4 hours ago.",
+    "recrawl": "Re-crawl Site",
+    "viewReport": "View Report",
+    "addPage": "Add Page",
+    "pageName": "Page Name",
+    "metaTitle": "Meta Title",
+    "metaDescription": "Meta Description"
+  }
+}

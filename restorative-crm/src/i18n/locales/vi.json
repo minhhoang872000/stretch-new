@@ -1,0 +1,94 @@
+{
+  "common": {
+    "dashboard": "Bảng điều khiển",
+    "leads": "Khách tiềm năng",
+    "bookings": "Lịch đặt",
+    "categories": "Danh mục",
+    "calendar": "Lịch hẹn",
+    "blog": "Bài viết",
+    "services": "Dịch vụ",
+    "seoSettings": "Cài đặt SEO",
+    "settings": "Cài đặt",
+    "support": "Hỗ trợ",
+    "search": "Tìm kiếm...",
+    "add": "Thêm",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "edit": "Sửa",
+    "delete": "Xóa",
+    "status": "Trạng thái",
+    "actions": "Hành động"
+  },
+  "dashboard": {
+    "registrations": "Tổng lượt đăng ký",
+    "newToday": "Mới hôm nay",
+    "unreadForms": "Biểu mẫu chưa đọc",
+    "activeServices": "Dịch vụ đang hoạt động"
+  },
+  "calendar": {
+    "title": "Lịch hẹn",
+    "newBooking": "Đặt lịch mới",
+    "addPatient": "Thêm bệnh nhân",
+    "month": "Tháng",
+    "week": "Tuần",
+    "day": "Ngày",
+    "allProviders": "Tất cả bác sĩ",
+    "allServices": "Tất cả dịch vụ",
+    "appointmentDetails": "Chi tiết cuộc hẹn",
+    "serviceType": "Loại dịch vụ",
+    "provider": "Người thực hiện",
+    "duration": "Thời lượng",
+    "notes": "Ghi chú",
+    "markCompleted": "Đánh dấu hoàn tất",
+    "selectAppointment": "Chọn một cuộc hẹn",
+    "clickPill": "Nhấp vào bất kỳ cuộc hẹn nào để xem chi tiết."
+  },
+  "blog": {
+    "title": "Trung tâm nội dung",
+    "newPost": "Tạo bài viết mới",
+    "totalPublished": "Tổng đã xuất bản",
+    "scheduled": "Đã lên lịch",
+    "drafts": "Bản nháp",
+    "views": "Lượt xem",
+    "contentRepo": "Kho lưu trữ nội dung",
+    "postTitle": "Tiêu đề bài viết",
+    "category": "Danh mục",
+    "author": "Tác giả",
+    "publishPost": "Xuất bản bài viết",
+    "categories": {
+      "physio": "Sức khỏe thể chất",
+      "neuro": "Thần kinh học",
+      "joint": "Sức khỏe xương khớp",
+      "nutrition": "Dinh dưỡng"
+    }
+  },
+  "services": {
+    "title": "Danh mục dịch vụ",
+    "newService": "Tạo dịch vụ mới",
+    "clinicalInventory": "Kho lâm sàng",
+    "catalog": "Danh mục dịch vụ",
+    "description": "Quản lý các dịch vụ lâm sàng, phác đồ điều trị và các chương trình chăm sóc sức khỏe chuyên biệt.",
+    "categories": {
+      "all": "Tất cả dịch vụ",
+      "physio": "Vật lý trị liệu",
+      "manual": "Trị liệu bằng tay",
+      "diagnostics": "Chẩn đoán",
+      "wellness": "Gói chăm sóc sức khỏe"
+    }
+  },
+  "seo": {
+    "title": "Quản lý SEO tổng thể",
+    "health": "Sức khỏe tối ưu hóa",
+    "patterns": "Mẫu Meta tổng thể",
+    "pages": "Quản lý theo trang",
+    "visibilityHealthy": "Khả năng hiển thị kỹ thuật số của bạn là",
+    "healthy": "Khỏe mạnh",
+    "healthDescription": "98% các trang có tiêu đề meta và mô tả hợp lệ. Sơ đồ trang web đã được ping tới Google Search Console 4 giờ trước.",
+    "recrawl": "Thu thập lại dữ liệu",
+    "viewReport": "Xem báo cáo",
+    "addPage": "Thêm trang",
+    "pageName": "Tên trang",
+    "metaTitle": "Tiêu đề Meta",
+    "metaDescription": "Mô tả Meta"
+  }
+}

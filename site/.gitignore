@@ -1,0 +1,73 @@
+# Dependencies
+node_modules/
+jspm_packages/
+
+# Build output
+dist/
+build/
+coverage/
+.out/
+.nuxt/
+.next/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Cache
+.cache/
+.temp/
+tmp/
+
+# Vue
+*.local
+vite.svg
+
+# TypeScript
+*.tsbuildinfo
+
+# Package manager
+.pnpm-store/
+.yarn/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Database
+*.sqlite
+*.db
+
+# Uploads
+uploads/
+public/uploads/
+
+# SSL / SSH
+*.pem
+*.key
+
+# Misc
+*.zip
+*.tar
+*.gz

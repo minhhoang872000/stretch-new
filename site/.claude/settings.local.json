@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx nuxi *)",
+      "WebFetch(domain:localhost)",
+      "Bash(curl -s http://localhost:3000/individual)",
+      "Bash(npm i *)"
+    ]
+  }
+}

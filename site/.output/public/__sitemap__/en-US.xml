@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="/__sitemap__/style.xsl"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://yourdomain.com/</loc>
+        <priority>1.0</priority>
+        <xhtml:link rel="alternate" href="https://yourdomain.com/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/" hreflang="en-US" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/vi" hreflang="vi-VN" />
+        <image:image>
+            <image:loc>https://yourdomain.com/hero-physiotherapy.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/_nuxt/monaco.DrAaEKHE.jpeg</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/decathlon.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/garmin.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/hyrox.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/ironman.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/lululemon.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-1.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-10.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-11.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-12.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-13.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&amp;amp;w=800&amp;amp;auto=format&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&amp;amp;w=800&amp;amp;auto=format&amp;amp;fit=crop</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/about</loc>
+        <priority>0.5</priority>
+        <xhtml:link rel="alternate" href="https://yourdomain.com/about" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/about" hreflang="en-US" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/vi/about" hreflang="vi-VN" />
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&amp;amp;h=600&amp;amp;fit=crop</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/booking</loc>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" href="https://yourdomain.com/booking" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/booking" hreflang="en-US" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/vi/booking" hreflang="vi-VN" />
+        <image:image>
+            <image:loc>https://yourdomain.com/booking-hero-new.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/_nuxt/monaco.DrAaEKHE.jpeg</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/business</loc>
+        <xhtml:link rel="alternate" hreflang="en-US" href="https://yourdomain.com/business" />
+        <xhtml:link rel="alternate" hreflang="vi-VN" href="https://yourdomain.com/vi/business" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://yourdomain.com/business" />
+        <image:image>
+            <image:loc>https://yourdomain.com/images/business-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/images/wellness-solution.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/images/event-solution.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/images/education-solution.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/ironman.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/garmin.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/hyrox.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/decathlon.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-1.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/individual</loc>
+        <xhtml:link rel="alternate" hreflang="en-US" href="https://yourdomain.com/individual" />
+        <xhtml:link rel="alternate" hreflang="vi-VN" href="https://yourdomain.com/vi/individual" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://yourdomain.com/individual" />
+        <image:image>
+            <image:loc>https://yourdomain.com/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://i.pravatar.cc/100?img=1</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://i.pravatar.cc/100?img=2</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://i.pravatar.cc/100?img=3</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/office-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/athlete-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/recovery-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/experiencing-pain-new.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/products</loc>
+        <priority>0.9</priority>
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products" hreflang="en-US" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/vi/products" hreflang="vi-VN" />
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=640&amp;amp;h=360&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=640&amp;amp;h=360&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=640&amp;amp;h=360&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1612817288484-6f916006741a?w=640&amp;amp;h=360&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=640&amp;amp;h=360&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=640&amp;amp;h=360&amp;amp;fit=crop</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/business/corporate-wellness</loc>
+        <xhtml:link rel="alternate" hreflang="en-US" href="https://yourdomain.com/business/corporate-wellness" />
+        <xhtml:link rel="alternate" hreflang="vi-VN" href="https://yourdomain.com/vi/kinh-doanh/cham-soc-doanh-nghiep" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://yourdomain.com/business/corporate-wellness" />
+        <image:image>
+            <image:loc>https://yourdomain.com/images/wellness-solution.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&amp;amp;fit=crop&amp;amp;q=80&amp;amp;w=800</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&amp;amp;fit=crop&amp;amp;q=80&amp;amp;w=800</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&amp;amp;fit=crop&amp;amp;q=80&amp;amp;w=800</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&amp;amp;fit=crop&amp;amp;q=80&amp;amp;w=800</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/ironman.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/garmin.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/hyrox.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/decathlon.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-1.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/business/education-training</loc>
+        <xhtml:link rel="alternate" hreflang="en-US" href="https://yourdomain.com/business/education-training" />
+        <xhtml:link rel="alternate" hreflang="vi-VN" href="https://yourdomain.com/vi/kinh-doanh/dao-tao-huan-luyen" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://yourdomain.com/business/education-training" />
+        <image:image>
+            <image:loc>https://yourdomain.com/images/education-solution.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/education-class.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/business/recovery-event</loc>
+        <xhtml:link rel="alternate" hreflang="en-US" href="https://yourdomain.com/business/recovery-event" />
+        <xhtml:link rel="alternate" hreflang="vi-VN" href="https://yourdomain.com/vi/kinh-doanh/phuc-hoi-su-kien" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://yourdomain.com/business/recovery-event" />
+        <image:image>
+            <image:loc>https://yourdomain.com/images/event-solution.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/event-booth.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/event-flow.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/event-response.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/event-warmup.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/pickleball.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/marathon.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/tennis.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/corporate-sports.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/pickleball-vietnam.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/ironman.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/lululemon.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/decathlon.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/garmin.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/hyrox.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-1.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-2.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-3.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-4.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-5.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-7.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-9.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-10.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-11.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-12.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-13.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-15.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-16.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-17.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-18.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-19.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-20.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://yourdomain.com/logos/partner-21.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/products/aromatherapy-relaxation</loc>
+        <lastmod>2025-04-15</lastmod>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products/aromatherapy-relaxation" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products/aromatherapy-relaxation" hreflang="en-US" />
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1540555700478-4be289fbec6d?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/products/deep-tissue-massage</loc>
+        <lastmod>2025-04-18</lastmod>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products/deep-tissue-massage" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products/deep-tissue-massage" hreflang="en-US" />
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/products/facial-hydration-therapy</loc>
+        <lastmod>2025-04-20</lastmod>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products/facial-hydration-therapy" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products/facial-hydration-therapy" hreflang="en-US" />
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1552693673-1bf958298935?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/products/hot-stone-therapy</loc>
+        <lastmod>2025-04-10</lastmod>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products/hot-stone-therapy" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products/hot-stone-therapy" hreflang="en-US" />
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/products/led-light-skin-rejuvenation</loc>
+        <lastmod>2025-04-22</lastmod>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products/led-light-skin-rejuvenation" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products/led-light-skin-rejuvenation" hreflang="en-US" />
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1612817288484-6f916006741a?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://yourdomain.com/products/premium-anti-aging-facial</loc>
+        <lastmod>2025-04-25</lastmod>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products/premium-anti-aging-facial" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://yourdomain.com/products/premium-anti-aging-facial" hreflang="en-US" />
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=800&amp;amp;fit=crop</image:loc>
+        </image:image>
+    </url>
+</urlset>
+<!-- XML Sitemap generated by @nuxtjs/sitemap v8.0.15 at 2026-05-10T17:07:44.151Z -->
