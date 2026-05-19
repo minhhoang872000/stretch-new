@@ -1,62 +1,135 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const scrollRef = ref<HTMLElement | null>(null)
+const activeIndicator = ref(0)
 
 const cards = computed(() => [
-  { title: t('individual_page.customer_carousel.card1'), desc: t('individual_page.customer_carousel.card1_desc'), img: '/runner-who.png' },
-  { title: t('individual_page.customer_carousel.card2'), desc: t('individual_page.customer_carousel.card2_desc'), img: '/office-who.png' },
-  { title: t('individual_page.customer_carousel.card3'), desc: t('individual_page.customer_carousel.card3_desc'), img: '/athlete-who.png' },
-  { title: t('individual_page.customer_carousel.card4'), desc: t('individual_page.customer_carousel.card4_desc'), img: '/recovery-who.png' },
+  { title: t('individual_page.customer_carousel.card3'), desc: t('individual_page.customer_carousel.card3_desc'), img: '/office-who.png' },
+  { title: t('individual_page.customer_carousel.card4'), desc: t('individual_page.customer_carousel.card4_desc'), img: '/active-who.png' },
+  { title: t('individual_page.customer_carousel.card5'), desc: t('individual_page.customer_carousel.card5_desc'), img: '/recovery-who.png' },
+  { title: t('individual_page.customer_carousel.card6'), desc: t('individual_page.customer_carousel.card6_desc'), img: '/older-who.png' },
 ])
 
 function scrollLeft() {
-  scrollRef.value?.scrollBy({ left: -320, behavior: 'smooth' })
+  if (!scrollRef.value) return
+  scrollRef.value.scrollBy({ left: -300, behavior: 'smooth' })
 }
+
 function scrollRight() {
-  scrollRef.value?.scrollBy({ left: 320, behavior: 'smooth' })
+  if (!scrollRef.value) return
+  scrollRef.value.scrollBy({ left: 300, behavior: 'smooth' })
+}
+
+function onScroll(event: Event) {
+  const el = event.target as HTMLElement
+  if (!el) return
+  
+  const maxScrollLeft = el.scrollWidth - el.clientWidth
+  if (maxScrollLeft <= 0) return
+  
+  const scrollRatio = el.scrollLeft / maxScrollLeft
+  activeIndicator.value = Math.min(3, Math.max(0, Math.round(scrollRatio * 3)))
+}
+
+function scrollToStep(stepIndex: number) {
+  if (!scrollRef.value) return
+  const el = scrollRef.value
+  const maxScrollLeft = el.scrollWidth - el.clientWidth
+  const targetScrollLeft = (stepIndex / 3) * maxScrollLeft
+  el.scrollTo({ left: targetScrollLeft, behavior: 'smooth' })
 }
 </script>
 
 <template>
-  <section class="py-12 lg:py-20 bg-white overflow-hidden">
-    <div class="section-container relative">
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
-        <div class="max-w-2xl">
-          <h2 class="text-3xl md:text-4xl font-heading font-bold text-navy mb-4 leading-tight">
-            {{ $t('individual_page.customer_carousel.title') }}
-          </h2>
-          <p class="text-lg text-text-secondary">
-            {{ $t('individual_page.customer_carousel.subtitle') }}
-          </p>
-        </div>
-        
-        <!-- Arrows on Desktop -->
-        <div class="hidden md:flex gap-3 mb-1">
-          <button @click="scrollLeft" class="w-12 h-12 rounded-full bg-white border border-border-default shadow-sm flex items-center justify-center text-navy hover:bg-navy hover:text-white transition-all duration-300">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12.5 15l-5-5 5-5"/></svg>
-          </button>
-          <button @click="scrollRight" class="w-12 h-12 rounded-full bg-white border border-border-default shadow-sm flex items-center justify-center text-navy hover:bg-navy hover:text-white transition-all duration-300">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7.5 15l5-5-5-5"/></svg>
-          </button>
-        </div>
+  <section class="py-8 lg:py-14 bg-off-white overflow-hidden">
+    <div class="section-container">
+      <!-- Centered Header Section -->
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <h2 class="text-2xl md:text-3xl font-heading font-extrabold text-navy mb-3 tracking-tight">
+          {{ $t('individual_page.customer_carousel.title') }}
+        </h2>
+        <p class="text-base text-text-secondary font-medium">
+          {{ $t('individual_page.customer_carousel.subtitle') }}
+        </p>
       </div>
 
-      <div ref="scrollRef" class="flex gap-6 overflow-x-auto scrollbar-hide pb-8 snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0">
-        <div v-for="card in cards" :key="card.title" class="flex-shrink-0 w-[280px] md:w-[320px] snap-start group cursor-pointer">
-          <div class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-5 bg-off-white shadow-md group-hover:shadow-xl transition-all duration-500">
-            <img :src="card.img" :alt="card.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
-            <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <!-- Carousel/Grid Container with relative positioning -->
+      <div class="relative px-2 md:px-10 lg:px-0">
+        <!-- Floating Left Arrow (Hidden on desktop since all 4 cards display in a static grid) -->
+        <button 
+          @click="scrollLeft" 
+          class="lg:hidden absolute -left-1 md:left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-border shadow-md flex items-center justify-center text-navy hover:bg-navy hover:text-white transition-all duration-300 active:scale-95 cursor-pointer"
+          aria-label="Scroll left"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+
+        <!-- Viewport (Horizontal carousel on mobile/tablet, 4-column grid on desktop) -->
+        <div 
+          ref="scrollRef" 
+          @scroll="onScroll" 
+          class="flex lg:grid lg:grid-cols-4 gap-5 lg:gap-6 overflow-x-auto lg:overflow-x-visible scrollbar-hide pb-6 lg:pb-0 snap-x snap-mandatory px-1 md:px-2 lg:px-0"
+        >
+          <div 
+            v-for="card in cards" 
+            :key="card.title" 
+            class="flex-shrink-0 w-[270px] sm:w-[280px] lg:w-auto snap-start group cursor-pointer"
+          >
+            <!-- White Card Container -->
+            <div class="bg-white border border-border/70 rounded-2xl shadow-sm hover:shadow-md transition-all duration-500 overflow-hidden flex flex-col h-full">
+              <!-- Card Image -->
+              <div class="relative w-full aspect-[4/3.4] overflow-hidden bg-off-white">
+                <img 
+                  :src="card.img" 
+                  :alt="card.title" 
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                  loading="lazy" 
+                />
+              </div>
+              
+              <!-- Card Text Content -->
+              <div class="pt-5 pb-6 px-5 flex flex-col flex-grow text-center">
+                <h4 class="text-lg font-heading font-extrabold text-navy mb-2 group-hover:text-accent transition-colors duration-300">
+                  {{ card.title }}
+                </h4>
+                <p class="text-sm text-text-secondary leading-relaxed font-normal">
+                  {{ card.desc }}
+                </p>
+              </div>
+            </div>
           </div>
-          <h4 class="text-xl font-heading font-bold text-navy mb-2 group-hover:text-primary transition-colors duration-300">{{ card.title }}</h4>
-          <p class="text-sm text-text-secondary leading-relaxed line-clamp-2">{{ card.desc }}</p>
         </div>
+
+        <!-- Floating Right Arrow (Hidden on desktop) -->
+        <button 
+          @click="scrollRight" 
+          class="lg:hidden absolute -right-1 md:right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-border shadow-md flex items-center justify-center text-navy hover:bg-navy hover:text-white transition-all duration-300 active:scale-95 cursor-pointer"
+          aria-label="Scroll right"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
       </div>
       
-      <!-- Mobile Indicators/Hints -->
-      <div class="flex md:hidden justify-center gap-1 mt-2">
-        <div class="w-1.5 h-1.5 rounded-full bg-navy/20"></div>
-        <div class="w-1.5 h-1.5 rounded-full bg-navy/40"></div>
-        <div class="w-1.5 h-1.5 rounded-full bg-navy/20"></div>
+      <!-- Dot Indicators (Hidden on desktop) -->
+      <div class="lg:hidden flex justify-center items-center gap-2 mt-6">
+        <button 
+          v-for="i in 4" 
+          :key="i"
+          @click="scrollToStep(i - 1)"
+          class="transition-all duration-300 cursor-pointer h-2 rounded-full"
+          :class="[
+            activeIndicator === i - 1 
+              ? 'w-6 bg-accent' 
+              : 'w-2 bg-navy/20 hover:bg-navy/40'
+          ]"
+          :aria-label="`Go to slide ${i}`"
+        ></button>
       </div>
     </div>
   </section>

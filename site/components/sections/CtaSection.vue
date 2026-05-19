@@ -4,15 +4,15 @@ const localePath = useLocalePath()
 </script>
 
 <template>
-  <section class="py-12 lg:py-16">
+  <section class="py-8 lg:py-12">
     <div class="section-container">
-      <div class="bg-[#041930] rounded-[16px] shadow-2xl px-8 py-8 lg:px-12 lg:py-8 overflow-hidden relative group">
+      <div class="bg-[#041930] rounded-[16px] shadow-2xl px-6 py-6 lg:px-10 lg:py-6 overflow-hidden relative group">
         <!-- Subtle noise or texture could be here, but keeping it clean for now -->
         
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative z-10">
           <!-- Text Group -->
           <div class="flex flex-col gap-1">
-            <h2 class="text-2xl lg:text-[28px] font-heading font-bold text-white leading-tight">
+            <h2 class="text-xl lg:text-2xl font-heading font-bold text-white leading-tight">
               {{ $t('cta_bar.title') }}
             </h2>
             <p class="text-white/60 text-[15px]">

@@ -3,18 +3,18 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <section class="py-16 bg-white px-4 md:px-10">
-    <div class="max-w-[1200px] mx-auto flex flex-col lg:flex-row items-center gap-12">
+  <section class="py-10 lg:py-12 bg-white px-4 md:px-10">
+    <div class="max-w-[1200px] mx-auto flex flex-col lg:flex-row items-center gap-8">
       <!-- Content -->
       <div class="flex-1">
-        <h2 class="font-heading font-bold text-navy text-[28px] md:text-[36px] mb-10 leading-[1.3] text-center lg:text-left">
+        <h2 class="font-heading font-bold text-navy text-[22px] md:text-[30px] mb-6 leading-[1.25] text-center lg:text-left">
           {{ $t('education_page.problem.statement') }}
         </h2>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div v-for="item in ['bullet1', 'bullet2', 'bullet3', 'bullet4']" :key="item" class="flex items-center gap-4 bg-[#F9FAFB] p-5 rounded-2xl border border-navy/5 shadow-sm hover:shadow-md transition-shadow">
+          <div v-for="item in ['bullet1', 'bullet2', 'bullet3', 'bullet4']" :key="item" class="flex items-center gap-4 bg-[#F9FAFB] p-4 rounded-2xl border border-navy/5 shadow-sm hover:shadow-md transition-shadow">
             <div class="w-2 h-2 rounded-full bg-accent shrink-0"></div>
-            <p class="text-navy/80 text-[16px] font-medium leading-snug">{{ $t(`education_page.problem.${item}`) }}</p>
+            <p class="text-navy/80 text-[14px] font-medium leading-snug">{{ $t(`education_page.problem.${item}`) }}</p>
           </div>
         </div>
       </div>

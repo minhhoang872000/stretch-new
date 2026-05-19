@@ -5,9 +5,9 @@ const isVisible = ref(false)
 const widgetRef = ref<HTMLElement | null>(null)
 
 // Dragging state
-const position = ref({ x: 24, y: 24 }) // Default bottom-right offset
+const position = ref({ x: 24, y: 120 }) // Default bottom-right offset shifted even higher
 const isDragging = ref(false)
-const dragOffset = ref({ x: 0, y: 0 })
+const startWidgetPos = ref({ x: 24, y: 120 })
 const hasMoved = ref(false)
 const startPos = ref({ x: 0, y: 0 })
 
@@ -57,9 +57,20 @@ function handleScroll() {
   isVisible.value = scrollPercent > 0.05 || window.scrollY > 100
 }
 
+// Periodic touch time guard for touch devices
+let lastTouchTime = 0
+
 // Dragging logic
 function startDrag(e: MouseEvent | TouchEvent) {
   if (isOpen.value) return 
+
+  // Prevent double execution on touch devices (which trigger both touchstart and mousedown)
+  if (e.type === 'mousedown' && Date.now() - lastTouchTime < 500) {
+    return
+  }
+  if (e.type === 'touchstart') {
+    lastTouchTime = Date.now()
+  }
 
   isDragging.value = true
   hasMoved.value = false
@@ -68,23 +79,21 @@ function startDrag(e: MouseEvent | TouchEvent) {
   const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
   
   startPos.value = { x: clientX, y: clientY }
+  startWidgetPos.value = { x: position.value.x, y: position.value.y }
 
-  const rect = widgetRef.value?.getBoundingClientRect()
-  if (rect) {
-    dragOffset.value = {
-      x: clientX - rect.left,
-      y: clientY - rect.top
-    }
-  }
-
-  window.addEventListener('mousemove', onDrag)
+  window.addEventListener('mousemove', onDrag, { passive: false })
   window.addEventListener('mouseup', stopDrag)
-  window.addEventListener('touchmove', onDrag)
+  window.addEventListener('touchmove', onDrag, { passive: false })
   window.addEventListener('touchend', stopDrag)
 }
 
 function onDrag(e: MouseEvent | TouchEvent) {
   if (!isDragging.value) return
+
+  // Prevent page scroll when dragging the FAB on mobile
+  if (e.cancelable) {
+    e.preventDefault()
+  }
 
   const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
   const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
@@ -96,9 +105,13 @@ function onDrag(e: MouseEvent | TouchEvent) {
 
   if (!hasMoved.value) return
 
-  // Calculate position from bottom-right
-  const x = window.innerWidth - (clientX - dragOffset.value.x + 56)
-  const y = window.innerHeight - (clientY - dragOffset.value.y + 56)
+  // Calculate delta movement
+  const deltaX = clientX - startPos.value.x
+  const deltaY = clientY - startPos.value.y
+
+  // Update right and bottom relative positions based on delta
+  const x = startWidgetPos.value.x - deltaX
+  const y = startWidgetPos.value.y - deltaY
 
   // Bounds
   const safeX = Math.max(16, Math.min(x, window.innerWidth - 72))
@@ -132,9 +145,25 @@ function triggerShake() {
   }, 1000)
 }
 
+// Adjust bounds on window resize or orientation change
+function handleResize() {
+  const safeX = Math.max(16, Math.min(position.value.x, window.innerWidth - 72))
+  const safeY = Math.max(16, Math.min(position.value.y, window.innerHeight - 72))
+  position.value = { x: safeX, y: safeY }
+}
+
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true })
+  window.addEventListener('resize', handleResize, { passive: true })
   document.addEventListener('click', handleClickOutside)
+  
+  // Responsive start position: Offset higher on mobile to clear bottom floating bars!
+  if (window.innerWidth < 768) {
+    position.value = { x: 16, y: 160 }
+  } else {
+    position.value = { x: 24, y: 120 }
+  }
+  
   handleScroll()
 
   // Increased frequency: every 3 seconds
@@ -143,6 +172,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', handleResize)
   document.removeEventListener('click', handleClickOutside)
   if (shakeInterval) clearInterval(shakeInterval)
 })
@@ -160,7 +190,6 @@ onUnmounted(() => {
         transition: isDragging ? 'none' : 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
       }"
     >
-      <!-- Menu Panel -->
       <Transition name="widget-menu">
         <div
           v-if="isOpen"

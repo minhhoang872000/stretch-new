@@ -4,9 +4,9 @@ const localePath = useLocalePath()
 </script>
 
 <template>
-  <section class="py-12 lg:py-16">
+  <section class="py-8 lg:py-12">
     <div class="section-container">
-      <div class="bg-[#021327] rounded-[1.5rem] lg:rounded-[2rem] px-8 py-10 lg:px-14 lg:py-12 overflow-hidden relative border border-white/5 shadow-xl">
+      <div class="bg-[#021327] rounded-[1.5rem] lg:rounded-[2rem] px-6 py-8 lg:px-10 lg:py-8 overflow-hidden relative border border-white/5 shadow-xl">
         <!-- Subtle texture -->
         <div class="absolute inset-0 pointer-events-none opacity-[0.02]" style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 24px 24px;" />
         
@@ -14,7 +14,7 @@ const localePath = useLocalePath()
           
           <!-- Text Content -->
           <div class="w-full lg:w-1/2 text-center lg:text-left">
-            <h2 class="text-[28px] lg:text-[34px] font-heading font-bold text-white mb-2 leading-snug">
+            <h2 class="text-[22px] lg:text-[28px] font-heading font-bold text-white mb-2 leading-snug">
               {{ $t('individual_page.final_cta.title') }}
             </h2>
             <p class="text-white/80 text-[15px] lg:text-[17px]">

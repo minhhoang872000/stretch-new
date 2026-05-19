@@ -41,18 +41,18 @@ const levels = [
 </script>
 
 <template>
-  <section class="py-20 bg-[#F9FAFB] overflow-hidden">
+  <section class="py-12 lg:py-16 bg-[#F9FAFB] overflow-hidden">
     <div class="max-w-[1400px] mx-auto px-6 md:px-10">
       
       <div class="flex flex-col xl:flex-row gap-12 xl:gap-8 items-start">
         
         <!-- Intro Column -->
         <div class="w-full xl:w-[240px] shrink-0 pt-6">
-          <h2 class="font-heading font-bold text-navy text-[32px] md:text-[38px] leading-[1.2] mb-6">
+          <h2 class="font-heading font-bold text-navy text-[24px] md:text-[30px] leading-[1.2] mb-4">
             {{ $t('education_page.system.title') }}
           </h2>
-          <div class="w-10 h-1 bg-accent mb-6"></div>
-          <p class="text-navy/70 text-[16px] leading-relaxed">
+          <div class="w-10 h-1 bg-accent mb-4"></div>
+          <p class="text-navy/70 text-[15px] leading-relaxed">
             Each level builds on the previous — from understanding the body to applying recovery in real situations.
           </p>
         </div>

@@ -14,31 +14,31 @@ const localePath = useLocalePath()
       <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 60px 60px;" />
     </div>
 
-    <div class="relative flex flex-col lg:flex-row min-h-[600px] lg:min-h-[720px]">
+    <div class="relative flex flex-col lg:flex-row min-h-[460px] lg:min-h-[560px]">
       <!-- Left: Content -->
-      <div class="relative z-10 w-full lg:w-[52%] flex items-center py-12 lg:py-16 px-6 md:px-10 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))] lg:pr-8">
+      <div class="relative z-10 w-full lg:w-[52%] flex items-center py-8 lg:py-12 px-6 md:px-10 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))] lg:pr-8">
         <div class="w-full max-w-[580px]">
           <!-- Eyebrow Badge -->
-          <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 mb-10 animate-fade-in-up">
+          <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10 mb-6 animate-fade-in-up">
             <span class="w-2 h-2 rounded-full bg-accent animate-pulse" />
             <span class="text-[12px] font-heading font-bold text-accent uppercase tracking-[0.2em]">{{ $t('event_page.hero.label') }}</span>
           </div>
 
           <!-- Heading -->
-          <h1 class="font-heading font-bold text-white tracking-tight mb-8 text-[48px] leading-[1.06] md:text-[60px] lg:text-[72px] animate-fade-in-up" style="animation-delay: 100ms">
+          <h1 class="font-heading font-bold text-white tracking-tight mb-6 text-[36px] leading-[1.1] md:text-[46px] lg:text-[54px] animate-fade-in-up" style="animation-delay: 100ms">
             {{ $t('event_page.hero.heading') }}
           </h1>
 
           <!-- Subtext -->
-          <div class="flex items-start gap-5 mb-12 max-w-[460px] animate-fade-in-up" style="animation-delay: 200ms">
+          <div class="flex items-start gap-5 mb-8 max-w-[460px] animate-fade-in-up" style="animation-delay: 200ms">
             <span class="mt-2 w-1.5 h-12 rounded-full bg-accent shrink-0" />
-            <p class="text-[18px] text-white/60 leading-relaxed font-light">
+            <p class="text-[16px] text-white/60 leading-relaxed font-light">
               {{ $t('event_page.hero.subtext') }}
             </p>
           </div>
 
           <!-- CTAs -->
-          <div class="flex flex-wrap items-center gap-4 mb-16 animate-fade-in-up" style="animation-delay: 300ms">
+          <div class="flex flex-wrap items-center gap-4 mb-10 animate-fade-in-up" style="animation-delay: 300ms">
             <NuxtLink
               to="#"
               class="inline-flex items-center gap-3 px-8 py-4 bg-accent hover:bg-accent-dark text-white font-heading font-bold text-[15px] rounded-2xl shadow-lg shadow-accent/30 hover:shadow-xl hover:shadow-accent/40 transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"

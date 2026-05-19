@@ -26,7 +26,7 @@ const features = computed(() => [
 </script>
 
 <template>
-  <section class="py-20 lg:py-28 bg-white relative overflow-hidden">
+  <section class="py-12 lg:py-16 bg-white relative overflow-hidden">
     <!-- Decorative background -->
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute top-[10%] right-[-15%] w-[50%] h-[50%] bg-accent/5 blur-[150px] rounded-full" />
@@ -34,30 +34,30 @@ const features = computed(() => [
     </div>
 
     <div class="section-container relative z-10">
-      <div class="text-center mb-16">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/5 border border-accent/10 mb-6">
+      <div class="text-center mb-10">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/5 border border-accent/10 mb-4">
           <span class="w-1.5 h-1.5 rounded-full bg-accent" />
           <span class="text-[11px] font-heading font-bold text-accent uppercase tracking-[0.2em]">{{ $t('event_page.who_is_for.label') }}</span>
         </div>
-        <h2 class="text-3xl lg:text-5xl font-heading font-bold text-navy">
+        <h2 class="text-2xl lg:text-3xl font-heading font-bold text-navy">
           {{ $t('event_page.who_is_for.heading') }}
         </h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div v-for="(feature, idx) in features" :key="idx" class="group relative flex flex-col items-center text-center p-8 rounded-3xl bg-off-white/50 border border-transparent hover:border-border-default hover:bg-white hover:shadow-xl hover:shadow-navy/5 hover:-translate-y-1 transition-all duration-500">
+        <div v-for="(feature, idx) in features" :key="idx" class="group relative flex flex-col items-center text-center p-6 rounded-[24px] bg-off-white/50 border border-transparent hover:border-border-default hover:bg-white hover:shadow-xl hover:shadow-navy/5 hover:-translate-y-1 transition-all duration-500">
           <!-- Number accent -->
-          <span class="absolute top-4 right-4 text-[80px] font-heading font-bold text-navy/[0.03] leading-none select-none pointer-events-none group-hover:text-accent/[0.06] transition-colors duration-500">
+          <span class="absolute top-4 right-4 text-[60px] font-heading font-bold text-navy/[0.03] leading-none select-none pointer-events-none group-hover:text-accent/[0.06] transition-colors duration-500">
             {{ String(idx + 1).padStart(2, '0') }}
           </span>
 
           <!-- Icon -->
-          <div class="relative w-20 h-20 rounded-3xl bg-white border border-border-default flex items-center justify-center mb-6 group-hover:bg-accent group-hover:border-accent group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-accent/20 transition-all duration-500 z-10">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" v-html="feature.icon" class="text-navy group-hover:text-white transition-colors duration-500" />
+          <div class="relative w-14 h-14 rounded-[20px] bg-white border border-border-default flex items-center justify-center mb-5 group-hover:bg-accent group-hover:border-accent group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-accent/20 transition-all duration-500 z-10">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" v-html="feature.icon" class="text-navy group-hover:text-white transition-colors duration-500" />
           </div>
 
-          <h3 class="text-lg font-heading font-bold text-navy mb-3 z-10">{{ feature.title }}</h3>
-          <p class="text-[15px] text-text-secondary leading-relaxed z-10">{{ feature.desc }}</p>
+          <h3 class="text-[16px] font-heading font-bold text-navy mb-2 z-10">{{ feature.title }}</h3>
+          <p class="text-[14px] text-text-secondary leading-relaxed z-10">{{ feature.desc }}</p>
         </div>
       </div>
     </div>

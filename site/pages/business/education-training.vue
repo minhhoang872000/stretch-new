@@ -19,7 +19,6 @@ useSeo({
       <EducationQuality />
       <EducationDeliverables />
       <EducationCta />
-      <CtaSection />
       <EducationFloatingBar />
     </main>
     <TheFooter />

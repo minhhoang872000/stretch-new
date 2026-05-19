@@ -20,7 +20,7 @@ const uspIcons = [
 </script>
 
 <template>
-  <section class="relative bg-[#FAFAFA] overflow-hidden pt-6 pb-12 lg:pt-8 lg:pb-20">
+  <section class="relative bg-[#FAFAFA] overflow-hidden pt-4 pb-8 lg:pt-6 lg:pb-12">
     <!-- Premium Mesh Gradient Background -->
     <div class="absolute inset-0 pointer-events-none overflow-hidden">
       <!-- Animated Orbs -->
@@ -33,13 +33,13 @@ const uspIcons = [
     </div>
 
     <div class="max-w-[1400px] mx-auto px-6 md:px-10 relative z-10">
-      <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+      <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
         
         <!-- Left: Content -->
-        <div class="w-full lg:w-[50%] flex flex-col justify-center pt-8 lg:pt-0">
+        <div class="w-full lg:w-[50%] flex flex-col justify-center pt-6 lg:pt-0">
           
           <!-- Eyebrow Badge -->
-          <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white shadow-[0_4px_12px_rgba(0,0,0,0.02)] mb-8 animate-fade-in-up w-fit group cursor-default hover:bg-white/80 transition-all duration-500">
+          <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white shadow-[0_4px_12px_rgba(0,0,0,0.02)] mb-6 animate-fade-in-up w-fit group cursor-default hover:bg-white/80 transition-all duration-500">
             <span class="relative flex h-2.5 w-2.5">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
               <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent" />
@@ -48,7 +48,7 @@ const uspIcons = [
           </div>
 
           <!-- Heading -->
-          <h1 class="font-heading font-bold text-navy tracking-tight mb-8 text-[52px] leading-[1.05] md:text-[64px] xl:text-[80px] animate-fade-in-up" style="animation-delay: 100ms">
+          <h1 class="font-heading font-bold text-navy tracking-tight mb-6 text-[44px] leading-[1.05] md:text-[54px] xl:text-[68px] animate-fade-in-up" style="animation-delay: 100ms">
             {{ headingParts.before }}
             <span class="relative inline-block">
               <span class="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-accent to-[#ff984f]">{{ headingParts.highlight }}</span>
@@ -60,7 +60,7 @@ const uspIcons = [
           </h1>
 
           <!-- Subtext with accent bar -->
-          <div class="flex items-start gap-5 mb-10 max-w-[500px] animate-fade-in-up" style="animation-delay: 200ms">
+          <div class="flex items-start gap-5 mb-8 max-w-[500px] animate-fade-in-up" style="animation-delay: 200ms">
             <div class="mt-1.5 w-1.5 h-full min-h-[40px] rounded-full bg-gradient-to-b from-accent to-accent/20 shrink-0 hidden sm:block" />
             <p class="text-[18px] text-navy/70 leading-relaxed font-medium">
               {{ $t('individual_page.hero.subtext') }}
@@ -68,8 +68,8 @@ const uspIcons = [
           </div>
 
           <!-- CTAs -->
-          <div class="flex flex-col sm:flex-row items-center gap-4 mb-14 animate-fade-in-up" style="animation-delay: 300ms">
-            <NuxtLink :to="localePath('/booking')" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4.5 bg-accent text-white font-heading font-bold text-[16px] rounded-2xl shadow-[0_8px_20px_rgba(244,122,31,0.25)] hover:shadow-[0_12px_24px_rgba(244,122,31,0.35)] transition-all duration-300 hover:-translate-y-1 active:scale-[0.98] group relative overflow-hidden">
+          <div class="flex flex-col sm:flex-row items-center gap-4 mb-10 animate-fade-in-up" style="animation-delay: 300ms">
+            <NuxtLink :to="localePath('/booking')" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-accent text-white font-heading font-bold text-[16px] rounded-2xl shadow-[0_8px_20px_rgba(244,122,31,0.25)] hover:shadow-[0_12px_24px_rgba(244,122,31,0.35)] transition-all duration-300 hover:-translate-y-1 active:scale-[0.98] group relative overflow-hidden">
               <div class="absolute inset-0 bg-white/20 translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-700 ease-in-out"></div>
               <span class="relative z-10">{{ $t('individual_page.hero.cta1') }}</span>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="relative z-10 transition-transform duration-300 group-hover:translate-x-1">
@@ -77,7 +77,7 @@ const uspIcons = [
               </svg>
             </NuxtLink>
             
-            <a href="#" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4.5 bg-white backdrop-blur-sm border border-navy/10 text-navy font-heading font-bold text-[16px] rounded-2xl shadow-sm hover:border-navy/20 hover:bg-white hover:shadow-md transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]">
+            <a href="#" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-white backdrop-blur-sm border border-navy/10 text-navy font-heading font-bold text-[16px] rounded-2xl shadow-sm hover:border-navy/20 hover:bg-white hover:shadow-md transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]">
               {{ $t('individual_page.hero.cta2') }}
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -100,7 +100,7 @@ const uspIcons = [
         <!-- Right: Image with Floating Elements -->
         <div class="w-full lg:w-[50%] relative animate-fade-in-up" style="animation-delay: 200ms">
           <!-- Main Image Container -->
-          <div class="relative w-full aspect-[4/5] lg:aspect-auto lg:h-[720px] rounded-[40px] overflow-hidden shadow-[0_20px_60px_rgba(11,42,74,0.12)]">
+          <div class="relative w-full aspect-[4/5] lg:aspect-auto lg:h-[580px] rounded-[24px] overflow-hidden shadow-[0_20px_60px_rgba(11,42,74,0.12)]">
             <img
               src="/individual-hero.png"
               alt="Stretch.vn — Professional physiotherapy treatment session"
@@ -112,7 +112,7 @@ const uspIcons = [
           </div>
 
           <!-- Floating Stat Card -->
-          <div class="absolute bottom-10 left-[-2rem] md:left-[-4rem] flex items-center gap-4 px-6 py-4 bg-white/90 backdrop-blur-xl rounded-[24px] shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-white z-20 animate-fade-in-up hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-all duration-500 cursor-default" style="animation-delay: 600ms">
+          <div class="absolute bottom-6 left-[-2rem] md:left-[-4rem] flex items-center gap-4 px-6 py-4 bg-white/90 backdrop-blur-xl rounded-[24px] shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-white z-20 animate-fade-in-up hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-all duration-500 cursor-default" style="animation-delay: 600ms">
             <div class="flex items-center gap-0.5">
               <svg v-for="s in 5" :key="s" width="18" height="18" viewBox="0 0 24 24" :fill="s <= 4 ? '#F47A1F' : 'none'" :stroke="s <= 4 ? '#F47A1F' : '#CBD5E1'" stroke-width="1.5">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -125,7 +125,7 @@ const uspIcons = [
           </div>
           
           <!-- Floating Avatar Group -->
-          <div class="hidden sm:flex absolute top-12 right-[-2rem] items-center gap-3 px-5 py-3 bg-white/90 backdrop-blur-xl rounded-[20px] shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-white z-20 animate-fade-in-up hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-all duration-500" style="animation-delay: 800ms">
+          <div class="hidden sm:flex absolute top-8 right-[-2rem] items-center gap-3 px-5 py-3 bg-white/90 backdrop-blur-xl rounded-[20px] shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-white z-20 animate-fade-in-up hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-all duration-500" style="animation-delay: 800ms">
             <div class="flex -space-x-3">
               <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden"><img src="https://i.pravatar.cc/100?img=1" class="w-full h-full object-cover"></div>
               <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden"><img src="https://i.pravatar.cc/100?img=2" class="w-full h-full object-cover"></div>

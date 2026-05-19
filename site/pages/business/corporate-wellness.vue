@@ -17,7 +17,6 @@ useSeo({
       <WellnessDelivery />
       <WellnessWhy />
       <BusinessCta />
-      <CtaSection />
       <WellnessCta />
       <WellnessFloatingBar />
     </main>

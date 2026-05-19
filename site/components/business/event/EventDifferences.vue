@@ -26,13 +26,13 @@ const cards = computed(() => [
 </script>
 
 <template>
-  <section class="py-20 lg:py-28 bg-white relative overflow-hidden">
+  <section class="py-12 lg:py-16 bg-white relative overflow-hidden">
     <div class="section-container relative z-10">
-      <div class="text-center mb-16 max-w-4xl mx-auto">
-        <h2 class="text-3xl lg:text-4xl font-heading font-bold text-navy mb-6 tracking-tight">
+      <div class="text-center mb-10 max-w-3xl mx-auto">
+        <h2 class="text-2xl lg:text-3xl font-heading font-bold text-navy mb-4 tracking-tight">
           {{ $t('event_page.differences.heading') }}
         </h2>
-        <p class="text-[17px] md:text-[19px] text-text-secondary leading-relaxed max-w-3xl mx-auto">
+        <p class="text-[15px] md:text-[16px] text-text-secondary leading-relaxed max-w-2xl mx-auto">
           {{ $t('event_page.differences.subtext') }}
         </p>
       </div>
@@ -40,7 +40,7 @@ const cards = computed(() => [
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div v-for="(card, idx) in cards" :key="idx" class="flex flex-col group">
           <!-- Image Container -->
-          <div class="aspect-[4/3] rounded-[24px] overflow-hidden mb-6 border border-navy/5 shadow-sm">
+          <div class="aspect-[4/3] rounded-[24px] overflow-hidden mb-4 border border-navy/5 shadow-sm">
             <img 
               :src="card.img" 
               :alt="card.title" 
@@ -50,10 +50,10 @@ const cards = computed(() => [
           
           <!-- Content -->
           <div class="flex flex-col">
-            <h3 class="text-[20px] font-heading font-bold text-navy mb-3 leading-tight tracking-tight group-hover:text-accent transition-colors">
+            <h3 class="text-[17px] font-heading font-bold text-navy mb-2 leading-tight tracking-tight group-hover:text-accent transition-colors">
               {{ card.title }}
             </h3>
-            <p class="text-[16px] text-text-secondary leading-relaxed">
+            <p class="text-[14px] text-text-secondary leading-relaxed">
               {{ card.desc }}
             </p>
           </div>

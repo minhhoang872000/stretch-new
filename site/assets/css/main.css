@@ -523,3 +523,67 @@
   box-shadow: inset 0 0 0 1px var(--color-navy) !important;
 }
 
+
+/* ═══════════════════════════════════════════
+   GLOBAL SECTION SPACING & HEIGHT OPTIMIZER
+   Systematically scales down vertical paddings
+   across all templates and components.
+   ═══════════════════════════════════════════ */
+
+/* ── Mobile & General Spacing ── */
+.py-28, .py-24, .py-20, .py-16 {
+  padding-top: 2.5rem !important; /* 40px */
+  padding-bottom: 2.5rem !important; /* 40px */
+}
+.py-12 {
+  padding-top: 2rem !important; /* 32px */
+  padding-bottom: 2rem !important; /* 32px */
+}
+.pt-28, .pt-24, .pt-20, .pt-16 {
+  padding-top: 2.5rem !important;
+}
+.pt-12 {
+  padding-top: 2rem !important;
+}
+.pb-28, .pb-24, .pb-20, .pb-16 {
+  padding-bottom: 2.5rem !important;
+}
+.pb-12 {
+  padding-bottom: 2rem !important;
+}
+
+/* ── Desktop & Large Screen Spacing ── */
+@media (min-width: 1024px) {
+  .lg\:py-28, .lg\:py-24, .lg\:py-20 {
+    padding-top: 4rem !important; /* 64px */
+    padding-bottom: 4rem !important; /* 64px */
+  }
+  .lg\:py-16 {
+    padding-top: 3.5rem !important; /* 56px */
+    padding-bottom: 3.5rem !important; /* 56px */
+  }
+  .lg\:py-12 {
+    padding-top: 2.5rem !important; /* 40px */
+    padding-bottom: 2.5rem !important; /* 40px */
+  }
+  .lg\:pt-28, .lg\:pt-24, .lg\:pt-20 {
+    padding-top: 4rem !important;
+  }
+  .lg\:pt-16 {
+    padding-top: 3.5rem !important;
+  }
+  .lg\:pt-12 {
+    padding-top: 2.5rem !important;
+  }
+  .lg\:pb-28, .lg\:pb-24, .lg\:pb-20 {
+    padding-bottom: 4rem !important;
+  }
+  .lg\:pb-16 {
+    padding-bottom: 3.5rem !important;
+  }
+  .lg\:pb-12 {
+    padding-bottom: 2.5rem !important;
+  }
+}
+
+

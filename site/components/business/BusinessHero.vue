@@ -5,7 +5,7 @@ const localePath = useLocalePath()
 </script>
 
 <template>
-  <section class="relative bg-[#FAFAFA] overflow-hidden pt-8 pb-16 lg:pt-12 lg:pb-24">
+  <section class="relative bg-[#FAFAFA] overflow-hidden pt-6 pb-12 lg:pt-8 lg:pb-16">
     <!-- Premium Mesh Gradient Background -->
     <div class="absolute inset-0 pointer-events-none overflow-hidden">
       <!-- Animated Orbs -->
@@ -18,12 +18,12 @@ const localePath = useLocalePath()
     </div>
 
     <div class="max-w-[1400px] mx-auto px-6 md:px-10 relative z-10">
-      <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+      <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
         <!-- Left: Content -->
-        <div class="w-full lg:w-[50%] flex flex-col justify-center pt-8 lg:pt-0">
+        <div class="w-full lg:w-[50%] flex flex-col justify-center pt-6 lg:pt-0">
 
           <!-- Eyebrow Badge -->
-          <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white shadow-[0_4px_12px_rgba(0,0,0,0.02)] mb-8 animate-fade-in-up w-fit group cursor-default hover:bg-white/80 transition-all duration-500">
+          <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white shadow-[0_4px_12px_rgba(0,0,0,0.02)] mb-6 animate-fade-in-up w-fit group cursor-default hover:bg-white/80 transition-all duration-500">
             <span class="relative flex h-2.5 w-2.5">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
               <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent" />
@@ -32,7 +32,7 @@ const localePath = useLocalePath()
           </div>
 
           <!-- Heading -->
-          <h1 class="font-heading font-bold text-navy tracking-tight mb-8 text-[52px] leading-[1.05] md:text-[64px] xl:text-[80px] animate-fade-in-up" style="animation-delay: 100ms">
+          <h1 class="font-heading font-bold text-navy tracking-tight mb-6 text-[44px] leading-[1.05] md:text-[54px] xl:text-[68px] animate-fade-in-up" style="animation-delay: 100ms">
             <span class="relative inline-block">
               <span class="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-navy to-[#1e446d]">Better people.</span>
             </span>
@@ -47,7 +47,7 @@ const localePath = useLocalePath()
           </h1>
 
           <!-- Subtext with accent bar -->
-          <div class="flex items-start gap-5 mb-10 max-w-[500px] animate-fade-in-up" style="animation-delay: 200ms">
+          <div class="flex items-start gap-5 mb-8 max-w-[500px] animate-fade-in-up" style="animation-delay: 200ms">
             <div class="mt-1.5 w-1.5 h-full min-h-[40px] rounded-full bg-gradient-to-b from-navy to-navy/20 shrink-0 hidden sm:block" />
             <p class="text-[18px] text-navy/70 leading-relaxed font-medium">
               {{ $t('business_page.hero.subtext') }}
@@ -55,8 +55,8 @@ const localePath = useLocalePath()
           </div>
 
           <!-- CTAs -->
-          <div class="flex flex-col sm:flex-row items-center gap-4 mb-14 animate-fade-in-up" style="animation-delay: 300ms">
-            <NuxtLink to="#" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4.5 bg-accent text-white font-heading font-bold text-[16px] rounded-2xl shadow-[0_8px_20px_rgba(244,122,31,0.25)] hover:shadow-[0_12px_24px_rgba(244,122,31,0.35)] transition-all duration-300 hover:-translate-y-1 active:scale-[0.98] group relative overflow-hidden" @click="trackCTA('hero-book-now', 'business')">
+          <div class="flex flex-col sm:flex-row items-center gap-4 mb-10 animate-fade-in-up" style="animation-delay: 300ms">
+            <NuxtLink to="#" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-accent text-white font-heading font-bold text-[16px] rounded-2xl shadow-[0_8px_20px_rgba(244,122,31,0.25)] hover:shadow-[0_12px_24px_rgba(244,122,31,0.35)] transition-all duration-300 hover:-translate-y-1 active:scale-[0.98] group relative overflow-hidden" @click="trackCTA('hero-book-now', 'business')">
               <div class="absolute inset-0 bg-white/20 translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-700 ease-in-out"></div>
               <span class="relative z-10">{{ $t('business_page.hero.cta1') }}</span>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="relative z-10 transition-transform duration-300 group-hover:translate-x-1">
@@ -77,7 +77,7 @@ const localePath = useLocalePath()
         <!-- Right: Image with Floating Elements -->
         <div class="w-full lg:w-[50%] relative animate-fade-in-up" style="animation-delay: 200ms">
           <!-- Main Image Container -->
-          <div class="relative w-full aspect-[4/5] lg:aspect-auto lg:h-[720px] rounded-[40px] overflow-hidden shadow-[0_20px_60px_rgba(11,42,74,0.12)] border-[8px] border-white/50 bg-white/50 backdrop-blur-sm p-2">
+          <div class="relative w-full aspect-[4/5] lg:aspect-auto lg:h-[580px] rounded-[24px] overflow-hidden shadow-[0_20px_60px_rgba(11,42,74,0.12)] border-[8px] border-white/50 bg-white/50 backdrop-blur-sm p-2">
             <img
               src="/images/business-hero.png"
               alt="Business workshop — Stretch.vn"
@@ -89,7 +89,7 @@ const localePath = useLocalePath()
           </div>
 
           <!-- Floating Stat Card -->
-          <div class="absolute bottom-12 right-[-1rem] md:right-[-2rem] flex items-center gap-4 px-6 py-4 bg-white/90 backdrop-blur-xl rounded-[24px] shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-white z-20 animate-fade-in-up hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-all duration-500 cursor-default" style="animation-delay: 600ms">
+          <div class="absolute bottom-8 right-[-1rem] md:right-[-2rem] flex items-center gap-4 px-6 py-4 bg-white/90 backdrop-blur-xl rounded-[24px] shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-white z-20 animate-fade-in-up hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-all duration-500 cursor-default" style="animation-delay: 600ms">
             <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#0B2A4A] to-[#1e446d] flex items-center justify-center text-white shadow-inner">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>

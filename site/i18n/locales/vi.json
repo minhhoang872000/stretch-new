@@ -355,19 +355,23 @@
       "item4": "Muốn vận động tốt hơn mà không cần chịu đau"
     },
       "customer_carousel": {
-        "title": "Chúng tôi làm việc với ai",
-        "subtitle": "Mỗi người khác nhau. Cùng mục tiêu: vận động tốt hơn.",
+        "title": "Who we work with",
+        "subtitle": "Mỗi người khác nhau. Mỗi cơ thể khác nhau. Cùng một mục tiêu: vận động và cảm thấy tốt hơn.",
         "card1": "Người chạy bộ",
-        "card1_desc": "Tối ưu hóa sải bước và phục hồi nhanh sau các cự ly dài.",
-        "card2": "Văn phòng",
-        "card2_desc": "Giải tỏa căng thẳng cổ vai gáy và cải thiện tư thế làm việc.",
-        "card3": "VĐV",
-        "card3_desc": "Hỗ trợ hiệu suất đỉnh cao và ngăn ngừa chấn thương thể thao.",
-        "card4": "Phục hồi",
-        "card4_desc": "Lộ trình phục hồi chuyên sâu sau chấn thương hoặc phẫu thuật."
+        "card1_desc": "Tập luyện cự ly hoặc tốc độ",
+        "card2": "Người chơi thể thao vợt",
+        "card2_desc": "Pickleball, tennis, cầu lông",
+        "card3": "Nhân viên văn phòng",
+        "card3_desc": "Ngồi lâu, căng thẳng cổ & lưng",
+        "card4": "Người năng động",
+        "card4_desc": "Gym, yoga, hoặc tập luyện đều đặn",
+        "card5": "Phục hồi chấn thương",
+        "card5_desc": "Hỗ trợ sau chấn thương hoặc phẫu thuật",
+        "card6": "Người lớn tuổi",
+        "card6_desc": "Duy trì sự linh hoạt và thoải mái"
       },
     "situation": {
-      "title": "Chọn tình trạng phù hợp với bạn",
+      "title": "Tìm dịch vụ cho riêng bạn",
       "card1": "Phục hồi sau vận động",
       "desc1": "Bạn đã tập nặng — giờ là lúc cơ thể cần phục hồi.",
       "card2": "Đau hoặc chấn thương",
@@ -394,11 +398,12 @@
       "item3": "Giúp vận động hiệu quả hơn"
     },
     "what_to_expect": {
-      "title": "Một buổi trị liệu gồm",
+      "title": "Những gì chờ đón bạn",
+      "line": "Một buổi trị liệu điển hình bao gồm:",
       "item1": "Đánh giá vận động",
       "item2": "Trị liệu tập trung",
-      "item3": "Hướng dẫn đơn giản",
-      "duration": "45–60 phút"
+      "item3": "Hướng dẫn đơn giản mang theo",
+      "duration": "Thời lượng: 45–60 phút"
     },
     "final_cta": {
       "title": "Chưa biết bắt đầu từ đâu?",
@@ -451,13 +456,13 @@
       }
     },
     "why": {
-      "label": "TẠI SAO CHỌN STRETCH",
+      "label": "TẠI SAO HỢP TÁC VỚI STRETCH?",
       "heading": "Hơn cả dịch vụ. Là đối tác lâu dài.",
-      "item1": { "title": "Đội ngũ giàu kinh nghiệm", "desc": "Đội ngũ trị liệu có kinh nghiệm thực tế." },
-      "item2": { "title": "An toàn và hiệu quả", "desc": "Phương pháp dựa trên thực tiễn và an toàn là ưu tiên." },
-      "item3": { "title": "Giải pháp tùy chỉnh", "desc": "Thiết kế theo mục tiêu và đội ngũ của bạn." },
-      "item4": { "title": "Hiệu quả đo lường", "desc": "Theo dõi tiến độ và kết quả." },
-      "item5": { "title": "Lấy con người làm trung tâm", "desc": "Chúng tôi quan tâm đến con người của bạn như bạn." }
+      "item1": { "title": "Đội ngũ giàu kinh nghiệm", "desc": "Trị liệu viên và huấn luyện viên chuyên nghiệp với kinh nghiệm thực tế." },
+      "item2": { "title": "An toàn & Hiệu quả", "desc": "Phương pháp tiếp cận dựa trên thực chứng với an toàn là ưu tiên hàng đầu của chúng tôi." },
+      "item3": { "title": "Giải pháp tùy chỉnh", "desc": "Chương trình được thiết kế riêng theo mục tiêu, nhân sự và đặc thù ngành." },
+      "item4": { "title": "Hiệu quả đo lường", "desc": "Theo dõi tiến độ và thấy rõ tác động đến sức khỏe toàn diện và hiệu suất." },
+      "item5": { "title": "Đặt con người làm đầu", "desc": "Chúng tôi chăm sóc con người của bạn tận tâm như chính bạn." }
     },
     "trust": {
       "label": "ĐỐI TÁC TIN CẬY",

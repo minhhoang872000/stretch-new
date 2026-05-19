@@ -355,18 +355,22 @@
     },
     "customer_carousel": {
       "title": "Who we work with",
-      "subtitle": "Different people. One goal: move and feel better.",
+      "subtitle": "Different people. Different bodies. One goal: move and feel better.",
       "card1": "Runners",
-      "card1_desc": "Optimize your stride and recover faster after long distances.",
-      "card2": "Office",
-      "card2_desc": "Relieve neck and shoulder tension while improving office posture.",
-      "card3": "Athletes",
-      "card3_desc": "Support peak performance and prevent sports-related injuries.",
-      "card4": "Recovery",
-      "card4_desc": "Intensive recovery protocols after injury or surgery."
+      "card1_desc": "Training for distance or speed",
+      "card2": "Racquet sport players",
+      "card2_desc": "Pickleball, tennis, badminton",
+      "card3": "Office workers",
+      "card3_desc": "Long hours sitting, neck & back tension",
+      "card4": "Active adults",
+      "card4_desc": "Gym, yoga, or regular workouts",
+      "card5": "Injury recovery",
+      "card5_desc": "Post-injury or post-surgery support",
+      "card6": "Older adults",
+      "card6_desc": "Maintaining mobility and comfort"
     },
     "situation": {
-      "title": "Find what best matches your situation",
+      "title": "Find your services",
       "card1": "Recover after training",
       "desc1": "You've trained hard— now your body needs to reset.",
       "card2": "Pain or injury",
@@ -390,14 +394,15 @@
       "line": "We don’t just treat — we help your body work better.",
       "item1": "Understand how you move",
       "item2": "Support the right areas",
-      "item3": "Help you move efficiently"
+      "item3": "Help you move more efficiently"
     },
     "what_to_expect": {
       "title": "What to expect",
+      "line": "A typical session includes:",
       "item1": "Movement assessment",
       "item2": "Targeted treatment",
-      "item3": "Simple guidance",
-      "duration": "45–60 minutes"
+      "item3": "Simple guidance to take with you",
+      "duration": "Duration: 45–60 minutes"
     },
     "final_cta": {
       "title": "Not sure where to start?",
@@ -452,10 +457,10 @@
     "why": {
       "label": "WHY PARTNER WITH STRETCH?",
       "heading": "More than a service. A long-term partner.",
-      "item1": { "title": "Experienced Team", "desc": "Professional therapists with real-world experience." },
-      "item2": { "title": "Safe & Effective", "desc": "Evidence-informed approach with safety as priority." },
+      "item1": { "title": "Experienced Team", "desc": "Professional therapists and trainers with real-world experience." },
+      "item2": { "title": "Safe & Effective", "desc": "Evidence-informed approach with safety as our top priority." },
       "item3": { "title": "Custom Solutions", "desc": "Programs tailored to your goals, people, and industry." },
-      "item4": { "title": "Measurable Impact", "desc": "Track progress and well-being outcomes." },
+      "item4": { "title": "Measurable Impact", "desc": "Track progress and see the impact on well-being and performance." },
       "item5": { "title": "People First", "desc": "We care about your people as much as you do." }
     },
     "trust": {

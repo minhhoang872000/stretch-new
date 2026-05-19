@@ -9,18 +9,18 @@ const partners = [
 </script>
 
 <template>
-  <section class="py-16 lg:py-24 bg-white relative overflow-hidden border-y border-navy/5">
+  <section class="py-10 lg:py-16 bg-white relative overflow-hidden border-y border-navy/5">
     <div class="section-container relative z-10">
-      <div class="text-center mb-16">
+      <div class="text-center mb-8">
         <p class="text-xs font-heading font-bold text-accent-dark uppercase tracking-widest mb-3">
           {{ $t('business_page.trust.label') || 'TRUSTED PARTNERS' }}
         </p>
-        <h3 class="text-2xl lg:text-4xl font-heading font-bold text-navy max-w-2xl mx-auto leading-tight">
+        <h3 class="text-xl lg:text-3xl font-heading font-bold text-navy max-w-2xl mx-auto leading-tight">
           {{ $t('business_page.trust.heading') }}
         </h3>
       </div>
 
-      <div class="flex flex-wrap items-center justify-center gap-10 md:gap-20">
+      <div class="flex flex-wrap items-center justify-center gap-8 md:gap-14">
         <div
           v-for="p in partners"
           :key="p.name"

@@ -5,28 +5,28 @@ const situations = computed(() => [
   { 
     title: t('individual_page.situation.card1'), 
     desc: t('individual_page.situation.desc1'), 
-    icon: 'fitness_center', 
+    type: 'shoe', 
     color: 'bg-green-50 text-green-600 border-green-100',
     arrowColor: 'text-green-600'
   },
   { 
     title: t('individual_page.situation.card2'), 
     desc: t('individual_page.situation.desc2'), 
-    icon: 'healing', 
+    type: 'knee', 
     color: 'bg-orange-50 text-orange-500 border-orange-100',
     arrowColor: 'text-orange-500'
   },
   { 
     title: t('individual_page.situation.card3'), 
     desc: t('individual_page.situation.desc3'), 
-    icon: 'accessibility_new', 
+    type: 'spine', 
     color: 'bg-blue-50 text-blue-600 border-blue-100',
     arrowColor: 'text-blue-600'
   },
   { 
     title: t('individual_page.situation.card4'), 
     desc: t('individual_page.situation.desc4'), 
-    icon: 'help_outline', 
+    type: 'question', 
     color: 'bg-slate-50 text-slate-400 border-slate-100',
     arrowColor: 'text-slate-400'
   },
@@ -34,40 +34,122 @@ const situations = computed(() => [
 </script>
 
 <template>
-  <section class="py-16 lg:py-24 bg-[#F4F7FA] relative overflow-hidden">
-    <!-- Decorative background -->
+  <section class="py-10 lg:py-16 bg-[#FAFBFC] relative overflow-hidden">
+    <!-- Smooth background glows, no grid lines -->
     <div class="absolute inset-0 pointer-events-none">
-      <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[#e0eaf5] blur-[150px] rounded-full" />
-      <div class="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-white blur-[120px] rounded-full" />
-      <!-- Subtle Grid Pattern -->
-      <div class="absolute inset-0 opacity-[0.04]" style="background-image: linear-gradient(#0B2A4A 1.5px, transparent 1.5px), linear-gradient(90deg, #0B2A4A 1.5px, transparent 1px); background-size: 32px 32px;"></div>
+      <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[#e0eaf5] blur-[150px] rounded-full opacity-60" />
+      <div class="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-white blur-[120px] rounded-full opacity-60" />
     </div>
 
     <div class="max-w-[1400px] mx-auto px-6 md:px-10 relative z-10">
-      <h2 class="text-[32px] md:text-[44px] font-heading font-bold text-navy text-center mb-20 animate-fade-in-up tracking-tight">
+      <h2 class="text-2xl md:text-3.5xl font-heading font-extrabold text-navy text-center mb-12 tracking-tight">
         {{ $t('individual_page.situation.title') }}
       </h2>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-        <div v-for="(sit, index) in situations" :key="sit.title" class="group relative flex flex-col items-center text-center p-10 lg:px-8 lg:py-16 bg-white/60 backdrop-blur-2xl rounded-[32px] border border-white hover:border-white/80 shadow-[0_8px_30px_rgba(11,42,74,0.04)] hover:shadow-[0_20px_60px_rgba(11,42,74,0.08)] hover:-translate-y-2 transition-all duration-500 cursor-pointer overflow-hidden animate-fade-in-up" :style="`animation-delay: ${index * 150}ms`">
-          
-          <!-- Background accent glow on hover -->
-          <div class="absolute inset-0 bg-gradient-to-b from-white/40 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-          <!-- Circle Icon -->
-          <div class="w-24 h-24 rounded-[28px] flex items-center justify-center mb-10 border border-white shadow-[0_8px_20px_rgba(0,0,0,0.04)] transition-all duration-700 group-hover:scale-110 group-hover:-translate-y-2 group-hover:shadow-[0_16px_32px_rgba(0,0,0,0.08)]" :class="sit.color">
-            <span class="material-symbols-outlined text-[42px]">{{ sit.icon }}</span>
+        <div 
+          v-for="sit in situations" 
+          :key="sit.title" 
+          class="group relative flex flex-col items-center text-center p-8 lg:p-10 bg-white border border-border/80 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 cursor-pointer overflow-hidden"
+        >
+          <!-- Perfectly Circular Icon with soft themed color background -->
+          <div 
+            class="w-20 h-20 rounded-full flex items-center justify-center mb-6 border shadow-sm transition-all duration-300 group-hover:scale-105" 
+            :class="sit.color"
+          >
+            <!-- Custom SVGs matching the mockup layout -->
+            <svg 
+              v-if="sit.type === 'shoe'" 
+              viewBox="0 0 24 24" 
+              class="w-10 h-10" 
+              fill="none" 
+              stroke="currentColor" 
+              stroke-width="1.5" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+            >
+              <!-- Shoe body -->
+              <path d="M4 11.5C4 10 5.5 8 8 8c1.5 0 2.5.5 3.5 1.5L15 13c1 1 2 1.5 3.5 1.5h1c1 0 1.5.5 1.5 1.5v1c0 .8-.7 1.5-1.5 1.5H6.5c-2 0-3.5-1.5-3.5-3.5v-1.5L4 11.5z" />
+              <!-- Shoe collar/opening -->
+              <path d="M7.5 8.5L9.5 11" />
+              <!-- Shoe laces -->
+              <path d="M12.5 10.5l-1 1" />
+              <path d="M14 12l-1 1" />
+              <!-- Motion lines -->
+              <path d="M2.5 7.5l2 1" stroke-width="1.2" />
+              <path d="M1.5 10.5h2" stroke-width="1.2" />
+            </svg>
+            
+            <svg 
+              v-else-if="sit.type === 'knee'" 
+              viewBox="0 0 24 24" 
+              class="w-10 h-10" 
+              fill="none" 
+              stroke="currentColor" 
+              stroke-width="1.5" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+            >
+              <!-- Leg bent at knee showing simplified bone structure -->
+              <!-- Femur (upper bone) -->
+              <path d="M9 5c.5 0 1 .5 1.2 1.2L12 10.5c.3.8.3 1.8 0 2.5l-2.2 4.3" />
+              <path d="M11.5 4.5l1.8 4c.5 1.2.3 2.5-.5 3.5L10 16" />
+              <!-- Knee cap (Patella) -->
+              <circle cx="13.2" cy="11.8" r="1.8" fill="currentColor" stroke="none" />
+              <!-- Orange pain sparks radiating to the right -->
+              <path d="M17 9.5c1 1.2 1 2.8 0 4" stroke-width="1.8" />
+              <path d="M19.5 8c1.6 1.8 1.6 4.2 0 6" stroke-width="1.2" />
+            </svg>
+            
+            <svg 
+              v-else-if="sit.type === 'spine'" 
+              viewBox="0 0 24 24" 
+              class="w-10 h-10" 
+              fill="none" 
+              stroke="currentColor" 
+              stroke-width="1.5" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+            >
+              <!-- Back profile torso body contour (Shoulders, neck) -->
+              <path d="M4 20c.5-4.5 3-8 5.5-9.5V8c-.6-.8-.8-1.8-.4-2.5C9.5 4.5 10.8 4 12 4s2.5.5 2.9 1.5c.4.7.2 1.7-.4 2.5v2.5c2.5 1.5 5 5 5.5 9.5" />
+              <!-- Vertebrae spinal column vertebrae -->
+              <line x1="12" y1="8" x2="12" y2="20" stroke-width="2.2" stroke-dasharray="0.5 4.5" />
+              <!-- Spine joints horizontal details -->
+              <path d="M10.5 11.5h3" stroke-width="1.2" />
+              <path d="M10 14.5h4" stroke-width="1.2" />
+              <path d="M9.8 17.5h4.4" stroke-width="1.2" />
+            </svg>
+            
+            <svg 
+              v-else-if="sit.type === 'question'" 
+              viewBox="0 0 24 24" 
+              class="w-10 h-10" 
+              fill="none" 
+              stroke="currentColor" 
+              stroke-width="1.6" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+            >
+              <path d="M9.5 9c0-1.8 1-3 2.5-3s2.5 1.2 2.5 3c0 1.5-1 2.2-2 3c-.8.6-1 1.2-1 2.2" stroke-width="1.8" />
+              <circle cx="12" cy="18" r="0.8" fill="currentColor" stroke="none" />
+            </svg>
           </div>
 
           <!-- Content -->
-          <h3 class="text-[22px] font-heading font-bold text-navy mb-5 relative z-10">{{ sit.title }}</h3>
-          <p class="text-[16px] text-text-secondary leading-relaxed mb-12 flex-1 px-2 opacity-80 group-hover:opacity-100 transition-opacity relative z-10">
+          <h3 class="text-lg font-heading font-extrabold text-navy mb-3">
+            {{ sit.title }}
+          </h3>
+          <p class="text-sm text-text-secondary leading-relaxed mb-8 flex-grow font-normal">
             {{ sit.desc }}
           </p>
 
-          <!-- Arrow -->
-          <div class="relative z-10 mt-auto pt-4 transition-all duration-500 group-hover:translate-x-2" :class="sit.arrowColor">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Themed Arrow -->
+          <div 
+            class="mt-auto pt-4 transition-transform duration-300 group-hover:translate-x-1.5" 
+            :class="sit.arrowColor"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </div>
@@ -76,3 +158,4 @@ const situations = computed(() => [
     </div>
   </section>
 </template>
+

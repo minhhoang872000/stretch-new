@@ -16,7 +16,6 @@ useSeo({
       <BusinessSolutions />
       <WhyPartner />
       <BusinessCta />
-      <CtaSection />
     </main>
     <TheFooter />
     <ContactWidget />

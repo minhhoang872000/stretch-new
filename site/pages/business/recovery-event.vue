@@ -18,7 +18,6 @@ useSeo({
       <EventWorks />
       <EventTrust />
       <BusinessCta />
-      <CtaSection />
     </main>
     <TheFooter />
     <ContactWidget />
