@@ -8,13 +8,19 @@ const emit = defineEmits<{
   (e: 'back'): void
 }>()
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { trackFormSource } = useTracking()
 const { submit, loading: apiLoading, success: apiSuccess, error: apiError } = useBooking()
 const localePath = useLocalePath()
 const currentStep = ref(1)
 const isSubmitting = ref(false)
 const showSuccess = ref(false)
+
+const stepLabels = computed(() => [
+  locale.value === 'vi' ? 'Gói giải pháp' : 'Service Plan',
+  locale.value === 'vi' ? 'Chi tiết dự án' : 'Project Details',
+  locale.value === 'vi' ? 'Thông tin liên hệ' : 'Contact Info'
+])
 
 // Form State
 const form = ref({
@@ -32,15 +38,54 @@ const form = ref({
 })
 
 // Validation Rules
-const rules = {
-  fullName: { required: helpers.withMessage(t('booking.errorName'), required) },
-  phone: { required: helpers.withMessage(t('booking.errorPhone'), required) },
-  email: { required: helpers.withMessage(t('booking.errorEmail') || 'Invalid email', email), email },
-  consent: { required: helpers.withMessage(t('booking_v2.business.consent'), (val: boolean) => val === true) },
-  participants: { required: helpers.withMessage('Vui lòng nhập số lượng khách', required) },
-  timeline: { required: helpers.withMessage('Vui lòng chọn thời gian dự kiến', required) },
-  location: { required: helpers.withMessage('Vui lòng nhập địa điểm', required) }
-}
+const rules = computed(() => ({
+  fullName: { 
+    required: helpers.withMessage(
+      locale.value === 'vi' ? 'Vui lòng nhập họ và tên' : 'Please enter your full name', 
+      required
+    ) 
+  },
+  phone: { 
+    required: helpers.withMessage(
+      locale.value === 'vi' ? 'Vui lòng nhập số điện thoại' : 'Please enter your phone number', 
+      required
+    ) 
+  },
+  email: { 
+    required: helpers.withMessage(
+      locale.value === 'vi' ? 'Vui lòng nhập email' : 'Please enter your email', 
+      required
+    ), 
+    email: helpers.withMessage(
+      locale.value === 'vi' ? 'Email không hợp lệ' : 'Invalid email address', 
+      email
+    ) 
+  },
+  consent: { 
+    required: helpers.withMessage(
+      locale.value === 'vi' ? 'Vui lòng đồng ý với điều khoản' : 'Please agree to the terms', 
+      (val: boolean) => val === true
+    ) 
+  },
+  participants: { 
+    required: helpers.withMessage(
+      locale.value === 'vi' ? 'Vui lòng nhập số lượng khách' : 'Please enter the number of participants', 
+      required
+    ) 
+  },
+  timeline: { 
+    required: helpers.withMessage(
+      locale.value === 'vi' ? 'Vui lòng chọn thời gian dự kiến' : 'Please select a timeline', 
+      required
+    ) 
+  },
+  location: { 
+    required: helpers.withMessage(
+      locale.value === 'vi' ? 'Vui lòng nhập địa điểm' : 'Please enter a location', 
+      required
+    ) 
+  }
+}))
 
 const v$ = useVuelidate(rules, form)
 
@@ -54,12 +99,12 @@ function formatTimeline(val: any) {
   return new Date(val).toLocaleDateString('vi-VN')
 }
 
-const plans = [
+const plans = computed(() => [
   { id: 'recovery', icon: 'stadium', title: t('booking_v2.business.plan_recovery'), desc: t('booking_v2.business.plan_recovery_desc') },
   { id: 'wellness', icon: 'spa', title: t('booking_v2.business.plan_wellness'), desc: t('booking_v2.business.plan_wellness_desc') },
   { id: 'education', icon: 'school', title: t('booking_v2.business.plan_education'), desc: t('booking_v2.business.plan_education_desc') },
   { id: 'not_sure', icon: 'help', title: t('booking_v2.business.plan_not_sure'), desc: t('booking_v2.business.plan_not_sure_desc') },
-]
+])
 
 async function nextStep() {
   if (currentStep.value === 1) {
@@ -167,10 +212,10 @@ async function submitBooking() {
       <p class="text-text-secondary mb-8">{{ t('booking_v2.success.desc_business') }}</p>
       
       <div class="flex flex-col gap-4">
-        <button class="btn-navy justify-center gap-3">
+        <a href="https://zalo.me/4237229823551208502" target="_blank" class="btn-navy justify-center gap-3">
           <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" class="w-5 h-5" />
           {{ t('booking_v2.success.chat_zalo') }}
-        </button>
+        </a>
         <button class="btn-outline justify-center gap-3">
           <span class="material-symbols-outlined">call</span>
           {{ t('booking_v2.success.call_stretch') }}
@@ -183,7 +228,7 @@ async function submitBooking() {
 
     <!-- Multi-step Form -->
     <div v-else class="max-w-5xl mx-auto">
-      <BookingStepHeader :current-step="currentStep" :total-steps="3" />
+      <BookingStepHeader :current-step="currentStep" :total-steps="3" :step-labels="stepLabels" />
 
       <div class="max-w-3xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -227,7 +272,7 @@ async function submitBooking() {
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div class="flex flex-col gap-2">
                       <label class="block text-xs font-bold text-navy uppercase tracking-wider">{{ t('booking_v2.business.participants') }}*</label>
-                      <InputText v-model="form.participants" :class="{'p-invalid': v$.participants.$error}" placeholder="e.g. 50" fluid />
+                      <InputText v-model="form.participants" :class="{'p-invalid': v$.participants.$error}" :placeholder="locale === 'vi' ? 'Ví dụ: 50' : 'e.g. 50'" fluid />
                       <span v-if="v$.participants.$error" class="text-[10px] text-red-500 font-bold mt-1 uppercase">{{ v$.participants.$errors[0].$message }}</span>
                     </div>
                     <div class="flex flex-col gap-2">
@@ -238,7 +283,7 @@ async function submitBooking() {
                         :manualInput="false"
                         showIcon 
                         class="w-full"
-                        placeholder="Chọn ngày hoặc khoảng thời gian"
+                        :placeholder="locale === 'vi' ? 'Chọn ngày hoặc khoảng thời gian' : 'Select date or timeline'"
                         fluid 
                         :class="{ 'p-invalid': v$.timeline.$error }"
                       />
@@ -248,7 +293,7 @@ async function submitBooking() {
 
                   <div class="flex flex-col gap-2">
                     <label class="block text-xs font-bold text-navy uppercase tracking-wider">{{ t('booking_v2.business.location') }}*</label>
-                    <InputText v-model="form.location" :class="{'p-invalid': v$.location.$error}" placeholder="Nhập địa chỉ hoặc thành phố" fluid />
+                    <InputText v-model="form.location" :class="{'p-invalid': v$.location.$error}" :placeholder="locale === 'vi' ? 'Nhập địa chỉ hoặc thành phố' : 'Enter address or city'" fluid />
                     <span v-if="v$.location.$error" class="text-[10px] text-red-500 font-bold mt-1 uppercase">{{ v$.location.$errors[0].$message }}</span>
                   </div>
 
@@ -282,7 +327,7 @@ async function submitBooking() {
                       rows="10" 
                       autoResize
                       fluid
-                      placeholder="e.g. special setup, goals, notes"
+                      :placeholder="locale === 'vi' ? 'Ví dụ: yêu cầu thiết lập đặc biệt, mục tiêu...' : 'e.g. special setup, goals, notes'"
                     />
                   </div>
                 </div>
@@ -297,19 +342,19 @@ async function submitBooking() {
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div class="flex flex-col gap-2">
                       <label class="block text-xs font-bold text-navy uppercase tracking-wider">{{ t('booking_v2.business.full_name') }}*</label>
-                      <InputText v-model="form.fullName" :class="{'p-invalid': v$.fullName.$error}" placeholder="Nhập họ và tên" fluid />
+                      <InputText v-model="form.fullName" :class="{'p-invalid': v$.fullName.$error}" :placeholder="locale === 'vi' ? 'Nhập họ và tên' : 'Enter full name'" fluid />
                       <span v-if="v$.fullName.$error" class="text-[10px] text-red-500 font-bold mt-1 uppercase">{{ v$.fullName.$errors[0].$message }}</span>
                     </div>
                     <div class="flex flex-col gap-2">
                       <label class="block text-xs font-bold text-navy uppercase tracking-wider">{{ t('booking_v2.business.role') }}</label>
-                      <InputText v-model="form.role" placeholder="e.g. HR Manager" fluid />
+                      <InputText v-model="form.role" :placeholder="locale === 'vi' ? 'Ví dụ: Trưởng phòng Nhân sự' : 'e.g. HR Manager'" fluid />
                     </div>
                   </div>
 
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div class="flex flex-col gap-2">
                       <label class="block text-xs font-bold text-navy uppercase tracking-wider">{{ t('booking_v2.business.phone_zalo') }}*</label>
-                      <InputText v-model="form.phone" :class="{'p-invalid': v$.phone.$error}" placeholder="Nhập số điện thoại" fluid />
+                      <InputText v-model="form.phone" :class="{'p-invalid': v$.phone.$error}" :placeholder="locale === 'vi' ? 'Nhập số điện thoại' : 'Enter phone number'" fluid />
                       <span v-if="v$.phone.$error" class="text-[10px] text-red-500 font-bold mt-1 uppercase">{{ v$.phone.$errors[0].$message }}</span>
                     </div>
                     <div class="flex flex-col gap-2">
@@ -394,9 +439,9 @@ async function submitBooking() {
                 </div>
               </div>
 
-              <div v-else class="py-12 text-center">
+              <div v-else class="py-12 text-center animate-pulse">
                 <span class="material-symbols-outlined text-text-secondary/30 !text-5xl mb-2">pending</span>
-                <p class="text-xs text-text-secondary italic">{{ t('booking_v2.business.summary_empty') }}</p>
+                <p class="text-xs text-[#475569]/80 font-medium leading-relaxed px-4">{{ t('booking_v2.business.summary_empty') }}</p>
               </div>
             </div>
           </div>

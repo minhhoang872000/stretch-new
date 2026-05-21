@@ -1,82 +1,122 @@
 <script setup lang="ts">
-const { t } = useI18n()
+const { t } = useI18n();
 
 const locations = computed(() => [
   {
-    id: 'home',
-    title: t('where_we_work.home_title'),
-    desc: t('where_we_work.home_desc'),
-    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`
+    id: "home",
+    title: t("where_we_work.home_title"),
+    desc: t("where_we_work.home_desc"),
+    icon: `<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" /><path d="M9 22V12h6v10" /></svg>`,
   },
   {
-    id: 'clinic',
-    title: t('where_we_work.clinic_title'),
-    desc: t('where_we_work.clinic_desc'),
-    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="22" x2="9" y2="2"/><line x1="15" y1="22" x2="15" y2="2"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg>`
+    id: "clinic",
+    title: t("where_we_work.clinic_title"),
+    desc: t("where_we_work.clinic_desc"),
+    icon: `<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22h20" /><path d="M8 22V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v17" /><path d="M8 10H4a1 1 0 0 0-1 1v11" /><path d="M16 10h4a1 1 0 0 1 1 1v11" /><rect x="10" y="7" width="1.5" height="2" rx="0.3" /><rect x="12.5" y="7" width="1.5" height="2" rx="0.3" /><rect x="10" y="11" width="1.5" height="2" rx="0.3" /><rect x="12.5" y="11" width="1.5" height="2" rx="0.3" /><rect x="10" y="15" width="1.5" height="2" rx="0.3" /><rect x="12.5" y="15" width="1.5" height="2" rx="0.3" /><rect x="5" y="13" width="1.5" height="2" rx="0.3" /><rect x="5" y="17" width="1.5" height="2" rx="0.3" /><rect x="17.5" y="13" width="1.5" height="2" rx="0.3" /><rect x="17.5" y="17" width="1.5" height="2" rx="0.3" /></svg>`,
   },
   {
-    id: 'event',
-    title: t('where_we_work.event_title'),
-    desc: t('where_we_work.event_desc'),
-    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`
-  }
-])
+    id: "event",
+    title: t("where_we_work.event_title"),
+    desc: t("where_we_work.event_desc"),
+    icon: `<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="10" r="3" /><path d="M2 20a4 4 0 0 1 4-4h2a4 4 0 0 1 1.7.38" /><circle cx="17" cy="10" r="3" /><path d="M14.3 16.38A4 4 0 0 1 16 16h2a4 4 0 0 1 4 4" /><path d="M6 21v-1.5A3.5 3.5 0 0 1 9.5 16h5a3.5 3.5 0 0 1 3.5 3.5V21" fill="white" /><circle cx="12" cy="7" r="4" fill="white" /></svg>`,
+  },
+]);
 </script>
 
 <template>
-  <section class="py-12 bg-white">
-    <div class="section-container">
-      <div class="bg-white border border-border-default rounded-[32px] p-8 md:p-12 shadow-sm relative overflow-hidden">
-        <!-- Subtle background pattern -->
-        <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#0B2A4A 1px, transparent 1px); background-size: 20px 20px;" />
+  <section class="py-16 md:py-24 bg-white relative">
+    <div class="section-container relative">
+      <div
+        class="bg-[#FCFDFE] border border-slate-200/80 rounded-[20px] p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.015)] relative overflow-hidden"
+      >
+        <div class="relative z-10">
+          <!-- Title -->
+          <div class="text-center mb-12 relative">
+            <h2
+              class="text-2xl md:text-[32px] font-heading font-extrabold text-[#0B2A4A] tracking-tight"
+            >
+              {{ $t("where_we_work.title") }}
+            </h2>
+          </div>
 
-        <!-- Title -->
-        <div class="text-center mb-12 relative">
-          <h2 class="text-2xl md:text-3xl font-heading font-bold text-navy">
-            {{ $t('where_we_work.title') }}
-          </h2>
-        </div>
-
-        <!-- Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-0 relative mb-12">
+          <!-- Grid -->
           <div
-            v-for="(loc, index) in locations"
-            :key="loc.id"
-            class="flex items-center gap-5 px-4 md:px-8 py-6 md:py-0 relative"
-            :class="{ 'md:border-r border-border-default': index < locations.length - 1 }"
+            class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 relative mb-4"
           >
-            <!-- Icon Circle -->
-            <div class="w-16 h-16 rounded-full bg-off-white flex items-center justify-center flex-shrink-0 shadow-sm border border-border-default/50">
-              <div class="text-navy" v-html="loc.icon" />
-            </div>
+            <div
+              v-for="(loc, index) in locations"
+              :key="loc.id"
+              class="flex items-center gap-5 px-4 md:px-10 py-6 md:py-4 relative"
+            >
+              <!-- Icon Circle Container with Sleek Shadow and Subtle Bezel Gradient -->
+              <div
+                class="w-16 h-16 md:w-[76px] md:h-[76px] rounded-full bg-gradient-to-br from-white to-[#F8FAFC] flex items-center justify-center flex-shrink-0 shadow-[0_8px_25px_rgba(11,42,74,0.05)] border border-slate-200/60 relative z-10 transition-transform duration-300 hover:scale-105"
+              >
+                <div class="text-[#0B2A4A]" v-html="loc.icon" />
+              </div>
 
-            <!-- Content -->
-            <div>
-              <h3 class="font-heading font-bold text-navy text-[15px] mb-1.5">{{ loc.title }}</h3>
-              <p class="text-[13px] text-text-secondary leading-relaxed max-w-[180px]">
-                {{ loc.desc }}
-              </p>
+              <!-- Content -->
+              <div class="flex-1">
+                <h3
+                  class="font-heading font-extrabold text-[#0B2A4A] text-[16px] md:text-[18px] mb-1.5 leading-snug"
+                >
+                  {{ loc.title }}
+                </h3>
+                <p
+                  class="text-[13px] md:text-[13.5px] text-[#475569] leading-relaxed max-w-[240px]"
+                >
+                  {{ loc.desc }}
+                </p>
+              </div>
+
+              <!-- Vertical Divider -->
+              <div
+                v-if="index < locations.length - 1"
+                class="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[1px] h-20 bg-[#E2E8F0]/80"
+              />
             </div>
           </div>
-        </div>
 
-        <!-- Google Maps Link -->
-        <div class="flex justify-center">
-          <a 
-            href="https://maps.app.goo.gl/WwCZrHPgufY7Ehyr8" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-2.5 text-navy hover:text-accent font-heading font-bold text-sm group transition-colors"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-            <span class="border-b border-navy/20 group-hover:border-accent/40 pb-0.5">{{ $t('where_we_work.explore_location') }}</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="translate-y-[0.5px] group-hover:translate-x-1 transition-transform">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
+          <!-- Google Maps Link (Styled to perfectly integrate into the new premium design) -->
+          <div class="flex justify-center mt-12">
+            <a
+              href="https://maps.app.goo.gl/WwCZrHPgufY7Ehyr8"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 text-[#0B2A4A] hover:text-[#0f3e6d] font-heading font-extrabold text-[13px] tracking-wide uppercase group transition-colors"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span
+                class="border-b border-[#0B2A4A]/20 group-hover:border-[#0f3e6d]/40 pb-0.5"
+                >{{ $t("where_we_work.explore_location") }}</span
+              >
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="translate-y-[0.5px] group-hover:translate-x-1 transition-transform"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </div>

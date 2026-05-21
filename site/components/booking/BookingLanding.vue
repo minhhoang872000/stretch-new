@@ -110,7 +110,7 @@ const { t } = useI18n()
             <h3 class="text-h3 text-navy mb-2">{{ t('booking_v2.landing.not_sure') }}</h3>
             <p class="text-text-secondary text-sm mb-8">{{ t('booking_v2.landing.not_sure_desc') }}</p>
             <a 
-              href="https://zalo.me/yourid" 
+              href="http://zalo.me/4237229823551208502?src=qr&f=1" 
               target="_blank"
               class="btn-outline w-full justify-center"
             >

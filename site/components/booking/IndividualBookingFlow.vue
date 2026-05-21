@@ -9,13 +9,19 @@ const emit = defineEmits<{
   (e: 'back'): void
 }>()
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { trackFormSource } = useTracking()
 const { submit, loading: apiLoading, success: apiSuccess, error: apiError } = useBooking()
 const localePath = useLocalePath()
 const currentStep = ref(1)
 const isSubmitting = ref(false)
 const showSuccess = ref(false)
+
+const stepLabels = computed(() => [
+  locale.value === 'vi' ? 'Dịch vụ' : 'Service',
+  locale.value === 'vi' ? 'Thời gian & Địa điểm' : 'Time & Location',
+  locale.value === 'vi' ? 'Thông tin liên hệ' : 'Contact Info'
+])
 
 // Form State
 const form = ref({
@@ -32,17 +38,49 @@ const form = ref({
 })
 
 // Validation Rules
-const rules = {
-  fullName: { required: helpers.withMessage('Vui lòng nhập họ và tên', required), minLength: minLength(2) },
-  phone: { 
-    required: helpers.withMessage('Vui lòng nhập số điện thoại', required),
-    valid: helpers.withMessage('Số điện thoại không hợp lệ', (value: string) => /^[0-9+ ]{10,15}$/.test(value))
+const rules = computed(() => ({
+  fullName: { 
+    required: helpers.withMessage(
+      locale.value === 'vi' ? 'Vui lòng nhập họ và tên' : 'Please enter your full name', 
+      required
+    ), 
+    minLength: minLength(2) 
   },
-  consent: { required: helpers.withMessage('Vui lòng đồng ý với điều khoản', (val: boolean) => val === true) },
-  date: { required: helpers.withMessage('Vui lòng chọn ngày', required) },
-  time: { required: helpers.withMessage('Vui lòng chọn giờ', required) },
-  email: { email: helpers.withMessage('Email không hợp lệ', email) }
-}
+  phone: { 
+    required: helpers.withMessage(
+      locale.value === 'vi' ? 'Vui lòng nhập số điện thoại' : 'Please enter your phone number', 
+      required
+    ),
+    valid: helpers.withMessage(
+      locale.value === 'vi' ? 'Số điện thoại không hợp lệ' : 'Invalid phone number', 
+      (value: string) => /^[0-9+ ]{10,15}$/.test(value)
+    )
+  },
+  consent: { 
+    required: helpers.withMessage(
+      locale.value === 'vi' ? 'Vui lòng đồng ý với điều khoản' : 'Please agree to the terms', 
+      (val: boolean) => val === true
+    ) 
+  },
+  date: { 
+    required: helpers.withMessage(
+      locale.value === 'vi' ? 'Vui lòng chọn ngày' : 'Please select a date', 
+      required
+    ) 
+  },
+  time: { 
+    required: helpers.withMessage(
+      locale.value === 'vi' ? 'Vui lòng chọn giờ' : 'Please select a time', 
+      required
+    ) 
+  },
+  email: { 
+    email: helpers.withMessage(
+      locale.value === 'vi' ? 'Email không hợp lệ' : 'Invalid email address', 
+      email
+    ) 
+  }
+}))
 
 const v$ = useVuelidate(rules, form)
 
@@ -53,18 +91,18 @@ function formatDate(date: Date | null) {
   return date.toLocaleDateString('vi-VN')
 }
 
-const issues = [
+const issues = computed(() => [
   { id: 'recovery', icon: 'exercise', title: t('booking_v2.individual.issue_recovery'), desc: t('booking_v2.individual.issue_recovery_desc') },
   { id: 'pain', icon: 'personal_injury', title: t('booking_v2.individual.issue_pain'), desc: t('booking_v2.individual.issue_pain_desc') },
   { id: 'stiffness', icon: 'self_improvement', title: t('booking_v2.individual.issue_stiffness'), desc: t('booking_v2.individual.issue_stiffness_desc') },
   { id: 'not_sure', icon: 'help', title: t('booking_v2.individual.issue_not_sure'), desc: t('booking_v2.individual.issue_not_sure_desc') },
-]
+])
 
-const locations = [
+const locations = computed(() => [
   { id: 'home', icon: 'home', title: t('booking_v2.individual.loc_home'), desc: t('booking_v2.individual.loc_home_desc') },
   { id: 'clinic', icon: 'apartment', title: t('booking_v2.individual.loc_clinic'), desc: t('booking_v2.individual.loc_clinic_desc') },
   { id: 'consult', icon: 'chat', title: t('booking_v2.individual.loc_consult'), desc: t('booking_v2.individual.loc_consult_desc') },
-]
+])
 
 async function nextStep() {
   if (currentStep.value === 1) {
@@ -181,10 +219,10 @@ async function submitBooking() {
       </div>
 
       <div class="flex flex-col gap-4">
-        <button class="btn-navy justify-center gap-3">
+        <a href="https://zalo.me/4237229823551208502" target="_blank" class="btn-navy justify-center gap-3">
           <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" class="w-5 h-5" />
           {{ t('booking_v2.success.chat_zalo') }}
-        </button>
+        </a>
         <button class="btn-outline justify-center gap-3">
           <span class="material-symbols-outlined">call</span>
           {{ t('booking_v2.success.call_stretch') }}
@@ -197,7 +235,7 @@ async function submitBooking() {
 
     <!-- Multi-step Form -->
     <div v-else class="max-w-5xl mx-auto">
-      <BookingStepHeader :current-step="currentStep" :total-steps="3" />
+      <BookingStepHeader :current-step="currentStep" :total-steps="3" :step-labels="stepLabels" />
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
         <!-- Main Form Area -->
@@ -277,7 +315,7 @@ async function submitBooking() {
                     <CustomSelect 
                       v-model="form.time" 
                       :options="timeSlots" 
-                      placeholder="Chọn giờ"
+                      :placeholder="locale === 'vi' ? 'Chọn giờ' : 'Choose time'"
                       :error="v$.time.$error"
                     />
                     <span v-if="v$.time.$error" class="text-[10px] text-red-500 font-bold mt-1 uppercase">{{ v$.time.$errors[0].$message }}</span>
@@ -306,12 +344,12 @@ async function submitBooking() {
               <div class="space-y-6">
                 <div class="flex flex-col gap-2">
                   <label class="block text-xs font-bold text-navy uppercase tracking-wider">{{ t('booking_v2.individual.full_name') }}</label>
-                  <InputText v-model="form.fullName" :class="{'p-invalid': v$.fullName.$error}" placeholder="Nhập họ và tên" fluid />
+                  <InputText v-model="form.fullName" :class="{'p-invalid': v$.fullName.$error}" :placeholder="locale === 'vi' ? 'Nhập họ và tên' : 'Enter full name'" fluid />
                   <span v-if="v$.fullName.$error" class="text-[10px] text-red-500 font-bold mt-1 uppercase">{{ v$.fullName.$errors[0].$message }}</span>
                 </div>
                 <div class="flex flex-col gap-2">
                   <label class="block text-xs font-bold text-navy uppercase tracking-wider">{{ t('booking_v2.individual.phone_zalo') }}</label>
-                  <InputText v-model="form.phone" :class="{'p-invalid': v$.phone.$error}" placeholder="Nhập số điện thoại" fluid />
+                  <InputText v-model="form.phone" :class="{'p-invalid': v$.phone.$error}" :placeholder="locale === 'vi' ? 'Nhập số điện thoại' : 'Enter phone number'" fluid />
                   <span v-if="v$.phone.$error" class="text-[10px] text-red-500 font-bold mt-1 uppercase">{{ v$.phone.$errors[0].$message }}</span>
                 </div>
                 <div class="flex flex-col gap-2">
@@ -394,28 +432,28 @@ async function submitBooking() {
             <div class="card p-6 bg-off-white/50 border-dashed">
               <h4 class="font-bold text-navy mb-6 flex items-center gap-2">
                 <span class="material-symbols-outlined !text-xl">event_note</span>
-                Chi tiết đặt lịch
+                {{ locale === 'vi' ? 'Chi tiết đặt lịch' : 'Booking Details' }}
               </h4>
               <div class="space-y-6">
                 <div v-if="form.issue" class="animate-fade-in">
-                  <p class="text-[10px] text-text-secondary uppercase tracking-widest mb-1">Dịch vụ</p>
+                  <p class="text-[10px] text-text-secondary uppercase tracking-widest mb-1">{{ locale === 'vi' ? 'Dịch vụ' : 'Service' }}</p>
                   <p class="text-sm font-bold text-navy">{{ issues.find(i => i.id === form.issue)?.title }}</p>
                 </div>
                 <div v-if="form.location" class="animate-fade-in">
-                  <p class="text-[10px] text-text-secondary uppercase tracking-widest mb-1">Địa điểm</p>
+                  <p class="text-[10px] text-text-secondary uppercase tracking-widest mb-1">{{ locale === 'vi' ? 'Địa điểm' : 'Location' }}</p>
                   <p class="text-sm font-bold text-navy">{{ locations.find(l => l.id === form.location)?.title }}</p>
                 </div>
                 <div v-if="form.date || form.time" class="animate-fade-in">
-                  <p class="text-[10px] text-text-secondary uppercase tracking-widest mb-1">Thời gian</p>
+                  <p class="text-[10px] text-text-secondary uppercase tracking-widest mb-1">{{ locale === 'vi' ? 'Thời gian' : 'Time' }}</p>
                   <p class="text-sm font-bold text-navy">
                     {{ formatDate(form.date) }} <span v-if="form.date && form.time">@</span> {{ form.time }}
                   </p>
                 </div>
               </div>
 
-              <div v-if="!form.issue" class="py-8 text-center">
+              <div v-if="!form.issue" class="py-8 text-center animate-pulse">
                 <span class="material-symbols-outlined text-text-secondary/30 !text-5xl mb-2">pending</span>
-                <p class="text-xs text-text-secondary italic">Thông tin sẽ hiển thị khi bạn chọn</p>
+                <p class="text-xs text-[#475569]/80 font-medium leading-relaxed px-4">{{ locale === 'vi' ? 'Chưa chọn gói — hãy bấm vào gói dịch vụ bên trên' : 'No plan selected — tap a service package above' }}</p>
               </div>
             </div>
           </div>

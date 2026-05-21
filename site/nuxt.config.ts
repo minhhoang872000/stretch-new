@@ -34,6 +34,12 @@ export default defineNuxtConfig({
       htmlAttrs: { lang: 'en' },
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
+      meta: [
+        { name: 'geo.position', content: '10.7725;106.6784' },
+        { name: 'geo.region', content: 'VN-SG' },
+        { name: 'geo.placename', content: 'Ho Chi Minh City' },
+        { name: 'ICBM', content: '10.7725, 106.6784' },
+      ],
       link: [
         {
           rel: 'preconnect',
@@ -62,7 +68,7 @@ export default defineNuxtConfig({
   // SEO Configuration
   site: {
     url: 'https://yourdomain.com',
-    name: 'Electric Zen',
+    name: 'Stretch',
     description: 'Redefining physical recovery through high-intensity science and modern spiritual clarity. Book your session online.',
     defaultLocale: 'en',
   },
@@ -78,13 +84,10 @@ export default defineNuxtConfig({
     ],
   },
 
-  // Sitemap
   sitemap: {
     sources: ['/api/__sitemap-urls'],
   },
 
-  // OG Image — disabled during dev to avoid TTY prompt issues
-  // Enable in production with a configured renderer
   ogImage: {
     enabled: false,
   },
@@ -93,7 +96,7 @@ export default defineNuxtConfig({
   schemaOrg: {
     identity: {
       type: 'LocalBusiness',
-      name: 'Electric Zen Therapy',
+      name: 'Stretch',
       url: 'https://yourdomain.com',
       logo: '/og-default.jpg',
     },
@@ -123,6 +126,10 @@ export default defineNuxtConfig({
         en: '/business/education-training',
         vi: '/kinh-doanh/dao-tao-huan-luyen',
       },
+      'sharing-hub': {
+        en: '/sharing-hub',
+        vi: '/goc-chia-se',
+      },
     },
   },
 
@@ -140,6 +147,9 @@ export default defineNuxtConfig({
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://yourdomain.com',
       trackingApiUrl: process.env.NUXT_PUBLIC_TRACKING_API_URL || '',
+      emailjsServiceId: process.env.NUXT_PUBLIC_EMAILJS_SERVICE_ID || '',
+      emailjsTemplateId: process.env.NUXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
+      emailjsPublicKey: process.env.NUXT_PUBLIC_EMAILJS_PUBLIC_KEY || '',
     },
   },
 

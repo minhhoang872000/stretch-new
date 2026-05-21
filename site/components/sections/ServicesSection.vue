@@ -43,7 +43,7 @@ const businessServices = computed(() => [
   <section id="services" class="py-20 lg:py-28 bg-off-white">
     <div class="section-container">
       <!-- Section Title -->
-      <div class="text-center mb-16">
+      <div class="text-center mb-10">
         <h2 class="text-3xl md:text-4xl font-heading font-bold text-navy relative inline-block">
           {{ $t('services.title') }}
           <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-12 h-1 bg-accent rounded-full" />
@@ -54,18 +54,18 @@ const businessServices = computed(() => [
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
         <!-- Individual Card -->
-        <div class="group relative bg-white rounded-3xl border border-border-default overflow-hidden flex flex-col min-h-[600px] shadow-sm hover:shadow-xl transition-all duration-500">
+        <div class="group relative bg-white rounded-3xl border border-border-default overflow-hidden flex flex-col min-h-[480px] shadow-sm hover:shadow-xl transition-all duration-500">
           <!-- Card Background Image/Overlay -->
           <div class="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none group-hover:opacity-20 transition-opacity">
             <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop" alt="" class="w-full h-full object-cover grayscale" />
             <div class="absolute inset-0 bg-gradient-to-l from-transparent to-white" />
           </div>
 
-          <div class="relative p-8 lg:p-12 flex flex-col flex-1 z-10">
+          <div class="relative p-6 lg:p-8 flex flex-col flex-1 z-10">
             <!-- Header Section -->
-            <div class="flex items-start gap-6 mb-8">
-              <div class="w-16 h-16 rounded-full bg-off-white flex items-center justify-center shadow-sm border border-border-default flex-shrink-0">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0B2A4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <div class="flex items-start gap-5 mb-5">
+              <div class="w-12 h-12 rounded-full bg-off-white flex items-center justify-center shadow-sm border border-border-default flex-shrink-0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0B2A4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
                 </svg>
               </div>
@@ -83,18 +83,18 @@ const businessServices = computed(() => [
             </div>
 
             <!-- Service Rows -->
-            <div class="space-y-4 mb-10 flex-1">
+            <div class="space-y-3 mb-6 flex-1">
               <NuxtLink
                 v-for="service in individualServices"
                 :key="service.name"
                 :to="localePath(service.href)"
-                class="flex items-center justify-between p-4 rounded-2xl border border-border-default bg-white hover:border-navy hover:shadow-md transition-all cursor-pointer group/row"
+                class="flex items-center justify-between p-3.5 rounded-xl border border-border-default bg-white hover:border-navy hover:shadow-md transition-all cursor-pointer group/row"
               >
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3">
                   <div class="w-10 h-10 rounded-xl bg-navy text-white flex items-center justify-center flex-shrink-0 group-hover/row:bg-accent transition-colors">
                     <div v-html="service.icon" />
                   </div>
-                  <span class="font-heading font-bold text-navy text-[16px]">{{ service.name }}</span>
+                  <span class="font-heading font-bold text-navy text-[15px]">{{ service.name }}</span>
                 </div>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-text-secondary group-hover/row:translate-x-1 group-hover/row:text-navy transition-all">
                   <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -113,18 +113,18 @@ const businessServices = computed(() => [
         </div>
 
         <!-- Business Card -->
-        <div class="group relative bg-white rounded-3xl border border-border-default overflow-hidden flex flex-col min-h-[600px] shadow-sm hover:shadow-xl transition-all duration-500">
+        <div class="group relative bg-white rounded-3xl border border-border-default overflow-hidden flex flex-col min-h-[480px] shadow-sm hover:shadow-xl transition-all duration-500">
           <!-- Card Background Image/Overlay -->
           <div class="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none group-hover:opacity-20 transition-opacity">
             <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop" alt="" class="w-full h-full object-cover grayscale" />
             <div class="absolute inset-0 bg-gradient-to-l from-transparent to-white" />
           </div>
 
-          <div class="relative p-8 lg:p-12 flex flex-col flex-1 z-10">
+          <div class="relative p-6 lg:p-8 flex flex-col flex-1 z-10">
             <!-- Header Section -->
-            <div class="flex items-start gap-6 mb-8">
-              <div class="w-16 h-16 rounded-full bg-off-white flex items-center justify-center shadow-sm border border-border-default flex-shrink-0">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0B2A4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <div class="flex items-start gap-5 mb-5">
+              <div class="w-12 h-12 rounded-full bg-off-white flex items-center justify-center shadow-sm border border-border-default flex-shrink-0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0B2A4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
                 </svg>
               </div>
@@ -142,18 +142,18 @@ const businessServices = computed(() => [
             </div>
 
             <!-- Service Rows -->
-            <div class="space-y-4 mb-10 flex-1">
+            <div class="space-y-3 mb-6 flex-1">
               <NuxtLink
                 v-for="service in businessServices"
                 :key="service.name"
                 :to="localePath(service.href)"
-                class="flex items-center justify-between p-4 rounded-2xl border border-border-default bg-white hover:border-navy hover:shadow-md transition-all cursor-pointer group/row"
+                class="flex items-center justify-between p-3.5 rounded-xl border border-border-default bg-white hover:border-navy hover:shadow-md transition-all cursor-pointer group/row"
               >
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3">
                   <div class="w-10 h-10 rounded-xl bg-navy text-white flex items-center justify-center flex-shrink-0 group-hover/row:bg-accent transition-colors">
                     <div v-html="service.icon" />
                   </div>
-                  <span class="font-heading font-bold text-navy text-[16px]">{{ service.name }}</span>
+                  <span class="font-heading font-bold text-navy text-[15px]">{{ service.name }}</span>
                 </div>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-text-secondary group-hover/row:translate-x-1 group-hover/row:text-navy transition-all">
                   <path d="M5 12h14M12 5l7 7-7 7"/>

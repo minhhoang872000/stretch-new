@@ -2,8 +2,8 @@
 const { t } = useI18n()
 
 useSeo({
-  title: t('products.title') + ' – Electric Zen',
-  description: 'Explore all recovery programs: Zen Flow, Electric Peak, Soul Recovery, and more.',
+  title: t('products.title') + ' – Stretch.vn',
+  description: 'Explore all professional recovery programs by Stretch.vn: Deep Tissue Massage, Aromatherapy, Facial Hydration, and Hot Stone Therapy.',
   type: 'website',
 })
 

@@ -219,7 +219,7 @@
       "summary_participants": "Số lượng khách",
       "summary_people": "người",
       "summary_location": "Địa điểm",
-      "summary_empty": "Chọn gói dịch vụ để xem tóm tắt"
+      "summary_empty": "Chưa chọn gói — hãy bấm vào gói dịch vụ bên trên"
     },
     "success": {
       "thanks": "Cảm ơn bạn!",
@@ -269,7 +269,7 @@
     "explore_business": "Khám phá Dịch vụ Doanh nghiệp"
   },
   "where_we_work": {
-    "title": "Tại cơ sở của chúng tôi",
+    "title": "Where We Work",
     "home_title": "Tại Nhà",
     "home_desc": "Chăm sóc tiện lợi, riêng tư và hiệu quả ngay tại không gian của bạn.",
     "clinic_title": "Tại cơ sở của chúng tôi",
@@ -355,7 +355,7 @@
       "item4": "Muốn vận động tốt hơn mà không cần chịu đau"
     },
       "customer_carousel": {
-        "title": "Who we work with",
+        "title": "Chúng tôi đồng hành cùng",
         "subtitle": "Mỗi người khác nhau. Mỗi cơ thể khác nhau. Cùng một mục tiêu: vận động và cảm thấy tốt hơn.",
         "card1": "Người chạy bộ",
         "card1_desc": "Tập luyện cự ly hoặc tốc độ",
@@ -414,6 +414,16 @@
       "text": "Cần hỗ trợ chọn giải pháp?",
       "cta1": "Đặt lịch",
       "cta2": "Nhắn tư vấn"
+    },
+    "trust_features": {
+      "title1": "Đội ngũ chuyên môn",
+      "desc1": "Chuyên viên đào tạo bài bản",
+      "title2": "Thiết kế cá nhân hóa",
+      "desc2": "Phù hợp riêng với nhu cầu",
+      "title3": "Lựa chọn linh hoạt",
+      "desc3": "Tại phòng khám hoặc tại nhà",
+      "title4": "Vận động viên tin tưởng",
+      "desc4": "và người năng động lựa chọn"
     }
   },
   "business_page": {
@@ -677,11 +687,13 @@
       "item1": "Lượng giá quá trình & tổng kết",
       "item2": "Đánh giá thực hành trực tiếp",
       "item3": "Chứng nhận kỹ thuật số & bản cứng",
-      "item4": "Cộng đồng hỗ trợ liên tục"
+      "item4": "Cộng đồng hỗ trợ liên tục",
+      "view_certificate": "Nhấp để xem chứng chỉ đầy đủ"
     },
+    "gallery_caption": "Buổi Đào tạo & Thực hành kỹ thuật trực tiếp Road2Rehab",
     "cta": {
-      "title": "Xem hệ thống đào tạo này phù hợp với đội ngũ của bạn như thế nào",
-      "cta1": "Trao đổi chương trình",
+      "title": "Xây dựng đội ngũ mạnh mẽ và đồng đều hơn.",
+      "cta1": "Trao đổi lộ trình",
       "cta2": "Trao đổi với team",
       "sub": "Chúng tôi sẽ giúp bạn thiết kế lộ trình đào tạo phù hợp."
     },
@@ -696,5 +708,73 @@
     "subtitle": "Chúng tôi luôn sẵn sàng hỗ trợ bạn bắt đầu.",
     "talk": "Trò chuyện với chúng tôi",
     "proposal": "Yêu cầu bản đề xuất"
+  },
+  "sharing_hub": {
+    "nav": "Góc Chia Sẻ",
+    "hero_title": "Những gì chúng tôi đang học, xây dựng và chia sẻ",
+    "hero_subtitle": "Kiến thức vận động, giáo dục phục hồi, câu chuyện đội ngũ, cập nhật công ty và điểm nhấn sự kiện — tất cả ở một nơi.",
+    "featured": "Nổi bật",
+    "latest_posts": "Bài viết mới nhất",
+    "categories": {
+      "all": "Tất cả",
+      "articles": "Bài viết",
+      "company_updates": "Cập nhật công ty",
+      "team_stories": "Câu chuyện đội ngũ",
+      "events": "Sự kiện & Điểm nhấn"
+    },
+    "read_more": "Đọc thêm",
+    "featured_posts": {
+      "f1_category": "BÀI VIẾT",
+      "f1_title": "Nền tảng Vận động: Vì sao Di chuyển Đúng Cách Quan trọng Mỗi Ngày",
+      "f1_desc": "Hiệu suất mạnh mẽ và phục hồi bền vững bắt đầu từ chất lượng vận động.",
+      "f2_category": "CẬP NHẬT CÔNG TY",
+      "f2_title": "Một Chương Mới cho Stretch.vn",
+      "f2_desc": "Cập nhật thú vị về những phát triển gần đây và những gì sắp tới.",
+      "f3_category": "CÂU CHUYỆN ĐỘI NGŨ",
+      "f3_title": "Gặp gỡ Huy: Dẫn dắt bởi Tò mò, Hướng dẫn bởi Mục đích",
+      "f3_desc": "Tìm hiểu những con người đứng sau tiến trình phục hồi của bạn.",
+      "f4_category": "SỰ KIỆN & ĐIỂM NHẤN",
+      "f4_title": "Ngày Phục Hồi cùng VN Runners Club",
+      "f4_desc": "Một ngày vận động, phục hồi và cộng đồng trong hành động."
+    },
+    "posts": {
+      "p1_category": "BÀI VIẾT",
+      "p1_title": "Foam Rolling 101: Thói quen Đơn giản cho Phục hồi Tốt hơn",
+      "p1_desc": "Công cụ dễ tiếp cận này có thể giảm căng cơ và hỗ trợ hiệu suất hàng ngày của bạn.",
+      "p2_category": "CẬP NHẬT CÔNG TY",
+      "p2_title": "Không gian mới tại Thảo Điền đã mở cửa",
+      "p2_desc": "Không gian được thiết kế cho chăm sóc tập trung, vận động tốt hơn và kết nối ý nghĩa.",
+      "p3_category": "CÂU CHUYỆN ĐỘI NGŨ",
+      "p3_title": "Phía sau Buổi Trị liệu: Sức mạnh của Lắng nghe",
+      "p3_desc": "Vì sao hiểu câu chuyện của bạn là chìa khóa cho điều trị và huấn luyện hiệu quả.",
+      "p4_category": "SỰ KIỆN & ĐIỂM NHẤN",
+      "p4_title": "Workshop Vận động tại RMIT Việt Nam",
+      "p4_desc": "Năng lượng tuyệt vời và những câu hỏi sâu sắc từ cộng đồng tham gia.",
+      "p5_category": "BÀI VIẾT",
+      "p5_title": "Linh hoạt Hông: Chìa khóa cho Vận động Mạnh mẽ, Không Đau",
+      "p5_desc": "Đánh giá và bài tập đơn giản để cải thiện cách bạn di chuyển.",
+      "p6_category": "CẬP NHẬT CÔNG TY",
+      "p6_title": "Phát triển Đội ngũ, Nâng cao Chất lượng",
+      "p6_desc": "Chào đón các chuyên viên trị liệu và huấn luyện viên mới gia nhập gia đình Stretch.vn.",
+      "p7_category": "CÂU CHUYỆN ĐỘI NGŨ",
+      "p7_title": "Từ Thất bại đến Sức mạnh: Hành trình của Kevin",
+      "p7_desc": "Sự kiên trì, hỗ trợ và kế hoạch đúng đắn đã tạo nên sự khác biệt.",
+      "p8_category": "SỰ KIỆN & ĐIỂM NHẤN",
+      "p8_title": "Stretch & Phục hồi Bình minh tại Công viên Sala",
+      "p8_desc": "Một buổi sáng tươi mới của vận động và kết nối."
+    },
+    "why_title": "Vì sao chúng tôi chia sẻ",
+    "why_desc": "Chúng tôi tin rằng vận động tốt hơn đến từ thông tin chất lượng và trải nghiệm thực tế. Mục tiêu của chúng tôi là xây dựng niềm tin qua sự minh bạch, chia sẻ kiến thức thực tiễn bạn có thể áp dụng, và phát triển cộng đồng cùng vận động, phục hồi và sống tốt hơn — cùng nhau.",
+    "why_f1_title": "Kiến thức dựa trên bằng chứng",
+    "why_f1_desc": "Kiến thức bạn có thể tin tưởng và áp dụng.",
+    "why_f2_title": "Câu chuyện thực từ người thực",
+    "why_f2_desc": "Trải nghiệm truyền cảm hứng và kết nối.",
+    "why_f3_title": "Bài học thực tiễn cho cuộc sống hàng ngày",
+    "why_f3_desc": "Những bước đơn giản tạo tác động lâu dài.",
+    "cta_title": "Khám phá thêm. Vận động tốt hơn. Sống tốt hơn.",
+    "cta_subtitle": "Khám phá dịch vụ, đặt lịch hẹn, hoặc theo dõi chúng tôi để nhận cập nhật mới nhất.",
+    "cta_explore": "Khám phá Dịch vụ",
+    "cta_book": "Đặt lịch",
+    "cta_follow": "Theo dõi Cập nhật"
   }
 }

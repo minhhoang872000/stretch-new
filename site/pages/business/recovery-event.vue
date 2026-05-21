@@ -17,10 +17,9 @@ useSeo({
       <EventDifferences />
       <EventWorks />
       <EventTrust />
-      <BusinessCta />
+      <EventCta />
     </main>
     <TheFooter />
-    <ContactWidget />
     <BusinessFloatingBar />
   </div>
 </template>

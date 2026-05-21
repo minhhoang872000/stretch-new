@@ -218,7 +218,7 @@
       "summary_participants": "Participants",
       "summary_people": "people",
       "summary_location": "Location",
-      "summary_empty": "Select a plan to see summary"
+      "summary_empty": "No plan selected — tap a service package above"
     },
     "success": {
       "thanks": "Thank you!",
@@ -413,6 +413,16 @@
       "text": "Need help choosing the right recovery?",
       "cta1": "Book a Session",
       "cta2": "Get Advice"
+    },
+    "trust_features": {
+      "title1": "Experienced team",
+      "desc1": "Trained professionals",
+      "title2": "Personalized approach",
+      "desc2": "Tailored to your needs",
+      "title3": "Flexible options",
+      "desc3": "At clinic or at home",
+      "title4": "Trusted by athletes",
+      "desc4": "and active individuals"
     }
   },
   "business_page": {
@@ -676,13 +686,15 @@
       "item1": "Formative & Summative assessment",
       "item2": "Practical hands-on evaluation",
       "item3": "Digital & Physical certificate",
-      "item4": "Ongoing support community"
+      "item4": "Ongoing support community",
+      "view_certificate": "Click to view full certificate"
     },
+    "gallery_caption": "Road2Rehab Hands-on Coaching & Practice Workshop",
     "cta": {
-      "title": "See how this training system fits your team",
-      "cta1": "Discuss Training Program",
+      "title": "Build a stronger, more consistent team.",
+      "cta1": "Discuss Training Plan",
       "cta2": "Talk to Team",
-      "sub": "We'll help you design the right training pathway."
+      "sub": "We'll help you design the right training structure."
     },
     "floating": {
       "text": "Planning training for your team?",
@@ -695,5 +707,73 @@
     "subtitle": "We're here to help you get started.",
     "talk": "Talk to Our Team",
     "proposal": "Request a Proposal"
+  },
+  "sharing_hub": {
+    "nav": "Sharing Hub",
+    "hero_title": "What we're learning, building, and sharing",
+    "hero_subtitle": "Movement insights, recovery education, team stories, company updates, and event highlights — all in one place.",
+    "featured": "Featured",
+    "latest_posts": "Latest Posts",
+    "categories": {
+      "all": "All",
+      "articles": "Articles",
+      "company_updates": "Company Updates",
+      "team_stories": "Team Stories",
+      "events": "Events & Highlights"
+    },
+    "read_more": "Read More",
+    "featured_posts": {
+      "f1_category": "ARTICLES",
+      "f1_title": "The Mobility Foundation: Why Moving Well Matters Every Day",
+      "f1_desc": "Strong performance and lasting recovery start with quality movement.",
+      "f2_category": "COMPANY UPDATES",
+      "f2_title": "A New Chapter for Stretch.vn",
+      "f2_desc": "Exciting updates on our recent developments and what's ahead.",
+      "f3_category": "TEAM STORIES",
+      "f3_title": "Meet Huy: Driven by Curiosity, Guided by Purpose",
+      "f3_desc": "Get to know the people behind your progress.",
+      "f4_category": "EVENTS & HIGHLIGHTS",
+      "f4_title": "Recovery Day with VN Runners Club",
+      "f4_desc": "A day of movement, recovery, and community in action."
+    },
+    "posts": {
+      "p1_category": "ARTICLES",
+      "p1_title": "Foam Rolling 101: Simple Habits for Better Recovery",
+      "p1_desc": "How this accessible tool can reduce tension and support your daily performance.",
+      "p2_category": "COMPANY UPDATES",
+      "p2_title": "Our New Space in Thao Dien is Now Open",
+      "p2_desc": "A space designed for focused care, better movement, and meaningful connections.",
+      "p3_category": "TEAM STORIES",
+      "p3_title": "Behind the Session: The Power of Listening",
+      "p3_desc": "Why understanding your story is the key to effective treatment and training.",
+      "p4_category": "EVENTS & HIGHLIGHTS",
+      "p4_title": "Movement Workshop at RMIT Vietnam",
+      "p4_desc": "Great energy and thoughtful questions from an engaged community.",
+      "p5_category": "ARTICLES",
+      "p5_title": "Hip Mobility: The Key to Stronger, Pain-Free Movement",
+      "p5_desc": "Simple assessments and exercises to improve how you move.",
+      "p6_category": "COMPANY UPDATES",
+      "p6_title": "Growing the Team, Elevating Care",
+      "p6_desc": "Welcoming new therapists and coaches to the Stretch.vn family.",
+      "p7_category": "TEAM STORIES",
+      "p7_title": "From Setbacks to Strength: Kevin's Journey",
+      "p7_desc": "How consistency, support, and the right plan made the difference.",
+      "p8_category": "EVENTS & HIGHLIGHTS",
+      "p8_title": "Sunrise Stretch & Recover at Sala Park",
+      "p8_desc": "A refreshing morning of movement and connection."
+    },
+    "why_title": "Why we share",
+    "why_desc": "We believe better movement comes from better information and real experiences. Our goal is to build trust through transparency, share practical insights you can use, and grow a community that moves, recovers, and lives better — together.",
+    "why_f1_title": "Evidence-informed insights",
+    "why_f1_desc": "Knowledge you can trust and apply.",
+    "why_f2_title": "Real stories from real people",
+    "why_f2_desc": "Experiences that inspire and connect.",
+    "why_f3_title": "Practical takeaways for everyday life",
+    "why_f3_desc": "Simple steps for lasting impact.",
+    "cta_title": "Explore more. Move better. Live better.",
+    "cta_subtitle": "Discover our services, book a session, or follow us for the latest updates.",
+    "cta_explore": "Explore Our Services",
+    "cta_book": "Book a Session",
+    "cta_follow": "Follow Updates"
   }
 }

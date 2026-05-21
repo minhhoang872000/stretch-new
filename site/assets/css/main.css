@@ -161,51 +161,51 @@
 
   /* ── Typography utility classes ── */
   .text-h1 {
-    font-size: 56px;
-    line-height: 64px;
+    font-size: 44px;
+    line-height: 52px;
     font-weight: 700;
   }
   @media (max-width: 767px) {
     .text-h1 {
-      font-size: 40px;
-      line-height: 48px;
-    }
-  }
-
-  .text-h2 {
-    font-size: 36px;
-    line-height: 44px;
-    font-weight: 700;
-  }
-  @media (max-width: 767px) {
-    .text-h2 {
-      font-size: 30px;
+      font-size: 32px;
       line-height: 38px;
     }
   }
 
+  .text-h2 {
+    font-size: 28px;
+    line-height: 36px;
+    font-weight: 700;
+  }
+  @media (max-width: 767px) {
+    .text-h2 {
+      font-size: 24px;
+      line-height: 30px;
+    }
+  }
+
   .text-h3 {
-    font-size: 24px;
-    line-height: 32px;
+    font-size: 20px;
+    line-height: 26px;
     font-weight: 600;
   }
 
   .text-body {
-    font-size: 16px;
-    line-height: 26px;
+    font-size: 15px;
+    line-height: 24px;
     font-weight: 400;
   }
 
   .text-small {
-    font-size: 14px;
-    line-height: 22px;
+    font-size: 13px;
+    line-height: 20px;
     font-weight: 500;
   }
 
   /* ── Eyebrow label ── */
   .eyebrow {
     font-family: var(--font-heading);
-    font-size: 12px;
+    font-size: 11px;
     line-height: 1.2;
     letter-spacing: 0.18em;
     font-weight: 700;
@@ -216,8 +216,8 @@
   /* ── Section title / subtitle ── */
   .section-title {
     font-family: var(--font-heading);
-    font-size: 36px;
-    line-height: 44px;
+    font-size: 28px;
+    line-height: 36px;
     font-weight: 700;
     color: var(--color-navy);
     text-align: center;
@@ -225,14 +225,14 @@
   }
   @media (max-width: 767px) {
     .section-title {
-      font-size: 30px;
-      line-height: 38px;
+      font-size: 24px;
+      line-height: 30px;
     }
   }
 
   .section-subtitle {
-    font-size: 16px;
-    line-height: 26px;
+    font-size: 14px;
+    line-height: 22px;
     color: var(--color-text-secondary);
     text-align: center;
     max-width: 36rem;
@@ -267,7 +267,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.75rem;
+    padding: 0.6rem 1.5rem;
     background-color: var(--color-navy);
     color: white;
     font-family: var(--font-heading);
@@ -291,7 +291,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.75rem;
+    padding: 0.6rem 1.5rem;
     background-color: transparent;
     color: var(--color-navy);
     font-family: var(--font-heading);
@@ -315,7 +315,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.75rem;
+    padding: 0.6rem 1.5rem;
     background-color: var(--color-accent);
     color: white;
     font-family: var(--font-heading);
@@ -339,7 +339,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.75rem;
+    padding: 0.6rem 1.5rem;
     background-color: transparent;
     color: white;
     font-family: var(--font-heading);
@@ -532,57 +532,57 @@
 
 /* ── Mobile & General Spacing ── */
 .py-28, .py-24, .py-20, .py-16 {
-  padding-top: 2.5rem !important; /* 40px */
-  padding-bottom: 2.5rem !important; /* 40px */
-}
-.py-12 {
   padding-top: 2rem !important; /* 32px */
   padding-bottom: 2rem !important; /* 32px */
 }
-.pt-28, .pt-24, .pt-20, .pt-16 {
-  padding-top: 2.5rem !important;
+.py-12 {
+  padding-top: 1.5rem !important; /* 24px */
+  padding-bottom: 1.5rem !important; /* 24px */
 }
-.pt-12 {
+.pt-28, .pt-24, .pt-20, .pt-16 {
   padding-top: 2rem !important;
 }
+.pt-12 {
+  padding-top: 1.5rem !important;
+}
 .pb-28, .pb-24, .pb-20, .pb-16 {
-  padding-bottom: 2.5rem !important;
+  padding-bottom: 2rem !important;
 }
 .pb-12 {
-  padding-bottom: 2rem !important;
+  padding-bottom: 1.5rem !important;
 }
 
 /* ── Desktop & Large Screen Spacing ── */
 @media (min-width: 1024px) {
   .lg\:py-28, .lg\:py-24, .lg\:py-20 {
-    padding-top: 4rem !important; /* 64px */
-    padding-bottom: 4rem !important; /* 64px */
+    padding-top: 3rem !important; /* 48px */
+    padding-bottom: 3rem !important; /* 48px */
   }
   .lg\:py-16 {
-    padding-top: 3.5rem !important; /* 56px */
-    padding-bottom: 3.5rem !important; /* 56px */
-  }
-  .lg\:py-12 {
     padding-top: 2.5rem !important; /* 40px */
     padding-bottom: 2.5rem !important; /* 40px */
   }
+  .lg\:py-12 {
+    padding-top: 2rem !important; /* 32px */
+    padding-bottom: 2rem !important; /* 32px */
+  }
   .lg\:pt-28, .lg\:pt-24, .lg\:pt-20 {
-    padding-top: 4rem !important;
+    padding-top: 3rem !important;
   }
   .lg\:pt-16 {
-    padding-top: 3.5rem !important;
-  }
-  .lg\:pt-12 {
     padding-top: 2.5rem !important;
   }
+  .lg\:pt-12 {
+    padding-top: 2rem !important;
+  }
   .lg\:pb-28, .lg\:pb-24, .lg\:pb-20 {
-    padding-bottom: 4rem !important;
+    padding-bottom: 3rem !important;
   }
   .lg\:pb-16 {
-    padding-bottom: 3.5rem !important;
+    padding-bottom: 2.5rem !important;
   }
   .lg\:pb-12 {
-    padding-bottom: 2.5rem !important;
+    padding-bottom: 2rem !important;
   }
 }
 

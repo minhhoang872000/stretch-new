@@ -25,6 +25,5 @@ onMounted(() => {
     </main>
     <TheFooter />
     <FloatingCtaBar />
-    <ContactWidget />
   </div>
 </template>

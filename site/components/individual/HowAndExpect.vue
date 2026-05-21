@@ -138,15 +138,15 @@
               </div>
               
             </div>
+            
+            <!-- Duration info inside this column -->
+            <div class="mt-8 pt-5 border-t border-gray-100 w-full text-center">
+              <p class="text-sm md:text-base font-extrabold text-navy">
+                {{ $t('individual_page.what_to_expect.duration') }}
+              </p>
+            </div>
           </div>
           
-        </div>
-        
-        <!-- Footer: Duration info -->
-        <div class="mt-10 pt-6 border-t border-gray-100 flex justify-center">
-          <p class="text-sm md:text-base font-extrabold text-navy">
-            {{ $t('individual_page.what_to_expect.duration') }}
-          </p>
         </div>
       </div>
       

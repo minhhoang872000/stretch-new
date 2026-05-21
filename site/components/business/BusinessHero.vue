@@ -1,7 +1,16 @@
 <script setup lang="ts">
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { trackCTA } = useTracking()
 const localePath = useLocalePath()
+
+function handleLearnMore(e: Event) {
+  trackCTA('hero-learn-more', 'business')
+  e.preventDefault()
+  const el = document.getElementById('solutions')
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+}
 </script>
 
 <template>
@@ -13,8 +22,7 @@ const localePath = useLocalePath()
       <div class="absolute bottom-[-10%] left-[-10%] w-[40%] h-[50%] bg-accent/8 blur-[100px] rounded-full mix-blend-multiply" />
       <div class="absolute top-[40%] left-[20%] w-[35%] h-[35%] bg-accent/5 blur-[100px] rounded-full mix-blend-multiply" />
       
-      <!-- Subtle Grid Pattern -->
-      <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#0B2A4A 1px, transparent 1px), linear-gradient(90deg, #0B2A4A 1px, transparent 1px); background-size: 32px 32px;"></div>
+
     </div>
 
     <div class="max-w-[1400px] mx-auto px-6 md:px-10 relative z-10">
@@ -34,11 +42,15 @@ const localePath = useLocalePath()
           <!-- Heading -->
           <h1 class="font-heading font-bold text-navy tracking-tight mb-6 text-[44px] leading-[1.05] md:text-[54px] xl:text-[68px] animate-fade-in-up" style="animation-delay: 100ms">
             <span class="relative inline-block">
-              <span class="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-navy to-[#1e446d]">Better people.</span>
+              <span class="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-navy to-[#1e446d]">
+                {{ locale === 'vi' ? 'Con người tốt hơn.' : 'Better people.' }}
+              </span>
             </span>
             <br />
             <span class="relative inline-block">
-              <span class="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-accent to-[#ff984f]">Better performance.</span>
+              <span class="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-accent to-[#ff984f]">
+                {{ locale === 'vi' ? 'Hiệu suất tốt hơn.' : 'Better performance.' }}
+              </span>
               <!-- Curved underline SVG -->
               <svg class="absolute w-full h-[12px] -bottom-1 left-0 text-accent/20 z-0" viewBox="0 0 100 12" preserveAspectRatio="none">
                 <path d="M0,10 Q50,0 100,10" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
@@ -56,15 +68,15 @@ const localePath = useLocalePath()
 
           <!-- CTAs -->
           <div class="flex flex-col sm:flex-row items-center gap-4 mb-10 animate-fade-in-up" style="animation-delay: 300ms">
-            <NuxtLink to="#" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-accent text-white font-heading font-bold text-[16px] rounded-2xl shadow-[0_8px_20px_rgba(244,122,31,0.25)] hover:shadow-[0_12px_24px_rgba(244,122,31,0.35)] transition-all duration-300 hover:-translate-y-1 active:scale-[0.98] group relative overflow-hidden" @click="trackCTA('hero-book-now', 'business')">
+            <a href="https://zalo.me/4237229823551208502" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-accent text-white font-heading font-bold text-[16px] rounded-2xl shadow-[0_8px_20px_rgba(244,122,31,0.25)] hover:shadow-[0_12px_24px_rgba(244,122,31,0.35)] transition-all duration-300 hover:-translate-y-1 active:scale-[0.98] group relative overflow-hidden" @click="trackCTA('hero-book-now', 'business')">
               <div class="absolute inset-0 bg-white/20 translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-700 ease-in-out"></div>
               <span class="relative z-10">{{ $t('business_page.hero.cta1') }}</span>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="relative z-10 transition-transform duration-300 group-hover:translate-x-1">
                 <path d="M7.5 15l5-5-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-            </NuxtLink>
+            </a>
             
-            <a href="#solutions" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4.5 bg-white backdrop-blur-sm border border-navy/10 text-navy font-heading font-bold text-[16px] rounded-2xl shadow-sm hover:border-navy/20 hover:bg-white hover:shadow-md transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]" @click="trackCTA('hero-learn-more', 'business')">
+            <a href="#solutions" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4.5 bg-white backdrop-blur-sm border border-navy/10 text-navy font-heading font-bold text-[16px] rounded-2xl shadow-sm hover:border-navy/20 hover:bg-white hover:shadow-md transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]" @click="handleLearnMore">
               {{ $t('business_page.hero.cta2') }}
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 5v14M5 12l7 7 7-7"/>

@@ -19,10 +19,9 @@ useSeo({
       <ExperiencingSection />
       <HowAndExpect />
       <IndividualCta />
-      <!-- <CtaSection /> -->
+      <TrustFeatures />
     </main>
     <TheFooter />
-    <ContactWidget />
     <FloatingCta />
   </div>
 </template>

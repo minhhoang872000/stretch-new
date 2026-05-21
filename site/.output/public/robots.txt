@@ -1,0 +1,16 @@
+# START nuxt-robots (indexable)
+User-agent: *
+Allow: /
+Allow: /vi/
+Disallow: /api/
+Disallow: /vi/api/
+
+User-agent: *
+Allow: /
+Allow: /vi/
+Disallow: /api/
+Disallow: /vi/api/
+
+Sitemap: https://yourdomain.com/sitemap.xml
+Sitemap: https://stretch.vn/sitemap_index.xml
+# END nuxt-robots

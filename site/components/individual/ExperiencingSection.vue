@@ -17,22 +17,23 @@ const rightSymptoms = computed(() => [
 <template>
   <section class="py-16 lg:py-0 bg-[#F7F7F7] relative overflow-hidden lg:h-[380px] lg:flex lg:items-center">
     
-    <!-- Desktop absolute image: Large, contained fully inside the section -->
-    <div class="hidden lg:block absolute bottom-0 lg:left-[22%] xl:left-[24%] lg:w-[380px] xl:w-[440px] lg:h-[95%] z-10 pointer-events-none">
-      <img 
-        src="/experiencing-pain-absolute.png" 
-        alt="Person experiencing shoulder discomfort" 
-        class="w-full h-full object-contain object-bottom mix-blend-multiply"
-      />
-    </div>
-
-    <div class="max-w-[1400px] mx-auto px-6 md:px-10 relative z-20 w-full">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 relative z-20 w-full h-full lg:flex lg:items-center">
       
+      <!-- Desktop absolute image: Positioned relative to the centered container. 
+           Bigger sizes tailored to fit perfectly in the middle gap without any overlaps. -->
+      <div class="hidden lg:block absolute bottom-0 lg:left-[24%] xl:left-[25%] 2xl:left-[26%] lg:w-[270px] xl:w-[330px] 2xl:w-[360px] lg:h-[98%] xl:h-[103%] 2xl:h-[108%] z-10 pointer-events-none">
+        <img 
+          src="/experiencing-pain-absolute.png" 
+          alt="Person experiencing shoulder discomfort" 
+          class="w-full h-full object-contain object-bottom mix-blend-multiply"
+        />
+      </div>
+
       <!-- Desktop: Space-between layout (Left: Heading, Right: Checklist) | Mobile: stacked -->
-      <div class="flex flex-col lg:flex-row items-center lg:items-center lg:justify-between gap-10 lg:gap-0">
+      <div class="flex flex-col lg:flex-row items-center lg:items-center lg:justify-between gap-10 lg:gap-0 w-full relative z-20">
         
-        <!-- Left Column: Heading (Narrower to make room for the large absolute image) -->
-        <div class="w-full lg:w-[24%] text-center lg:text-left">
+        <!-- Left Column: Heading (Narrower to make room for the larger absolute image) -->
+        <div class="w-full lg:w-[23%] text-center lg:text-left">
           <h2 class="text-3xl md:text-4xl lg:text-[2.6rem] font-heading font-extrabold text-navy leading-[1.15] tracking-tight">
             {{ $t('individual_page.experiencing.title') }}
           </h2>

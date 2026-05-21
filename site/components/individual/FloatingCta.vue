@@ -34,7 +34,7 @@ onUnmounted(() => {
           <NuxtLink :to="localePath('/booking')" class="btn-orange px-6 py-2.5 text-sm">
             {{ $t('individual_page.floating_cta.cta1') }}
           </NuxtLink>
-          <a href="#" class="inline-flex items-center gap-2 px-6 py-2.5 bg-white/10 text-white font-heading font-bold text-sm rounded-xl hover:bg-white/20 transition-all border border-white/10">
+          <a href="http://zalo.me/4237229823551208502?src=qr&f=1" target="_blank" class="inline-flex items-center gap-2 px-6 py-2.5 bg-white/10 text-white font-heading font-bold text-sm rounded-xl hover:bg-white/20 transition-all border border-white/10">
             {{ $t('individual_page.floating_cta.cta2') }}
           </a>
         </div>

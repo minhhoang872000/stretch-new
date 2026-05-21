@@ -8,7 +8,7 @@ const navLinks = computed(() => [
   { label: t('nav.home'), href: '/' },
   { label: t('nav.individual'), href: '/individual' },
   { label: t('nav.business'), href: '/business' },
-
+  { label: t('sharing_hub.nav'), href: '/sharing-hub' },
 ])
 
 onMounted(() => {
@@ -51,8 +51,7 @@ function switchLanguage(code: string) {
           <img src="~/assets/image/stretch.jpg" alt="Stretch.vn" class="h-12 w-auto object-contain opacity-80" />
         </div>
         <div class="hidden sm:flex items-center gap-3 border-l border-border-default pl-3 ml-3">
-          <img src="~/assets/image/monaco.jpeg" alt="Monaco Healthcare" class="h-6 w-auto object-contain opacity-80" />
-          <span class="text-[10px] text-text-secondary font-bold uppercase tracking-tight">Monaco Healthcare</span>
+          <span class="text-[10px] text-text-secondary font-bold uppercase tracking-tight">{{ $t('footer.poweredBy') }} Monaco Healthcare</span>
         </div>
       </NuxtLink>
 

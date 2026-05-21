@@ -30,21 +30,21 @@ const localePath = useLocalePath()
 
         <!-- For Individual -->
         <div>
-          <h4 class="text-sm font-heading font-semibold text-white mb-4">{{ $t('footer.individual') }}</h4>
+          <NuxtLink :to="localePath('/individual')" class="text-sm font-heading font-semibold text-white hover:text-accent transition-colors mb-4 block">{{ $t('footer.individual') }}</NuxtLink>
           <ul class="space-y-2.5">
-            <li><a href="#" class="text-sm text-white/60 hover:text-white transition-colors">{{ $t('services.sport_recovery') }}</a></li>
-            <li><a href="#" class="text-sm text-white/60 hover:text-white transition-colors">{{ $t('services.rehabilitation') }}</a></li>
-            <li><a href="#" class="text-sm text-white/60 hover:text-white transition-colors">{{ $t('services.targeted_relief') }}</a></li>
+            <li><NuxtLink :to="localePath('/individual')" class="text-sm text-white/60 hover:text-white transition-colors">{{ $t('services.sport_recovery') }}</NuxtLink></li>
+            <li><NuxtLink :to="localePath('/individual')" class="text-sm text-white/60 hover:text-white transition-colors">{{ $t('services.rehabilitation') }}</NuxtLink></li>
+            <li><NuxtLink :to="localePath('/individual')" class="text-sm text-white/60 hover:text-white transition-colors">{{ $t('services.targeted_relief') }}</NuxtLink></li>
           </ul>
         </div>
 
         <!-- For Business -->
         <div>
-          <h4 class="text-sm font-heading font-semibold text-white mb-4">{{ $t('footer.business') }}</h4>
+          <NuxtLink :to="localePath('/business')" class="text-sm font-heading font-semibold text-white hover:text-accent transition-colors mb-4 block">{{ $t('footer.business') }}</NuxtLink>
           <ul class="space-y-2.5">
-            <li><a href="#" class="text-sm text-white/60 hover:text-white transition-colors">{{ $t('services.event_solutions') }}</a></li>
-            <li><a href="#" class="text-sm text-white/60 hover:text-white transition-colors">{{ $t('services.education_training') }}</a></li>
-            <li><a href="#" class="text-sm text-white/60 hover:text-white transition-colors">{{ $t('services.corporate_wellness') }}</a></li>
+            <li><NuxtLink :to="localePath('/business/recovery-event')" class="text-sm text-white/60 hover:text-white transition-colors">{{ $t('services.event_solutions') }}</NuxtLink></li>
+            <li><NuxtLink :to="localePath('/business/education-training')" class="text-sm text-white/60 hover:text-white transition-colors">{{ $t('services.education_training') }}</NuxtLink></li>
+            <li><NuxtLink :to="localePath('/business/corporate-wellness')" class="text-sm text-white/60 hover:text-white transition-colors">{{ $t('services.corporate_wellness') }}</NuxtLink></li>
           </ul>
         </div>
 

@@ -9,7 +9,7 @@ watchEffect(() => {
   if (product.value) {
     const p = product.value as any
     useSeo({
-      title: `${p.name} – Lumière Studio`,
+      title: `${p.name} – Stretch.vn`,
       description: p.shortDescription,
       image: p.coverImage,
       type: 'product',

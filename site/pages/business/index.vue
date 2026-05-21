@@ -18,7 +18,6 @@ useSeo({
       <BusinessCta />
     </main>
     <TheFooter />
-    <ContactWidget />
     <BusinessFloatingBar />
   </div>
 </template>

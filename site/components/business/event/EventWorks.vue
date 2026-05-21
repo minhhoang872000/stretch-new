@@ -23,91 +23,105 @@ const howSteps = computed(() => [
 </script>
 
 <template>
-  <section class="py-8 lg:py-14 bg-white relative overflow-hidden">
-    <div class="absolute inset-0 pointer-events-none">
-      <div class="absolute top-[15%] right-[-10%] w-[40%] h-[40%] bg-accent/5 blur-[140px] rounded-full" />
-      <div class="absolute bottom-[15%] left-[-10%] w-[35%] h-[35%] bg-navy/5 blur-[120px] rounded-full" />
-    </div>
-
-    <div class="section-container relative z-10">
-      <div class="flex flex-col lg:flex-row gap-12 lg:gap-16">
+  <section class="py-12 lg:py-16 bg-white relative overflow-hidden">
+    <div class="max-w-[1340px] mx-auto px-6 md:px-10 relative z-10 w-full">
+      <div class="flex flex-col lg:flex-row gap-12 lg:gap-16 items-stretch">
 
         <!-- Left: Where this works -->
-        <div class="w-full lg:w-[55%]">
-          <div class="mb-6">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/5 border border-accent/10 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent" />
-              <span class="text-[11px] font-heading font-bold text-accent uppercase tracking-[0.2em]">{{ $t('event_page.where_works.label') }}</span>
-            </div>
-            <h2 class="text-xl lg:text-3xl font-heading font-bold text-navy mb-3">
+        <div class="w-full lg:w-[53%] flex flex-col items-center">
+          <!-- Heading & Subtitle -->
+          <div class="text-center mb-10 w-full">
+            <h2 class="text-[24px] md:text-[28px] font-heading font-bold text-navy mb-2 tracking-tight">
               {{ $t('event_page.where_works.heading') }}
             </h2>
-            <p class="text-[14px] text-text-secondary leading-relaxed">
+            <p class="text-navy/60 text-[14px] md:text-[15px] font-medium leading-relaxed max-w-[440px] mx-auto">
               {{ $t('event_page.where_works.subtext') }}
             </p>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div v-for="(card, idx) in whereCards" :key="idx" class="group flex flex-col items-center">
-              <div class="w-full aspect-square rounded-2xl overflow-hidden mb-3 border-2 border-transparent group-hover:border-accent/30 group-hover:shadow-xl group-hover:shadow-accent/10 transition-all duration-500 relative">
-                <img :src="card.img" :alt="card.title" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div class="absolute inset-0 bg-gradient-to-t from-navy/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <!-- 4 Vertical Grid Cards -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full">
+            <div v-for="(card, idx) in whereCards" :key="idx" class="flex flex-col items-center text-center">
+              <!-- Rounded Vertical Image Container -->
+              <div class="w-full aspect-[4/5] rounded-[16px] overflow-hidden mb-3 border border-[#F1F1F1] shadow-sm bg-gray-50">
+                <img 
+                  :src="card.img" 
+                  :alt="card.title" 
+                  class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
+                />
               </div>
-              <p class="text-[12px] font-heading font-bold text-navy text-center px-1">{{ card.title }}</p>
+              <p class="text-[13px] md:text-[14px] font-heading font-extrabold text-navy leading-snug tracking-tight max-w-[120px] mx-auto">
+                {{ card.title }}
+              </p>
             </div>
           </div>
         </div>
 
-        <!-- Divider -->
-        <div class="hidden lg:block w-px bg-border-default" />
-        <div class="lg:hidden h-px bg-border-default w-full max-w-sm mx-auto" />
+        <!-- Divider Line -->
+        <div class="hidden lg:block w-px bg-[#E5E7EB]/60 self-stretch my-2" />
+        <div class="lg:hidden h-px bg-[#E5E7EB]/60 w-full my-4" />
 
         <!-- Right: How it works -->
-        <div class="w-full lg:w-[45%] flex flex-col items-center">
-          <div class="mb-6 w-full text-center">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-navy/5 border border-navy/10 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-navy" />
-              <span class="text-[11px] font-heading font-bold text-navy uppercase tracking-[0.2em]">{{ $t('event_page.how_works.label') }}</span>
-            </div>
-            <h2 class="text-xl lg:text-3xl font-heading font-bold text-navy mb-3">
+        <div class="w-full lg:w-[47%] flex flex-col items-center">
+          <!-- Heading & Subtitle -->
+          <div class="text-center mb-10 w-full">
+            <h2 class="text-[24px] md:text-[28px] font-heading font-bold text-navy mb-2 tracking-tight">
               {{ $t('event_page.how_works.heading') }}
             </h2>
-            <p class="text-[14px] text-text-secondary leading-relaxed">
+            <p class="text-navy/60 text-[14px] md:text-[15px] font-medium leading-relaxed max-w-[440px] mx-auto">
               {{ $t('event_page.how_works.subtext') }}
             </p>
           </div>
 
-          <div class="flex flex-col sm:flex-row gap-6 lg:gap-8 w-full justify-center items-center sm:items-start">
-
+          <!-- Step Steps Row -->
+          <div class="flex flex-row items-start gap-3 md:gap-5 justify-center w-full mt-2">
             <!-- Step 1 -->
-            <div class="flex flex-col items-center flex-1 max-w-[200px] text-center">
-              <div class="relative w-14 h-14 rounded-[20px] bg-off-white border-2 border-border-default flex items-center justify-center mb-4 group-hover:bg-accent group-hover:border-accent transition-all duration-500">
-                <span class="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-accent text-white text-[11px] font-bold flex items-center justify-center shadow-lg shadow-accent/30">1</span>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F47A1F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" v-html="howSteps[0].icon" />
+            <div class="flex flex-col items-center text-center flex-1 max-w-[190px]">
+              <!-- Circular Outline Icon Badge -->
+              <div class="w-[88px] h-[88px] rounded-full border border-[#E5E7EB] flex items-center justify-center mb-4 bg-white">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0B2A4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                  <path d="M9 12h6M9 16h6"/>
+                </svg>
               </div>
-              <h3 class="text-[15px] font-heading font-bold text-navy mb-1">{{ howSteps[0].title }}</h3>
-              <p class="text-[13px] text-text-secondary leading-relaxed">{{ howSteps[0].desc }}</p>
+              <h4 class="font-heading font-extrabold text-navy text-[15px] mb-2 leading-none">
+                {{ howSteps[0].title }}
+              </h4>
+              <p class="text-navy/60 text-[12.5px] md:text-[13px] leading-relaxed max-w-[170px]">
+                {{ howSteps[0].desc }}
+              </p>
             </div>
 
-            <!-- Arrow -->
-            <div class="hidden sm:flex items-center justify-center text-border-default mt-5">
-              <div class="w-9 h-9 rounded-full bg-off-white border border-border-default flex items-center justify-center">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </div>
+            <!-- Arrow Divider -->
+            <div class="flex items-center justify-center self-start mt-8 text-[#A3A3A3]">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
             </div>
 
             <!-- Step 2 -->
-            <div class="flex flex-col items-center flex-1 max-w-[200px] text-center">
-              <div class="relative w-14 h-14 rounded-[20px] bg-off-white border-2 border-border-default flex items-center justify-center mb-4 group-hover:bg-accent group-hover:border-accent transition-all duration-500">
-                <span class="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-accent text-white text-[11px] font-bold flex items-center justify-center shadow-lg shadow-accent/30">2</span>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F47A1F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" v-html="howSteps[1].icon" />
+            <div class="flex flex-col items-center text-center flex-1 max-w-[190px]">
+              <!-- Circular Outline Icon Badge -->
+              <div class="w-[88px] h-[88px] rounded-full border border-[#E5E7EB] flex items-center justify-center mb-4 bg-white">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0B2A4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
               </div>
-              <h3 class="text-[15px] font-heading font-bold text-navy mb-1">{{ howSteps[1].title }}</h3>
-              <p class="text-[13px] text-text-secondary leading-relaxed">{{ howSteps[1].desc }}</p>
+              <h4 class="font-heading font-extrabold text-navy text-[15px] mb-2 leading-none">
+                {{ howSteps[1].title }}
+              </h4>
+              <p class="text-navy/60 text-[12.5px] md:text-[13px] leading-relaxed max-w-[170px]">
+                {{ howSteps[1].desc }}
+              </p>
             </div>
-
           </div>
         </div>
+
       </div>
     </div>
   </section>

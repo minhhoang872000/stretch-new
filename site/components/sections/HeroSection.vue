@@ -22,18 +22,18 @@ const metrics = computed(() => [
 </script>
 
 <template>
-  <section class="relative bg-white overflow-hidden pb-12">
+  <section class="relative bg-white overflow-hidden pb-6">
     <!-- Background subtle pattern -->
     <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] translate-x-1/3 -translate-y-1/4 pointer-events-none" />
     <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-navy/3 rounded-full blur-[100px] -translate-x-1/3 translate-y-1/4 pointer-events-none" />
 
     <div class="section-container relative z-10">
       <!-- Main Hero Content -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center pt-16 pb-12 lg:pt-24 lg:pb-20">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center pt-8 pb-4 lg:pt-14 lg:pb-8">
         <!-- Left column: Copy -->
         <div class="order-2 lg:order-1">
           <!-- Label -->
-          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-off-white border border-border-default mb-6">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-off-white border border-border-default mb-4">
             <div class="w-1.5 h-1.5 rounded-full bg-accent" />
             <span class="text-[11px] font-heading font-semibold text-text-secondary uppercase tracking-widest">
               {{ $t('hero.eyebrow') }}
@@ -41,18 +41,18 @@ const metrics = computed(() => [
           </div>
 
           <!-- Headline -->
-          <h1 class="text-h1 font-heading font-bold text-navy mb-6 tracking-tight">
+          <h1 class="text-h1 font-heading font-bold text-navy mb-4 tracking-tight">
             {{ $t('hero.title1') }}<br>
             {{ $t('hero.title2') }} <span class="text-highlight-orange">{{ $t('hero.titleHighlight') }}</span>
           </h1>
 
           <!-- Subtext -->
-          <p class="text-body text-text-secondary max-w-lg mb-8">
+          <p class="text-body text-text-secondary max-w-lg mb-5">
             {{ $t('hero.subtitle') }}
           </p>
 
           <!-- USP Chips -->
-          <div class="flex flex-wrap gap-6 mb-10">
+          <div class="flex flex-wrap gap-6 mb-6">
             <div class="flex items-center gap-2.5">
               <div class="w-9 h-9 rounded-full bg-off-white border border-border-default flex items-center justify-center">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B2A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -111,7 +111,7 @@ const metrics = computed(() => [
 
         <!-- Right column: Image -->
         <div class="order-1 lg:order-2 relative">
-          <div class="relative rounded-3xl overflow-hidden aspect-[4/3] lg:aspect-[3/4] bg-off-white shadow-xl">
+          <div class="relative rounded-3xl overflow-hidden aspect-[4/3] lg:aspect-[1.15/1] bg-off-white shadow-xl">
             <img
               src="/hero-physiotherapy.png"
               alt="Professional physiotherapy session — a therapist treating a patient"
@@ -128,7 +128,7 @@ const metrics = computed(() => [
       </div>
 
       <!-- Integrated Trust Bar -->
-      <div class="bg-white/80 backdrop-blur-md border border-border rounded-3xl p-6 lg:p-8 shadow-float mt-4 lg:-mt-12 relative z-20">
+      <div class="bg-white/80 backdrop-blur-md border border-border rounded-3xl p-6 lg:p-8 shadow-float mt-4 lg:-mt-6 relative z-20">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-center">
           <div
             v-for="(metric, index) in metrics"

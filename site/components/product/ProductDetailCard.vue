@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { locale } = useI18n()
+
 defineProps<{
   product: {
     name: string
@@ -34,7 +36,7 @@ defineProps<{
       <span class="font-heading text-3xl font-black text-primary">
         {{ formatPrice(product.price) }}
       </span>
-      <span class="text-body-sm text-on-surface-variant">/ buổi</span>
+      <span class="text-body-sm text-on-surface-variant">/ {{ locale === 'vi' ? 'buổi' : 'session' }}</span>
     </div>
 
     <!-- Availability -->
@@ -44,7 +46,7 @@ defineProps<{
         :class="product.available ? 'bg-success animate-pulse-soft' : 'bg-error'"
       />
       <span class="text-body-sm font-medium" :class="product.available ? 'text-success' : 'text-error'">
-        {{ product.available ? 'Đang nhận đặt lịch' : 'Tạm ngừng' }}
+        {{ product.available ? (locale === 'vi' ? 'Đang nhận đặt lịch' : 'Available') : (locale === 'vi' ? 'Tạm ngừng' : 'Unavailable') }}
       </span>
     </div>
 
@@ -55,11 +57,11 @@ defineProps<{
     <div class="flex flex-wrap gap-4">
       <BaseButton variant="accent" size="lg" :href="`/booking?service=${product.id}`">
         <span class="material-symbols-outlined text-lg">calendar_month</span>
-        Đặt lịch ngay
+        {{ locale === 'vi' ? 'Đặt lịch ngay' : 'Book Now' }}
       </BaseButton>
       <BaseButton variant="outline" size="lg" href="/products">
         <span class="material-symbols-outlined text-lg">arrow_back</span>
-        Xem dịch vụ khác
+        {{ locale === 'vi' ? 'Xem dịch vụ khác' : 'View other services' }}
       </BaseButton>
     </div>
   </div>

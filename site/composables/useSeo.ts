@@ -29,5 +29,11 @@ export function useSeo(opts: SeoOptions) {
 
   useHead({
     link: [{ rel: 'canonical', href: canonicalUrl }],
+    meta: [
+      { name: 'geo.position', content: '10.7725;106.6784' },
+      { name: 'geo.region', content: 'VN-SG' },
+      { name: 'geo.placename', content: 'Ho Chi Minh City' },
+      { name: 'ICBM', content: '10.7725, 106.6784' },
+    ]
   })
 }

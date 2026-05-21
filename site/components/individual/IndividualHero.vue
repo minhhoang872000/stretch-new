@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
 const headingParts = computed(() => {
@@ -29,7 +29,7 @@ const uspIcons = [
       <div class="absolute bottom-[-10%] left-[20%] w-[45%] h-[45%] bg-accent/5 blur-[120px] rounded-full mix-blend-multiply" />
       
       <!-- Subtle Grid Pattern -->
-      <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#0B2A4A 1px, transparent 1px), linear-gradient(90deg, #0B2A4A 1px, transparent 1px); background-size: 32px 32px;"></div>
+      <div class="absolute inset-0 opacity-[0.03]"></div>
     </div>
 
     <div class="max-w-[1400px] mx-auto px-6 md:px-10 relative z-10">
@@ -77,7 +77,7 @@ const uspIcons = [
               </svg>
             </NuxtLink>
             
-            <a href="#" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-white backdrop-blur-sm border border-navy/10 text-navy font-heading font-bold text-[16px] rounded-2xl shadow-sm hover:border-navy/20 hover:bg-white hover:shadow-md transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]">
+            <a href="http://zalo.me/4237229823551208502?src=qr&f=1" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-white backdrop-blur-sm border border-navy/10 text-navy font-heading font-bold text-[16px] rounded-2xl shadow-sm hover:border-navy/20 hover:bg-white hover:shadow-md transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]">
               {{ $t('individual_page.hero.cta2') }}
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -85,21 +85,18 @@ const uspIcons = [
             </a>
           </div>
 
-          <!-- USP Chips (Glassmorphism) -->
-          <div class="flex flex-wrap items-center gap-4 lg:gap-5 animate-fade-in-up" style="animation-delay: 400ms">
+          <!-- <div class="flex flex-wrap items-center gap-4 lg:gap-5 animate-fade-in-up" style="animation-delay: 400ms">
             <div v-for="i in 3" :key="i" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl bg-white/50 backdrop-blur-md border border-white/80 shadow-[0_4px_12px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.04)] hover:bg-white hover:-translate-y-0.5 transition-all duration-300 group/usp">
               <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 flex items-center justify-center shrink-0 transition-transform duration-500 group-hover/usp:scale-110">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F47A1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" v-html="uspIcons[i - 1]" />
               </div>
               <span class="text-[13px] text-navy font-bold tracking-tight whitespace-nowrap">{{ $t(`individual_page.customer_carousel.card${i}`) }}</span>
             </div>
-          </div>
+          </div> -->
           
         </div>
 
-        <!-- Right: Image with Floating Elements -->
         <div class="w-full lg:w-[50%] relative animate-fade-in-up" style="animation-delay: 200ms">
-          <!-- Main Image Container -->
           <div class="relative w-full aspect-[4/5] lg:aspect-auto lg:h-[580px] rounded-[24px] overflow-hidden shadow-[0_20px_60px_rgba(11,42,74,0.12)]">
             <img
               src="/individual-hero.png"
@@ -120,7 +117,7 @@ const uspIcons = [
             </div>
             <div class="pl-3 border-l border-border-default">
               <p class="text-[22px] font-heading font-bold text-navy leading-none mb-0.5">4.9</p>
-              <p class="text-[10px] text-navy/50 font-bold tracking-[0.1em] uppercase">500+ clients</p>
+              <p class="text-[10px] text-navy/50 font-bold tracking-[0.1em] uppercase">{{ locale === 'vi' ? '500+ khách hàng' : '500+ clients' }}</p>
             </div>
           </div>
           

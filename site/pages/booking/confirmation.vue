@@ -1,7 +1,7 @@
 <script setup lang="ts">
 useSeo({
-  title: 'Xác Nhận Đặt Lịch – Lumière Studio',
-  description: 'Lịch hẹn của bạn đã được đặt thành công tại Lumière Studio.',
+  title: 'Xác Nhận Đặt Lịch – Stretch.vn',
+  description: 'Lịch hẹn của bạn đã được đặt thành công tại Stretch.vn.',
   noIndex: true,
 })
 </script>
@@ -19,7 +19,7 @@ useSeo({
 
         <h1 class="font-heading text-display-sm mb-4">Đặt Lịch Thành Công!</h1>
         <p class="text-body-lg text-on-surface-variant mb-10">
-          Cảm ơn bạn đã tin tưởng Lumière Studio. Email xác nhận sẽ được gửi trong vài phút.
+          Cảm ơn bạn đã tin tưởng Stretch.vn. Email xác nhận sẽ được gửi trong vài phút.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center">

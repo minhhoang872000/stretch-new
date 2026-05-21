@@ -26,13 +26,13 @@ const cards = computed(() => [
 </script>
 
 <template>
-  <section class="py-12 lg:py-16 bg-white relative overflow-hidden">
-    <div class="section-container relative z-10">
+  <section class="py-12 lg:py-16 bg-[#FCFAF7] relative overflow-hidden">
+    <div class="max-w-[1340px] mx-auto px-6 md:px-10 relative z-10 w-full">
       <div class="text-center mb-10 max-w-3xl mx-auto">
         <h2 class="text-2xl lg:text-3xl font-heading font-bold text-navy mb-4 tracking-tight">
           {{ $t('event_page.differences.heading') }}
         </h2>
-        <p class="text-[15px] md:text-[16px] text-text-secondary leading-relaxed max-w-2xl mx-auto">
+        <p class="text-[15px] md:text-[16px] text-navy/70 leading-relaxed max-w-2xl mx-auto">
           {{ $t('event_page.differences.subtext') }}
         </p>
       </div>

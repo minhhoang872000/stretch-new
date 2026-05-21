@@ -41,7 +41,7 @@ const situations = computed(() => [
       <div class="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-white blur-[120px] rounded-full opacity-60" />
     </div>
 
-    <div class="max-w-[1400px] mx-auto px-6 md:px-10 relative z-10">
+    <div class="max-w-[1200px] mx-auto px-6 md:px-10 relative z-10">
       <h2 class="text-2xl md:text-3.5xl font-heading font-extrabold text-navy text-center mb-12 tracking-tight">
         {{ $t('individual_page.situation.title') }}
       </h2>
@@ -52,87 +52,39 @@ const situations = computed(() => [
           :key="sit.title" 
           class="group relative flex flex-col items-center text-center p-8 lg:p-10 bg-white border border-border/80 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 cursor-pointer overflow-hidden"
         >
-          <!-- Perfectly Circular Icon with soft themed color background -->
+          <!-- Circular Icon with soft themed color background -->
           <div 
-            class="w-20 h-20 rounded-full flex items-center justify-center mb-6 border shadow-sm transition-all duration-300 group-hover:scale-105" 
+            class="w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-105" 
             :class="sit.color"
           >
-            <!-- Custom SVGs matching the mockup layout -->
-            <svg 
-              v-if="sit.type === 'shoe'" 
-              viewBox="0 0 24 24" 
-              class="w-10 h-10" 
-              fill="none" 
-              stroke="currentColor" 
-              stroke-width="1.5" 
-              stroke-linecap="round" 
-              stroke-linejoin="round"
-            >
-              <!-- Shoe body -->
-              <path d="M4 11.5C4 10 5.5 8 8 8c1.5 0 2.5.5 3.5 1.5L15 13c1 1 2 1.5 3.5 1.5h1c1 0 1.5.5 1.5 1.5v1c0 .8-.7 1.5-1.5 1.5H6.5c-2 0-3.5-1.5-3.5-3.5v-1.5L4 11.5z" />
-              <!-- Shoe collar/opening -->
-              <path d="M7.5 8.5L9.5 11" />
-              <!-- Shoe laces -->
-              <path d="M12.5 10.5l-1 1" />
-              <path d="M14 12l-1 1" />
-              <!-- Motion lines -->
-              <path d="M2.5 7.5l2 1" stroke-width="1.2" />
-              <path d="M1.5 10.5h2" stroke-width="1.2" />
+            <!-- Recover: Energy Recharge (Recharge thể lực sau tập) -->
+            <svg v-if="sit.type === 'shoe'" viewBox="0 0 24 24" class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72" />
+              <polygon points="12 7 8 13 11 13 10 17 14 11 11 11 12 7" fill="none" stroke-width="1.3" />
             </svg>
-            
-            <svg 
-              v-else-if="sit.type === 'knee'" 
-              viewBox="0 0 24 24" 
-              class="w-10 h-10" 
-              fill="none" 
-              stroke="currentColor" 
-              stroke-width="1.5" 
-              stroke-linecap="round" 
-              stroke-linejoin="round"
-            >
-              <!-- Leg bent at knee showing simplified bone structure -->
-              <!-- Femur (upper bone) -->
-              <path d="M9 5c.5 0 1 .5 1.2 1.2L12 10.5c.3.8.3 1.8 0 2.5l-2.2 4.3" />
-              <path d="M11.5 4.5l1.8 4c.5 1.2.3 2.5-.5 3.5L10 16" />
-              <!-- Knee cap (Patella) -->
-              <circle cx="13.2" cy="11.8" r="1.8" fill="currentColor" stroke="none" />
-              <!-- Orange pain sparks radiating to the right -->
-              <path d="M17 9.5c1 1.2 1 2.8 0 4" stroke-width="1.8" />
-              <path d="M19.5 8c1.6 1.8 1.6 4.2 0 6" stroke-width="1.2" />
+
+            <!-- Pain: Medical Shield with Heartbeat pulse (Sự an toàn, trị liệu đau mỏi) -->
+            <svg v-else-if="sit.type === 'knee'" viewBox="0 0 24 24" class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              <path d="M8 12h2.5l1.5-3 1.5 6 1.5-3H16" />
             </svg>
-            
-            <svg 
-              v-else-if="sit.type === 'spine'" 
-              viewBox="0 0 24 24" 
-              class="w-10 h-10" 
-              fill="none" 
-              stroke="currentColor" 
-              stroke-width="1.5" 
-              stroke-linecap="round" 
-              stroke-linejoin="round"
-            >
-              <!-- Back profile torso body contour (Shoulders, neck) -->
-              <path d="M4 20c.5-4.5 3-8 5.5-9.5V8c-.6-.8-.8-1.8-.4-2.5C9.5 4.5 10.8 4 12 4s2.5.5 2.9 1.5c.4.7.2 1.7-.4 2.5v2.5c2.5 1.5 5 5 5.5 9.5" />
-              <!-- Vertebrae spinal column vertebrae -->
-              <line x1="12" y1="8" x2="12" y2="20" stroke-width="2.2" stroke-dasharray="0.5 4.5" />
-              <!-- Spine joints horizontal details -->
-              <path d="M10.5 11.5h3" stroke-width="1.2" />
-              <path d="M10 14.5h4" stroke-width="1.2" />
-              <path d="M9.8 17.5h4.4" stroke-width="1.2" />
+
+            <!-- Tightness: Spine tension hotspots (Giải tỏa các điểm bó cơ, căng cứng) -->
+            <svg v-else-if="sit.type === 'spine'" viewBox="0 0 24 24" class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 22v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+              <path d="M12 11v11" />
+              <circle cx="12" cy="13" r="1" fill="currentColor" />
+              <circle cx="12" cy="17" r="1" fill="currentColor" />
+              <path d="M9.5 13a2.5 2.5 0 0 1 5 0" />
+              <path d="M9.5 17a2.5 2.5 0 0 1 5 0" />
             </svg>
-            
-            <svg 
-              v-else-if="sit.type === 'question'" 
-              viewBox="0 0 24 24" 
-              class="w-10 h-10" 
-              fill="none" 
-              stroke="currentColor" 
-              stroke-width="1.6" 
-              stroke-linecap="round" 
-              stroke-linejoin="round"
-            >
-              <path d="M9.5 9c0-1.8 1-3 2.5-3s2.5 1.2 2.5 3c0 1.5-1 2.2-2 3c-.8.6-1 1.2-1 2.2" stroke-width="1.8" />
-              <circle cx="12" cy="18" r="0.8" fill="currentColor" stroke="none" />
+
+            <!-- Question: Help circle (Dấu hỏi trợ giúp thanh lịch) -->
+            <svg v-else-if="sit.type === 'question'" viewBox="0 0 24 24" class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <line x1="12" y1="17" x2="12.01" y2="17" stroke-width="1.8" />
             </svg>
           </div>
 

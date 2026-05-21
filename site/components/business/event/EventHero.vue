@@ -39,20 +39,22 @@ const localePath = useLocalePath()
 
           <!-- CTAs -->
           <div class="flex flex-wrap items-center gap-4 mb-10 animate-fade-in-up" style="animation-delay: 300ms">
-            <NuxtLink
-              to="#"
+            <a
+              href="https://zalo.me/4237229823551208502"
+              target="_blank"
               class="inline-flex items-center gap-3 px-8 py-4 bg-accent hover:bg-accent-dark text-white font-heading font-bold text-[15px] rounded-2xl shadow-lg shadow-accent/30 hover:shadow-xl hover:shadow-accent/40 transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
             >
               {{ $t('event_page.hero.cta1') }}
               <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M7.5 15l5-5-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </NuxtLink>
-            <NuxtLink
-              to="#"
+            </a>
+            <a
+              href="https://zalo.me/4237229823551208502"
+              target="_blank"
               class="inline-flex items-center gap-3 px-8 py-4 bg-white/5 backdrop-blur-md border border-white/15 text-white font-heading font-bold text-[15px] rounded-2xl hover:bg-white/10 hover:border-white/25 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
             >
               {{ $t('event_page.hero.cta2') }}
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-            </NuxtLink>
+            </a>
           </div>
 
           <!-- Stats Row -->

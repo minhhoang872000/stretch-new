@@ -1,22 +1,28 @@
 <script setup lang="ts">
 const partners = [
-  { name: 'Decathlon', logo: '/logos/decathlon.png' },
-  { name: 'Garmin', logo: '/logos/garmin.png' },
-  { name: 'Ironman 70.3 Vietnam', logo: '/logos/ironman.png' },
-  { name: 'Lululemon', logo: '/logos/lululemon.webp' },
-  { name: 'Hyrox', logo: '/logos/hyrox.webp' },
-]
+  { name: "Decathlon", logo: "/logos/decathlon.png" },
+  { name: "Garmin", logo: "/logos/garmin.png" },
+  { name: "Ironman 70.3 Vietnam", logo: "/logos/ironman.png" },
+  { name: "Lululemon", logo: "/logos/lululemon.webp" },
+  { name: "Hyrox", logo: "/logos/hyrox.webp" },
+];
 </script>
 
 <template>
-  <section class="py-10 lg:py-16 bg-white relative overflow-hidden border-y border-navy/5">
+  <section
+    class="py-10 lg:py-16 bg-white relative overflow-hidden border-y border-navy/5"
+  >
     <div class="section-container relative z-10">
       <div class="text-center mb-8">
-        <p class="text-xs font-heading font-bold text-accent-dark uppercase tracking-widest mb-3">
-          {{ $t('business_page.trust.label') || 'TRUSTED PARTNERS' }}
+        <p
+          class="text-xs font-heading font-bold text-accent-dark uppercase tracking-widest mb-3"
+        >
+          {{ $t("business_page.trust.label") || "TRUSTED PARTNERS" }}
         </p>
-        <h3 class="text-xl lg:text-3xl font-heading font-bold text-navy max-w-2xl mx-auto leading-tight">
-          {{ $t('business_page.trust.heading') }}
+        <h3
+          class="text-xl lg:text-3xl font-heading font-bold text-navy max-w-2xl mx-auto leading-tight"
+        >
+          {{ $t("business_page.trust.heading") }}
         </h3>
       </div>
 
@@ -29,7 +35,15 @@ const partners = [
           <img
             :src="p.logo"
             :alt="p.name"
-            class="h-10 md:h-16 w-auto object-contain max-w-full grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-300"
+            :class="[
+              'h-14 md:h-20 w-auto object-contain max-w-full opacity-80 hover:opacity-100 transition-all duration-300',
+              p.name !== 'Lululemon' ? 'brightness-0' : '',
+            ]"
+            :style="
+              p.name === 'Lululemon'
+                ? 'filter: grayscale(100%) contrast(1000%); mix-blend-mode: multiply;'
+                : ''
+            "
           />
         </div>
       </div>

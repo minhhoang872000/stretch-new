@@ -13,13 +13,12 @@ useSeo({
     <TheHeader />
     <main>
       <EducationHero />
-      <EducationProblem />
       <EducationSystem />
-      <EducationWhy />
       <EducationQuality />
       <EducationDeliverables />
+      <EducationGallery />
       <EducationCta />
-      <EducationFloatingBar />
+      <!-- <EducationFloatingBar /> -->
     </main>
     <TheFooter />
     <ContactWidget />

@@ -11,6 +11,10 @@ useSchemaOrg([
       postalCode: '700000',
       addressCountry: 'VN',
     },
+    geo: {
+      latitude: '10.7725',
+      longitude: '106.6784',
+    },
     telephone: '+84-938-713-498',
     openingHoursSpecification: [
       {
@@ -26,5 +30,6 @@ useSchemaOrg([
 <template>
   <div class="min-h-screen gradient-bg">
     <NuxtPage />
+    <ContactWidget />
   </div>
 </template>
