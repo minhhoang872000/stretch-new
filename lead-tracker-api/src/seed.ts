@@ -1,7 +1,7 @@
 import { pool } from './config/db'
 
 /**
- * Seed script — inserts the mock data from site/server/utils/db.ts into MySQL.
+ * Seed script — inserts the mock data into PostgreSQL.
  * Run once: npx tsx src/seed.ts
  */
 async function seed(): Promise<void> {
@@ -84,9 +84,10 @@ async function seed(): Promise<void> {
   ]
 
   for (const p of products) {
-    await pool.execute(
-      `INSERT IGNORE INTO products (id, slug, name, name_en, name_vi, short_description, short_description_en, short_description_vi, description, price, currency, cover_image, images, category, tags)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    await pool.query(
+      `INSERT INTO products (id, slug, name, name_en, name_vi, short_description, short_description_en, short_description_vi, description, price, currency, cover_image, images, category, tags)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+       ON CONFLICT (id) DO NOTHING`,
       [p.id, p.slug, p.name, p.name_en, p.name_vi, p.short_description, p.short_description_en, p.short_description_vi, p.description, p.price, p.currency, p.cover_image, p.images, p.category, p.tags]
     )
   }
@@ -101,8 +102,9 @@ async function seed(): Promise<void> {
   ]
 
   for (const p of practitioners) {
-    await pool.execute(
-      `INSERT IGNORE INTO practitioners (id, name, avatar, bio, specialties, services) VALUES (?, ?, ?, ?, ?, ?)`,
+    await pool.query(
+      `INSERT INTO practitioners (id, name, avatar, bio, specialties, services) VALUES ($1, $2, $3, $4, $5, $6)
+       ON CONFLICT (id) DO NOTHING`,
       [p.id, p.name, p.avatar, p.bio, p.specialties, p.services]
     )
   }
@@ -117,18 +119,21 @@ async function seed(): Promise<void> {
   ]
 
   for (const [pid, sid] of links) {
-    await pool.execute(
-      `INSERT IGNORE INTO practitioner_services (practitioner_id, service_id) VALUES (?, ?)`,
+    await pool.query(
+      `INSERT INTO practitioner_services (practitioner_id, service_id) VALUES ($1, $2)
+       ON CONFLICT (practitioner_id, service_id) DO NOTHING`,
       [pid, sid]
     )
   }
   console.log(`[Seed] ✓ ${links.length} practitioner-service links inserted`)
 
   console.log('[Seed] Done!')
+  await pool.end()
   process.exit(0)
 }
 
-seed().catch((err) => {
+seed().catch(async (err) => {
   console.error('[Seed] Error:', err)
+  await pool.end()
   process.exit(1)
 })

@@ -39,7 +39,7 @@ export const bookingController = {
 
   async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { id } = req.params
+      const id = req.params.id as string
       const booking = await bookingService.getBookingById(id)
 
       if (!booking) {
@@ -55,7 +55,7 @@ export const bookingController = {
 
   async updateStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { id } = req.params
+      const id = req.params.id as string
       const booking = await bookingService.updateBookingStatus(id, (req as any).validatedBody)
 
       if (!booking) {
@@ -71,7 +71,7 @@ export const bookingController = {
 
   async remove(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { id } = req.params
+      const id = req.params.id as string
       const deleted = await bookingService.deleteBooking(id)
 
       if (!deleted) {
@@ -115,7 +115,7 @@ export const bookingController = {
 
   async getProductBySlug(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { slug } = req.params
+      const slug = req.params.slug as string
       const product = await bookingService.getProductBySlug(slug)
 
       if (!product) {

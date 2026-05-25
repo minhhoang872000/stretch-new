@@ -1,14 +1,13 @@
 import { pool } from '../../config/db'
-import { RowDataPacket } from 'mysql2'
 
-interface SummaryRow extends RowDataPacket {
+export interface SummaryRow {
   total_leads: number
   total_bookings: number
   conversion_rate: number
   period: string
 }
 
-interface LeadRow extends RowDataPacket {
+export interface LeadRow {
   id: number
   session_id: string
   page_source: string | null
@@ -28,19 +27,19 @@ interface LeadRow extends RowDataPacket {
   total: number
 }
 
-interface CampaignRow extends RowDataPacket {
+export interface CampaignRow {
   utm_campaign: string
   utm_source: string
   leads: number
   bookings: number
 }
 
-interface FunnelRow extends RowDataPacket {
+export interface FunnelRow {
   step: string
   count: number
 }
 
-interface ChartRow extends RowDataPacket {
+export interface ChartRow {
   date: string
   leads: number
   bookings: number
@@ -53,22 +52,22 @@ export const analyticsRepository = {
   async getSummary(period: '7d' | '30d' | '90d' = '30d'): Promise<SummaryRow> {
     const days = period === '7d' ? 7 : period === '90d' ? 90 : 30
 
-    const [rows] = await pool.execute<SummaryRow[]>(`
+    const result = await pool.query(`
       SELECT
-        (SELECT COUNT(*) FROM lead_events WHERE created_at >= DATE_SUB(NOW(), INTERVAL ${days} DAY)) AS total_leads,
-        (SELECT COUNT(*) FROM bookings WHERE created_at >= DATE_SUB(NOW(), INTERVAL ${days} DAY)) AS total_bookings,
+        (SELECT COUNT(*) FROM lead_events WHERE created_at >= NOW() - INTERVAL '${days} days') AS total_leads,
+        (SELECT COUNT(*) FROM bookings WHERE created_at >= NOW() - INTERVAL '${days} days') AS total_bookings,
         CASE
-          WHEN (SELECT COUNT(DISTINCT session_id) FROM lead_events WHERE created_at >= DATE_SUB(NOW(), INTERVAL ${days} DAY)) = 0 THEN 0
+          WHEN (SELECT COUNT(DISTINCT session_id) FROM lead_events WHERE created_at >= NOW() - INTERVAL '${days} days') = 0 THEN 0
           ELSE ROUND(
-            (SELECT COUNT(*) FROM bookings WHERE created_at >= DATE_SUB(NOW(), INTERVAL ${days} DAY)) * 100.0 /
-            (SELECT COUNT(DISTINCT session_id) FROM lead_events WHERE created_at >= DATE_SUB(NOW(), INTERVAL ${days} DAY)),
+            (SELECT COUNT(*) FROM bookings WHERE created_at >= NOW() - INTERVAL '${days} days') * 100.0 /
+            (SELECT COUNT(DISTINCT session_id) FROM lead_events WHERE created_at >= NOW() - INTERVAL '${days} days'),
             1
           )
         END AS conversion_rate,
         '${period}' AS period
     `)
 
-    return rows[0]
+    return result.rows[0]
   },
 
   /**
@@ -91,50 +90,51 @@ export const analyticsRepository = {
 
     let where = 'WHERE 1=1'
     const params: any[] = []
+    let paramIndex = 1
 
     if (filters.utm_source) {
-      where += ' AND utm_source = ?'
+      where += ` AND utm_source = $${paramIndex++}`
       params.push(filters.utm_source)
     }
     if (filters.utm_campaign) {
-      where += ' AND utm_campaign = ?'
+      where += ` AND utm_campaign = $${paramIndex++}`
       params.push(filters.utm_campaign)
     }
     if (filters.form_source) {
-      where += ' AND form_source = ?'
+      where += ` AND form_source = $${paramIndex++}`
       params.push(filters.form_source)
     }
     if (filters.cta_clicked) {
-      where += ' AND cta_clicked = ?'
+      where += ` AND cta_clicked = $${paramIndex++}`
       params.push(filters.cta_clicked)
     }
     if (filters.device_type) {
-      where += ' AND device_type = ?'
+      where += ` AND device_type = $${paramIndex++}`
       params.push(filters.device_type)
     }
     if (filters.dateFrom) {
-      where += ' AND created_at >= ?'
+      where += ` AND created_at >= $${paramIndex++}`
       params.push(filters.dateFrom)
     }
     if (filters.dateTo) {
-      where += ' AND created_at <= ?'
+      where += ` AND created_at <= $${paramIndex++}`
       params.push(filters.dateTo + ' 23:59:59')
     }
 
     // Get total count
-    const [countRows] = await pool.query(
+    const countResult = await pool.query(
       `SELECT COUNT(*) AS total FROM lead_events ${where}`,
-      params.length ? params : undefined
+      params
     )
-    const total = (countRows as RowDataPacket[])[0].total as number
+    const total = parseInt(countResult.rows[0].total, 10)
 
     // Get paginated rows
-    const [rows] = await pool.query(
+    const dataResult = await pool.query(
       `SELECT * FROM lead_events ${where} ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`,
-      params.length ? params : undefined
+      params
     )
 
-    return { rows, total }
+    return { rows: dataResult.rows, total }
   },
 
   /**
@@ -142,21 +142,21 @@ export const analyticsRepository = {
    */
   async getLeadDetail(sessionId: string): Promise<{
     events: LeadRow[]
-    booking: RowDataPacket | null
+    booking: any | null
   }> {
-    const [events] = await pool.execute<LeadRow[]>(
-      'SELECT * FROM lead_events WHERE session_id = ? ORDER BY created_at ASC',
+    const eventsResult = await pool.query(
+      'SELECT * FROM lead_events WHERE session_id = $1 ORDER BY created_at ASC',
       [sessionId]
     )
 
-    const [bookings] = await pool.execute<RowDataPacket[]>(
-      'SELECT * FROM bookings WHERE session_id = ? ORDER BY created_at DESC LIMIT 1',
+    const bookingsResult = await pool.query(
+      'SELECT * FROM bookings WHERE session_id = $1 ORDER BY created_at DESC LIMIT 1',
       [sessionId]
     )
 
     return {
-      events,
-      booking: bookings.length ? bookings[0] : null,
+      events: eventsResult.rows,
+      booking: bookingsResult.rows.length ? bookingsResult.rows[0] : null,
     }
   },
 
@@ -166,21 +166,21 @@ export const analyticsRepository = {
   async getCampaignPerformance(period: '7d' | '30d' | '90d' = '30d'): Promise<CampaignRow[]> {
     const days = period === '7d' ? 7 : period === '90d' ? 90 : 30
 
-    const [rows] = await pool.execute<CampaignRow[]>(`
+    const result = await pool.query(`
       SELECT
         COALESCE(le.utm_campaign, '(direct)') AS utm_campaign,
         COALESCE(le.utm_source, '(none)') AS utm_source,
         COUNT(DISTINCT le.session_id) AS leads,
         COUNT(DISTINCT b.id) AS bookings
       FROM lead_events le
-      LEFT JOIN bookings b ON le.session_id = b.session_id AND b.created_at >= DATE_SUB(NOW(), INTERVAL ${days} DAY)
-      WHERE le.created_at >= DATE_SUB(NOW(), INTERVAL ${days} DAY)
+      LEFT JOIN bookings b ON le.session_id = b.session_id AND b.created_at >= NOW() - INTERVAL '${days} days'
+      WHERE le.created_at >= NOW() - INTERVAL '${days} days'
       GROUP BY le.utm_campaign, le.utm_source
       ORDER BY leads DESC
       LIMIT 20
     `)
 
-    return rows
+    return result.rows
   },
 
   /**
@@ -189,21 +189,21 @@ export const analyticsRepository = {
   async getFunnel(period: '7d' | '30d' | '90d' = '30d'): Promise<FunnelRow[]> {
     const days = period === '7d' ? 7 : period === '90d' ? 90 : 30
 
-    const [rows] = await pool.execute<FunnelRow[]>(`
+    const result = await pool.query(`
       SELECT 'page_view' AS step, COUNT(DISTINCT session_id) AS count
-      FROM lead_events WHERE page_source IS NOT NULL AND created_at >= DATE_SUB(NOW(), INTERVAL ${days} DAY)
+      FROM lead_events WHERE page_source IS NOT NULL AND created_at >= NOW() - INTERVAL '${days} days'
       UNION ALL
       SELECT 'cta_click' AS step, COUNT(DISTINCT session_id) AS count
-      FROM lead_events WHERE cta_clicked IS NOT NULL AND created_at >= DATE_SUB(NOW(), INTERVAL ${days} DAY)
+      FROM lead_events WHERE cta_clicked IS NOT NULL AND created_at >= NOW() - INTERVAL '${days} days'
       UNION ALL
       SELECT 'form_start' AS step, COUNT(DISTINCT session_id) AS count
-      FROM lead_events WHERE form_source IS NOT NULL AND created_at >= DATE_SUB(NOW(), INTERVAL ${days} DAY)
+      FROM lead_events WHERE form_source IS NOT NULL AND created_at >= NOW() - INTERVAL '${days} days'
       UNION ALL
       SELECT 'booking_completed' AS step, COUNT(DISTINCT session_id) AS count
-      FROM bookings WHERE created_at >= DATE_SUB(NOW(), INTERVAL ${days} DAY)
+      FROM bookings WHERE created_at >= NOW() - INTERVAL '${days} days'
     `)
 
-    return rows
+    return result.rows
   },
 
   /**
@@ -214,39 +214,39 @@ export const analyticsRepository = {
 
     let dateFormat: string
     if (granularity === 'weekly') {
-      dateFormat = '%Y-%u' // ISO week
+      dateFormat = 'IYYY-IW' // ISO week
     } else if (granularity === 'monthly') {
-      dateFormat = '%Y-%m'
+      dateFormat = 'YYYY-MM'
     } else {
-      dateFormat = '%Y-%m-%d'
+      dateFormat = 'YYYY-MM-DD'
     }
 
-    const [rows] = await pool.execute<ChartRow[]>(`
+    const leadsResult = await pool.query(`
       SELECT
-        DATE_FORMAT(created_at, '${dateFormat}') AS date,
+        TO_CHAR(created_at, '${dateFormat}') AS date,
         COUNT(DISTINCT session_id) AS leads,
         0 AS bookings
       FROM lead_events
-      WHERE created_at >= DATE_SUB(NOW(), INTERVAL ${days} DAY)
-      GROUP BY DATE_FORMAT(created_at, '${dateFormat}')
+      WHERE created_at >= NOW() - INTERVAL '${days} days'
+      GROUP BY TO_CHAR(created_at, '${dateFormat}')
       ORDER BY date ASC
     `)
 
     // Enrich with booking counts
-    const [bookingRows] = await pool.execute<ChartRow[]>(`
+    const bookingResult = await pool.query(`
       SELECT
-        DATE_FORMAT(created_at, '${dateFormat}') AS date,
+        TO_CHAR(created_at, '${dateFormat}') AS date,
         0 AS leads,
         COUNT(*) AS bookings
       FROM bookings
-      WHERE created_at >= DATE_SUB(NOW(), INTERVAL ${days} DAY)
-      GROUP BY DATE_FORMAT(created_at, '${dateFormat}')
+      WHERE created_at >= NOW() - INTERVAL '${days} days'
+      GROUP BY TO_CHAR(created_at, '${dateFormat}')
       ORDER BY date ASC
     `)
 
     // Merge bookings into leads rows
-    const bookingMap = new Map(bookingRows.map((r: ChartRow) => [r.date, r.bookings]))
-    return rows.map((r: ChartRow) => ({
+    const bookingMap = new Map(bookingResult.rows.map((r: ChartRow) => [r.date, Number(r.bookings)]))
+    return leadsResult.rows.map((r: ChartRow) => ({
       ...r,
       bookings: bookingMap.get(r.date) || 0,
       leads: Number(r.leads),

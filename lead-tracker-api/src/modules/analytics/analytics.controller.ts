@@ -36,7 +36,7 @@ export const analyticsController = {
 
   async getLeadDetail(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { sessionId } = req.params
+      const sessionId = req.params.sessionId as string
       const data = await analyticsService.getLeadDetail(sessionId)
 
       if (!data.events.length) {

@@ -1,11 +1,5 @@
 import { pool } from '../../config/db'
 import type { Booking, BookingFilter, Product, Practitioner } from '../../types'
-import { ResultSetHeader, RowDataPacket } from 'mysql2'
-
-function toMySqlDateTime(d: Date = new Date()): string {
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
-}
 
 /**
  * Data access layer for bookings, products, and practitioners.
@@ -15,13 +9,13 @@ export const bookingRepository = {
 
   async createBooking(data: Omit<Booking, 'id' | 'status' | 'createdAt'>): Promise<Booking> {
     const id = `bk-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`
-    const now = toMySqlDateTime()
+    const now = new Date().toISOString()
 
     const sql = `
       INSERT INTO bookings (id, service, practitioner, date, time, name, phone, email, note, session_id, status, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'pending', $11)
     `
-    await pool.execute<ResultSetHeader>(sql, [
+    await pool.query(sql, [
       id, data.service, data.practitioner || null, data.date, data.time,
       data.name, data.phone, data.email || null, data.note || null,
       (data as any).session_id || null, now,
@@ -38,51 +32,52 @@ export const bookingRepository = {
   async getBookings(filter?: BookingFilter): Promise<Booking[]> {
     let sql = 'SELECT * FROM bookings WHERE 1=1'
     const params: any[] = []
+    let paramIndex = 1
 
     if (filter?.status) {
-      sql += ' AND status = ?'
+      sql += ` AND status = $${paramIndex++}`
       params.push(filter.status)
     }
     if (filter?.date) {
-      sql += ' AND date = ?'
+      sql += ` AND date = $${paramIndex++}`
       params.push(filter.date)
     }
     if (filter?.service) {
-      sql += ' AND service = ?'
+      sql += ` AND service = $${paramIndex++}`
       params.push(filter.service)
     }
 
     sql += ' ORDER BY created_at DESC'
 
-    const [rows] = await pool.execute<RowDataPacket[]>(sql, params)
-    return rows.map(mapBookingRow)
+    const result = await pool.query(sql, params)
+    return result.rows.map(mapBookingRow)
   },
 
   async getBookingById(id: string): Promise<Booking | null> {
-    const [rows] = await pool.execute<RowDataPacket[]>(
-      'SELECT * FROM bookings WHERE id = ?',
+    const result = await pool.query(
+      'SELECT * FROM bookings WHERE id = $1',
       [id]
     )
-    return rows.length ? mapBookingRow(rows[0]) : null
+    return result.rows.length ? mapBookingRow(result.rows[0]) : null
   },
 
   async updateBookingStatus(id: string, status: string): Promise<Booking | null> {
-    const now = toMySqlDateTime()
-    const [result] = await pool.execute<ResultSetHeader>(
-      'UPDATE bookings SET status = ?, updated_at = ? WHERE id = ?',
+    const now = new Date().toISOString()
+    const result = await pool.query(
+      'UPDATE bookings SET status = $1, updated_at = $2 WHERE id = $3',
       [status, now, id]
     )
 
-    if (result.affectedRows === 0) return null
+    if ((result.rowCount ?? 0) === 0) return null
     return this.getBookingById(id)
   },
 
   async deleteBooking(id: string): Promise<boolean> {
-    const [result] = await pool.execute<ResultSetHeader>(
-      'DELETE FROM bookings WHERE id = ?',
+    const result = await pool.query(
+      'DELETE FROM bookings WHERE id = $1',
       [id]
     )
-    return result.affectedRows > 0
+    return (result.rowCount ?? 0) > 0
   },
 
   async getAvailableSlots(practitionerId: string | null, date: string): Promise<string[]> {
@@ -92,51 +87,52 @@ export const bookingRepository = {
       '16:00', '16:30', '17:00',
     ]
 
-    let sql = "SELECT time FROM bookings WHERE date = ? AND status != 'cancelled'"
+    let sql = "SELECT time FROM bookings WHERE date = $1 AND status != 'cancelled'"
     const params: any[] = [date]
+    let paramIndex = 2
 
     if (practitionerId && practitionerId !== 'any') {
-      sql += ' AND practitioner = ?'
+      sql += ` AND practitioner = $${paramIndex++}`
       params.push(practitionerId)
     }
 
-    const [rows] = await pool.execute<RowDataPacket[]>(sql, params)
-    const bookedSet = new Set(rows.map((r: any) => r.time))
+    const result = await pool.query(sql, params)
+    const bookedSet = new Set(result.rows.map((r: any) => r.time))
     return allSlots.filter((s) => !bookedSet.has(s))
   },
 
   // ─── Products ──────────────────────────────────────────────────
 
   async getProducts(): Promise<Product[]> {
-    const [rows] = await pool.execute<RowDataPacket[]>(
+    const result = await pool.query(
       "SELECT * FROM products WHERE available = true ORDER BY created_at ASC"
     )
-    return rows.map(mapProductRow)
+    return result.rows.map(mapProductRow)
   },
 
   async getProductBySlug(slug: string): Promise<Product | null> {
-    const [rows] = await pool.execute<RowDataPacket[]>(
-      'SELECT * FROM products WHERE slug = ?',
+    const result = await pool.query(
+      'SELECT * FROM products WHERE slug = $1',
       [slug]
     )
-    return rows.length ? mapProductRow(rows[0]) : null
+    return result.rows.length ? mapProductRow(result.rows[0]) : null
   },
 
   // ─── Practitioners ─────────────────────────────────────────────
 
   async getPractitioners(serviceId?: string): Promise<Practitioner[]> {
     if (serviceId) {
-      const [rows] = await pool.execute<RowDataPacket[]>(
+      const result = await pool.query(
         `SELECT p.* FROM practitioners p
          JOIN practitioner_services ps ON p.id = ps.practitioner_id
-         WHERE ps.service_id = ?`,
+         WHERE ps.service_id = $1`,
         [serviceId]
       )
-      return rows.map(mapPractitionerRow)
+      return result.rows.map(mapPractitionerRow)
     }
 
-    const [rows] = await pool.execute<RowDataPacket[]>('SELECT * FROM practitioners')
-    return rows.map(mapPractitionerRow)
+    const result = await pool.query('SELECT * FROM practitioners')
+    return result.rows.map(mapPractitionerRow)
   },
 }
 
@@ -161,6 +157,10 @@ function mapBookingRow(row: any): Booking {
 }
 
 function mapProductRow(row: any): Product {
+  // PostgreSQL JSONB columns are returned as parsed objects already
+  const images = typeof row.images === 'string' ? JSON.parse(row.images) : (row.images || [])
+  const tags = typeof row.tags === 'string' ? JSON.parse(row.tags) : (row.tags || [])
+
   return {
     id: row.id,
     slug: row.slug,
@@ -174,9 +174,9 @@ function mapProductRow(row: any): Product {
     price: row.price,
     currency: row.currency,
     coverImage: row.cover_image,
-    images: JSON.parse(row.images || '[]'),
+    images,
     category: row.category,
-    tags: JSON.parse(row.tags || '[]'),
+    tags,
     available: !!row.available,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
@@ -184,12 +184,15 @@ function mapProductRow(row: any): Product {
 }
 
 function mapPractitionerRow(row: any): Practitioner {
+  const specialties = typeof row.specialties === 'string' ? JSON.parse(row.specialties) : (row.specialties || [])
+  const services = typeof row.services === 'string' ? JSON.parse(row.services) : (row.services || [])
+
   return {
     id: row.id,
     name: row.name,
     avatar: row.avatar,
     bio: row.bio,
-    specialties: JSON.parse(row.specialties || '[]'),
-    services: JSON.parse(row.services || '[]'),
+    specialties,
+    services,
   }
 }
