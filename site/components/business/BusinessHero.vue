@@ -95,6 +95,7 @@ function handleLearnMore(e: Event) {
               alt="Business workshop — Stretch.vn"
               class="w-full h-full object-cover rounded-[28px] transition-transform duration-[2000ms] ease-out hover:scale-[1.04]"
               loading="eager"
+              fetchpriority="high"
             />
             <!-- Premium Overlay Gradient -->
             <div class="absolute inset-2 rounded-[28px] bg-gradient-to-t from-navy/50 via-transparent to-transparent opacity-80 mix-blend-multiply pointer-events-none"></div>

@@ -17,7 +17,7 @@
                 {{ $t('why_stretch.titleLine1') }}<br>
                 {{ $t('why_stretch.titleLine2') }}
               </h2>
-              <p class="text-[14px] md:text-[15px] text-[#475569] leading-relaxed max-w-[540px]">
+              <p class="text-[14px] md:text-[15px] text-[#334155] leading-relaxed max-w-[540px]">
                 {{ $t('why_stretch.desc') }}
               </p>
             </div>
@@ -26,13 +26,13 @@
             <div class="lg:col-span-5 bg-[#F8FAFC] border border-slate-200/40 rounded-2xl p-6 md:p-8 flex items-center justify-between shadow-[0_4px_20px_rgba(0,0,0,0.005)] relative overflow-hidden group">
               <!-- Content left -->
               <div class="flex-1 pr-4">
-                <span class="text-[10px] text-[#475569]/80 font-extrabold uppercase tracking-widest block mb-2">
+                <span class="text-[10px] text-[#334155]/90 font-extrabold uppercase tracking-widest block mb-2">
                   {{ $t('why_stretch.powered_by') }}
                 </span>
                 <h3 class="text-2xl md:text-[28px] font-heading font-extrabold text-[#0B2A4A] tracking-tight mb-3">
                   {{ $t('why_stretch.monaco') || 'Monaco' }}
                 </h3>
-                <p class="text-[12.5px] leading-relaxed text-[#475569]">
+                <p class="text-[12.5px] leading-relaxed text-[#334155]">
                   {{ $t('why_stretch.monaco_desc') }}
                 </p>
               </div>
@@ -61,7 +61,7 @@
               <h4 class="text-base font-heading font-extrabold text-[#0B2A4A] mb-2.5">
                 {{ $t('why_stretch.not_spa_title') }}
               </h4>
-              <p class="text-[13px] md:text-[13.5px] text-[#475569] leading-relaxed flex-1">
+              <p class="text-[13px] md:text-[13.5px] text-[#334155] leading-relaxed flex-1">
                 {{ $t('why_stretch.not_spa_desc') }}
               </p>
             </div>
@@ -77,7 +77,7 @@
               <h4 class="text-base font-heading font-extrabold text-[#0B2A4A] mb-2.5">
                 {{ $t('why_stretch.not_clinic_title') }}
               </h4>
-              <p class="text-[13px] md:text-[13.5px] text-[#475569] leading-relaxed flex-1">
+              <p class="text-[13px] md:text-[13.5px] text-[#334155] leading-relaxed flex-1">
                 {{ $t('why_stretch.not_clinic_desc') }}
               </p>
             </div>
@@ -93,7 +93,7 @@
               <h4 class="text-base font-heading font-extrabold text-[#0B2A4A] mb-2.5">
                 {{ $t('why_stretch.not_gym_title') }}
               </h4>
-              <p class="text-[13px] md:text-[13.5px] text-[#475569] leading-relaxed flex-1">
+              <p class="text-[13px] md:text-[13.5px] text-[#334155] leading-relaxed flex-1">
                 {{ $t('why_stretch.not_gym_desc') }}
               </p>
             </div>
@@ -111,7 +111,7 @@
               <h4 class="text-base font-heading font-extrabold text-[#0B2A4A] mb-2.5">
                 {{ $t('why_stretch.system_title') }}
               </h4>
-              <p class="text-[13px] md:text-[13.5px] text-[#475569] leading-relaxed flex-1">
+              <p class="text-[13px] md:text-[13.5px] text-[#334155] leading-relaxed flex-1">
                 {{ $t('why_stretch.system_desc') }}
               </p>
             </div>

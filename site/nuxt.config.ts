@@ -9,8 +9,23 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/image',
     '@nuxtjs/i18n',
+    '@nuxtjs/google-fonts',
   ],
 
+  googleFonts: {
+    families: {
+      'Plus Jakarta Sans': [400, 500, 600, 700, 800],
+      'Inter': [300, 400, 500, 600, 700],
+    },
+    display: 'swap',
+    download: true,
+    prefetch: true,
+    preconnect: true,
+  },
+
+  experimental: {
+    inlineSSRStyles: true,
+  },
 
   build: {
     transpile: ['primevue']
@@ -43,20 +58,19 @@ export default defineNuxtConfig({
       link: [
         {
           rel: 'preconnect',
-          href: 'https://fonts.googleapis.com',
-        },
-        {
-          rel: 'preconnect',
           href: 'https://fonts.gstatic.com',
           crossorigin: '',
         },
         {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap',
+          rel: 'preload',
+          as: 'style',
+          href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
         },
         {
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
+          media: 'print',
+          onload: "this.media='all'",
         },
       ],
     },
@@ -67,7 +81,7 @@ export default defineNuxtConfig({
 
   // SEO Configuration
   site: {
-    url: 'https://yourdomain.com',
+    url: 'https://stretch.vn',
     name: 'Stretch',
     description: 'Redefining physical recovery through high-intensity science and modern spiritual clarity. Book your session online.',
     defaultLocale: 'en',
@@ -97,7 +111,7 @@ export default defineNuxtConfig({
     identity: {
       type: 'LocalBusiness',
       name: 'Stretch',
-      url: 'https://yourdomain.com',
+      url: 'https://stretch.vn',
       logo: '/og-default.jpg',
     },
   },
@@ -126,9 +140,13 @@ export default defineNuxtConfig({
         en: '/business/education-training',
         vi: '/kinh-doanh/dao-tao-huan-luyen',
       },
-      'sharing-hub': {
+      'sharing-hub/index': {
         en: '/sharing-hub',
         vi: '/goc-chia-se',
+      },
+      'sharing-hub/[slug]': {
+        en: '/sharing-hub/:slug',
+        vi: '/goc-chia-se/:slug',
       },
     },
   },
@@ -145,7 +163,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     databaseUrl: process.env.DATABASE_URL || '',
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://yourdomain.com',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://stretch.vn',
       trackingApiUrl: process.env.NUXT_PUBLIC_TRACKING_API_URL || '',
       emailjsServiceId: process.env.NUXT_PUBLIC_EMAILJS_SERVICE_ID || '',
       emailjsTemplateId: process.env.NUXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',

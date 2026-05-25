@@ -725,8 +725,8 @@
     "read_more": "Đọc thêm",
     "featured_posts": {
       "f1_category": "BÀI VIẾT",
-      "f1_title": "Nền tảng Vận động: Vì sao Di chuyển Đúng Cách Quan trọng Mỗi Ngày",
-      "f1_desc": "Hiệu suất mạnh mẽ và phục hồi bền vững bắt đầu từ chất lượng vận động.",
+      "f1_title": "Phục hồi Thể thao: Tại sao nó Quan trọng với Tất cả Những ai Vận động",
+      "f1_desc": "Phục hồi thể thao không chỉ đơn thuần là nghỉ ngơi. Đó là một quy trình có cấu trúc giúp cơ thể thích nghi, giảm đau và vận động tốt hơn.",
       "f2_category": "CẬP NHẬT CÔNG TY",
       "f2_title": "Một Chương Mới cho Stretch.vn",
       "f2_desc": "Cập nhật thú vị về những phát triển gần đây và những gì sắp tới.",
@@ -775,6 +775,74 @@
     "cta_subtitle": "Khám phá dịch vụ, đặt lịch hẹn, hoặc theo dõi chúng tôi để nhận cập nhật mới nhất.",
     "cta_explore": "Khám phá Dịch vụ",
     "cta_book": "Đặt lịch",
-    "cta_follow": "Theo dõi Cập nhật"
+    "cta_follow": "Theo dõi Cập nhật",
+    "detail": {
+      "back_to_hub": "Quay lại Góc Chia Sẻ",
+      "on_this_page": "Mục lục bài viết",
+      "categories": "Danh mục bài viết",
+      "tags": "Từ khóa",
+      "related_posts": "Có thể bạn muốn đọc thêm",
+      "view_all_articles": "Xem tất cả bài viết",
+      "by": "Bởi",
+      "min_read": "phút đọc",
+      "sidebar_cta_title": "Tìm kiếm sự hỗ trợ cho phục hồi hoặc hiệu suất?",
+      "sidebar_cta_desc": "Đội ngũ của chúng tôi luôn sẵn sàng giúp bạn vận động tốt hơn và cảm thấy khỏe khoắn nhất.",
+      "sidebar_cta_btn": "Đặt lịch ngay",
+      "sidebar_business_title": "Giải pháp Doanh nghiệp cho Tổ chức",
+      "sidebar_business_desc": "Giải pháp phục hồi chuyên nghiệp cho đội nhóm, sự kiện & nơi làm việc.",
+      "sidebar_business_btn": "Khám phá cho Doanh nghiệp",
+      "what_is_sport_recovery": {
+        "title": "Phục hồi Thể thao: Tại sao nó Quan trọng với Tất cả Những ai Vận động",
+        "excerpt": "Phục hồi thể thao không chỉ đơn thuần là nghỉ ngơi. Đó là một quy trình có cấu trúc giúp cơ thể thích nghi, giảm đau và vận động tốt hơn. Dưới đây là những điều bạn cần biết.",
+        "intro": {
+          "title": "Phục hồi thể thao là gì?",
+          "text": "Phục hồi thể thao là quá trình có chủ ý nhằm giúp cơ thể bạn trở lại trạng thái cân bằng sau những căng thẳng về thể chất. Nó hỗ trợ sửa chữa mô cơ, giảm đau nhức và chuẩn bị cho bạn cho buổi tập luyện hoặc thi đấu tiếp theo.",
+          "quote": "Phục hồi là nơi sự tiến bộ diễn ra. Không có nó, hiệu suất sẽ không kéo dài."
+        },
+        "why": {
+          "title": "Tại sao nó quan trọng",
+          "text": "Phục hồi tốt giúp bạn:",
+          "b1": "Giảm đau nhức và mỏi cơ",
+          "b2": "Giảm nguy cơ chấn thương",
+          "b3": "Cải thiện tính linh hoạt và chất lượng vận động",
+          "b4": "Đạt hiệu suất tốt nhất, ổn định hơn"
+        },
+        "components": {
+          "title": "Các thành phần chính của phục hồi thể thao",
+          "c1": {
+            "title": "Khôi phục Vận động",
+            "desc": "Cải thiện tính linh hoạt và khôi phục biên độ vận động"
+          },
+          "c2": {
+            "title": "Trị liệu Mô mềm",
+            "desc": "Giải phóng căng thẳng và giảm căng cứng cơ"
+          },
+          "c3": {
+            "title": "Phương pháp Phục hồi",
+            "desc": "Sử dụng các công cụ phù hợp để tăng tốc độ phục hồi"
+          },
+          "c4": {
+            "title": "Dinh dưỡng & Nước",
+            "desc": "Cung cấp năng lượng cho cơ thể để sửa chữa và hoạt động"
+          },
+          "c5": {
+            "title": "Giấc ngủ & Nghỉ ngơi",
+            "desc": "Nghỉ ngơi chất lượng là nơi cơ thể thích nghi và phát triển"
+          }
+        },
+        "who": {
+          "title": "Ai có thể hưởng lợi?",
+          "text": "Bất kỳ ai vận động. Từ vận động viên chuyên nghiệp, người chơi thể thao phong trào đến những người làm việc văn phòng, phục hồi thể thao đều giúp bạn vận động tốt hơn, cảm thấy khỏe hơn và duy trì sự ổn định."
+        },
+        "start": {
+          "title": "Làm thế nào để bắt đầu",
+          "text": "Hãy bắt đầu bằng việc thấu hiểu cơ thể bạn. Lắng nghe các tín hiệu. Sau đó, xây dựng một thói quen phục hồi đơn giản phù hợp với bạn. Cần hỗ trợ? Đội ngũ của chúng tôi luôn sẵn sàng đồng hành cùng bạn."
+        },
+        "takeaways": {
+          "title": "Điểm mấu chốt cần nhớ",
+          "text": "Phục hồi là một hành trình dài hạn, không phải là đích đến nhất thời. Hãy lắng nghe cơ thể bạn, duy trì tính nhất quán và đừng ngần ngại tìm kiếm sự hướng dẫn chuyên nghiệp khi cần thiết."
+        }
+      }
+    }
   }
 }

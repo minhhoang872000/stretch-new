@@ -20,15 +20,22 @@ function scrollRight() {
   scrollRef.value.scrollBy({ left: 300, behavior: 'smooth' })
 }
 
+let scrollTimeout: number | null = null
+
 function onScroll(event: Event) {
   const el = event.target as HTMLElement
   if (!el) return
   
-  const maxScrollLeft = el.scrollWidth - el.clientWidth
-  if (maxScrollLeft <= 0) return
-  
-  const scrollRatio = el.scrollLeft / maxScrollLeft
-  activeIndicator.value = Math.min(3, Math.max(0, Math.round(scrollRatio * 3)))
+  if (scrollTimeout) {
+    cancelAnimationFrame(scrollTimeout)
+  }
+  scrollTimeout = requestAnimationFrame(() => {
+    const maxScrollLeft = el.scrollWidth - el.clientWidth
+    if (maxScrollLeft <= 0) return
+    
+    const scrollRatio = el.scrollLeft / maxScrollLeft
+    activeIndicator.value = Math.min(3, Math.max(0, Math.round(scrollRatio * 3)))
+  })
 }
 
 function scrollToStep(stepIndex: number) {

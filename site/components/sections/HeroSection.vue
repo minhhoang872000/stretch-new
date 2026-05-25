@@ -117,6 +117,7 @@ const metrics = computed(() => [
               alt="Professional physiotherapy session — a therapist treating a patient"
               class="w-full h-full object-cover"
               loading="eager"
+              fetchpriority="high"
             />
           </div>
 

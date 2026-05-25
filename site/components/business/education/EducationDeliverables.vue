@@ -158,7 +158,7 @@ const deliverables = [
                     <div class="absolute inset-1.5 border border-[#E3D3B5] opacity-50 pointer-events-none"></div>
                     
                     <div class="text-center z-10 w-full pt-1">
-                      <h4 class="font-serif font-bold text-[18px] tracking-[0.05em] text-[#1E293B] uppercase mb-0.5">CERTIFICATE</h4>
+                      <p class="font-serif font-bold text-[18px] tracking-[0.05em] text-[#1E293B] uppercase mb-0.5">CERTIFICATE</p>
                       <p class="text-[7.5px] uppercase tracking-[0.2em] text-[#64748B] font-semibold mb-3">OF COMPLETION</p>
                       
                       <p class="text-[8px] text-[#475569] mb-1 italic">This is to certify that</p>
@@ -241,7 +241,7 @@ const deliverables = [
           <div class="absolute inset-1.5 border border-[#E3D3B5] opacity-50 pointer-events-none"></div>
           
           <div class="text-center z-10 w-full pt-1">
-            <h4 class="font-serif font-bold text-[18px] tracking-[0.05em] text-[#1E293B] uppercase mb-0.5">CERTIFICATE</h4>
+            <p class="font-serif font-bold text-[18px] tracking-[0.05em] text-[#1E293B] uppercase mb-0.5">CERTIFICATE</p>
             <p class="text-[7.5px] uppercase tracking-[0.2em] text-[#64748B] font-semibold mb-3">OF COMPLETION</p>
             
             <p class="text-[8px] text-[#475569] mb-1 italic">This is to certify that</p>

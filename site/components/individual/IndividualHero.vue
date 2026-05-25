@@ -103,6 +103,7 @@ const uspIcons = [
               alt="Stretch.vn — Professional physiotherapy treatment session"
               class="w-full h-full object-cover object-[70%_center] transition-transform duration-[2000ms] ease-out hover:scale-[1.04]"
               loading="eager"
+              fetchpriority="high"
             />
             <!-- Premium Overlay Gradient -->
             <div class="absolute inset-0 bg-gradient-to-t from-navy/40 via-transparent to-transparent opacity-80 mix-blend-multiply"></div>

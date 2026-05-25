@@ -12,16 +12,23 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
 
+let scrollTimeout: number | null = null
+
 function handleScroll() {
   if (isDismissed.value) return
 
-  const scrollY = window.scrollY
-  const docHeight = document.documentElement.scrollHeight
-  const winHeight = window.innerHeight
+  if (scrollTimeout) {
+    cancelAnimationFrame(scrollTimeout)
+  }
+  scrollTimeout = requestAnimationFrame(() => {
+    const scrollY = window.scrollY
+    const docHeight = document.documentElement.scrollHeight
+    const winHeight = window.innerHeight
 
-  // Show after 600px scroll, hide when near footer
-  const nearBottom = scrollY + winHeight > docHeight - 400
-  isVisible.value = scrollY > 600 && !nearBottom
+    // Show after 600px scroll, hide when near footer
+    const nearBottom = scrollY + winHeight > docHeight - 400
+    isVisible.value = scrollY > 600 && !nearBottom
+  })
 }
 
 function dismiss() {

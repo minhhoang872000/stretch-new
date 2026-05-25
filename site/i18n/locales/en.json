@@ -724,8 +724,8 @@
     "read_more": "Read More",
     "featured_posts": {
       "f1_category": "ARTICLES",
-      "f1_title": "The Mobility Foundation: Why Moving Well Matters Every Day",
-      "f1_desc": "Strong performance and lasting recovery start with quality movement.",
+      "f1_title": "What Is Sport Recovery and Why It Matters for Everyone Who Moves",
+      "f1_desc": "Sport recovery is more than rest. It's a structured process that helps your body adapt, reduce pain, and perform better.",
       "f2_category": "COMPANY UPDATES",
       "f2_title": "A New Chapter for Stretch.vn",
       "f2_desc": "Exciting updates on our recent developments and what's ahead.",
@@ -774,6 +774,74 @@
     "cta_subtitle": "Discover our services, book a session, or follow us for the latest updates.",
     "cta_explore": "Explore Our Services",
     "cta_book": "Book a Session",
-    "cta_follow": "Follow Updates"
+    "cta_follow": "Follow Updates",
+    "detail": {
+      "back_to_hub": "Back to Sharing Hub",
+      "on_this_page": "On this page",
+      "categories": "Categories",
+      "tags": "Tags",
+      "related_posts": "You may also want to read",
+      "view_all_articles": "View all articles",
+      "by": "By",
+      "min_read": "min read",
+      "sidebar_cta_title": "Looking for support with your recovery or performance?",
+      "sidebar_cta_desc": "Our team is here to help you move better and feel your best.",
+      "sidebar_cta_btn": "Book a Session",
+      "sidebar_business_title": "Business Solution for Your Organization",
+      "sidebar_business_desc": "Professional recovery solutions for teams, events & workplaces.",
+      "sidebar_business_btn": "Explore for Business",
+      "what_is_sport_recovery": {
+        "title": "What Is Sport Recovery and Why It Matters for Everyone Who Moves",
+        "excerpt": "Sport recovery is more than rest. It's a structured process that helps your body adapt, reduce pain, and perform better. Here's what you need to know.",
+        "intro": {
+          "title": "What is sport recovery?",
+          "text": "Sport recovery is the intentional process of helping your body return to balance after physical stress. It supports muscle tissue repair, reduces soreness, and prepares you for your next training or competition.",
+          "quote": "Recovery is where progress happens. Without it, performance doesn't last."
+        },
+        "why": {
+          "title": "Why it matters",
+          "text": "Good recovery helps you:",
+          "b1": "Reduce muscle soreness and fatigue",
+          "b2": "Lower risk of injury",
+          "b3": "Improve mobility and movement quality",
+          "b4": "Perform at your best, more consistently"
+        },
+        "components": {
+          "title": "The key components of sport recovery",
+          "c1": {
+            "title": "Movement Restoration",
+            "desc": "Improve mobility and restore range of motion"
+          },
+          "c2": {
+            "title": "Soft Tissue Work",
+            "desc": "Release tension and reduce muscle tightness"
+          },
+          "c3": {
+            "title": "Recovery Modalities",
+            "desc": "Use the right tools to speed up recovery"
+          },
+          "c4": {
+            "title": "Hydration & Nutrition",
+            "desc": "Fuel your body to repair and perform"
+          },
+          "c5": {
+            "title": "Sleep & Rest",
+            "desc": "Quality rest is where your body adapts and grows"
+          }
+        },
+        "who": {
+          "title": "Who can benefit?",
+          "text": "Anyone who moves. From athletes to weekend warriors to people with desk jobs, sport recovery can help you move better, feel better, and stay consistent."
+        },
+        "start": {
+          "title": "How to get started",
+          "text": "Start with understanding your body. Listen to the signs. Then, build a simple recovery routine that works for you. Need help? Our team is here to support you."
+        },
+        "takeaways": {
+          "title": "Key takeaways",
+          "text": "Recovery is a journey, not a destination. Listen to your body, stay consistent, and don't hesitate to seek professional guidance when needed."
+        }
+      }
+    }
   }
 }

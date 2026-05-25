@@ -138,6 +138,57 @@
         <xhtml:link rel="alternate" href="https://stretch.vn/vi/products" hreflang="vi-VN" />
     </url>
     <url>
+        <loc>https://stretch.vn/sharing-hub</loc>
+        <xhtml:link rel="alternate" hreflang="en-US" href="https://stretch.vn/sharing-hub" />
+        <xhtml:link rel="alternate" hreflang="vi-VN" href="https://stretch.vn/vi/goc-chia-se" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://stretch.vn/sharing-hub" />
+        <image:image>
+            <image:loc>https://stretch.vn/education-gallery-2.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/education-gallery-3.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/education-gallery-5.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/hero-physiotherapy.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/monaco-healthcare.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/marathon.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/recovery-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/education-workshop.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/active-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/education-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/education-gallery-1.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/athlete-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/event-warmup.png</image:loc>
+        </image:image>
+    </url>
+    <url>
         <loc>https://stretch.vn/business/corporate-wellness</loc>
         <priority>0.8</priority>
         <xhtml:link rel="alternate" href="https://stretch.vn/business/corporate-wellness" hreflang="x-default" />
@@ -293,5 +344,260 @@
         <xhtml:link rel="alternate" href="https://stretch.vn/products/premium-anti-aging-facial" hreflang="x-default" />
         <xhtml:link rel="alternate" href="https://stretch.vn/products/premium-anti-aging-facial" hreflang="en-US" />
     </url>
+    <url>
+        <loc>https://stretch.vn/sharing-hub/:slug</loc>
+        <xhtml:link rel="alternate" hreflang="en-US" href="https://stretch.vn/sharing-hub/:slug" />
+        <xhtml:link rel="alternate" hreflang="vi-VN" href="https://stretch.vn/vi/goc-chia-se/:slug" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://stretch.vn/sharing-hub/:slug" />
+    </url>
+    <url>
+        <loc>https://stretch.vn/sharing-hub/behind-session-listening</loc>
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/behind-session-listening" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/behind-session-listening" hreflang="en-US" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/vi/sharing-hub/behind-session-listening" hreflang="vi-VN" />
+        <image:image>
+            <image:loc>https://stretch.vn/hero-physiotherapy.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/business_solution_sidebar.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/event-warmup.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://stretch.vn/sharing-hub/foam-rolling-101</loc>
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/foam-rolling-101" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/foam-rolling-101" hreflang="en-US" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/vi/sharing-hub/foam-rolling-101" hreflang="vi-VN" />
+        <image:image>
+            <image:loc>https://stretch.vn/business_solution_sidebar.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/event-warmup.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://stretch.vn/sharing-hub/growing-team-elevating-care</loc>
+        <xhtml:link rel="alternate" href="https://stretch.vn/vi/sharing-hub/growing-team-elevating-care" hreflang="vi-VN" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/growing-team-elevating-care" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/growing-team-elevating-care" hreflang="en-US" />
+        <image:image>
+            <image:loc>https://stretch.vn/hero-physiotherapy.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/business_solution_sidebar.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/event-warmup.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://stretch.vn/sharing-hub/hip-mobility-key</loc>
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/hip-mobility-key" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/hip-mobility-key" hreflang="en-US" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/vi/sharing-hub/hip-mobility-key" hreflang="vi-VN" />
+        <image:image>
+            <image:loc>https://stretch.vn/hero-physiotherapy.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/business_solution_sidebar.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/event-warmup.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://stretch.vn/sharing-hub/meet-huy-team-story</loc>
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/meet-huy-team-story" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/meet-huy-team-story" hreflang="en-US" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/vi/sharing-hub/meet-huy-team-story" hreflang="vi-VN" />
+        <image:image>
+            <image:loc>https://stretch.vn/hero-physiotherapy.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/business_solution_sidebar.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/event-warmup.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://stretch.vn/sharing-hub/movement-workshop-rmit</loc>
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/movement-workshop-rmit" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/movement-workshop-rmit" hreflang="en-US" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/vi/sharing-hub/movement-workshop-rmit" hreflang="vi-VN" />
+        <image:image>
+            <image:loc>https://stretch.vn/hero-physiotherapy.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/business_solution_sidebar.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/event-warmup.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://stretch.vn/sharing-hub/new-chapter-stretch</loc>
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/new-chapter-stretch" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/new-chapter-stretch" hreflang="en-US" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/vi/sharing-hub/new-chapter-stretch" hreflang="vi-VN" />
+        <image:image>
+            <image:loc>https://stretch.vn/hero-physiotherapy.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/business_solution_sidebar.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/event-warmup.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://stretch.vn/sharing-hub/new-space-thao-dien</loc>
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/new-space-thao-dien" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/new-space-thao-dien" hreflang="en-US" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/vi/sharing-hub/new-space-thao-dien" hreflang="vi-VN" />
+        <image:image>
+            <image:loc>https://stretch.vn/hero-physiotherapy.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/business_solution_sidebar.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/event-warmup.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://stretch.vn/sharing-hub/recovery-day-vn-runners</loc>
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/recovery-day-vn-runners" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/recovery-day-vn-runners" hreflang="en-US" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/vi/sharing-hub/recovery-day-vn-runners" hreflang="vi-VN" />
+        <image:image>
+            <image:loc>https://stretch.vn/hero-physiotherapy.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/business_solution_sidebar.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/event-warmup.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://stretch.vn/sharing-hub/setbacks-to-strength-kevin</loc>
+        <xhtml:link rel="alternate" href="https://stretch.vn/vi/sharing-hub/setbacks-to-strength-kevin" hreflang="vi-VN" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/setbacks-to-strength-kevin" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/setbacks-to-strength-kevin" hreflang="en-US" />
+        <image:image>
+            <image:loc>https://stretch.vn/hero-physiotherapy.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/business_solution_sidebar.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/event-warmup.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://stretch.vn/sharing-hub/sunrise-stretch-sala</loc>
+        <xhtml:link rel="alternate" href="https://stretch.vn/vi/sharing-hub/sunrise-stretch-sala" hreflang="vi-VN" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/sunrise-stretch-sala" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/sunrise-stretch-sala" hreflang="en-US" />
+        <image:image>
+            <image:loc>https://stretch.vn/hero-physiotherapy.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/business_solution_sidebar.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/event-warmup.png</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://stretch.vn/sharing-hub/what-is-sport-recovery</loc>
+        <xhtml:link rel="alternate" href="https://stretch.vn/vi/sharing-hub/what-is-sport-recovery" hreflang="vi-VN" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/what-is-sport-recovery" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/what-is-sport-recovery" hreflang="en-US" />
+        <image:image>
+            <image:loc>https://stretch.vn/hero-physiotherapy.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/business_solution_sidebar.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/runner-who.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/individual-hero.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://stretch.vn/event-warmup.png</image:loc>
+        </image:image>
+    </url>
 </urlset>
-<!-- XML Sitemap generated by @nuxtjs/sitemap v8.0.15 at 2026-05-20T14:29:56.020Z -->
+<!-- XML Sitemap generated by @nuxtjs/sitemap v8.0.15 at 2026-05-25T02:58:58.290Z -->

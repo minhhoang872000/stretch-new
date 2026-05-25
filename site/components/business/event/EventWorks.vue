@@ -85,9 +85,9 @@ const howSteps = computed(() => [
                   <path d="M9 12h6M9 16h6"/>
                 </svg>
               </div>
-              <h4 class="font-heading font-extrabold text-navy text-[15px] mb-2 leading-none">
+              <h3 class="font-heading font-extrabold text-navy text-[15px] mb-2 leading-none">
                 {{ howSteps[0].title }}
-              </h4>
+              </h3>
               <p class="text-navy/60 text-[12.5px] md:text-[13px] leading-relaxed max-w-[170px]">
                 {{ howSteps[0].desc }}
               </p>
@@ -112,9 +112,9 @@ const howSteps = computed(() => [
                   <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                 </svg>
               </div>
-              <h4 class="font-heading font-extrabold text-navy text-[15px] mb-2 leading-none">
+              <h3 class="font-heading font-extrabold text-navy text-[15px] mb-2 leading-none">
                 {{ howSteps[1].title }}
-              </h4>
+              </h3>
               <p class="text-navy/60 text-[12.5px] md:text-[13px] leading-relaxed max-w-[170px]">
                 {{ howSteps[1].desc }}
               </p>

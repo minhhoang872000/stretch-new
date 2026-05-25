@@ -52,9 +52,16 @@ function handleClickOutside(e: MouseEvent) {
   }
 }
 
+let scrollTimeout: number | null = null
+
 function handleScroll() {
-  const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)
-  isVisible.value = scrollPercent > 0.05 || window.scrollY > 100
+  if (scrollTimeout) {
+    cancelAnimationFrame(scrollTimeout)
+  }
+  scrollTimeout = requestAnimationFrame(() => {
+    const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)
+    isVisible.value = scrollPercent > 0.05 || window.scrollY > 100
+  })
 }
 
 // Periodic touch time guard for touch devices

@@ -7,11 +7,18 @@ const trackRef = ref<HTMLElement | null>(null)
 const canScrollLeft = ref(false)
 const canScrollRight = ref(true)
 
+let scrollTimeout: number | null = null
+
 const updateScrollButtons = () => {
-  const el = trackRef.value
-  if (!el) return
-  canScrollLeft.value = el.scrollLeft > 10
-  canScrollRight.value = el.scrollLeft + el.clientWidth < el.scrollWidth - 10
+  if (scrollTimeout) {
+    cancelAnimationFrame(scrollTimeout)
+  }
+  scrollTimeout = requestAnimationFrame(() => {
+    const el = trackRef.value
+    if (!el) return
+    canScrollLeft.value = el.scrollLeft > 10
+    canScrollRight.value = el.scrollLeft + el.clientWidth < el.scrollWidth - 10
+  })
 }
 
 const scroll = (direction: 'left' | 'right') => {
