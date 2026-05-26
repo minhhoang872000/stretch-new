@@ -127,6 +127,267 @@ async function seed(): Promise<void> {
   }
   console.log(`[Seed] ✓ ${links.length} practitioner-service links inserted`)
 
+  // ─── Blog Posts ────────────────────────────────────────────────
+  const blogPosts = [
+    // ── Featured Posts (4) ──
+    {
+      id: 'bp-001', slug: 'what-is-sport-recovery',
+      title_en: 'What Is Sport Recovery and Why It Matters for Everyone Who Moves',
+      title_vi: 'Phục hồi Thể thao: Tại sao nó Quan trọng với Tất cả Những ai Vận Động',
+      excerpt_en: 'Sport recovery is more than rest. It\'s a structured process that helps your body adapt, reduce pain, and perform better.',
+      excerpt_vi: 'Phục hồi thể thao không chỉ đơn thuần là nghỉ ngơi. Đó là một quy trình có cấu trúc giúp cơ thể thích nghi, giảm đau và vận động tốt hơn.',
+      content_en: JSON.stringify([
+        { id: 'what-is-sport-recovery', title: 'What is Sport Recovery?', type: 'intro', text: 'Sport recovery is the deliberate process of helping your body return to balance after physical stress. It supports tissue repair, reduces soreness, and prepares you for your next session or competition.', quote: 'Recovery is where progress happens. Without it, performance won\'t last.' },
+        { id: 'why-it-matters', title: 'Why It Matters', type: 'why', text: 'Good recovery helps you:', bullets: ['Reduce soreness and muscle fatigue', 'Lower injury risk', 'Improve flexibility and movement quality', 'Achieve peak performance, more consistently'], image: '/hero-physiotherapy.png' },
+        { id: 'key-components', title: 'Key Components of Sport Recovery', type: 'components', items: [{ title: 'Movement Restoration', desc: 'Improve flexibility and restore range of motion', icon: 'movement' }, { title: 'Soft Tissue Therapy', desc: 'Release tension and reduce muscle stiffness', icon: 'soft_tissue' }, { title: 'Recovery Modalities', desc: 'Use appropriate tools to accelerate recovery', icon: 'modalities' }, { title: 'Nutrition & Hydration', desc: 'Fuel the body for repair and activity', icon: 'hydration' }, { title: 'Sleep & Rest', desc: 'Quality rest is where the body adapts and grows', icon: 'sleep' }] },
+        { id: 'who-can-benefit', title: 'Who Can Benefit?', type: 'text', text: 'Anyone who moves. From professional athletes, recreational sports enthusiasts to office workers, sport recovery helps you move better, feel healthier and maintain consistency.' },
+        { id: 'how-to-get-started', title: 'How to Get Started', type: 'text', text: 'Start by understanding your body. Listen to the signals. Then, build a simple recovery routine that works for you. Need support? Our team is always ready to journey alongside you.' },
+        { id: 'key-takeaways', title: 'Key Takeaways', type: 'text', text: 'Recovery is a long-term journey, not a one-time destination. Listen to your body, maintain consistency, and don\'t hesitate to seek professional guidance when needed.' },
+      ]),
+      content_vi: JSON.stringify([
+        { id: 'what-is-sport-recovery', title: 'Phục hồi thể thao là gì?', type: 'intro', text: 'Phục hồi thể thao là quá trình có chủ ý nhằm giúp cơ thể bạn trở lại trạng thái cân bằng sau những căng thẳng về thể chất. Nó hỗ trợ sửa chữa mô cơ, giảm đau nhức và chuẩn bị cho bạn cho buổi tập luyện hoặc thi đấu tiếp theo.', quote: 'Phục hồi là nơi sự tiến bộ diễn ra. Không có nó, hiệu suất sẽ không kéo dài.' },
+        { id: 'why-it-matters', title: 'Tại sao nó quan trọng', type: 'why', text: 'Phục hồi tốt giúp bạn:', bullets: ['Giảm đau nhức và mỏi cơ', 'Giảm nguy cơ chấn thương', 'Cải thiện tính linh hoạt và chất lượng vận động', 'Đạt hiệu suất tốt nhất, ổn định hơn'], image: '/hero-physiotherapy.png' },
+        { id: 'key-components', title: 'Các thành phần chính của phục hồi thể thao', type: 'components', items: [{ title: 'Khôi phục Vận Động', desc: 'Cải thiện tính linh hoạt và khôi phục biên độ vận động', icon: 'movement' }, { title: 'Trị liệu Mô mềm', desc: 'Giải phóng căng thẳng và giảm cứng cơ', icon: 'soft_tissue' }, { title: 'Phương pháp Phục hồi', desc: 'Sử dụng các công cụ phù hợp để tăng tốc độ phục hồi', icon: 'modalities' }, { title: 'Dinh dưỡng & Nước', desc: 'Cung cấp năng lượng cho cơ thể để sửa chữa và hoạt động', icon: 'hydration' }, { title: 'Giấc ngủ & Nghỉ ngơi', desc: 'Nghỉ ngơi chất lượng là nơi cơ thể thích nghi và phát triển', icon: 'sleep' }] },
+        { id: 'who-can-benefit', title: 'Ai có thể hưởng lợi?', type: 'text', text: 'Bất kỳ ai vận động. Từ vận động viên chuyên nghiệp, người chơi thể thao phong trào đến những người làm việc văn phòng, phục hồi thể thao đều giúp bạn vận động tốt hơn, cảm thấy khỏe hơn và duy trì sự ổn định.' },
+        { id: 'how-to-get-started', title: 'Làm thế nào để bắt đầu', type: 'text', text: 'Hãy bắt đầu bằng việc thấu hiểu cơ thể bạn. Lắng nghe các tín hiệu. Sau đó, xây dựng một thói quen phục hồi đơn giản phù hợp với bạn. Cần hỗ trợ? Đội ngũ của chúng tôi luôn sẵn sàng đồng hành cùng bạn.' },
+        { id: 'key-takeaways', title: 'Điểm mấu chốt cần nhớ', type: 'text', text: 'Phục hồi là một hành trình dài hạn, không phải là đích đến nhất thời. Hãy lắng nghe cơ thể bạn, duy trì tính nhất quán và đừng ngần ngại tìm kiếm sự hướng dẫn chuyên nghiệp khi cần thiết.' },
+      ]),
+      category: 'articles', tags: JSON.stringify(['Recovery', 'Movement', 'Performance']),
+      cover_image: '/business_solution_sidebar.png', author: 'Stretch Team', read_time: '6 min read',
+      featured: true, published: true, published_at: '2025-05-10T00:00:00Z',
+    },
+    {
+      id: 'bp-002', slug: 'new-chapter-stretch',
+      title_en: 'A New Chapter for Stretch.vn',
+      title_vi: 'Một chương mới cho Stretch.vn',
+      excerpt_en: 'Exciting updates on our recent developments and what\'s ahead.',
+      excerpt_vi: 'Cập nhật thú vị về những phát triển gần đây và điều gì đang chờ đợi phía trước.',
+      content_en: JSON.stringify([
+        { id: 'new-chapter', title: 'A New Beginning', type: 'intro', text: 'Stretch.vn has reached an exciting milestone. After months of development, we are thrilled to share our latest updates with the community. This marks a new chapter in our journey to make professional recovery and movement services accessible to everyone.', quote: 'Every step forward is a step toward building something meaningful.' },
+        { id: 'whats-new', title: 'What\'s New', type: 'text', text: 'We have expanded our team, upgraded our facilities, and launched new service offerings. Our commitment to quality care and evidence-based practices remains at the heart of everything we do.' },
+        { id: 'looking-ahead', title: 'Looking Ahead', type: 'text', text: 'The future is bright. We are planning community events, educational workshops, and partnerships that will bring even more value to our clients and the broader community.' },
+      ]),
+      content_vi: JSON.stringify([
+        { id: 'new-chapter', title: 'Một khởi đầu mới', type: 'intro', text: 'Stretch.vn đã đạt được một cột mốc quan trọng. Sau nhiều tháng phát triển, chúng tôi rất vui được chia sẻ những cập nhật mới nhất với cộng đồng. Đây đánh dấu một chương mới trong hành trình làm cho dịch vụ phục hồi và vận động chuyên nghiệp trở nên dễ tiếp cận hơn.', quote: 'Mỗi bước tiến là một bước hướng tới việc xây dựng điều gì đó có ý nghĩa.' },
+        { id: 'whats-new', title: 'Có gì mới', type: 'text', text: 'Chúng tôi đã mở rộng đội ngũ, nâng cấp cơ sở vật chất và ra mắt các dịch vụ mới. Cam kết về chăm sóc chất lượng và thực hành dựa trên bằng chứng luôn là trọng tâm của mọi điều chúng tôi làm.' },
+        { id: 'looking-ahead', title: 'Hướng tới tương lai', type: 'text', text: 'Tương lai rất tươi sáng. Chúng tôi đang lên kế hoạch cho các sự kiện cộng đồng, hội thảo giáo dục và hợp tác mang lại giá trị nhiều hơn cho khách hàng và cộng đồng.' },
+      ]),
+      category: 'company_updates', tags: JSON.stringify(['Stretch.vn']),
+      cover_image: '/monaco-healthcare.png', author: 'Stretch Team', read_time: '4 min read',
+      featured: true, published: true, published_at: '2025-05-08T00:00:00Z',
+    },
+    {
+      id: 'bp-003', slug: 'meet-huy-team-story',
+      title_en: 'Meet Huy: Driven by Curiosity, Guided by Purpose',
+      title_vi: 'Gặp gỡ Huy: Được thúc đẩy bởi sự tò mò, dẫn dắt bởi mục đích',
+      excerpt_en: 'Get to know the people behind your progress.',
+      excerpt_vi: 'Tìm hiểu về những con người đứng sau sự tiến bộ của bạn.',
+      content_en: JSON.stringify([
+        { id: 'meet-huy', title: 'Who is Huy?', type: 'intro', text: 'Huy joined Stretch.vn with a passion for understanding the human body and a deep curiosity about movement science. His journey from physical therapy student to recovery specialist has been defined by continuous learning and genuine care for every client.', quote: 'The best part of my job is seeing someone move without pain for the first time in months.' },
+        { id: 'philosophy', title: 'His Approach', type: 'text', text: 'Huy believes in listening first. Every session starts with understanding the client\'s story, their goals, and their challenges. This personal approach ensures that each treatment plan is tailored and effective.' },
+        { id: 'advice', title: 'Huy\'s Advice', type: 'text', text: 'Don\'t wait until you\'re injured to start recovery. Build it into your routine now, and your body will thank you later.' },
+      ]),
+      content_vi: JSON.stringify([
+        { id: 'meet-huy', title: 'Huy là ai?', type: 'intro', text: 'Huy gia nhập Stretch.vn với niềm đam mê tìm hiểu cơ thể con người và sự tò mò sâu sắc về khoa học vận động. Hành trình từ sinh viên vật lý trị liệu đến chuyên gia phục hồi được định hình bởi việc học hỏi liên tục và sự quan tâm chân thành đến mỗi khách hàng.', quote: 'Phần tuyệt vời nhất trong công việc của tôi là nhìn thấy ai đó vận động mà không đau lần đầu tiên sau nhiều tháng.' },
+        { id: 'philosophy', title: 'Cách tiếp cận của anh ấy', type: 'text', text: 'Huy tin vào việc lắng nghe trước. Mỗi buổi tập bắt đầu bằng việc hiểu câu chuyện của khách hàng, mục tiêu và thách thức của họ. Cách tiếp cận cá nhân này đảm bảo mỗi kế hoạch điều trị đều được tùy chỉnh và hiệu quả.' },
+        { id: 'advice', title: 'Lời khuyên của Huy', type: 'text', text: 'Đừng đợi đến khi bị chấn thương mới bắt đầu phục hồi. Hãy đưa nó vào thói quen ngay bây giờ, cơ thể bạn sẽ cảm ơn bạn sau này.' },
+      ]),
+      category: 'team_stories', tags: JSON.stringify(['Recovery', 'Performance']),
+      cover_image: '/individual-hero.png', author: 'Stretch Team', read_time: '5 min read',
+      featured: true, published: true, published_at: '2025-05-02T00:00:00Z',
+    },
+    {
+      id: 'bp-004', slug: 'recovery-day-vn-runners',
+      title_en: 'Recovery Day with VN Runners Club',
+      title_vi: 'Ngày phục hồi cùng CLB VN Runners',
+      excerpt_en: 'A day of movement, recovery, and community in action.',
+      excerpt_vi: 'Một ngày vận động, phục hồi và cộng đồng cùng hành động.',
+      content_en: JSON.stringify([
+        { id: 'event-overview', title: 'Event Overview', type: 'intro', text: 'We partnered with VN Runners Club for a special Recovery Day event. The day featured hands-on stretching demonstrations, recovery workshops, and community building activities that brought together runners of all levels.', quote: 'Movement is better together.' },
+        { id: 'highlights', title: 'Highlights', type: 'text', text: 'Participants learned foam rolling techniques, dynamic stretching routines, and post-run recovery protocols. Our team provided personalized tips and assessments throughout the event.' },
+        { id: 'community', title: 'Building Community', type: 'text', text: 'Events like these remind us why we do what we do. The energy, the questions, the shared passion for movement — it\'s what drives us to keep growing and sharing.' },
+      ]),
+      content_vi: JSON.stringify([
+        { id: 'event-overview', title: 'Tổng quan sự kiện', type: 'intro', text: 'Chúng tôi hợp tác với CLB VN Runners cho sự kiện Ngày Phục Hồi đặc biệt. Sự kiện bao gồm trình diễn kéo giãn thực hành, hội thảo phục hồi và các hoạt động xây dựng cộng đồng quy tụ những người chạy bộ ở mọi cấp độ.', quote: 'Vận động cùng nhau sẽ tốt hơn.' },
+        { id: 'highlights', title: 'Điểm nổi bật', type: 'text', text: 'Người tham gia đã học các kỹ thuật foam rolling, bài tập kéo giãn động và quy trình phục hồi sau chạy. Đội ngũ của chúng tôi đã cung cấp các mẹo và đánh giá cá nhân hóa trong suốt sự kiện.' },
+        { id: 'community', title: 'Xây dựng cộng đồng', type: 'text', text: 'Những sự kiện như thế này nhắc nhở chúng tôi tại sao chúng tôi làm những gì chúng tôi làm. Năng lượng, câu hỏi, niềm đam mê chung về vận động — đó là điều thúc đẩy chúng tôi tiếp tục phát triển và chia sẻ.' },
+      ]),
+      category: 'events', tags: JSON.stringify(['Movement', 'Recovery']),
+      cover_image: '/marathon.png', author: 'Stretch Team', read_time: '4 min read',
+      featured: true, published: true, published_at: '2025-04-28T00:00:00Z',
+    },
+    // ── Regular Posts (8) ──
+    {
+      id: 'bp-005', slug: 'foam-rolling-101',
+      title_en: 'Foam Rolling 101: Simple Habits for Better Recovery',
+      title_vi: 'Foam Rolling 101: Thói quen đơn giản cho phục hồi tốt hơn',
+      excerpt_en: 'How this accessible tool can reduce tension and support your daily performance.',
+      excerpt_vi: 'Công cụ dễ tiếp cận này có thể giảm căng thẳng và hỗ trợ hiệu suất hàng ngày của bạn.',
+      content_en: JSON.stringify([
+        { id: 'what-is-foam-rolling', title: 'What is Foam Rolling?', type: 'text', text: 'Foam rolling is a self-myofascial release (SMR) technique. It can help relieve muscle tightness, soreness, and inflammation, and increase your joint range of motion.' },
+        { id: 'how-it-helps', title: 'How Foam Rolling Helps Your Recovery', type: 'text', text: 'By applying targeted pressure to specific points on your body, you are able to aid in the recovery of muscles and assist in returning them to normal function. Normal function means your muscles are elastic, healthy, and ready to perform.' },
+        { id: 'getting-started', title: 'Getting Started with Foam Rolling', type: 'text', text: 'Start slow and apply light pressure. When you find a trigger point or tight knot, hold the pressure there for 20 to 30 seconds to allow the tissue to release. Keep breathing and maintain regular sessions for the best results.' },
+      ]),
+      content_vi: JSON.stringify([
+        { id: 'what-is-foam-rolling', title: 'Foam Rolling là gì?', type: 'text', text: 'Foam rolling là kỹ thuật tự giải phóng cân mạc (SMR). Nó có thể giúp giảm căng cơ, đau nhức và viêm, đồng thời tăng phạm vi chuyển động của khớp.' },
+        { id: 'how-it-helps', title: 'Foam Rolling giúp phục hồi như thế nào', type: 'text', text: 'Bằng cách áp dụng áp lực có mục tiêu vào các điểm cụ thể trên cơ thể, bạn có thể hỗ trợ phục hồi cơ bắp và giúp chúng trở lại chức năng bình thường. Chức năng bình thường có nghĩa là cơ bắp đàn hồi, khỏe mạnh và sẵn sàng hoạt động.' },
+        { id: 'getting-started', title: 'Bắt đầu với Foam Rolling', type: 'text', text: 'Bắt đầu chậm và áp dụng áp lực nhẹ. Khi bạn tìm thấy điểm kích hoạt hoặc nút thắt chặt, giữ áp lực ở đó trong 20 đến 30 giây để cho phép mô giải phóng. Tiếp tục thở và duy trì các buổi tập thường xuyên để đạt kết quả tốt nhất.' },
+      ]),
+      category: 'articles', tags: JSON.stringify(['Recovery', 'Mobility']),
+      cover_image: '/recovery-who.png', author: 'Stretch Team', read_time: '5 min read',
+      featured: false, published: true, published_at: '2025-05-08T00:00:00Z',
+    },
+    {
+      id: 'bp-006', slug: 'new-space-thao-dien',
+      title_en: 'Our New Space in Thao Dien is Now Open',
+      title_vi: 'Không gian mới tại Thảo Điền đã mở cửa',
+      excerpt_en: 'A space designed for focused care, better movement, and meaningful connections.',
+      excerpt_vi: 'Một không gian được thiết kế cho chăm sóc tập trung, vận động tốt hơn và kết nối có ý nghĩa.',
+      content_en: JSON.stringify([
+        { id: 'new-space', title: 'Welcome to Our New Home', type: 'text', text: 'We are excited to announce the opening of our new space in Thao Dien, District 2. This location has been carefully designed to provide a calm, professional environment where you can focus on your recovery and movement goals.' },
+        { id: 'features', title: 'What Makes It Special', type: 'text', text: 'The new space features dedicated treatment rooms, a movement studio, and a welcoming reception area. Every detail has been considered to enhance your experience with us.' },
+      ]),
+      content_vi: JSON.stringify([
+        { id: 'new-space', title: 'Chào mừng đến ngôi nhà mới', type: 'text', text: 'Chúng tôi rất vui thông báo khai trương không gian mới tại Thảo Điền, Quận 2. Địa điểm này được thiết kế cẩn thận để tạo môi trường yên tĩnh, chuyên nghiệp nơi bạn có thể tập trung vào mục tiêu phục hồi và vận động.' },
+        { id: 'features', title: 'Điều gì làm nó đặc biệt', type: 'text', text: 'Không gian mới có phòng điều trị riêng, studio vận động và khu tiếp tân thân thiện. Mọi chi tiết đều được xem xét để nâng cao trải nghiệm của bạn.' },
+      ]),
+      category: 'company_updates', tags: JSON.stringify(['Stretch.vn']),
+      cover_image: '/education-workshop.png', author: 'Stretch Team', read_time: '3 min read',
+      featured: false, published: true, published_at: '2025-05-06T00:00:00Z',
+    },
+    {
+      id: 'bp-007', slug: 'behind-session-listening',
+      title_en: 'Behind the Session: The Power of Listening',
+      title_vi: 'Đằng sau buổi tập: Sức mạnh của lắng nghe',
+      excerpt_en: 'Why understanding your story is the key to effective treatment and training.',
+      excerpt_vi: 'Tại sao hiểu câu chuyện của bạn là chìa khóa cho điều trị và huấn luyện hiệu quả.',
+      content_en: JSON.stringify([
+        { id: 'listening', title: 'The Art of Listening', type: 'text', text: 'Before any stretching begins, before any assessment is done, we listen. Understanding your story — your habits, your pain points, your goals — is the foundation of every effective session.' },
+        { id: 'why-it-matters', title: 'Why Listening Matters', type: 'text', text: 'Two people with the same complaint can have very different causes. By taking the time to truly understand your situation, we can create a treatment plan that addresses the root cause, not just the symptoms.' },
+      ]),
+      content_vi: JSON.stringify([
+        { id: 'listening', title: 'Nghệ thuật lắng nghe', type: 'text', text: 'Trước khi bất kỳ bài kéo giãn nào bắt đầu, trước khi bất kỳ đánh giá nào được thực hiện, chúng tôi lắng nghe. Hiểu câu chuyện của bạn — thói quen, điểm đau, mục tiêu — là nền tảng của mỗi buổi tập hiệu quả.' },
+        { id: 'why-it-matters', title: 'Tại sao lắng nghe quan trọng', type: 'text', text: 'Hai người có cùng triệu chứng có thể có nguyên nhân rất khác nhau. Bằng cách dành thời gian thực sự hiểu tình huống của bạn, chúng tôi có thể tạo ra kế hoạch điều trị giải quyết nguyên nhân gốc rễ, không chỉ triệu chứng.' },
+      ]),
+      category: 'team_stories', tags: JSON.stringify(['Recovery', 'Performance']),
+      cover_image: '/active-who.png', author: 'Stretch Team', read_time: '4 min read',
+      featured: false, published: true, published_at: '2025-05-04T00:00:00Z',
+    },
+    {
+      id: 'bp-008', slug: 'movement-workshop-rmit',
+      title_en: 'Movement Workshop at RMIT Vietnam',
+      title_vi: 'Hội thảo vận động tại RMIT Việt Nam',
+      excerpt_en: 'Great energy and thoughtful questions from an engaged community.',
+      excerpt_vi: 'Năng lượng tuyệt vời và những câu hỏi sâu sắc từ cộng đồng tham gia.',
+      content_en: JSON.stringify([
+        { id: 'workshop-overview', title: 'Workshop Overview', type: 'text', text: 'We had the pleasure of hosting a movement workshop at RMIT Vietnam. Students and staff came together for an afternoon of learning about body mechanics, stretching techniques, and the importance of movement in daily life.' },
+        { id: 'takeaways', title: 'Key Takeaways', type: 'text', text: 'The workshop covered basic mobility assessments, desk-friendly stretches, and strategies for incorporating movement into busy academic schedules. The engagement and questions from participants made it a truly rewarding experience.' },
+      ]),
+      content_vi: JSON.stringify([
+        { id: 'workshop-overview', title: 'Tổng quan hội thảo', type: 'text', text: 'Chúng tôi rất vui được tổ chức hội thảo vận động tại RMIT Việt Nam. Sinh viên và nhân viên cùng tham gia một buổi chiều học về cơ học cơ thể, kỹ thuật kéo giãn và tầm quan trọng của vận động trong cuộc sống hàng ngày.' },
+        { id: 'takeaways', title: 'Điểm chính', type: 'text', text: 'Hội thảo bao gồm đánh giá di động cơ bản, các bài kéo giãn phù hợp cho người ngồi bàn và chiến lược kết hợp vận động vào lịch trình học tập bận rộn. Sự tham gia và câu hỏi từ người tham dự làm cho đây trở thành trải nghiệm thực sự đáng giá.' },
+      ]),
+      category: 'events', tags: JSON.stringify(['Movement', 'Rehabilitation']),
+      cover_image: '/education-hero.png', author: 'Stretch Team', read_time: '4 min read',
+      featured: false, published: true, published_at: '2025-05-01T00:00:00Z',
+    },
+    {
+      id: 'bp-009', slug: 'hip-mobility-key',
+      title_en: 'Hip Mobility: The Key to Stronger, Pain-Free Movement',
+      title_vi: 'Khả năng vận động hông: Chìa khóa cho vận động mạnh mẽ, không đau',
+      excerpt_en: 'Simple assessments and exercises to improve how you move.',
+      excerpt_vi: 'Đánh giá và bài tập đơn giản để cải thiện cách bạn vận động.',
+      content_en: JSON.stringify([
+        { id: 'why-hips-matter', title: 'Why Hip Mobility Matters', type: 'text', text: 'Your hips are the foundation of most movements. Limited hip mobility can lead to compensations in your knees, lower back, and even shoulders. Improving hip mobility is one of the most impactful things you can do for your overall movement quality.' },
+        { id: 'simple-tests', title: 'Simple Self-Assessment', type: 'text', text: 'Try these quick tests: Can you squat below parallel comfortably? Can you sit cross-legged without discomfort? Can you touch your toes without rounding your back? If any of these are difficult, your hips may need attention.' },
+        { id: 'exercises', title: 'Top Exercises for Hip Mobility', type: 'text', text: 'Start with 90/90 stretches, hip circles, and deep squat holds. Consistency is key — just 5-10 minutes daily can make a significant difference over time.' },
+      ]),
+      content_vi: JSON.stringify([
+        { id: 'why-hips-matter', title: 'Tại sao khả năng vận động hông quan trọng', type: 'text', text: 'Hông của bạn là nền tảng của hầu hết các vận động. Hạn chế khả năng vận động hông có thể dẫn đến bù trừ ở đầu gối, lưng dưới và thậm chí vai. Cải thiện khả năng vận động hông là một trong những điều có tác động lớn nhất bạn có thể làm cho chất lượng vận động tổng thể.' },
+        { id: 'simple-tests', title: 'Tự đánh giá đơn giản', type: 'text', text: 'Thử các bài test nhanh: Bạn có thể squat dưới mức song song thoải mái không? Bạn có thể ngồi xếp bằng mà không khó chịu không? Bạn có thể chạm ngón chân mà không cong lưng không? Nếu bất kỳ điều nào trong số này khó khăn, hông của bạn có thể cần được chú ý.' },
+        { id: 'exercises', title: 'Bài tập hàng đầu cho khả năng vận động hông', type: 'text', text: 'Bắt đầu với kéo giãn 90/90, xoay hông và giữ squat sâu. Tính nhất quán là chìa khóa — chỉ 5-10 phút mỗi ngày có thể tạo ra sự khác biệt đáng kể theo thời gian.' },
+      ]),
+      category: 'articles', tags: JSON.stringify(['Mobility', 'Movement', 'Performance']),
+      cover_image: '/runner-who.png', author: 'Stretch Team', read_time: '6 min read',
+      featured: false, published: true, published_at: '2025-04-30T00:00:00Z',
+    },
+    {
+      id: 'bp-010', slug: 'growing-team-elevating-care',
+      title_en: 'Growing the Team, Elevating Care',
+      title_vi: 'Phát triển đội ngũ, nâng cao chất lượng chăm sóc',
+      excerpt_en: 'Welcoming new therapists and coaches to the Stretch.vn family.',
+      excerpt_vi: 'Chào đón các chuyên viên trị liệu và huấn luyện viên mới vào gia đình Stretch.vn.',
+      content_en: JSON.stringify([
+        { id: 'growth', title: 'Our Growing Family', type: 'text', text: 'We are proud to welcome new therapists and coaches to the Stretch.vn team. Each brings unique expertise and a shared commitment to helping people move, recover, and live better.' },
+        { id: 'standards', title: 'Our Standards', type: 'text', text: 'Every team member goes through our comprehensive training program, ensuring consistency in care quality and alignment with our evidence-based approach. Growth is not just about numbers — it\'s about elevating the standard of care we provide.' },
+      ]),
+      content_vi: JSON.stringify([
+        { id: 'growth', title: 'Gia đình đang phát triển', type: 'text', text: 'Chúng tôi tự hào chào đón các chuyên viên trị liệu và huấn luyện viên mới vào đội ngũ Stretch.vn. Mỗi người mang đến chuyên môn độc đáo và cam kết chung giúp mọi người vận động, phục hồi và sống tốt hơn.' },
+        { id: 'standards', title: 'Tiêu chuẩn của chúng tôi', type: 'text', text: 'Mỗi thành viên đội ngũ đều trải qua chương trình đào tạo toàn diện, đảm bảo tính nhất quán trong chất lượng chăm sóc và phù hợp với phương pháp dựa trên bằng chứng. Tăng trưởng không chỉ về số lượng — mà về nâng cao tiêu chuẩn chăm sóc chúng tôi cung cấp.' },
+      ]),
+      category: 'company_updates', tags: JSON.stringify(['Stretch.vn', 'Recovery']),
+      cover_image: '/education-gallery-1.png', author: 'Stretch Team', read_time: '3 min read',
+      featured: false, published: true, published_at: '2025-04-26T00:00:00Z',
+    },
+    {
+      id: 'bp-011', slug: 'setbacks-to-strength-kevin',
+      title_en: 'From Setbacks to Strength: Kevin\'s Journey',
+      title_vi: 'Từ trở ngại đến sức mạnh: Hành trình của Kevin',
+      excerpt_en: 'How consistency, support, and the right plan made the difference.',
+      excerpt_vi: 'Cách mà sự kiên trì, hỗ trợ và kế hoạch đúng đắn tạo nên sự khác biệt.',
+      content_en: JSON.stringify([
+        { id: 'kevins-story', title: 'Kevin\'s Story', type: 'text', text: 'Kevin came to us after a sports injury left him unable to train for months. Frustrated and losing motivation, he needed more than just physical treatment — he needed a plan and a team that believed in his recovery.' },
+        { id: 'the-journey', title: 'The Journey', type: 'text', text: 'Through a combination of targeted therapy, progressive movement training, and consistent support, Kevin gradually rebuilt his strength. The key was patience and a structured approach that respected his body\'s healing timeline.' },
+        { id: 'today', title: 'Where He Is Today', type: 'text', text: 'Kevin is back to training at full capacity. His experience taught him the value of recovery, and he now incorporates regular maintenance sessions into his routine. His story inspires us every day.' },
+      ]),
+      content_vi: JSON.stringify([
+        { id: 'kevins-story', title: 'Câu chuyện của Kevin', type: 'text', text: 'Kevin đến với chúng tôi sau khi chấn thương thể thao khiến anh không thể tập luyện trong nhiều tháng. Thất vọng và mất động lực, anh cần nhiều hơn chỉ điều trị thể chất — anh cần một kế hoạch và đội ngũ tin vào sự phục hồi của anh.' },
+        { id: 'the-journey', title: 'Hành trình', type: 'text', text: 'Thông qua sự kết hợp giữa trị liệu có mục tiêu, huấn luyện vận động tiến dần và hỗ trợ liên tục, Kevin dần dần xây dựng lại sức mạnh. Chìa khóa là sự kiên nhẫn và phương pháp có cấu trúc tôn trọng thời gian hồi phục của cơ thể.' },
+        { id: 'today', title: 'Hiện tại', type: 'text', text: 'Kevin đã trở lại tập luyện hết công suất. Trải nghiệm dạy anh giá trị của phục hồi, và anh giờ kết hợp các buổi bảo dưỡng thường xuyên vào thói quen. Câu chuyện của anh truyền cảm hứng cho chúng tôi mỗi ngày.' },
+      ]),
+      category: 'team_stories', tags: JSON.stringify(['Rehabilitation', 'Recovery']),
+      cover_image: '/athlete-who.png', author: 'Stretch Team', read_time: '5 min read',
+      featured: false, published: true, published_at: '2025-04-24T00:00:00Z',
+    },
+    {
+      id: 'bp-012', slug: 'sunrise-stretch-sala',
+      title_en: 'Sunrise Stretch & Recover at Sala Park',
+      title_vi: 'Kéo giãn & Phục hồi buổi sáng tại Sala Park',
+      excerpt_en: 'A refreshing morning of movement and connection.',
+      excerpt_vi: 'Một buổi sáng sảng khoái với vận động và kết nối.',
+      content_en: JSON.stringify([
+        { id: 'sunrise-event', title: 'Morning at Sala Park', type: 'text', text: 'There\'s something special about moving together in the morning light. Our Sunrise Stretch & Recover session at Sala Park brought together people from all walks of life for a refreshing start to the weekend.' },
+        { id: 'activities', title: 'What We Did', type: 'text', text: 'The session included guided dynamic stretching, breathing exercises, and light mobility work. It was designed to be accessible for everyone, regardless of fitness level.' },
+        { id: 'next-event', title: 'Join Us Next Time', type: 'text', text: 'We plan to host more community events like this. Follow us on social media to stay updated and join the next session!' },
+      ]),
+      content_vi: JSON.stringify([
+        { id: 'sunrise-event', title: 'Buổi sáng tại Sala Park', type: 'text', text: 'Có điều gì đó đặc biệt khi vận động cùng nhau trong ánh sáng buổi sáng. Buổi Kéo giãn & Phục hồi buổi sáng tại Sala Park quy tụ mọi người từ mọi tầng lớp cho một khởi đầu cuối tuần sảng khoái.' },
+        { id: 'activities', title: 'Những gì chúng tôi làm', type: 'text', text: 'Buổi tập bao gồm kéo giãn động có hướng dẫn, bài tập hít thở và bài tập di động nhẹ. Nó được thiết kế để dễ tiếp cận cho mọi người, bất kể trình độ thể lực.' },
+        { id: 'next-event', title: 'Tham gia cùng chúng tôi', type: 'text', text: 'Chúng tôi có kế hoạch tổ chức thêm các sự kiện cộng đồng như thế này. Theo dõi chúng tôi trên mạng xã hội để cập nhật và tham gia buổi tiếp theo!' },
+      ]),
+      category: 'events', tags: JSON.stringify(['Movement', 'Recovery']),
+      cover_image: '/event-warmup.png', author: 'Stretch Team', read_time: '3 min read',
+      featured: false, published: true, published_at: '2025-04-22T00:00:00Z',
+    },
+  ]
+
+  for (const bp of blogPosts) {
+    await pool.query(
+      `INSERT INTO blog_posts (
+        id, slug, title_en, title_vi, excerpt_en, excerpt_vi,
+        content_en, content_vi, category, tags, cover_image,
+        author, read_time, featured, published, published_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+       ON CONFLICT (id) DO NOTHING`,
+      [
+        bp.id, bp.slug, bp.title_en, bp.title_vi, bp.excerpt_en, bp.excerpt_vi,
+        bp.content_en, bp.content_vi, bp.category, bp.tags, bp.cover_image,
+        bp.author, bp.read_time, bp.featured, bp.published, bp.published_at,
+      ]
+    )
+  }
+  console.log(`[Seed] ✓ ${blogPosts.length} blog posts inserted`)
+
   console.log('[Seed] Done!')
   await pool.end()
   process.exit(0)

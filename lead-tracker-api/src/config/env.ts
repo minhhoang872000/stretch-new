@@ -6,7 +6,7 @@ export const env = {
   nodeEnv: process.env.NODE_ENV || 'development',
   isProd: process.env.NODE_ENV === 'production',
 
-  /** Render injects DATABASE_URL automatically. Fallback to individual vars for local dev. */
+  /** Supabase / Render injects DATABASE_URL automatically. Fallback to individual vars for local dev. */
   databaseUrl: process.env.DATABASE_URL || undefined,
 
   db: {
@@ -16,6 +16,12 @@ export const env = {
     password: process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'lead_tracker',
     ssl: process.env.DB_SSL === 'true',
+  },
+
+  /** Supabase-specific (optional — for future Supabase client SDK usage) */
+  supabase: {
+    url: process.env.SUPABASE_URL || '',
+    anonKey: process.env.SUPABASE_ANON_KEY || '',
   },
 
   corsOrigins: (process.env.CORS_ORIGINS || 'http://localhost:3000')

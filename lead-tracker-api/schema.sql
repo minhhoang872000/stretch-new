@@ -104,3 +104,33 @@ CREATE INDEX IF NOT EXISTS idx_bk_date       ON bookings (date);
 CREATE INDEX IF NOT EXISTS idx_bk_service    ON bookings (service);
 CREATE INDEX IF NOT EXISTS idx_bk_created_at ON bookings (created_at);
 CREATE INDEX IF NOT EXISTS idx_bk_session    ON bookings (session_id);
+
+-- ─── Blog Posts ──────────────────────────────────────────────────────
+
+CREATE TABLE IF NOT EXISTS blog_posts (
+  id            VARCHAR(30)   PRIMARY KEY,
+  slug          VARCHAR(200)  NOT NULL UNIQUE,
+  title_en      VARCHAR(500)  NOT NULL,
+  title_vi      VARCHAR(500)  NOT NULL,
+  excerpt_en    TEXT          DEFAULT NULL,
+  excerpt_vi    TEXT          DEFAULT NULL,
+  content_en    JSONB         DEFAULT '[]',   -- Array of section objects
+  content_vi    JSONB         DEFAULT '[]',   -- Array of section objects
+  category      VARCHAR(50)   NOT NULL
+                CHECK (category IN ('articles', 'company_updates', 'team_stories', 'events')),
+  tags          JSONB         DEFAULT '[]',
+  cover_image   VARCHAR(500)  DEFAULT NULL,
+  author        VARCHAR(200)  DEFAULT 'Stretch Team',
+  read_time     VARCHAR(20)   DEFAULT NULL,
+  featured      BOOLEAN       NOT NULL DEFAULT FALSE,
+  published     BOOLEAN       NOT NULL DEFAULT TRUE,
+  published_at  TIMESTAMPTZ   DEFAULT NOW(),
+  created_at    TIMESTAMPTZ   DEFAULT NOW(),
+  updated_at    TIMESTAMPTZ   DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_bp_slug        ON blog_posts (slug);
+CREATE INDEX IF NOT EXISTS idx_bp_category    ON blog_posts (category);
+CREATE INDEX IF NOT EXISTS idx_bp_featured    ON blog_posts (featured);
+CREATE INDEX IF NOT EXISTS idx_bp_published   ON blog_posts (published);
+CREATE INDEX IF NOT EXISTS idx_bp_published_at ON blog_posts (published_at);

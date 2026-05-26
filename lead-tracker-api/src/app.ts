@@ -7,6 +7,7 @@ import { errorHandler } from './middleware/errorHandler'
 import trackingRouter from './modules/tracking/tracking.router'
 import bookingRouter from './modules/booking/booking.router'
 import analyticsRouter from './modules/analytics/analytics.router'
+import blogRouter from './modules/blog/blog.router'
 import { success } from './utils/response'
 
 const app = express()
@@ -36,6 +37,7 @@ app.get('/health', (_req, res) => {
 app.use('/api/v1/tracking', trackingRouter)
 app.use('/api/v1/bookings', bookingRouter)
 app.use('/api/v1/analytics', analyticsRouter)
+app.use('/api/v1/blog', blogRouter)
 
 // ─── 404 Handler ─────────────────────────────────────────────────────
 app.use((req, res) => {

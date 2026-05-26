@@ -84,6 +84,48 @@ export interface BookingFilter {
   service?: string
 }
 
+// ─── Blog Posts ──────────────────────────────────────────────────────
+
+export interface BlogPost {
+  id: string
+  slug: string
+  titleEn: string
+  titleVi: string
+  excerptEn: string | null
+  excerptVi: string | null
+  contentEn: BlogSection[]
+  contentVi: BlogSection[]
+  category: 'articles' | 'company_updates' | 'team_stories' | 'events'
+  tags: string[]
+  coverImage: string | null
+  author: string
+  readTime: string | null
+  featured: boolean
+  published: boolean
+  publishedAt: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface BlogSection {
+  id: string
+  title: string
+  type: string
+  text?: string
+  quote?: string
+  bullets?: string[]
+  image?: string
+  items?: Array<{ title: string; desc: string; icon?: string }>
+}
+
+export interface BlogPostFilter {
+  category?: string
+  tag?: string
+  featured?: boolean
+  published?: boolean
+  search?: string
+}
+
 // ─── Request Extensions ──────────────────────────────────────────────
 
 export interface ValidatedRequest<T = unknown> extends Request {
