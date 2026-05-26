@@ -102,7 +102,7 @@ export default defineNuxtConfig({
   // Schema.org
   schemaOrg: {
     identity: {
-      type: 'LocalBusiness',
+      type: 'HealthClub',
       name: 'Stretch',
       url: 'https://stretch.vn',
       logo: '/og-default.jpg',
