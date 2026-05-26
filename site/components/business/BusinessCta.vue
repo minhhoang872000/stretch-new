@@ -39,60 +39,60 @@ const { trackCTA } = useTracking();
           <div
             class="flex items-center justify-center w-[28%] sm:w-[18%] lg:w-auto h-24 md:h-28 text-black transition-all duration-300"
           >
-            <img
+            <NuxtImg
               src="/logos/decathlon.png"
               alt="Decathlon"
               class="h-15 md:h-20 w-auto object-contain brightness-0 opacity-85 hover:opacity-100 transition-opacity duration-300"
               style="filter: brightness(0)"
-            />
+            format="webp" />
           </div>
 
            <!-- Logo 2: Garmin -->
           <div
             class="flex items-center justify-center w-[28%] sm:w-[18%] lg:w-auto h-24 md:h-28 text-black transition-all duration-300"
           >
-            <img
+            <NuxtImg
               src="/logos/garmin.png"
               alt="Garmin"
               class="h-7 md:h-10 w-auto object-contain brightness-0 opacity-85 hover:opacity-100 transition-opacity duration-300"
               style="filter: brightness(0)"
-            />
+            format="webp" />
           </div>
 
           <!-- Logo 3: Hyrox -->
           <div
             class="flex items-center justify-center w-[28%] sm:w-[18%] lg:w-auto h-24 md:h-28 text-black transition-all duration-300"
           >
-            <img
+            <NuxtImg
               src="/logos/hyrox.webp"
               alt="Hyrox"
               class="h-8 md:h-12 w-auto object-contain brightness-0 opacity-85 hover:opacity-100 transition-opacity duration-300"
               style="filter: brightness(0)"
-            />
+            format="webp" />
           </div>
 
           <!-- Logo 4: Ironman -->
           <div
             class="flex items-center justify-center w-[28%] sm:w-[18%] lg:w-auto h-24 md:h-28 text-black transition-all duration-300"
           >
-            <img
+            <NuxtImg
               src="/logos/ironman.png"
               alt="Ironman"
               class="h-18 md:h-24 w-auto object-contain brightness-0 opacity-85 hover:opacity-100 transition-opacity duration-300"
               style="filter: brightness(0)"
-            />
+            format="webp" />
           </div>
 
           <!-- Logo 5: Lululemon -->
           <div
             class="flex items-center justify-center w-[28%] sm:w-[18%] lg:w-auto h-24 md:h-28 text-black transition-all duration-300"
           >
-            <img
+            <NuxtImg
               src="/logos/lululemon.webp"
               alt="Lululemon"
               class="h-15 md:h-20 w-auto object-contain opacity-85 hover:opacity-100 transition-opacity duration-300"
               style="filter: grayscale(100%) contrast(1000%); mix-blend-mode: multiply;"
-            />
+            format="webp" />
           </div>
         </div>
       </div>

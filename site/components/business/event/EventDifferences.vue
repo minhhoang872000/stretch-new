@@ -41,11 +41,11 @@ const cards = computed(() => [
         <div v-for="(card, idx) in cards" :key="idx" class="flex flex-col group">
           <!-- Image Container -->
           <div class="aspect-[4/3] rounded-[24px] overflow-hidden mb-4 border border-navy/5 shadow-sm">
-            <img 
+            <NuxtImg 
               :src="card.img" 
               :alt="card.title" 
               class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
-            />
+            format="webp" />
           </div>
           
           <!-- Content -->

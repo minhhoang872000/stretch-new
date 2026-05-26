@@ -22,11 +22,11 @@ const rightSymptoms = computed(() => [
       <!-- Desktop absolute image: Positioned relative to the centered container. 
            Bigger sizes tailored to fit perfectly in the middle gap without any overlaps. -->
       <div class="hidden lg:block absolute bottom-0 lg:left-[24%] xl:left-[25%] 2xl:left-[26%] lg:w-[270px] xl:w-[330px] 2xl:w-[360px] lg:h-[98%] xl:h-[103%] 2xl:h-[108%] z-10 pointer-events-none">
-        <img 
+        <NuxtImg 
           src="/experiencing-pain-absolute.png" 
           alt="Person experiencing shoulder discomfort" 
           class="w-full h-full object-contain object-bottom mix-blend-multiply"
-        />
+        format="webp" />
       </div>
 
       <!-- Desktop: Space-between layout (Left: Heading, Right: Checklist) | Mobile: stacked -->
@@ -42,11 +42,11 @@ const rightSymptoms = computed(() => [
         <!-- Mobile Center Column: Image (Hidden on desktop because it's absolute above) -->
         <div class="block lg:hidden w-full flex justify-center">
           <div class="relative w-[220px] md:w-[260px] max-w-[300px]">
-            <img 
+            <NuxtImg 
               src="/experiencing-pain-absolute.png" 
               alt="Person experiencing shoulder discomfort" 
               class="w-full h-auto object-contain mix-blend-multiply"
-            />
+            format="webp" />
           </div>
         </div>
 

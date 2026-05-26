@@ -13,6 +13,9 @@ useSeo({
 // Category filter state
 const activeCategory = ref("all");
 
+// Keyword search state
+const searchQuery = ref("");
+
 // Watch for category query parameter change
 watch(
   () => route.query.category,
@@ -83,6 +86,7 @@ const allPosts = computed(() => [
     desc: t("sharing_hub.posts.p1_desc"),
     image: "/recovery-who.png",
     slug: "foam-rolling-101",
+    tags: ["Recovery", "Mobility"],
   },
   {
     category: t("sharing_hub.posts.p2_category"),
@@ -91,6 +95,7 @@ const allPosts = computed(() => [
     desc: t("sharing_hub.posts.p2_desc"),
     image: "/education-workshop.png",
     slug: "new-space-thao-dien",
+    tags: ["Stretch.vn"],
   },
   {
     category: t("sharing_hub.posts.p3_category"),
@@ -99,6 +104,7 @@ const allPosts = computed(() => [
     desc: t("sharing_hub.posts.p3_desc"),
     image: "/active-who.png",
     slug: "behind-session-listening",
+    tags: ["Recovery", "Performance"],
   },
   {
     category: t("sharing_hub.posts.p4_category"),
@@ -107,6 +113,7 @@ const allPosts = computed(() => [
     desc: t("sharing_hub.posts.p4_desc"),
     image: "/education-hero.png",
     slug: "movement-workshop-rmit",
+    tags: ["Movement", "Rehabilitation"],
   },
   {
     category: t("sharing_hub.posts.p5_category"),
@@ -115,6 +122,7 @@ const allPosts = computed(() => [
     desc: t("sharing_hub.posts.p5_desc"),
     image: "/runner-who.png",
     slug: "hip-mobility-key",
+    tags: ["Mobility", "Movement", "Performance"],
   },
   {
     category: t("sharing_hub.posts.p6_category"),
@@ -123,6 +131,7 @@ const allPosts = computed(() => [
     desc: t("sharing_hub.posts.p6_desc"),
     image: "/education-gallery-1.png",
     slug: "growing-team-elevating-care",
+    tags: ["Stretch.vn", "Recovery"],
   },
   {
     category: t("sharing_hub.posts.p7_category"),
@@ -131,6 +140,7 @@ const allPosts = computed(() => [
     desc: t("sharing_hub.posts.p7_desc"),
     image: "/athlete-who.png",
     slug: "setbacks-to-strength-kevin",
+    tags: ["Rehabilitation", "Recovery"],
   },
   {
     category: t("sharing_hub.posts.p8_category"),
@@ -139,12 +149,51 @@ const allPosts = computed(() => [
     desc: t("sharing_hub.posts.p8_desc"),
     image: "/event-warmup.png",
     slug: "sunrise-stretch-sala",
+    tags: ["Movement", "Recovery"],
   },
 ]);
 
+// All available tags (derived from posts)
+const allTags = computed(() => {
+  const tagSet = new Set<string>();
+  allPosts.value.forEach((p) => {
+    if (p.tags) p.tags.forEach((tag: string) => tagSet.add(tag));
+  });
+  return Array.from(tagSet).sort();
+});
+
+// Selected tags state
+const selectedTags = ref<string[]>([]);
+
+function toggleTag(tag: string) {
+  const idx = selectedTags.value.indexOf(tag);
+  if (idx === -1) {
+    selectedTags.value.push(tag);
+  } else {
+    selectedTags.value.splice(idx, 1);
+  }
+}
+
 const filteredPosts = computed(() => {
-  if (activeCategory.value === "all") return allPosts.value;
-  return allPosts.value.filter((p) => p.categoryKey === activeCategory.value);
+  let posts = allPosts.value;
+  if (activeCategory.value !== "all") {
+    posts = posts.filter((p) => p.categoryKey === activeCategory.value);
+  }
+  if (searchQuery.value.trim()) {
+    const q = searchQuery.value.trim().toLowerCase();
+    posts = posts.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.desc.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q),
+    );
+  }
+  if (selectedTags.value.length > 0) {
+    posts = posts.filter(
+      (p) => p.tags && p.tags.some((tag: string) => selectedTags.value.includes(tag)),
+    );
+  }
+  return posts;
 });
 
 // Category badge color mapping
@@ -241,15 +290,15 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
             <div class="collage-grid">
               <!-- Left: tall image spanning full height -->
               <div class="collage-cell collage-cell--left">
-                <img src="/education-gallery-2.png" alt="Stretching session" />
+                <NuxtImg src="/education-gallery-2.png" alt="Stretching session" format="webp" />
               </div>
               <!-- Right top -->
               <div class="collage-cell collage-cell--right-top">
-                <img src="/education-gallery-3.png" alt="Recovery therapy" />
+                <NuxtImg src="/education-gallery-3.png" alt="Recovery therapy" format="webp" />
               </div>
               <!-- Right bottom -->
               <div class="collage-cell collage-cell--right-bottom">
-                <img src="/education-gallery-5.png" alt="Team collaboration" />
+                <NuxtImg src="/education-gallery-5.png" alt="Team collaboration" format="webp" />
               </div>
             </div>
 
@@ -289,11 +338,11 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
               :to="localePath('/sharing-hub/' + featuredPosts[0].slug)"
               class="featured-card-large group cursor-pointer rounded-2xl overflow-hidden relative bg-navy block"
             >
-              <img
+              <NuxtImg
                 :src="featuredPosts[0].image"
                 :alt="featuredPosts[0].title"
                 class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-50 group-hover:scale-105 transition-all duration-500"
-              />
+              format="webp" />
               <div
                 class="relative z-10 flex flex-col justify-end h-full p-6 lg:p-8"
               >
@@ -348,11 +397,11 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
               :to="localePath('/sharing-hub/' + post.slug)"
               class="featured-card-small group cursor-pointer rounded-2xl overflow-hidden relative bg-navy block"
             >
-              <img
+              <NuxtImg
                 :src="post.image"
                 :alt="post.title"
                 class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-55 group-hover:scale-105 transition-all duration-500"
-              />
+              format="webp" />
               <div
                 class="relative z-10 flex flex-col justify-between h-full p-4 lg:p-5"
               >
@@ -409,7 +458,7 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
       <section class="pb-10 lg:pb-14">
         <div class="section-container">
           <!-- Filter Tabs -->
-          <div class="flex flex-wrap justify-center gap-3 mb-10">
+          <div class="flex flex-wrap justify-center gap-3 mb-6">
             <button
               v-for="cat in categories"
               :key="cat.key"
@@ -418,6 +467,42 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
               :class="activeCategory === cat.key ? 'category-tab--active' : ''"
             >
               {{ cat.label }}
+            </button>
+          </div>
+
+          <!-- Keyword Search -->
+          <div class="flex justify-center mb-10">
+            <div class="search-input-wrapper">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input
+                v-model="searchQuery"
+                type="text"
+                :placeholder="t('sharing_hub.search_placeholder')"
+                class="search-input"
+              />
+              <button v-if="searchQuery" @click="searchQuery = ''" class="search-clear">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tag Filter -->
+          <div class="flex flex-wrap justify-center gap-2 mb-10">
+            <button
+              v-for="tag in allTags"
+              :key="tag"
+              @click="toggleTag(tag)"
+              class="tag-pill"
+              :class="selectedTags.includes(tag) ? 'tag-pill--active' : ''"
+            >
+              <span class="tag-dot" :class="selectedTags.includes(tag) ? 'tag-dot--active' : ''"></span>
+              {{ tag }}
             </button>
           </div>
 
@@ -445,11 +530,11 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
                   class="rounded-2xl overflow-hidden bg-white border border-border shadow-card hover:shadow-card-hover transition-all duration-300 h-full flex flex-col"
                 >
                   <div class="aspect-[16/10] overflow-hidden">
-                    <img
+                    <NuxtImg
                       :src="post.image"
                       :alt="post.title"
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+                    format="webp" />
                   </div>
                   <div class="p-4 flex flex-col flex-1">
                     <span
@@ -803,7 +888,7 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
                   />
                 </svg>
               </NuxtLink>
-              <a href="#" class="cta-btn cta-btn--outline">
+              <a href="https://www.facebook.com/stretchvn/" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--outline">
                 {{ t("sharing_hub.cta_follow") }}
                 <svg
                   width="14"
@@ -840,19 +925,19 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
 .hero-wrapper {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 3rem 1.5rem;
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2.5rem;
+  gap: 2rem;
 }
 
 @media (min-width: 1024px) {
   .hero-wrapper {
     flex-direction: row;
     align-items: center;
-    gap: 4rem;
-    padding: 4rem 2rem;
+    gap: 3rem;
+    padding: 2rem 2rem;
   }
 }
 
@@ -870,8 +955,8 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
 
 .hero-title {
   font-family: var(--font-heading);
-  font-size: 36px;
-  line-height: 1.1;
+  font-size: 28px;
+  line-height: 1.15;
   font-weight: 800;
   color: var(--color-navy);
   letter-spacing: -0.02em;
@@ -879,29 +964,29 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
 
 @media (min-width: 1024px) {
   .hero-title {
-    font-size: 48px;
+    font-size: 36px;
   }
 }
 
 .hero-divider {
-  width: 56px;
-  height: 4px;
+  width: 48px;
+  height: 3px;
   background: var(--color-navy);
   border-radius: 2px;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .hero-subtitle {
   color: var(--color-text-secondary, #6b7280);
-  font-size: 15px;
+  font-size: 13px;
   line-height: 1.7;
-  max-width: 400px;
+  max-width: 380px;
 }
 
 @media (min-width: 1024px) {
   .hero-subtitle {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
@@ -1213,5 +1298,111 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
 .cta-btn--accent:hover {
   background: var(--color-accent-dark);
   border-color: var(--color-accent-dark);
+}
+
+/* ── Search Input ── */
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--color-text-secondary, #6b7280);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.65rem 2.5rem 0.65rem 2.5rem;
+  border-radius: 12px;
+  border: 1.5px solid #e6ecf2;
+  background: white;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  color: var(--color-navy);
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.search-input::placeholder {
+  color: var(--color-text-secondary, #9ca3af);
+}
+
+.search-input:focus {
+  border-color: var(--color-navy-soft);
+  box-shadow: 0 0 0 3px rgba(11, 42, 74, 0.06);
+}
+
+.search-clear {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary, #6b7280);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-clear:hover {
+  background: rgba(11, 42, 74, 0.06);
+  color: var(--color-navy);
+}
+
+/* ── Tag Pills ── */
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #6b7280);
+  background: white;
+  border: 1.5px solid #e6ecf2;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.tag-pill:hover {
+  border-color: var(--color-navy-soft);
+  color: var(--color-navy);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(11, 42, 74, 0.06);
+}
+
+.tag-pill--active {
+  color: white !important;
+  background: var(--color-navy) !important;
+  border-color: var(--color-navy) !important;
+  box-shadow: 0 2px 8px rgba(11, 42, 74, 0.15) !important;
+  transform: none !important;
+}
+
+.tag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text-secondary, #9ca3af);
+  transition: background 0.2s ease;
+}
+
+.tag-dot--active {
+  background: var(--color-accent, #f47a1f);
 }
 </style>

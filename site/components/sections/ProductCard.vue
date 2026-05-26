@@ -21,14 +21,14 @@ defineProps<{
     <!-- Image -->
     <NuxtLink :to="`/products/${product.slug}`">
       <div class="mb-6 rounded-[24px] overflow-hidden aspect-video">
-        <img
+        <NuxtImg
           :src="product.coverImage"
           :alt="product.name"
           class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
           loading="lazy"
           width="640"
           height="360"
-        />
+        format="webp" />
       </div>
     </NuxtLink>
 

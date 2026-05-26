@@ -98,12 +98,13 @@ const uspIcons = [
 
         <div class="w-full lg:w-[50%] relative animate-fade-in-up" style="animation-delay: 200ms">
           <div class="relative w-full aspect-[4/5] lg:aspect-auto lg:h-[580px] rounded-[24px] overflow-hidden shadow-[0_20px_60px_rgba(11,42,74,0.12)]">
-            <img
+            <NuxtImg
               src="/individual-hero.png"
               alt="Stretch.vn — Professional physiotherapy treatment session"
               class="w-full h-full object-cover object-[70%_center] transition-transform duration-[2000ms] ease-out hover:scale-[1.04]"
               loading="eager"
               fetchpriority="high"
+              format="webp"
             />
             <!-- Premium Overlay Gradient -->
             <div class="absolute inset-0 bg-gradient-to-t from-navy/40 via-transparent to-transparent opacity-80 mix-blend-multiply"></div>
@@ -125,9 +126,9 @@ const uspIcons = [
           <!-- Floating Avatar Group -->
           <div class="hidden sm:flex absolute top-8 right-[-2rem] items-center gap-3 px-5 py-3 bg-white/90 backdrop-blur-xl rounded-[20px] shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-white z-20 animate-fade-in-up hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-all duration-500" style="animation-delay: 800ms">
             <div class="flex -space-x-3">
-              <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden"><img src="https://i.pravatar.cc/100?img=1" class="w-full h-full object-cover"></div>
-              <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden"><img src="https://i.pravatar.cc/100?img=2" class="w-full h-full object-cover"></div>
-              <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden"><img src="https://i.pravatar.cc/100?img=3" class="w-full h-full object-cover"></div>
+              <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden"><NuxtImg src="https://i.pravatar.cc/100?img=1" class="w-full h-full object-cover" format="webp" /></div>
+              <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden"><NuxtImg src="https://i.pravatar.cc/100?img=2" class="w-full h-full object-cover" format="webp" /></div>
+              <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden"><NuxtImg src="https://i.pravatar.cc/100?img=3" class="w-full h-full object-cover" format="webp" /></div>
             </div>
             <div class="pl-2">
               <p class="text-[12px] font-bold text-navy">Join them</p>

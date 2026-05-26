@@ -57,7 +57,7 @@ const businessServices = computed(() => [
         <div class="group relative bg-white rounded-3xl border border-border-default overflow-hidden flex flex-col min-h-[480px] shadow-sm hover:shadow-xl transition-all duration-500">
           <!-- Card Background Image/Overlay -->
           <div class="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none group-hover:opacity-20 transition-opacity">
-            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop" alt="" class="w-full h-full object-cover grayscale" />
+            <NuxtImg src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop" alt="" class="w-full h-full object-cover grayscale" format="webp" />
             <div class="absolute inset-0 bg-gradient-to-l from-transparent to-white" />
           </div>
 
@@ -116,7 +116,7 @@ const businessServices = computed(() => [
         <div class="group relative bg-white rounded-3xl border border-border-default overflow-hidden flex flex-col min-h-[480px] shadow-sm hover:shadow-xl transition-all duration-500">
           <!-- Card Background Image/Overlay -->
           <div class="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none group-hover:opacity-20 transition-opacity">
-            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop" alt="" class="w-full h-full object-cover grayscale" />
+            <NuxtImg src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop" alt="" class="w-full h-full object-cover grayscale" format="webp" />
             <div class="absolute inset-0 bg-gradient-to-l from-transparent to-white" />
           </div>
 

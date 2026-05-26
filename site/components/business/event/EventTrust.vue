@@ -26,7 +26,7 @@ const partners = [
           :key="p.name"
           class="flex items-center justify-center w-[40%] sm:w-[28%] lg:w-auto transition-all duration-300"
         >
-          <img
+          <NuxtImg
             :src="p.logo"
             :alt="p.name"
             :class="[
@@ -35,7 +35,7 @@ const partners = [
               (p.name !== 'Lululemon' && p.name !== 'Pickleball Vietnam') ? 'brightness-0' : ''
             ]"
             :style="p.name === 'Lululemon' ? 'filter: grayscale(100%) contrast(1000%); mix-blend-mode: multiply;' : ''"
-          />
+          format="webp" />
         </div>
       </div>
     </div>

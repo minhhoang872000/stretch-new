@@ -89,12 +89,12 @@ function scrollToStep(stepIndex: number) {
             <div class="bg-white border border-border/70 rounded-2xl shadow-sm hover:shadow-md transition-all duration-500 overflow-hidden flex flex-col h-full">
               <!-- Card Image -->
               <div class="relative w-full aspect-[4/3.4] overflow-hidden bg-off-white">
-                <img 
+                <NuxtImg 
                   :src="card.img" 
                   :alt="card.title" 
                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                   loading="lazy" 
-                />
+                format="webp" />
               </div>
               
               <!-- Card Text Content -->

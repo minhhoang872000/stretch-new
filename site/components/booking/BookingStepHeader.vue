@@ -43,7 +43,9 @@ const { t } = useI18n()
           ]"
         >
           <!-- Tick Icon for completed steps, or number for current/upcoming steps -->
-          <span v-if="i < currentStep" class="material-symbols-outlined !text-base font-extrabold animate-fade-in">check</span>
+          <svg v-if="i < currentStep" class="w-4 h-4 stroke-[3] animate-fade-in" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
           <span v-else>{{ i }}</span>
         </div>
 

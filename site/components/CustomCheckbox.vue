@@ -20,9 +20,9 @@ const toggle = () => {
   >
     <div class="custom-checkbox-box">
       <Transition name="check">
-        <span v-if="modelValue" class="material-symbols-outlined !text-sm">
-          check
-        </span>
+        <svg v-if="modelValue" class="w-3.5 h-3.5 stroke-[3.5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
       </Transition>
     </div>
     <span v-if="label" class="custom-checkbox-label">

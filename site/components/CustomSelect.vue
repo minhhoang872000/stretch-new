@@ -57,9 +57,9 @@ onUnmounted(() => {
       :class="{ 'is-open': isOpen, 'has-error': error }"
     >
       <span :class="{ 'placeholder': !modelValue }">{{ getLabel(modelValue) }}</span>
-      <span class="material-symbols-outlined transition-transform duration-300" :class="{ 'rotate-180': isOpen }">
-        expand_more
-      </span>
+      <svg class="w-5 h-5 transition-transform duration-300 flex-shrink-0" :class="{ 'rotate-180': isOpen }" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
     </button>
 
     <Transition name="dropdown">
@@ -72,9 +72,9 @@ onUnmounted(() => {
           @click="selectOption(option)"
         >
           {{ typeof option === 'string' ? option : option.label }}
-          <span v-if="(typeof option === 'string' ? option : option.value) === modelValue" class="material-symbols-outlined !text-sm">
-            check
-          </span>
+          <svg v-if="(typeof option === 'string' ? option : option.value) === modelValue" class="w-4 h-4 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
         </div>
       </div>
     </Transition>

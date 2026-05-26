@@ -13,11 +13,11 @@ const { t } = useI18n()
         <!-- Block 1 -->
         <div class="flex flex-col group cursor-pointer">
           <div class="rounded-[24px] overflow-hidden aspect-[4/3] mb-4">
-            <img 
+            <NuxtImg 
               src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800" 
               alt="Movement workshops" 
               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-            />
+            format="webp" />
           </div>
           <h3 class="font-heading font-bold text-navy text-[18px] mb-2">1. {{ $t('wellness_page.delivery.workshop_title') }}</h3>
           <p class="text-navy/70 text-[14px] leading-relaxed">{{ $t('wellness_page.delivery.workshop_desc') }}</p>
@@ -26,11 +26,11 @@ const { t } = useI18n()
         <!-- Block 2 -->
         <div class="flex flex-col group cursor-pointer">
           <div class="rounded-[24px] overflow-hidden aspect-[4/3] mb-4">
-            <img 
+            <NuxtImg 
               src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800" 
               alt="Mini assessment station" 
               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-            />
+            format="webp" />
           </div>
           <h3 class="font-heading font-bold text-navy text-[18px] mb-2">2. {{ $t('wellness_page.delivery.assessment_title') }}</h3>
           <p class="text-navy/70 text-[14px] leading-relaxed">{{ $t('wellness_page.delivery.assessment_desc') }}</p>
@@ -39,11 +39,11 @@ const { t } = useI18n()
         <!-- Block 3 -->
         <div class="flex flex-col group cursor-pointer">
           <div class="rounded-[24px] overflow-hidden aspect-[4/3] mb-4">
-            <img 
+            <NuxtImg 
               src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800" 
               alt="Recovery day activation" 
               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-            />
+            format="webp" />
           </div>
           <h3 class="font-heading font-bold text-navy text-[18px] mb-2">3. {{ $t('wellness_page.delivery.recovery_title') }}</h3>
           <p class="text-navy/70 text-[14px] leading-relaxed">{{ $t('wellness_page.delivery.recovery_desc') }}</p>

@@ -94,11 +94,13 @@ const localePath = useLocalePath()
 
       <!-- Right: Image -->
       <div class="relative w-full lg:w-[48%] min-h-[400px] lg:min-h-0 overflow-hidden">
-        <img
+        <NuxtImg
           src="/images/event-solution.png"
           alt="Recovery Event Solutions"
           class="w-full h-full object-cover object-center lg:absolute lg:inset-0 transition-transform duration-[1200ms] ease-out hover:scale-[1.02]"
           loading="eager"
+          fetchpriority="high"
+          format="webp"
         />
         <div class="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/20 to-transparent" />
         <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-navy to-transparent lg:w-48 pointer-events-none" />

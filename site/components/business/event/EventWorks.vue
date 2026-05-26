@@ -44,11 +44,11 @@ const howSteps = computed(() => [
             <div v-for="(card, idx) in whereCards" :key="idx" class="flex flex-col items-center text-center">
               <!-- Rounded Vertical Image Container -->
               <div class="w-full aspect-[4/5] rounded-[16px] overflow-hidden mb-3 border border-[#F1F1F1] shadow-sm bg-gray-50">
-                <img 
+                <NuxtImg 
                   :src="card.img" 
                   :alt="card.title" 
                   class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
-                />
+                format="webp" />
               </div>
               <p class="text-[13px] md:text-[14px] font-heading font-extrabold text-navy leading-snug tracking-tight max-w-[120px] mx-auto">
                 {{ card.title }}

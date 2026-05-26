@@ -112,12 +112,13 @@ const metrics = computed(() => [
         <!-- Right column: Image -->
         <div class="order-1 lg:order-2 relative">
           <div class="relative rounded-3xl overflow-hidden aspect-[4/3] lg:aspect-[1.15/1] bg-off-white shadow-xl">
-            <img
+            <NuxtImg
               src="/hero-physiotherapy.png"
               alt="Professional physiotherapy session — a therapist treating a patient"
               class="w-full h-full object-cover"
               loading="eager"
               fetchpriority="high"
+              format="webp"
             />
           </div>
 
@@ -149,7 +150,7 @@ const metrics = computed(() => [
             <div class="flex flex-col">
               <span class="text-[9px] font-bold text-text-secondary uppercase tracking-[0.2em] mb-1.5">{{ $t('why_stretch.powered_by') }}</span>
               <div class="flex items-center gap-2.5">
-                <img src="~/assets/image/monaco.jpeg" alt="Monaco Healthcare" class="h-8 w-auto object-contain" />
+                <img src="/monaco.jpeg" alt="Monaco Healthcare" class="h-8 w-auto object-contain" />
                 <span class="text-sm font-heading font-bold text-navy tracking-tighter uppercase">Monaco Healthcare</span>
               </div>
             </div>

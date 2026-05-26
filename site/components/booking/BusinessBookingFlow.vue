@@ -206,18 +206,23 @@ async function submitBooking() {
     <!-- Success View -->
     <div v-if="showSuccess" class="max-w-xl mx-auto animate-fade-in text-center">
       <div class="w-20 h-20 rounded-full bg-success/10 text-success flex items-center justify-center mx-auto mb-8 success-icon-anim">
-        <span class="material-symbols-outlined !text-5xl">check_circle</span>
+        <svg class="w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
       </div>
       <h2 class="text-h2 text-navy mb-4">{{ t('booking_v2.success.all_set') }}</h2>
       <p class="text-text-secondary mb-8">{{ t('booking_v2.success.desc_business') }}</p>
       
       <div class="flex flex-col gap-4">
         <a href="https://zalo.me/4237229823551208502" target="_blank" class="btn-navy justify-center gap-3">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" class="w-5 h-5" />
+          <NuxtImg src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" class="w-5 h-5" format="webp" />
           {{ t('booking_v2.success.chat_zalo') }}
         </a>
         <button class="btn-outline justify-center gap-3">
-          <span class="material-symbols-outlined">call</span>
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+          </svg>
           {{ t('booking_v2.success.call_stretch') }}
         </button>
         <NuxtLink :to="localePath('/')" class="text-accent font-bold mt-4 block hover:underline">
@@ -249,7 +254,25 @@ async function submitBooking() {
                   >
                     <div class="w-12 h-12 rounded-xl bg-off-white text-navy flex items-center justify-center flex-shrink-0 transition-colors"
                          :class="form.planType === item.id ? 'bg-accent/10 text-accent' : 'group-hover:bg-navy group-hover:text-white'">
-                      <span class="material-symbols-outlined">{{ item.icon }}</span>
+                      <svg v-if="item.id === 'recovery'" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                      </svg>
+                      <svg v-else-if="item.id === 'wellness'" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                        <path d="M12 6a6 6 0 0 0-6 6c0 3.31 2.69 6 6 6s6-2.69 6-6a6 6 0 0 0-6-6z" />
+                        <circle cx="12" cy="12" r="2" />
+                      </svg>
+                      <svg v-else-if="item.id === 'education'" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
+                      </svg>
+                      <svg v-else class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                      </svg>
                     </div>
                     <div class="flex-1">
                       <h4 class="font-bold text-navy mb-0.5">{{ item.title }}</h4>
@@ -257,7 +280,9 @@ async function submitBooking() {
                     </div>
                     <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors"
                          :class="form.planType === item.id ? 'border-accent bg-accent text-white' : 'border-border'">
-                      <span v-if="form.planType === item.id" class="material-symbols-outlined !text-sm font-bold">check</span>
+                      <svg v-if="form.planType === item.id" class="w-3.5 h-3.5 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
                     </div>
                   </div>
                 </div>
@@ -412,7 +437,10 @@ async function submitBooking() {
             <div class="sticky top-32 bg-white rounded-3xl border border-border p-8 shadow-sm overflow-hidden">
               <div class="flex items-center gap-3 mb-8">
                 <div class="w-10 h-10 rounded-xl bg-navy/5 text-navy flex items-center justify-center">
-                  <span class="material-symbols-outlined">business_center</span>
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                  </svg>
                 </div>
                 <h3 class="font-bold text-navy uppercase tracking-widest text-xs">{{ t('booking_v2.business.summary_sidebar') }}</h3>
               </div>
@@ -439,8 +467,11 @@ async function submitBooking() {
                 </div>
               </div>
 
-              <div v-else class="py-12 text-center animate-pulse">
-                <span class="material-symbols-outlined text-text-secondary/30 !text-5xl mb-2">pending</span>
+              <div v-else class="py-12 text-center animate-pulse text-text-secondary/30 flex flex-col items-center">
+                <svg class="w-12 h-12 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
                 <p class="text-xs text-[#475569]/80 font-medium leading-relaxed px-4">{{ t('booking_v2.business.summary_empty') }}</p>
               </div>
             </div>

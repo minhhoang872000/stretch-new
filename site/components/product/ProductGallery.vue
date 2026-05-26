@@ -12,12 +12,12 @@ const currentImage = computed(() => props.images[selectedIndex.value])
   <div class="space-y-4">
     <!-- Main Image -->
     <div class="aspect-[16/10] rounded-3xl overflow-hidden bg-surface-container">
-      <img
+      <NuxtImg
         :src="currentImage"
         alt="Product image"
         class="w-full h-full object-cover transition-opacity duration-300"
         loading="eager"
-      />
+      format="webp" />
     </div>
 
     <!-- Thumbnails -->
@@ -31,12 +31,12 @@ const currentImage = computed(() => props.images[selectedIndex.value])
           : 'ring-transparent opacity-60 hover:opacity-100'"
         @click="selectedIndex = i"
       >
-        <img
+        <NuxtImg
           :src="img"
           alt="Thumbnail"
           class="w-full h-full object-cover"
           loading="lazy"
-        />
+        format="webp" />
       </button>
     </div>
   </div>

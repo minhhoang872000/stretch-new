@@ -51,10 +51,12 @@ const { t } = useI18n()
       
       <!-- Right: Mobile/Tablet Flow Image -->
       <div class="w-full lg:hidden px-6 pb-12">
-        <img
+        <NuxtImg
           src="/images/education-solution.png"
           alt="Education & Training Session"
           class="w-full aspect-[4/3] object-cover rounded-2xl"
+          fetchpriority="high"
+          format="webp"
         />
       </div>
     </div>
@@ -63,10 +65,12 @@ const { t } = useI18n()
     <div class="hidden lg:block absolute right-0 top-0 bottom-0 w-[42%] xl:w-[40%] 2xl:w-[38%] max-w-[850px] xl:max-w-[950px] 2xl:max-w-[1100px] h-full z-0">
       <!-- Fade mask for desktop: extra wide gradient to guarantee text readability and flawless aesthetics -->
       <div class="absolute inset-y-0 left-0 w-[200px] xl:w-[350px] bg-gradient-to-r from-white via-white/95 via-white/60 to-transparent z-10" />
-      <img
+      <NuxtImg
         src="/images/education-solution.png"
         alt="Education & Training Session"
         class="w-full h-full object-cover object-[center_right] rounded-l-[40px]"
+        fetchpriority="high"
+        format="webp"
       />
     </div>
   </section>

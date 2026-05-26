@@ -90,12 +90,13 @@ function handleLearnMore(e: Event) {
         <div class="w-full lg:w-[50%] relative animate-fade-in-up" style="animation-delay: 200ms">
           <!-- Main Image Container -->
           <div class="relative w-full aspect-[4/5] lg:aspect-auto lg:h-[580px] rounded-[24px] overflow-hidden shadow-[0_20px_60px_rgba(11,42,74,0.12)] border-[8px] border-white/50 bg-white/50 backdrop-blur-sm p-2">
-            <img
+            <NuxtImg
               src="/images/business-hero.png"
               alt="Business workshop — Stretch.vn"
               class="w-full h-full object-cover rounded-[28px] transition-transform duration-[2000ms] ease-out hover:scale-[1.04]"
               loading="eager"
               fetchpriority="high"
+              format="webp"
             />
             <!-- Premium Overlay Gradient -->
             <div class="absolute inset-2 rounded-[28px] bg-gradient-to-t from-navy/50 via-transparent to-transparent opacity-80 mix-blend-multiply pointer-events-none"></div>
