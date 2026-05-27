@@ -19,14 +19,28 @@
 
     <!-- Filters -->
     <div class="bg-surface-container-low rounded-2xl p-4 mb-6 flex flex-wrap gap-3 items-center">
-      <select v-model="filterStatus" @change="applyFilters" class="text-sm rounded-lg border border-outline-variant/20 px-3 py-2 bg-surface">
-        <option value="">All Status</option>
-        <option value="pending">Pending</option>
-        <option value="confirmed">Confirmed</option>
-        <option value="completed">Completed</option>
-        <option value="cancelled">Cancelled</option>
-      </select>
-      <input v-model="filterDate" type="date" @change="applyFilters" class="text-sm rounded-lg border border-outline-variant/20 px-3 py-2 bg-surface" />
+      <Dropdown
+        v-model="filterStatus"
+        :options="statusOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="All Status"
+        class="p-dropdown-sm text-sm w-44 bg-surface border-outline-variant/20 rounded-lg"
+        @change="applyFilters"
+      />
+
+      <Calendar
+        v-model="filterDate"
+        dateFormat="yy-mm-dd"
+        dataType="string"
+        showIcon
+        placeholder="Select Date"
+        class="p-calendar-sm text-sm w-44 bg-surface border-outline-variant/20 rounded-lg"
+        @date-select="applyFilters"
+        @clear-click="applyFilters"
+        showButtonBar
+      />
+
       <button @click="resetFilters" class="text-xs text-on-surface-variant hover:text-primary font-semibold ml-auto flex items-center gap-1">
         <span class="material-symbols-outlined text-sm">filter_alt_off</span> Clear
       </button>
@@ -119,6 +133,14 @@ const total = ref(0)
 const loading = ref(false)
 const filterStatus = ref('')
 const filterDate = ref('')
+
+const statusOptions = [
+  { label: 'All Status', value: '' },
+  { label: 'Pending', value: 'pending' },
+  { label: 'Confirmed', value: 'confirmed' },
+  { label: 'Completed', value: 'completed' },
+  { label: 'Cancelled', value: 'cancelled' }
+]
 
 const stats = computed(() => [
   { label: 'Total', value: total.value, color: 'text-on-surface' },

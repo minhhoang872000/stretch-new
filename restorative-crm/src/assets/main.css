@@ -67,3 +67,162 @@ input, select, textarea {
            focus:ring-2 focus:ring-primary/20 transition-shadow;
   }
 }
+
+/* ═══════════════════════════════════════
+   PrimeVue Global Overrides
+   ═══════════════════════════════════════ */
+
+/* --- InputText --- */
+.p-inputtext {
+  font-family: 'Manrope', sans-serif !important;
+  font-size: 0.875rem !important;
+  border-radius: 0.75rem !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background-color: var(--md-sys-color-surface-container-low, #f7f6f9) !important;
+  color: var(--md-sys-color-on-surface, #1d1b20) !important;
+  padding: 0.5rem 0.875rem !important;
+  transition: all 0.2s ease !important;
+}
+.p-inputtext:hover {
+  border-color: var(--primary, #aa3bff) !important;
+}
+.p-inputtext:focus {
+  outline: none !important;
+  border-color: var(--primary, #aa3bff) !important;
+  box-shadow: 0 0 0 3px rgba(170, 59, 255, 0.1) !important;
+  background-color: #fff !important;
+}
+
+/* --- Dropdown --- */
+.p-dropdown {
+  font-family: 'Manrope', sans-serif !important;
+  font-size: 0.875rem !important;
+  border-radius: 0.75rem !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background-color: var(--md-sys-color-surface-container-low, #f7f6f9) !important;
+  color: var(--md-sys-color-on-surface, #1d1b20) !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease !important;
+  height: auto !important;
+}
+.p-dropdown:hover {
+  border-color: var(--primary, #aa3bff) !important;
+}
+.p-dropdown:focus-within {
+  border-color: var(--primary, #aa3bff) !important;
+  box-shadow: 0 0 0 3px rgba(170, 59, 255, 0.1) !important;
+  background-color: #fff !important;
+}
+.p-dropdown .p-dropdown-label {
+  padding: 0.5rem 0.875rem !important;
+  font-size: 0.875rem !important;
+  color: var(--md-sys-color-on-surface, #1d1b20) !important;
+  background: transparent !important;
+}
+.p-dropdown .p-dropdown-trigger {
+  width: 2.5rem !important;
+  color: var(--md-sys-color-on-surface-variant, #49454f) !important;
+}
+
+/* --- Dropdown Panel --- */
+.p-dropdown-panel {
+  background: #ffffff !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  z-index: 1000 !important;
+}
+.p-dropdown-items {
+  padding: 0.25rem 0 !important;
+  list-style: none !important;
+  margin: 0 !important;
+}
+.p-dropdown-item {
+  font-family: 'Manrope', sans-serif !important;
+  font-size: 0.875rem !important;
+  padding: 0.5rem 1rem !important;
+  color: #1d1b20 !important;
+  transition: background-color 0.15s ease !important;
+  cursor: pointer !important;
+}
+.p-dropdown-item:hover, .p-dropdown-item.p-highlight {
+  background-color: rgba(170, 59, 255, 0.05) !important;
+  color: var(--primary, #aa3bff) !important;
+}
+
+/* --- Calendar / DatePicker --- */
+.p-calendar {
+  height: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+.p-calendar .p-inputtext {
+  flex: 1 1 auto !important;
+  width: 1% !important;
+}
+.p-calendar .p-datepicker-trigger {
+  background: transparent !important;
+  border: none !important;
+  color: var(--primary, #aa3bff) !important;
+  padding: 0 0.5rem !important;
+}
+
+/* --- Datepicker Panel --- */
+.p-datepicker {
+  background: #ffffff !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  padding: 0.75rem !important;
+  font-family: 'Manrope', sans-serif !important;
+  z-index: 1000 !important;
+}
+.p-datepicker table td > span {
+  width: 2rem !important;
+  height: 2rem !important;
+  border-radius: 50% !important;
+  font-size: 0.875rem !important;
+  transition: all 0.15s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.p-datepicker table td > span.p-highlight {
+  background: var(--primary, #aa3bff) !important;
+  color: #ffffff !important;
+}
+.p-datepicker .p-datepicker-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  padding-bottom: 0.5rem !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+.p-datepicker .p-datepicker-header .p-datepicker-title {
+  font-weight: 700 !important;
+  color: #1d1b20 !important;
+}
+.p-datepicker .p-datepicker-header .p-link {
+  color: #49454f !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+}
+.p-datepicker .p-datepicker-header .p-link:hover {
+  color: var(--primary, #aa3bff) !important;
+}
+.p-datepicker .p-datepicker-buttonbar {
+  display: flex !important;
+  justify-content: space-between !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+  padding-top: 0.5rem !important;
+  margin-top: 0.5rem !important;
+}
+.p-datepicker .p-datepicker-buttonbar .p-button {
+  background: transparent !important;
+  border: none !important;
+  color: var(--primary, #aa3bff) !important;
+  font-weight: 700 !important;
+  font-size: 0.75rem !important;
+  cursor: pointer !important;
+}
+

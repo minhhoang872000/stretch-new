@@ -12,11 +12,10 @@
       </button>
       <div class="hidden md:flex items-center bg-surface-container-low rounded-full px-4 py-2 w-full max-w-sm gap-2">
         <span class="material-symbols-outlined text-outline text-lg">search</span>
-        <input
+        <InputText
           v-model="searchQuery"
-          class="bg-transparent border-none focus:ring-0 text-sm w-full"
+          class="bg-transparent border-none shadow-none focus:ring-0 text-sm w-full p-0"
           :placeholder="$t('common.search')"
-          type="text"
         />
       </div>
     </div>

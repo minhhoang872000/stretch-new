@@ -97,5 +97,5 @@ import { useBlogStore } from '@/stores/blog.js'
 import { storeToRefs } from 'pinia'
 
 const store = useBlogStore()
-const { posts } = storeToRefs(store)
+const { filteredPosts: posts } = storeToRefs(store)
 </script>

@@ -15,16 +15,43 @@
 
     <!-- Filters -->
     <div class="bg-surface-container-low rounded-2xl p-4 mb-6 flex flex-wrap gap-3 items-center">
-      <input v-model="filterUtmSource" @keyup.enter="applyFilters" placeholder="UTM Source" class="input-sm rounded-lg" />
-      <input v-model="filterUtmCampaign" @keyup.enter="applyFilters" placeholder="UTM Campaign" class="input-sm rounded-lg" />
-      <select v-model="filterDevice" @change="applyFilters" class="input-sm rounded-lg">
-        <option value="">All Devices</option>
-        <option value="desktop">Desktop</option>
-        <option value="mobile">Mobile</option>
-        <option value="tablet">Tablet</option>
-      </select>
-      <input v-model="filterDateFrom" type="date" @change="applyFilters" class="input-sm rounded-lg" />
-      <input v-model="filterDateTo" type="date" @change="applyFilters" class="input-sm rounded-lg" />
+      <InputText v-model="filterUtmSource" @keyup.enter="applyFilters" placeholder="UTM Source" class="p-inputtext-sm text-sm w-36 bg-surface border-outline-variant/20 rounded-lg" />
+      <InputText v-model="filterUtmCampaign" @keyup.enter="applyFilters" placeholder="UTM Campaign" class="p-inputtext-sm text-sm w-36 bg-surface border-outline-variant/20 rounded-lg" />
+      
+      <Dropdown
+        v-model="filterDevice"
+        :options="deviceOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="All Devices"
+        class="p-dropdown-sm text-sm w-40 bg-surface border-outline-variant/20 rounded-lg"
+        @change="applyFilters"
+      />
+
+      <Calendar
+        v-model="filterDateFrom"
+        dateFormat="yy-mm-dd"
+        dataType="string"
+        showIcon
+        placeholder="Date From"
+        class="p-calendar-sm text-sm w-44 bg-surface border-outline-variant/20 rounded-lg"
+        @date-select="applyFilters"
+        @clear-click="applyFilters"
+        showButtonBar
+      />
+
+      <Calendar
+        v-model="filterDateTo"
+        dateFormat="yy-mm-dd"
+        dataType="string"
+        showIcon
+        placeholder="Date To"
+        class="p-calendar-sm text-sm w-44 bg-surface border-outline-variant/20 rounded-lg"
+        @date-select="applyFilters"
+        @clear-click="applyFilters"
+        showButtonBar
+      />
+
       <button @click="resetFilters" class="text-xs text-on-surface-variant hover:text-primary font-semibold ml-auto">Clear Filters</button>
     </div>
 
@@ -103,6 +130,13 @@ const filterUtmCampaign = ref('')
 const filterDevice = ref('')
 const filterDateFrom = ref('')
 const filterDateTo = ref('')
+
+const deviceOptions = [
+  { label: 'All Devices', value: '' },
+  { label: 'Desktop', value: 'desktop' },
+  { label: 'Mobile', value: 'mobile' },
+  { label: 'Tablet', value: 'tablet' }
+]
 
 function applyFilters() {
   store.setFilters({
