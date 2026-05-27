@@ -7,8 +7,11 @@ dist/
 build/
 coverage/
 .out/
+.output/
 .nuxt/
 .next/
+.data/
+build_log.txt
 
 # Logs
 logs/

@@ -56,6 +56,7 @@ export default defineNuxtConfig({
         { name: 'ICBM', content: '10.7725, 106.6784' },
       ],
       link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         {
           rel: 'preconnect',
           href: 'https://fonts.gstatic.com',
@@ -160,6 +161,7 @@ export default defineNuxtConfig({
       trackingApiUrl: process.env.NUXT_PUBLIC_TRACKING_API_URL || '',
       emailjsServiceId: process.env.NUXT_PUBLIC_EMAILJS_SERVICE_ID || '',
       emailjsTemplateId: process.env.NUXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
+      emailjsAdminTemplateId: process.env.NUXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID || '',
       emailjsPublicKey: process.env.NUXT_PUBLIC_EMAILJS_PUBLIC_KEY || '',
     },
   },

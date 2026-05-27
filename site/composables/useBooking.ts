@@ -23,6 +23,7 @@ export function useBooking() {
   // EmailJS credentials from runtime config
   const emailjsServiceId = config.public.emailjsServiceId as string
   const emailjsTemplateId = config.public.emailjsTemplateId as string
+  const emailjsAdminTemplateId = config.public.emailjsAdminTemplateId as string
   const emailjsPublicKey = config.public.emailjsPublicKey as string
 
   const loading = ref(false)
@@ -51,13 +52,33 @@ export function useBooking() {
       practitioner: payload.practitioner || 'Not specified',
     }
 
-    await emailjs.send(
-      emailjsServiceId,
-      emailjsTemplateId,
-      templateParams,
-      emailjsPublicKey,
+    // Gửi email qua các template được cấu hình
+    const promises = []
+
+    // 1. Template gửi cho Khách hàng (hoặc template mặc định)
+    promises.push(
+      emailjs.send(
+        emailjsServiceId,
+        emailjsTemplateId,
+        templateParams,
+        emailjsPublicKey,
+      )
     )
-    console.log('[useBooking] EmailJS notification sent successfully.')
+
+    // 2. Template gửi riêng cho Chủ website (Admin) nếu có cấu hình
+    if (emailjsAdminTemplateId) {
+      promises.push(
+        emailjs.send(
+          emailjsServiceId,
+          emailjsAdminTemplateId,
+          templateParams,
+          emailjsPublicKey,
+        )
+      )
+    }
+
+    await Promise.all(promises)
+    console.log('[useBooking] EmailJS notifications sent successfully.')
   }
 
   async function submit(payload: Record<string, any>) {
