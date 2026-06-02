@@ -47,7 +47,7 @@ const featuredPosts = computed(() => [
     categoryKey: "articles",
     title: t("sharing_hub.featured_posts.f1_title"),
     desc: t("sharing_hub.featured_posts.f1_desc"),
-    image: "/hero-physiotherapy.png",
+    image: "/homepage-hero.webp",
     large: true,
     slug: "what-is-sport-recovery",
   },
@@ -64,7 +64,7 @@ const featuredPosts = computed(() => [
     categoryKey: "team_stories",
     title: t("sharing_hub.featured_posts.f3_title"),
     desc: t("sharing_hub.featured_posts.f3_desc"),
-    image: "/individual-hero.png",
+    image: "/individual-hero.webp",
     slug: "meet-huy-team-story",
   },
   {

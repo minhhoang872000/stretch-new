@@ -43,7 +43,7 @@ const solutions = computed(() => [
     ],
     cta: t('business_page.solutions.card3.cta'),
     link: '/business/education-training',
-    img: '/images/education-solution.png',
+    img: '/education.webp',
   },
 ])
 </script>

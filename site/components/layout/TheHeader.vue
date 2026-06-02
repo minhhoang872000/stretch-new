@@ -75,7 +75,7 @@ function switchLanguage(code: string) {
         isScrolled
           ? 'shadow-sm border-b border-border-default'
           : 'border-b border-border-default',
-        isMobileMenuOpen ? 'z-[1000]' : 'z-50',
+        isMobileMenuOpen ? 'z-[980]' : 'z-50',
       ]"
     >
       <!-- ✅ FIX: section-container bây giờ bao gồm CẢ desktop nav VÀ mobile controls -->
@@ -336,7 +336,7 @@ function switchLanguage(code: string) {
     <Transition name="slide-right">
       <div
         v-if="isMobileMenuOpen"
-        class="fixed top-0 right-0 bottom-0 w-[300px] bg-white shadow-elevated z-[999] lg:hidden flex flex-col pt-20 px-6"
+        class="fixed top-0 right-0 bottom-0 w-[300px] bg-white shadow-elevated z-[999] lg:hidden flex flex-col pt-24 px-6"
       >
         <template v-for="link in navLinks" :key="link.href">
           <!-- Regular mobile nav link -->

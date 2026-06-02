@@ -44,7 +44,7 @@ const activeArticle = computed(() => {
             t('sharing_hub.detail.what_is_sport_recovery.why.b3'),
             t('sharing_hub.detail.what_is_sport_recovery.why.b4'),
           ],
-          image: '/hero-physiotherapy.png',
+          image: '/homepage-hero.webp',
         },
         {
           id: 'key-components',
@@ -238,7 +238,7 @@ const relatedPosts = computed(() => [
     categoryKey: 'team_stories',
     title: t('sharing_hub.featured_posts.f3_title'),
     desc: t('sharing_hub.featured_posts.f3_desc'),
-    image: '/individual-hero.png',
+    image: '/individual-hero.webp',
     slug: 'meet-huy-team-story',
     date: 'May 2, 2025',
     readTime: '5 min read',

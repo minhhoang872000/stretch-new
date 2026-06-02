@@ -113,7 +113,7 @@ const metrics = computed(() => [
         <div class="order-1 lg:order-2 relative">
           <div class="relative rounded-3xl overflow-hidden aspect-[4/3] lg:aspect-[1.15/1] bg-off-white shadow-xl">
             <NuxtImg
-              src="/hero-physiotherapy.png"
+              src="/homepage-hero.webp"
               alt="Professional physiotherapy session — a therapist treating a patient"
               class="w-full h-full object-cover"
               loading="eager"

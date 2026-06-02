@@ -99,7 +99,7 @@ const uspIcons = [
         <div class="w-full lg:w-[50%] relative animate-fade-in-up" style="animation-delay: 200ms">
           <div class="relative w-full aspect-[4/5] lg:aspect-auto lg:h-[580px] rounded-[24px] overflow-hidden shadow-[0_20px_60px_rgba(11,42,74,0.12)]">
             <NuxtImg
-              src="/individual-hero.png"
+              src="/individual-hero.webp"
               alt="Stretch.vn — Professional physiotherapy treatment session"
               class="w-full h-full object-cover object-[70%_center] transition-transform duration-[2000ms] ease-out hover:scale-[1.04]"
               loading="eager"

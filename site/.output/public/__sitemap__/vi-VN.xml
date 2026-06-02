@@ -6,7 +6,7 @@
         <xhtml:link rel="alternate" hreflang="vi-VN" href="https://stretch.vn/vi" />
         <xhtml:link rel="alternate" hreflang="x-default" href="https://stretch.vn/" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/hero-physiotherapy.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/homepage-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/monaco.jpeg</image:loc>
@@ -66,7 +66,7 @@
         <xhtml:link rel="alternate" hreflang="vi-VN" href="https://stretch.vn/vi/business" />
         <xhtml:link rel="alternate" hreflang="x-default" href="https://stretch.vn/business" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/images/business-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/business-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/images/wellness-solution.png</image:loc>
@@ -75,7 +75,7 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/images/event-solution.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/images/education-solution.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/education.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/logos/decathlon.png</image:loc>
@@ -105,7 +105,7 @@
         <xhtml:link rel="alternate" hreflang="vi-VN" href="https://stretch.vn/vi/individual" />
         <xhtml:link rel="alternate" hreflang="x-default" href="https://stretch.vn/individual" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://i.pravatar.cc/100?img=1</image:loc>
@@ -153,13 +153,13 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/education-gallery-5.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/hero-physiotherapy.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/homepage-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/monaco-healthcare.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/marathon.png</image:loc>
@@ -231,7 +231,7 @@
         <xhtml:link rel="alternate" hreflang="vi-VN" href="https://stretch.vn/vi/business/education-training" />
         <xhtml:link rel="alternate" hreflang="x-default" href="https://stretch.vn/business/education-training" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/images/education-solution.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/education.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/education-gallery-1.png</image:loc>
@@ -255,7 +255,7 @@
         <xhtml:link rel="alternate" hreflang="vi-VN" href="https://stretch.vn/vi/business/recovery-event" />
         <xhtml:link rel="alternate" hreflang="x-default" href="https://stretch.vn/business/recovery-event" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/images/event-solution.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/w_2000&amp;amp;f_webp&amp;amp;q_80/recovery-homepage.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/event-booth.png</image:loc>
@@ -330,7 +330,7 @@
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/behind-session-listening" hreflang="x-default" />
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/behind-session-listening" hreflang="en-US" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/hero-physiotherapy.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/homepage-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/business_solution_sidebar.png</image:loc>
@@ -339,7 +339,7 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/runner-who.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/event-warmup.png</image:loc>
@@ -357,7 +357,7 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/runner-who.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/event-warmup.png</image:loc>
@@ -369,7 +369,7 @@
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/growing-team-elevating-care" hreflang="x-default" />
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/growing-team-elevating-care" hreflang="en-US" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/hero-physiotherapy.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/homepage-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/business_solution_sidebar.png</image:loc>
@@ -378,7 +378,7 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/runner-who.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/event-warmup.png</image:loc>
@@ -390,7 +390,7 @@
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/hip-mobility-key" hreflang="x-default" />
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/hip-mobility-key" hreflang="en-US" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/hero-physiotherapy.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/homepage-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/business_solution_sidebar.png</image:loc>
@@ -399,7 +399,7 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/runner-who.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/event-warmup.png</image:loc>
@@ -411,7 +411,7 @@
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/meet-huy-team-story" hreflang="x-default" />
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/meet-huy-team-story" hreflang="en-US" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/hero-physiotherapy.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/homepage-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/business_solution_sidebar.png</image:loc>
@@ -420,7 +420,7 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/runner-who.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/event-warmup.png</image:loc>
@@ -432,7 +432,7 @@
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/movement-workshop-rmit" hreflang="x-default" />
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/movement-workshop-rmit" hreflang="en-US" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/hero-physiotherapy.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/homepage-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/business_solution_sidebar.png</image:loc>
@@ -441,7 +441,7 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/runner-who.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/event-warmup.png</image:loc>
@@ -453,7 +453,7 @@
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/new-chapter-stretch" hreflang="x-default" />
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/new-chapter-stretch" hreflang="en-US" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/hero-physiotherapy.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/homepage-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/business_solution_sidebar.png</image:loc>
@@ -462,7 +462,7 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/runner-who.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/event-warmup.png</image:loc>
@@ -474,7 +474,7 @@
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/new-space-thao-dien" hreflang="x-default" />
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/new-space-thao-dien" hreflang="en-US" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/hero-physiotherapy.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/homepage-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/business_solution_sidebar.png</image:loc>
@@ -483,7 +483,7 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/runner-who.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/event-warmup.png</image:loc>
@@ -495,7 +495,7 @@
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/recovery-day-vn-runners" hreflang="x-default" />
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/recovery-day-vn-runners" hreflang="en-US" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/hero-physiotherapy.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/homepage-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/business_solution_sidebar.png</image:loc>
@@ -504,7 +504,7 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/runner-who.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/event-warmup.png</image:loc>
@@ -516,7 +516,7 @@
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/setbacks-to-strength-kevin" hreflang="x-default" />
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/setbacks-to-strength-kevin" hreflang="en-US" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/hero-physiotherapy.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/homepage-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/business_solution_sidebar.png</image:loc>
@@ -525,7 +525,7 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/runner-who.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/event-warmup.png</image:loc>
@@ -537,7 +537,7 @@
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/sunrise-stretch-sala" hreflang="x-default" />
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/sunrise-stretch-sala" hreflang="en-US" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/hero-physiotherapy.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/homepage-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/business_solution_sidebar.png</image:loc>
@@ -546,7 +546,7 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/runner-who.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/event-warmup.png</image:loc>
@@ -558,7 +558,7 @@
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/what-is-sport-recovery" hreflang="x-default" />
         <xhtml:link rel="alternate" href="https://stretch.vn/sharing-hub/what-is-sport-recovery" hreflang="en-US" />
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/hero-physiotherapy.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/homepage-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/business_solution_sidebar.png</image:loc>
@@ -567,11 +567,11 @@
             <image:loc>https://stretch.vn/_ipx/f_webp/runner-who.png</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.png</image:loc>
+            <image:loc>https://stretch.vn/_ipx/f_webp/individual-hero.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://stretch.vn/_ipx/f_webp/event-warmup.png</image:loc>
         </image:image>
     </url>
 </urlset>
-<!-- XML Sitemap generated by @nuxtjs/sitemap v8.0.15 at 2026-05-27T03:42:45.579Z -->
+<!-- XML Sitemap generated by @nuxtjs/sitemap v8.0.15 at 2026-06-01T07:31:07.338Z -->
