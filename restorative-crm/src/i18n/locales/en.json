@@ -90,5 +90,21 @@
     "pageName": "Page Name",
     "metaTitle": "Meta Title",
     "metaDescription": "Meta Description"
+  },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Access your Restorative CRM account",
+    "username": "Username",
+    "password": "Password",
+    "usernamePlaceholder": "Enter your username",
+    "passwordPlaceholder": "Enter your password",
+    "signIn": "Sign In",
+    "signingIn": "Signing In...",
+    "demoCredentials": "Demo Credentials",
+    "demoHint": "Click to auto-fill",
+    "requiredError": "This field is required",
+    "invalidError": "Invalid credentials",
+    "signOut": "Sign Out",
+    "signOutConfirm": "Are you sure you want to sign out?"
   }
 }

@@ -90,5 +90,21 @@
     "pageName": "Tên trang",
     "metaTitle": "Tiêu đề Meta",
     "metaDescription": "Mô tả Meta"
+  },
+  "login": {
+    "title": "Chào mừng trở lại",
+    "subtitle": "Truy cập tài khoản Restorative CRM của bạn",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "usernamePlaceholder": "Nhập tên đăng nhập của bạn",
+    "passwordPlaceholder": "Nhập mật khẩu của bạn",
+    "signIn": "Đăng nhập",
+    "signingIn": "Đang đăng nhập...",
+    "demoCredentials": "Tài khoản Demo",
+    "demoHint": "Nhấp để tự điền",
+    "requiredError": "Trường này là bắt buộc",
+    "invalidError": "Tài khoản hoặc mật khẩu không đúng",
+    "signOut": "Đăng xuất",
+    "signOutConfirm": "Bạn có chắc chắn muốn đăng xuất không?"
   }
 }

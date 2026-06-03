@@ -1,9 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.js'
 import DashboardView from '@/views/DashboardView.vue'
 
 const routes = [
   { path: '/', redirect: '/dashboard' },
   { path: '/dashboard', name: 'Dashboard', component: DashboardView },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/LoginView.vue')
+  },
   {
     path: '/leads',
     name: 'Leads',
@@ -51,7 +57,21 @@ const routes = [
   }
 ]
 
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+  if (to.name !== 'Login' && !authStore.isAuthenticated) {
+    next({ name: 'Login' })
+  } else if (to.name === 'Login' && authStore.isAuthenticated) {
+    next({ name: 'Dashboard' })
+  } else {
+    next()
+  }
+})
+
+export default router
+
