@@ -62,7 +62,7 @@ const { t } = useI18n()
         <div class="flex-1 relative max-w-xl w-full">
           <div class="aspect-[4/3] rounded-3xl overflow-hidden shadow-elevated">
             <NuxtImg 
-              src="/booking-hero-new.png" 
+              src="/booking-hero.webp" 
               alt="Physiotherapy" 
               class="w-full h-full object-cover"
             format="webp" />

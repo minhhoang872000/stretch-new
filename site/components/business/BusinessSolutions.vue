@@ -15,7 +15,7 @@ const solutions = computed(() => [
     ],
     cta: t('business_page.solutions.card1.cta'),
     link: '/business/corporate-wellness',
-    img: '/images/wellness-solution.png',
+    img: '/business-take-care.webp',
   },
   {
     id: '02',
@@ -29,7 +29,7 @@ const solutions = computed(() => [
     ],
     cta: t('business_page.solutions.card2.cta'),
     link: '/business/recovery-event',
-    img: '/images/event-solution.png',
+    img: '/recovery-booth.webp',
   },
   {
     id: '03',

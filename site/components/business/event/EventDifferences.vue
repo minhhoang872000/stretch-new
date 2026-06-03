@@ -5,22 +5,22 @@ const cards = computed(() => [
   {
     title: t('event_page.differences.card1.title'),
     desc: t('event_page.differences.card1.desc'),
-    img: '/event-booth.png'
+    img: '/stretch-zone.webp'
   },
   {
     title: t('event_page.differences.card2.title'),
     desc: t('event_page.differences.card2.desc'),
-    img: '/event-flow.png'
+    img: '/station-workflow.webp'
   },
   {
     title: t('event_page.differences.card3.title'),
     desc: t('event_page.differences.card3.desc'),
-    img: '/event-response.png'
+    img: '/response-station.webp'
   },
   {
     title: t('event_page.differences.card4.title'),
     desc: t('event_page.differences.card4.desc'),
-    img: '/event-warmup.png'
+    img: '/warm-up.webp'
   }
 ])
 </script>

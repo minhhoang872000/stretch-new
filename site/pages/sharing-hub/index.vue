@@ -29,6 +29,13 @@ watch(
   { immediate: true },
 );
 
+// Fixed high-quality webp images for the hero collage
+const collageImages = [
+  '/booking-hero.webp',
+  '/homepage-hero.webp',
+  '/stretch-zone.webp'
+];
+
 const categories = computed(() => [
   { key: "all", label: t("sharing_hub.categories.all") },
   { key: "articles", label: t("sharing_hub.categories.articles") },
@@ -147,7 +154,7 @@ const allPosts = computed(() => [
     categoryKey: "events",
     title: t("sharing_hub.posts.p8_title"),
     desc: t("sharing_hub.posts.p8_desc"),
-    image: "/event-warmup.png",
+    image: "/warm-up.webp",
     slug: "sunrise-stretch-sala",
     tags: ["Movement", "Recovery"],
   },
@@ -290,15 +297,15 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
             <div class="collage-grid">
               <!-- Left: tall image spanning full height -->
               <div class="collage-cell collage-cell--left">
-                <NuxtImg src="/education-gallery-2.png" alt="Stretching session" format="webp" />
+                <NuxtImg :src="collageImages[0]" alt="Stretching session" format="webp" />
               </div>
               <!-- Right top -->
               <div class="collage-cell collage-cell--right-top">
-                <NuxtImg src="/education-gallery-3.png" alt="Recovery therapy" format="webp" />
+                <NuxtImg :src="collageImages[1]" alt="Recovery therapy" format="webp" />
               </div>
               <!-- Right bottom -->
               <div class="collage-cell collage-cell--right-bottom">
-                <NuxtImg src="/education-gallery-5.png" alt="Team collaboration" format="webp" />
+                <NuxtImg :src="collageImages[2]" alt="Team collaboration" format="webp" />
               </div>
             </div>
 
@@ -1010,6 +1017,7 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
   grid-template-columns: 1.2fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 12px;
+  aspect-ratio: 1.25 / 1;
 }
 
 .collage-cell {

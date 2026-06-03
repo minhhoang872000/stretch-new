@@ -248,7 +248,7 @@ const relatedPosts = computed(() => [
     categoryKey: 'events',
     title: t('sharing_hub.posts.p8_title'),
     desc: t('sharing_hub.posts.p8_desc'),
-    image: '/event-warmup.png',
+    image: '/warm-up.webp',
     slug: 'sunrise-stretch-sala',
     date: 'Apr 22, 2025',
     readTime: '4 min read',

@@ -22,6 +22,7 @@ const navLinks = computed(() => [
       },
     ],
   },
+  { label: t('sharing_hub.nav'), href: '/sharing-hub' },
 ]);
 
 const isBusinessDropdownOpen = ref(false);

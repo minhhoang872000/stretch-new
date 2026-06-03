@@ -64,6 +64,14 @@ const localePath = useLocalePath()
                 {{ $t('footer.about') }}
               </a>
             </li>
+            <li>
+              <NuxtLink 
+                :to="localePath('/sharing-hub')"
+                class="text-sm text-white/60 hover:text-white transition-colors"
+              >
+                {{ $t('sharing_hub.nav') }}
+              </NuxtLink>
+            </li>
           </ul>
         </div>
 
