@@ -16,7 +16,6 @@ import { useTrackingStore } from '~/stores/tracking'
  */
 export function useBooking() {
   const config = useRuntimeConfig()
-  const apiUrl = config.public.trackingApiUrl as string
   const trackingStore = useTrackingStore()
 
   // EmailJS credentials from runtime config
@@ -93,14 +92,10 @@ export function useBooking() {
     }
 
     try {
-      // Call the lead-tracker-api DIRECTLY (browser → API). Requires the API's
-      // CORS_ORIGINS to include this site's origin. Falls back to the Nuxt
-      // server route when no external API is configured.
-      if (apiUrl) {
-        await $fetch(`${apiUrl}/api/v1/bookings`, { method: 'POST', body })
-      } else {
-        await $fetch('/api/bookings', { method: 'POST', body })
-      }
+      // Booking is a client-side POST (no SSR path), so calling the API directly
+      // from the browser would be blocked by CORS. Go through the Nuxt server
+      // route instead → it forwards to the lead-tracker-api server-to-server.
+      await $fetch('/api/bookings', { method: 'POST', body })
 
       // Gửi email thông báo qua EmailJS (không chặn luồng chính)
       sendEmailNotification(body).catch((e: any) => {

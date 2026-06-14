@@ -63,7 +63,7 @@ export function useBlogClient() {
 
   async function fetchCatMap(): Promise<Record<string, string>> {
     try {
-      const res = await $fetch<{ data?: { categories: any[] } }>(`${base}/api/v1/categories`)
+      const res = await $fetch<{ data?: { categories: any[] } }>(`${base}/api/v1/categories`, { cache: 'no-store' })
       const map: Record<string, string> = {}
       for (const c of res?.data?.categories || []) map[c.key] = c.label
       return map
@@ -78,7 +78,7 @@ export function useBlogClient() {
     if (filters.categoryKey) query.category = filters.categoryKey
     if (filters.search) query.search = filters.search
     const [res, catMap] = await Promise.all([
-      $fetch<{ data?: { posts: any[] } }>(`${base}/api/v1/blog`, { query }).catch(() => null),
+      $fetch<{ data?: { posts: any[] } }>(`${base}/api/v1/blog`, { query, cache: 'no-store' }).catch(() => null),
       fetchCatMap(),
     ])
     return (res?.data?.posts || []).map((p) => mapApiPost(p, catMap))
@@ -87,7 +87,7 @@ export function useBlogClient() {
   async function getPostBySlug(slug: string): Promise<SitePost | null> {
     if (!base) return null
     const [res, catMap] = await Promise.all([
-      $fetch<{ data?: { post: any } }>(`${base}/api/v1/blog/${slug}`).catch(() => null),
+      $fetch<{ data?: { post: any } }>(`${base}/api/v1/blog/${slug}`, { cache: 'no-store' }).catch(() => null),
       fetchCatMap(),
     ])
     if (!res?.data?.post) return null
@@ -96,7 +96,7 @@ export function useBlogClient() {
 
   async function getCategories(): Promise<{ key: string; label: string }[]> {
     if (!base) return []
-    const res = await $fetch<{ data?: { categories: any[] } }>(`${base}/api/v1/categories`).catch(() => null)
+    const res = await $fetch<{ data?: { categories: any[] } }>(`${base}/api/v1/categories`, { cache: 'no-store' }).catch(() => null)
     return (res?.data?.categories || []).map((c: any) => ({ key: c.key, label: c.label }))
   }
 
