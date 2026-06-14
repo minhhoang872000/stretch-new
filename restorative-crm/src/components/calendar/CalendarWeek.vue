@@ -4,7 +4,6 @@
       <div v-for="day in store.weekDates" :key="day.toISOString()"
            class="flex flex-col min-h-[400px]"
            :class="isToday(day) ? 'bg-primary/5' : ''">
-        <!-- Day header -->
         <button
           @click="store.selectDate(day)"
           class="px-1 sm:px-2 py-2.5 text-center border-b border-outline-variant/10 transition-colors hover:bg-surface-container-low"
@@ -16,7 +15,6 @@
           </p>
         </button>
 
-        <!-- Bookings -->
         <div class="flex-1 p-1 sm:p-1.5 space-y-1 overflow-y-auto no-scrollbar">
           <button v-for="booking in store.bookingsForDate(day)" :key="booking.id"
                   @click="store.selectAppointment(booking)"
@@ -38,17 +36,12 @@
 <script setup>
 import { useCalendarStore, dayKey } from '@/stores/calendar.js'
 import { storeToRefs } from 'pinia'
-import { useI18n } from 'vue-i18n'
 
 const store = useCalendarStore()
 const { selectedAppointment } = storeToRefs(store)
-const { locale } = useI18n()
 
-const WEEKDAYS = {
-  en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-  vi: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
-}
-const weekDayLabel = (d) => (WEEKDAYS[locale.value] || WEEKDAYS.en)[d.getDay()]
+const WEEKDAYS = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']
+const weekDayLabel = (d) => WEEKDAYS[d.getDay()]
 
 const todayKey = dayKey(new Date())
 const isToday = (d) => dayKey(d) === todayKey

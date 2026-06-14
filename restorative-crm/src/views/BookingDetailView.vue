@@ -47,7 +47,16 @@
             {{ (bk.name || '?').charAt(0).toUpperCase() }}
           </div>
           <div class="flex-1 min-w-0">
-            <h1 class="text-xl font-headline font-extrabold text-on-surface">{{ bk.name }}</h1>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h1 class="text-xl font-headline font-extrabold text-on-surface">{{ bk.name }}</h1>
+              <span
+                class="text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1"
+                :class="bkType === 'business' ? 'bg-teal-50 text-teal-700 border border-teal-200' : 'bg-primary/10 text-primary border border-primary/20'"
+              >
+                <span class="material-symbols-outlined text-sm">{{ bkType === 'business' ? 'corporate_fare' : 'person' }}</span>
+                {{ TYPE_LABELS[bkType] }}
+              </span>
+            </div>
             <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-sm">
               <a v-if="bk.phone" :href="`tel:${bk.phone}`" class="flex items-center gap-1.5 text-primary font-medium hover:underline">
                 <span class="material-symbols-outlined text-lg">call</span>{{ bk.phone }}
@@ -107,6 +116,24 @@
               <span v-else class="text-on-surface-variant/50 text-sm">—</span>
             </dd>
           </div>
+
+          <!-- Business-only fields (present when the booking carries them) -->
+          <div v-if="note.participants">
+            <dt class="label-xs mb-1">Số người tham gia</dt>
+            <dd class="text-sm font-medium text-on-surface">{{ note.participants }}</dd>
+          </div>
+          <div v-if="note.setting">
+            <dt class="label-xs mb-1">Môi trường</dt>
+            <dd class="text-sm font-medium text-on-surface">{{ SETTING_LABELS[note.setting] || note.setting }}</dd>
+          </div>
+          <div v-if="note.address">
+            <dt class="label-xs mb-1">Địa chỉ</dt>
+            <dd class="text-sm font-medium text-on-surface">{{ note.address }}</dd>
+          </div>
+          <div v-if="note.role">
+            <dt class="label-xs mb-1">Chức vụ / Vị trí</dt>
+            <dd class="text-sm font-medium text-on-surface">{{ note.role }}</dd>
+          </div>
         </dl>
 
         <div class="mt-5">
@@ -151,6 +178,10 @@ import { useRoute, useRouter } from 'vue-router'
 import { fetchBookingById, updateBookingStatus, deleteBooking } from '@/services/api.js'
 import { formatDate, formatDateTime } from '@/utils/date.js'
 import { useNotify } from '@/composables/useNotify.js'
+import {
+  SERVICE_LABELS, LOCATION_LABELS, CONTACT_LABELS, STATUS_LABELS, SETTING_LABELS, TYPE_LABELS,
+  parseNote, bookingType, statusClass, serviceClass, locationIcon, contactIcon, contactClass,
+} from '@/constants/booking.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -161,63 +192,8 @@ const loading = ref(true)
 const error = ref('')
 const busy = ref(false)
 
-const SERVICE_LABELS = {
-  recovery: 'Phục hồi sau vận động',
-  pain: 'Đau nhức / chấn thương',
-  stiffness: 'Căng cứng kéo dài',
-  not_sure: 'Tư vấn chung',
-}
-const LOCATION_LABELS = { home: 'Tại nhà riêng', clinic: 'Tại cơ sở', consult: 'Tư vấn thêm' }
-const CONTACT_LABELS = { call: 'Gọi điện', zalo: 'Zalo', email: 'Email' }
-const STATUS_LABELS = {
-  pending: 'Chờ xác nhận',
-  confirmed: 'Đã xác nhận',
-  completed: 'Hoàn thành',
-  cancelled: 'Đã huỷ',
-}
-
 const note = computed(() => parseNote(bk.value?.note))
-
-function parseNote(raw) {
-  if (!raw) return { location: '', contact: '', text: '' }
-  const lines = raw.split('\n')
-  const lastLine = lines[lines.length - 1] || ''
-  let location = '', contact = '', textLines = lines
-  if (lastLine.includes('Location:') || lastLine.includes('Contact:')) {
-    const locM = lastLine.match(/Location:\s*(\w+)/)
-    const conM = lastLine.match(/Contact:\s*(\w+)/)
-    if (locM) location = locM[1]
-    if (conM) contact = conM[1]
-    textLines = lines.slice(0, -1)
-  }
-  return { location, contact, text: textLines.join('\n').trim() }
-}
-
-function statusClass(status) {
-  return {
-    pending: 'bg-yellow-50 text-yellow-700 border border-yellow-200',
-    confirmed: 'bg-blue-50 text-blue-700 border border-blue-200',
-    completed: 'bg-green-50 text-green-700 border border-green-200',
-    cancelled: 'bg-red-50 text-red-400 border border-red-200',
-  }[status] || 'bg-surface-container text-on-surface-variant'
-}
-function serviceClass(service) {
-  return {
-    recovery: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
-    pain: 'bg-red-50 text-red-700 border border-red-200',
-    stiffness: 'bg-orange-50 text-orange-700 border border-orange-200',
-    not_sure: 'bg-purple-50 text-purple-700 border border-purple-200',
-  }[service] || 'bg-surface-container text-on-surface-variant border border-outline-variant/20'
-}
-function locationIcon(loc) { return { home: 'home', clinic: 'apartment', consult: 'chat' }[loc] || 'location_on' }
-function contactIcon(pref) { return { call: 'call', zalo: 'message', email: 'email' }[pref] || 'contact_phone' }
-function contactClass(pref) {
-  return {
-    call: 'bg-sky-50 text-sky-700',
-    zalo: 'bg-blue-50 text-blue-700',
-    email: 'bg-indigo-50 text-indigo-700',
-  }[pref] || 'bg-surface-container text-on-surface-variant'
-}
+const bkType = computed(() => bookingType(note.value))
 
 async function load() {
   loading.value = true

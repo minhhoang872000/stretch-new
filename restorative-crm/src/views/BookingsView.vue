@@ -84,7 +84,16 @@
           >
             <!-- Khách hàng -->
             <td class="p-4">
-              <p class="font-semibold text-on-surface">{{ bk.name }}</p>
+              <div class="flex items-center gap-1.5">
+                <p class="font-semibold text-on-surface">{{ bk.name }}</p>
+                <span
+                  class="text-[9px] font-bold px-1.5 py-0.5 rounded-full inline-flex items-center gap-0.5 shrink-0"
+                  :class="bookingType(parseNote(bk.note)) === 'business' ? 'bg-teal-50 text-teal-700' : 'bg-primary/10 text-primary'"
+                >
+                  <span class="material-symbols-outlined text-[11px]">{{ bookingType(parseNote(bk.note)) === 'business' ? 'corporate_fare' : 'person' }}</span>
+                  {{ TYPE_LABELS[bookingType(parseNote(bk.note))] }}
+                </span>
+              </div>
               <p class="text-xs text-on-surface-variant mt-0.5">{{ bk.phone }}</p>
               <p v-if="bk.email" class="text-xs text-on-surface-variant/60">{{ bk.email }}</p>
               <router-link
@@ -106,12 +115,14 @@
 
             <!-- Địa điểm -->
             <td class="p-4">
-              <template v-if="parseNote(bk.note).location">
-                <div class="flex items-center gap-1 text-xs text-on-surface-variant">
-                  <span class="material-symbols-outlined text-sm">{{ locationIcon(parseNote(bk.note).location) }}</span>
-                  {{ LOCATION_LABELS[parseNote(bk.note).location] || parseNote(bk.note).location }}
-                </div>
-              </template>
+              <div v-if="parseNote(bk.note).location" class="flex items-center gap-1 text-xs text-on-surface-variant">
+                <span class="material-symbols-outlined text-sm">{{ locationIcon(parseNote(bk.note).location) }}</span>
+                {{ LOCATION_LABELS[parseNote(bk.note).location] || parseNote(bk.note).location }}
+              </div>
+              <div v-else-if="parseNote(bk.note).address" class="flex items-center gap-1 text-xs text-on-surface-variant">
+                <span class="material-symbols-outlined text-sm">apartment</span>
+                {{ parseNote(bk.note).address }}
+              </div>
               <span v-else class="text-on-surface-variant/30 text-xs">—</span>
             </td>
 
@@ -138,7 +149,10 @@
               <p v-if="parseNote(bk.note).text" class="text-xs text-on-surface-variant truncate" :title="parseNote(bk.note).text">
                 {{ parseNote(bk.note).text }}
               </p>
-              <span v-else class="text-on-surface-variant/30 text-xs">—</span>
+              <p v-if="bizExtras(bk.note)" class="text-[10px] text-on-surface-variant/60 truncate mt-0.5" :title="bizExtras(bk.note)">
+                {{ bizExtras(bk.note) }}
+              </p>
+              <span v-if="!parseNote(bk.note).text && !bizExtras(bk.note)" class="text-on-surface-variant/30 text-xs">—</span>
             </td>
 
             <!-- Trạng thái -->
@@ -190,35 +204,13 @@ import { useRouter } from 'vue-router'
 import { fetchBookings, updateBookingStatus, deleteBooking } from '@/services/api.js'
 import { formatDate } from '@/utils/date.js'
 import { useNotify } from '@/composables/useNotify.js'
+import {
+  SERVICE_LABELS, LOCATION_LABELS, CONTACT_LABELS, STATUS_LABELS, SETTING_LABELS, TYPE_LABELS,
+  parseNote, bookingType, statusClass, serviceClass, locationIcon, contactIcon, contactClass,
+} from '@/constants/booking.js'
 
 const router = useRouter()
 const notify = useNotify()
-
-const SERVICE_LABELS = {
-  recovery: 'Phục hồi sau vận động',
-  pain: 'Đau nhức / chấn thương',
-  stiffness: 'Căng cứng kéo dài',
-  not_sure: 'Tư vấn chung',
-}
-
-const LOCATION_LABELS = {
-  home: 'Tại nhà riêng',
-  clinic: 'Tại cơ sở',
-  consult: 'Tư vấn thêm',
-}
-
-const CONTACT_LABELS = {
-  call: 'Gọi điện',
-  zalo: 'Zalo',
-  email: 'Email',
-}
-
-const STATUS_LABELS = {
-  pending: 'Chờ xác nhận',
-  confirmed: 'Đã xác nhận',
-  completed: 'Hoàn thành',
-  cancelled: 'Đã huỷ',
-}
 
 const bookings = ref([])
 const total = ref(0)
@@ -238,58 +230,14 @@ const stats = computed(() => [
   { label: 'Hoàn thành', value: bookings.value.filter(b => b.status === 'completed').length, color: 'text-green-600' },
 ])
 
-// Parse note field: "Optional free text\nLocation: home | Contact: zalo"
-function parseNote(raw) {
-  if (!raw) return { location: '', contact: '', text: '' }
-  const lines = raw.split('\n')
-  const lastLine = lines[lines.length - 1] || ''
-  let location = ''
-  let contact = ''
-  let textLines = lines
-
-  if (lastLine.includes('Location:') || lastLine.includes('Contact:')) {
-    const locM = lastLine.match(/Location:\s*(\w+)/)
-    const conM = lastLine.match(/Contact:\s*(\w+)/)
-    if (locM) location = locM[1]
-    if (conM) contact = conM[1]
-    textLines = lines.slice(0, -1)
-  }
-
-  return { location, contact, text: textLines.join('\n').trim() }
-}
-
-function statusClass(status) {
-  return {
-    pending: 'bg-yellow-50 text-yellow-700 border border-yellow-200',
-    confirmed: 'bg-blue-50 text-blue-700 border border-blue-200',
-    completed: 'bg-green-50 text-green-700 border border-green-200',
-    cancelled: 'bg-red-50 text-red-400 border border-red-200 line-through',
-  }[status] || 'bg-surface-container text-on-surface-variant'
-}
-
-function serviceClass(service) {
-  return {
-    recovery: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
-    pain: 'bg-red-50 text-red-700 border border-red-200',
-    stiffness: 'bg-orange-50 text-orange-700 border border-orange-200',
-    not_sure: 'bg-purple-50 text-purple-700 border border-purple-200',
-  }[service] || 'bg-surface-container text-on-surface-variant border border-outline-variant/20'
-}
-
-function locationIcon(loc) {
-  return { home: 'home', clinic: 'apartment', consult: 'chat' }[loc] || 'location_on'
-}
-
-function contactIcon(pref) {
-  return { call: 'call', zalo: 'message', email: 'email' }[pref] || 'contact_phone'
-}
-
-function contactClass(pref) {
-  return {
-    call: 'bg-sky-50 text-sky-700',
-    zalo: 'bg-blue-50 text-blue-700',
-    email: 'bg-indigo-50 text-indigo-700',
-  }[pref] || 'bg-surface-container text-on-surface-variant'
+// One-line summary of business-only note markers (participants/setting/role).
+function bizExtras(note) {
+  const p = parseNote(note)
+  const parts = []
+  if (p.participants) parts.push(`${p.participants} người`)
+  if (p.setting) parts.push(SETTING_LABELS[p.setting] || p.setting)
+  if (p.role) parts.push(p.role)
+  return parts.join(' · ')
 }
 
 async function loadBookings() {

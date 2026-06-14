@@ -20,20 +20,20 @@
         <button v-for="v in views" :key="v.key" @click="store.setView(v.key)"
           class="flex-1 sm:flex-none px-3 py-1 rounded-full text-[11px] transition-all"
           :class="store.view === v.key ? 'font-bold bg-primary text-on-primary shadow-sm' : 'font-medium text-on-surface hover:bg-surface-container'">
-          {{ $t('calendar.' + v.key) }}
+          {{ v.label }}
         </button>
       </div>
 
       <!-- Service Filter -->
       <select v-model="store.filterService" class="bg-surface-container-low border-none rounded-full text-[11px] font-bold text-on-surface px-3 py-1.5 focus:ring-0 cursor-pointer hover:bg-surface-container transition-colors">
-        <option value="">{{ $t('calendar.allServices') }}</option>
+        <option value="">Tất cả dịch vụ</option>
         <option v-for="s in store.services" :key="s" :value="s">{{ s }}</option>
       </select>
 
       <!-- New Booking Button -->
       <button @click="openBookingModal" class="btn-primary !px-3 !py-1.5 !text-xs flex items-center gap-1.5 justify-center">
         <span class="material-symbols-outlined text-base">add</span>
-        <span class="hidden sm:inline">{{ $t('calendar.newBooking') }}</span>
+        <span class="hidden sm:inline">Đặt lịch mới</span>
       </button>
     </div>
   </div>
@@ -42,37 +42,30 @@
 <script setup>
 import { inject, computed } from 'vue'
 import { useCalendarStore } from '@/stores/calendar.js'
-import { useI18n } from 'vue-i18n'
 
 const store = useCalendarStore()
-const { locale } = useI18n()
 const openBookingModal = inject('openBookingModal', () => {})
 
 const views = [
-  { key: 'month' },
-  { key: 'week' },
-  { key: 'day' },
+  { key: 'month', label: 'Tháng' },
+  { key: 'week', label: 'Tuần' },
+  { key: 'day', label: 'Ngày' },
 ]
 
-const loc = computed(() => (locale.value === 'vi' ? 'vi-VN' : 'en-US'))
-
-// Header title adapts to the active view: month name, week range, or full day.
 const rangeLabel = computed(() => {
   const d = new Date(store.currentDate)
   if (store.view === 'month') {
-    return d.toLocaleDateString(loc.value, { month: 'long', year: 'numeric' })
+    return d.toLocaleDateString('vi-VN', { month: 'long', year: 'numeric' })
   }
   if (store.view === 'week') {
     const week = store.weekDates
     const start = week[0]
     const end = week[6]
     const sameMonth = start.getMonth() === end.getMonth()
-    const startStr = start.toLocaleDateString(loc.value, { day: 'numeric', month: 'short' })
-    const endStr = end.toLocaleDateString(loc.value, { day: 'numeric', month: 'short', year: 'numeric' })
-    return sameMonth
-      ? `${start.getDate()} – ${endStr}`
-      : `${startStr} – ${endStr}`
+    const startStr = start.toLocaleDateString('vi-VN', { day: 'numeric', month: 'short' })
+    const endStr = end.toLocaleDateString('vi-VN', { day: 'numeric', month: 'short', year: 'numeric' })
+    return sameMonth ? `${start.getDate()} – ${endStr}` : `${startStr} – ${endStr}`
   }
-  return new Date(store.selectedDate).toLocaleDateString(loc.value, { day: 'numeric', month: 'long', year: 'numeric' })
+  return new Date(store.selectedDate).toLocaleDateString('vi-VN', { day: 'numeric', month: 'long', year: 'numeric' })
 })
 </script>

@@ -1,28 +1,42 @@
 import { useToast } from 'primevue/usetoast'
-import i18n from '@/i18n/index.js'
 
-/**
- * Thin wrapper around PrimeVue's Toast that gives short success/error/info/warn
- * helpers with i18n-aware messages.
- *
- * Each helper accepts either an i18n key (e.g. 'toast.blogCreated') or a plain
- * string (e.g. a caught error message). If the argument is a known key it is
- * translated; otherwise it is shown as-is. The localized severity title (e.g.
- * "Thành công" / "Success") is used as the toast summary automatically.
- *
- * Must be called from a component's setup() (PrimeVue's useToast uses inject).
- */
+const MESSAGES = {
+  'toast.success': 'Thành công',
+  'toast.error': 'Lỗi',
+  'toast.info': 'Thông tin',
+  'toast.warn': 'Cảnh báo',
+  'toast.genericError': 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+  'toast.blogCreated': 'Đã tạo bài viết thành công.',
+  'toast.blogUpdated': 'Đã cập nhật bài viết thành công.',
+  'toast.blogDeleted': 'Đã xoá bài viết.',
+  'toast.postPublished': 'Đã xuất bản bài viết.',
+  'toast.postUnpublished': 'Đã chuyển bài viết về bản nháp.',
+  'toast.categoryCreated': 'Đã tạo danh mục thành công.',
+  'toast.categoryUpdated': 'Đã cập nhật danh mục thành công.',
+  'toast.categoryDeleted': 'Đã xoá danh mục.',
+  'toast.bookingCreated': 'Đã tạo lịch hẹn thành công.',
+  'toast.bookingUpdated': 'Đã cập nhật trạng thái lịch hẹn.',
+  'toast.bookingDeleted': 'Đã xoá lịch hẹn.',
+  'toast.imageUploaded': 'Đã tải ảnh lên thành công.',
+  'toast.imageUploadError': 'Tải ảnh lên thất bại.',
+}
+
+const SEVERITY_LABELS = {
+  success: 'Thành công',
+  error: 'Lỗi',
+  info: 'Thông tin',
+  warn: 'Cảnh báo',
+}
+
 export function useNotify() {
   const toast = useToast()
-  const { t, te } = i18n.global
 
-  // Translate when the message is a registered key, else show the literal text.
-  const tr = (msg) => (typeof msg === 'string' && te(msg) ? t(msg) : msg)
+  const tr = (msg) => MESSAGES[msg] ?? msg
 
   const show = (severity, message, life) =>
     toast.add({
       severity,
-      summary: t(`toast.${severity}`),
+      summary: SEVERITY_LABELS[severity],
       detail: tr(message),
       life,
     })

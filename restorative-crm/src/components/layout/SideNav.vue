@@ -12,18 +12,12 @@
   >
     <!-- Logo -->
     <div class="mb-8 px-3 flex items-center gap-3">
-      <div
-        class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white shadow-lg shrink-0"
-      >
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white shadow-lg shrink-0">
         <span class="material-symbols-outlined text-xl">clinical_notes</span>
       </div>
       <div class="min-w-0">
-        <h1 class="text-base font-bold text-teal-900 font-headline tracking-tight leading-tight truncate">
-          Stretch.vn
-        </h1>
-        <p class="text-[9px] uppercase tracking-widest text-secondary font-bold opacity-70">
-          Admin
-        </p>
+        <h1 class="text-base font-bold text-teal-900 font-headline tracking-tight leading-tight truncate">Stretch.vn</h1>
+        <p class="text-[9px] uppercase tracking-widest text-secondary font-bold opacity-70">Admin</p>
       </div>
     </div>
 
@@ -42,10 +36,9 @@
         "
       >
         <span class="material-symbols-outlined text-xl">{{ item.icon }}</span>
-        <span class="font-headline tracking-tight">{{ $t(getNavKey(item.label)) }}</span>
+        <span class="font-headline tracking-tight">{{ NAV_LABELS[item.label] || item.label }}</span>
       </RouterLink>
     </nav>
-
   </aside>
 </template>
 
@@ -58,16 +51,14 @@ const route = useRoute()
 const layoutStore = useLayoutStore()
 const isActive = (path) => route.path === path
 
-const getNavKey = (label) => {
-  const map = {
-    'Dashboard': 'common.dashboard',
-    'Bookings': 'common.bookings',
-    'Categories': 'common.categories',
-    'Calendar': 'common.calendar',
-    'Blog': 'common.blog',
-    'Services': 'common.services',
-    'Google Analytics': 'common.googleAnalytics'
-  }
-  return map[label] || label
+const NAV_LABELS = {
+  'Dashboard': 'Bảng điều khiển',
+  'Bookings': 'Lịch đặt',
+  'Categories': 'Danh mục',
+  'Calendar': 'Lịch hẹn',
+  'Blog': 'Bài viết',
+  'Services': 'Dịch vụ',
+  'Google Analytics': 'Google Analytics',
+  'Leads': 'Khách tiềm năng',
 }
 </script>

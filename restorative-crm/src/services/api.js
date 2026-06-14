@@ -1,27 +1,34 @@
 import { formatDate } from '@/utils/date.js'
+import { useLoadingStore } from '@/stores/loading.js'
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://stretch-new.onrender.com/api/v1'
 
 async function request(path, options = {}) {
+  let loading
+  try { loading = useLoadingStore(); loading.apiStart() } catch { /* outside pinia context */ }
   const { headers: optHeaders, ...rest } = options
   const token = localStorage.getItem('auth_token')
   const authHeaders = token ? { Authorization: `Bearer ${token}` } : {}
   const url = `${API_BASE}${path}`
-  const res = await fetch(url, {
-    headers: { 'Content-Type': 'application/json', ...authHeaders, ...optHeaders },
-    ...rest,
-  })
-  const json = await res.json()
-  if (!json.success) {
-    if (res.status === 401) {
-      localStorage.removeItem('auth_token')
-      localStorage.removeItem('auth_user')
-      window.location.href = '/login'
-      return
+  try {
+    const res = await fetch(url, {
+      headers: { 'Content-Type': 'application/json', ...authHeaders, ...optHeaders },
+      ...rest,
+    })
+    const json = await res.json()
+    if (!json.success) {
+      if (res.status === 401) {
+        localStorage.removeItem('auth_token')
+        localStorage.removeItem('auth_user')
+        window.location.href = '/login'
+        return
+      }
+      throw new Error(json.error?.message || 'API Error')
     }
-    throw new Error(json.error?.message || 'API Error')
+    return json.data
+  } finally {
+    try { loading?.apiFinish() } catch { /* ignore */ }
   }
-  return json.data
 }
 
 // ─── Image Upload (Cloudflare Images via lead-tracker-api) ────────
@@ -138,6 +145,19 @@ export function fetchBookings(filters = {}) {
 
 export function fetchBookingById(id) {
   return request(`/bookings/${id}`)
+}
+
+/**
+ * Create a booking. Payload follows the website wire format:
+ *   { service (code), date 'YYYY-MM-DD', time 'HH:mm', name, phone,
+ *     email?, note?, practitioner? }
+ * The endpoint is public (no auth required).
+ */
+export function createBooking(payload) {
+  return request('/bookings', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
 }
 
 export function updateBookingStatus(id, status) {

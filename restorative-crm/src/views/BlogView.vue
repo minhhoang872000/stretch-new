@@ -3,12 +3,12 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
       <div>
-        <span class="label-xs mb-1 block">{{ $t('blog.contentRepo') }}</span>
-        <h1 class="text-2xl lg:text-3xl font-headline font-extrabold text-on-surface tracking-tight">{{ $t('blog.title') }}</h1>
+        <span class="label-xs mb-1 block">Kho lưu trữ nội dung</span>
+        <h1 class="text-2xl lg:text-3xl font-headline font-extrabold text-on-surface tracking-tight">Trung tâm nội dung</h1>
       </div>
       <button @click="openCreate" class="btn-primary flex items-center gap-2 justify-center w-full sm:w-auto">
         <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1">add</span>
-        {{ $t('blog.newPost') }}
+        Tạo bài viết mới
       </button>
     </div>
 

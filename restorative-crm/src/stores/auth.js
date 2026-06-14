@@ -22,10 +22,7 @@ export const useAuthStore = defineStore('auth', () => {
       if (!json.success) {
         return {
           success: false,
-          message: {
-            en: json.error?.message || 'Invalid credentials',
-            vi: 'Email hoặc mật khẩu không đúng',
-          },
+          message: 'Email hoặc mật khẩu không đúng',
         }
       }
 
@@ -38,10 +35,7 @@ export const useAuthStore = defineStore('auth', () => {
     } catch {
       return {
         success: false,
-        message: {
-          en: 'Connection error. Please check the API server.',
-          vi: 'Lỗi kết nối. Vui lòng kiểm tra server API.',
-        },
+        message: 'Lỗi kết nối. Vui lòng kiểm tra server API.',
       }
     }
   }

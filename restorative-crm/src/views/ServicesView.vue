@@ -4,13 +4,13 @@
     <section class="mb-8">
       <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-6 gap-4">
         <div>
-          <span class="label-xs mb-1 block">{{ $t('services.clinicalInventory') }}</span>
-          <h1 class="text-2xl lg:text-3xl font-headline font-extrabold text-on-surface tracking-tight">{{ $t('services.catalog') }}</h1>
-          <p class="text-on-surface-variant mt-1.5 max-w-md text-sm">{{ $t('services.description') }}</p>
+          <span class="label-xs mb-1 block">Kho lâm sàng</span>
+          <h1 class="text-2xl lg:text-3xl font-headline font-extrabold text-on-surface tracking-tight">Danh mục dịch vụ</h1>
+          <p class="text-on-surface-variant mt-1.5 max-w-md text-sm">Quản lý các dịch vụ lâm sàng, phác đồ điều trị và các chương trình chăm sóc sức khỏe chuyên biệt.</p>
         </div>
         <RouterLink to="/services/edit" class="btn-primary flex items-center gap-2 justify-center w-full sm:w-auto">
           <span class="material-symbols-outlined text-lg">add</span>
-          <span>{{ $t('services.newService') }}</span>
+          <span>Tạo dịch vụ mới</span>
         </RouterLink>
       </div>
       <!-- Filter Bar -->

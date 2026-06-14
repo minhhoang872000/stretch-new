@@ -2,7 +2,6 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router/index.js'
-import i18n from './i18n/index.js'
 import './assets/main.css'
 
 // PrimeVue Setup
@@ -21,8 +20,6 @@ import 'primeicons/primeicons.css'
 const app = createApp(App)
 app.use(createPinia())
 app.use(router)
-app.use(i18n)
-
 // Enable PrimeVue
 app.use(PrimeVue, { ripple: true })
 app.use(ToastService)

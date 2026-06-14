@@ -22,8 +22,9 @@
     <!-- Add Booking Modal -->
     <ActionModal
       v-model:isOpen="isModalOpen"
-      :title="$t('calendar.newBooking')"
-      :submitLabel="$t('calendar.newBooking')"
+      :title="'Đặt lịch mới'"
+      :submitLabel="'Đặt lịch mới'"
+      :loading="submitting"
       @submit="handleNewBooking"
     >
       <div class="space-y-4">
@@ -134,7 +135,6 @@
 
 <script setup>
 import { ref, computed, reactive, onMounted, provide } from 'vue'
-import { useI18n } from 'vue-i18n'
 import CalendarHeader from '@/components/calendar/CalendarHeader.vue'
 import CalendarGrid from '@/components/calendar/CalendarGrid.vue'
 import CalendarWeek from '@/components/calendar/CalendarWeek.vue'
@@ -142,13 +142,17 @@ import CalendarDay from '@/components/calendar/CalendarDay.vue'
 import AppointmentDetails from '@/components/calendar/AppointmentDetails.vue'
 import DailyProductivity from '@/components/calendar/DailyProductivity.vue'
 import ActionModal from '@/components/ui/ActionModal.vue'
-import { useCalendarStore, dayKey } from '@/stores/calendar.js'
+import { useCalendarStore } from '@/stores/calendar.js'
 import { formatDate } from '@/utils/date.js'
+import { buildNote } from '@/constants/booking.js'
+import { createBooking } from '@/services/api.js'
+import { useNotify } from '@/composables/useNotify.js'
 
 const store = useCalendarStore()
-const { locale } = useI18n()
-const vi = computed(() => locale.value === 'vi')
+const notify = useNotify()
+const vi = { value: true }
 const isModalOpen = ref(false)
+const submitting = ref(false)
 const formError = ref('')
 
 onMounted(() => {
@@ -204,59 +208,55 @@ const openModal = () => {
 // Provide openModal so CalendarHeader can use it
 provide('openBookingModal', openModal)
 
-function serviceLabel() {
-  const opt = serviceOptions.value.find(o => o.value === form.service)
-  return opt ? (vi.value ? opt.vi : opt.en) : form.service
-}
-
-// Append the structured extras into the note, like the landing-page flows do.
-function buildNote() {
-  const parts = []
-  if (form.note) parts.push(form.note)
+// Build the structured note markers in the website's wire format so the
+// list/calendar/detail views decode them consistently (see constants/booking.js).
+function noteMarkers() {
   if (form.type === 'personal') {
-    const loc = personalLocations.find(l => l.value === form.location)
-    if (loc) parts.push(vi.value ? loc.vi : loc.en)
-  } else {
-    if (form.participants) parts.push(`${vi.value ? 'Số người' : 'Participants'}: ${form.participants}`)
-    if (form.address) parts.push(form.address)
-    parts.push(form.setting === 'outdoor' ? (vi.value ? 'Ngoài trời' : 'Outdoor') : (vi.value ? 'Trong nhà' : 'Indoor'))
-    if (form.role) parts.push(form.role)
+    return { Type: 'personal', Location: form.location }
   }
-  return parts.join(' | ')
+  return {
+    Type: 'business',
+    Participants: form.participants,
+    Setting: form.setting,
+    Address: form.address,
+    Role: form.role,
+  }
 }
 
-const handleNewBooking = () => {
+const handleNewBooking = async () => {
   formError.value = ''
   if (!form.name.trim() || !form.phone.trim() || !form.date) {
     formError.value = vi.value ? 'Vui lòng nhập họ tên, SĐT và ngày.' : 'Please enter name, phone and date.'
     return
   }
+  if (submitting.value) return
+  submitting.value = true
 
   const picked = new Date(form.date + 'T00:00:00')
-  const svc = serviceLabel()
 
-  store.bookings.push({
-    id: Date.now(),
-    patientName: form.name.trim(),
-    patientId: 'ID: ' + Math.floor(Math.random() * 90000 + 10000),
-    service: svc,
-    provider: form.type === 'business' ? (vi.value ? 'Doanh nghiệp' : 'Business') : 'N/A',
-    duration: '60 Min',
-    dateValue: picked.getDate(),
-    dateKey: dayKey(picked),
-    time: form.time,
-    displayTime: `${form.time} - ${svc.substring(0, 6)}…`,
-    dateStr: `${formatDate(picked)} ${form.time}`,
-    phone: form.phone.trim(),
-    email: form.email.trim(),
-    notes: buildNote(),
-    status: 'pending',
-    color: 'bg-tertiary-fixed/30',
-    textColor: 'text-tertiary',
-    border: 'border-tertiary/20',
-  })
+  try {
+    // Persist via the API in the same shape the website sends.
+    await createBooking({
+      service: form.service,            // a code: recovery | pain | … (not a label)
+      practitioner: null,
+      date: form.date,                  // already YYYY-MM-DD from <input type="date">
+      time: form.time,
+      name: form.name.trim(),
+      phone: form.phone.trim(),
+      email: form.email.trim(),
+      note: buildNote(form.note, noteMarkers()),
+    })
 
-  store.selectDate(picked)
-  isModalOpen.value = false
+    // Refresh from the source of truth so the new booking shows everywhere.
+    await store.loadBookings()
+    store.selectDate(picked)
+    isModalOpen.value = false
+    notify.success('toast.bookingCreated')
+  } catch (e) {
+    console.error('Failed to create booking:', e)
+    formError.value = e?.message || (vi.value ? 'Không tạo được lịch hẹn.' : 'Could not create booking.')
+  } finally {
+    submitting.value = false
+  }
 }
 </script>

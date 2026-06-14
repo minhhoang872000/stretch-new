@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { fetchBookings } from '@/services/api.js'
+import { serviceLabel, parseNote, bookingType, LOCATION_LABELS, CONTACT_LABELS, SETTING_LABELS } from '@/constants/booking.js'
 
 // Local YYYY-MM-DD key used to match bookings to calendar cells across views.
 export function dayKey(date) {
@@ -15,7 +16,11 @@ function transformBooking(booking) {
   const hour = parseInt(hours)
   const ampm = hour >= 12 ? 'PM' : 'AM'
   const hour12 = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour
-  const displayTime = `${booking.time} - ${booking.service.substring(0, 6)}...`
+  // Decode the wire format (service code + structured note) into display values.
+  const svcLabel = serviceLabel(booking.service)
+  const parsed = parseNote(booking.note)
+  const locationLabel = parsed.location ? (LOCATION_LABELS[parsed.location] || parsed.location) : ''
+  const displayTime = `${booking.time} - ${svcLabel.substring(0, 6)}...`
 
   const statusColors = {
     'pending': { color: 'bg-tertiary-fixed/30', textColor: 'text-tertiary', border: 'border-tertiary/20' },
@@ -26,11 +31,21 @@ function transformBooking(booking) {
 
   const colors = statusColors[booking.status] || statusColors.pending
 
+  const type = bookingType(parsed)
+
   return {
     id: booking.id,
     patientName: booking.name,
-    service: booking.service,
+    service: svcLabel,
+    serviceCode: booking.service,
     provider: booking.practitioner || 'N/A',
+    type,
+    location: locationLabel,
+    contact: parsed.contact ? (CONTACT_LABELS[parsed.contact] || parsed.contact) : '',
+    participants: parsed.participants || '',
+    setting: parsed.setting ? (SETTING_LABELS[parsed.setting] || parsed.setting) : '',
+    address: parsed.address || '',
+    role: parsed.role || '',
     duration: '60 Min',
     dateValue,
     dateKey: dayKey(dateObj),
@@ -39,7 +54,7 @@ function transformBooking(booking) {
     dateStr: `${dayKey(dateObj)} ${hour12}:${minutes} ${ampm}`,
     phone: booking.phone,
     email: booking.email,
-    notes: booking.note || '',
+    notes: parsed.text || '',
     status: booking.status,
     patientId: `ID: ${booking.id}`,
     ...colors,
