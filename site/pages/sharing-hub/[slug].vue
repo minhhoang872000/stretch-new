@@ -33,6 +33,20 @@ useSeo({
   },
 });
 
+// JSON-LD structured data (BlogPosting) → Google rich results.
+useSchemaOrg([
+  defineArticle({
+    '@type': 'BlogPosting',
+    headline: activeArticle.value.title,
+    description: activeArticle.value.excerpt,
+    image: activeArticle.value.image || undefined,
+    datePublished: activeArticle.value.createdAt || undefined,
+    dateModified: activeArticle.value.updatedAt || activeArticle.value.createdAt || undefined,
+    author: { '@type': 'Organization', name: activeArticle.value.author || 'Stretch Team' },
+    keywords: (activeArticle.value.tags || []).join(', ') || undefined,
+  }),
+]);
+
 // Render the CKEditor HTML and derive a Table of Contents from its <h2> headings.
 const processed = computed(() => {
   const raw = (activeArticle.value as any)?.html || ''

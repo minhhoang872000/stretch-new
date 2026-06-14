@@ -1,7 +1,9 @@
-import { products, getPosts } from '~/server/utils/db'
+import { products } from '~/server/utils/db'
+import { fetchSitePosts } from '~/server/utils/blogApi'
 
-export default defineEventHandler(() => {
-  const publishedPosts = getPosts({ status: 'published' })
+export default defineEventHandler(async () => {
+  // Blog posts come from the lead-tracker-api (live CMS data), not the mock DB.
+  const publishedPosts = await fetchSitePosts({ status: 'published' })
 
   return [
     { loc: '/', priority: 1.0 },
@@ -17,11 +19,11 @@ export default defineEventHandler(() => {
       lastmod: p.updatedAt,
       priority: 0.7,
     })),
-    // Sharing Hub (blog) index + published posts
+    // Sharing Hub (blog) index + published posts (from the API)
     { loc: '/sharing-hub', priority: 0.8 },
     ...publishedPosts.map(p => ({
       loc: `/sharing-hub/${p.slug}`,
-      lastmod: p.updatedAt,
+      lastmod: p.updatedAt || undefined,
       priority: 0.7,
     })),
   ]

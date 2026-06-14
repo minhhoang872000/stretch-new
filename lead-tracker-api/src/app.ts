@@ -29,6 +29,14 @@ app.use(loggerMiddleware)
 app.use(rateLimiterMiddleware)
 app.use(express.json({ limit: '100kb' }))
 
+// ─── No caching ──────────────────────────────────────────────────────
+// This is a dynamic API; never let browsers/proxies serve stale responses
+// (e.g. an edited blog post being read back from the browser disk cache).
+app.use((_req, res, next) => {
+  res.set('Cache-Control', 'no-store')
+  next()
+})
+
 // ─── Health Check ────────────────────────────────────────────────────
 app.get('/health', (_req, res) => {
   success(res, {

@@ -16,10 +16,26 @@ interface SeoOptions {
 export function useSeo(opts: SeoOptions) {
   const config = useRuntimeConfig()
   const route = useRoute()
+  const switchLocalePath = useSwitchLocalePath()
+  const { locales } = useI18n()
 
-  const canonicalUrl = `${config.public.siteUrl}${route.path}`
+  const siteUrl = config.public.siteUrl as string
+  const canonicalUrl = `${siteUrl}${route.path}`
   const ogImage = opts.image || '/og-default.jpg'
   const isArticle = opts.type === 'article'
+
+  // hreflang alternates for each locale + x-default (points to default locale).
+  const alternateLinks = (locales.value as any[])
+    .map((l: any) => {
+      const path = switchLocalePath(l.code)
+      return path ? { rel: 'alternate', hreflang: l.language || l.code, href: `${siteUrl}${path}` } : null
+    })
+    .filter(Boolean) as { rel: string; hreflang: string; href: string }[]
+
+  const defaultPath = switchLocalePath('en')
+  if (defaultPath) {
+    alternateLinks.push({ rel: 'alternate', hreflang: 'x-default', href: `${siteUrl}${defaultPath}` })
+  }
 
   useSeoMeta({
     title: opts.title,
@@ -42,7 +58,7 @@ export function useSeo(opts: SeoOptions) {
   })
 
   useHead({
-    link: [{ rel: 'canonical', href: canonicalUrl }],
+    link: [{ rel: 'canonical', href: canonicalUrl }, ...alternateLinks],
     meta: [
       { name: 'geo.position', content: '10.7725;106.6784' },
       { name: 'geo.region', content: 'VN-SG' },

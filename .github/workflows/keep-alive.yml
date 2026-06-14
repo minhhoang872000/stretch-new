@@ -1,0 +1,30 @@
+name: Keep Render API awake
+
+# Render's free tier spins the service down after ~15 min of inactivity.
+# This workflow pings the health endpoint every ~10 minutes so it stays warm.
+#
+# Notes:
+#  - GitHub Actions cron is best-effort; runs can be delayed several minutes
+#    under load. For stricter timing use an external monitor (UptimeRobot /
+#    cron-job.org) at a 5-minute interval instead.
+#  - Scheduled workflows run only on the default branch and are disabled after
+#    ~60 days of repository inactivity.
+
+on:
+  schedule:
+    - cron: '*/10 * * * *' # every 10 minutes (UTC)
+  workflow_dispatch: {} # allow manual run from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /health
+        run: |
+          for i in 1 2 3; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 https://stretch-new.onrender.com/health || echo 000)
+            echo "Attempt $i → HTTP $code"
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 20
+          done
+          echo "Health check did not return 200 (service may be cold-starting); not failing the job."

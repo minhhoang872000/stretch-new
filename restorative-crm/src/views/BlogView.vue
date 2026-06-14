@@ -680,7 +680,9 @@ async function handleSubmit() {
   saving.value = true
   try {
     if (editingPost.value) {
-      await store.editPost(form.slug, payload)
+      // Identify the post by its immutable id, NOT by form.slug — otherwise
+      // editing the slug changes the lookup key and the row can't be found.
+      await store.editPost(editingPost.value.id, payload)
       notify.success('toast.blogUpdated')
     } else {
       await store.addPost(payload)

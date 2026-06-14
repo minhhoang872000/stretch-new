@@ -9,6 +9,13 @@
 /* --- Icon font --- */
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  /* Hide the raw ligature text (e.g. "filter_alt_off") until the icon font
+     is loaded — see the ms-ready toggle in index.html. visibility (not
+     display) keeps the icon's box so there's no layout shift on reveal. */
+  visibility: hidden;
+}
+.ms-ready .material-symbols-outlined {
+  visibility: visible;
 }
 
 /* --- Base Typography --- */

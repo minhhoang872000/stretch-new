@@ -150,7 +150,23 @@ export default defineNuxtConfig({
     prerender: {
       routes: ['/'],
       crawlLinks: true,
+      // Don't bake the dynamic blog pages into static files at build time.
+      ignore: ['/sharing-hub', '/goc-chia-se', '/vi/sharing-hub', '/vi/goc-chia-se'],
     },
+  },
+
+  // Per-route rules: blog is dynamic content (edited in the CMS), so render it
+  // fresh per request and never let the browser/CDN cache the HTML or the
+  // Nuxt _payload.json — otherwise edits keep showing the old cached version.
+  routeRules: {
+    '/sharing-hub': { prerender: false, headers: { 'cache-control': 'no-store' } },
+    '/sharing-hub/**': { prerender: false, headers: { 'cache-control': 'no-store' } },
+    '/vi/sharing-hub': { prerender: false, headers: { 'cache-control': 'no-store' } },
+    '/vi/sharing-hub/**': { prerender: false, headers: { 'cache-control': 'no-store' } },
+    '/goc-chia-se': { prerender: false, headers: { 'cache-control': 'no-store' } },
+    '/goc-chia-se/**': { prerender: false, headers: { 'cache-control': 'no-store' } },
+    '/vi/goc-chia-se': { prerender: false, headers: { 'cache-control': 'no-store' } },
+    '/vi/goc-chia-se/**': { prerender: false, headers: { 'cache-control': 'no-store' } },
   },
 
   // Runtime config

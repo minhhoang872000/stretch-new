@@ -12,6 +12,7 @@ async function request(path, options = {}) {
   const url = `${API_BASE}${path}`
   try {
     const res = await fetch(url, {
+      cache: 'no-store',
       headers: { 'Content-Type': 'application/json', ...authHeaders, ...optHeaders },
       ...rest,
     })

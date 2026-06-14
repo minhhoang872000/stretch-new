@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<title>Hướng dẫn sử dụng Stretch.vn Admin (Restorative CRM)</title>
+<style>
+  :root {
+    --primary: #6d28d9;       /* tím */
+    --primary-soft: #f3effe;
+    --teal: #0f766e;          /* xanh ngọc */
+    --teal-soft: #ecfdf5;
+    --ink: #1f2430;
+    --muted: #5b6472;
+    --line: #e4e7ec;
+    --warn-bg: #fff7ed;
+    --warn-bd: #fdba74;
+    --tip-bg: #ecfdf5;
+    --tip-bd: #6ee7b7;
+  }
+
+  @page {
+    size: A4;
+    margin: 18mm 16mm 20mm 16mm;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", "Tahoma", system-ui, sans-serif;
+    color: var(--ink);
+    font-size: 11pt;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  h1, h2, h3 { font-weight: 700; line-height: 1.25; }
+
+  /* ---------- Cover ---------- */
+  .cover {
+    height: 247mm;               /* ~A4 content height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    page-break-after: always;
+    background:
+      radial-gradient(circle at 85% 12%, rgba(109,40,217,0.10), transparent 45%),
+      radial-gradient(circle at 10% 90%, rgba(15,118,110,0.10), transparent 45%);
+    padding: 0 6mm;
+  }
+  .cover .badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--primary); color: #fff;
+    padding: 8px 16px; border-radius: 999px;
+    font-weight: 700; font-size: 11pt; letter-spacing: .3px;
+  }
+  .cover .dot { width: 12px; height: 12px; border-radius: 4px; background: #c4b5fd; }
+  .cover h1 { font-size: 34pt; margin: 26px 0 8px; color: var(--ink); }
+  .cover .sub { font-size: 15pt; color: var(--muted); margin: 0; }
+  .cover .meta {
+    margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--line);
+    color: var(--muted); font-size: 10.5pt;
+  }
+  .cover .meta b { color: var(--ink); }
+
+  /* ---------- Sections ---------- */
+  .section { page-break-before: always; }
+
+  h2.chapter {
+    font-size: 18pt; color: var(--primary);
+    border-bottom: 3px solid var(--primary-soft);
+    padding-bottom: 8px; margin: 0 0 14px;
+  }
+  h2.chapter .num {
+    display: inline-block; min-width: 34px; height: 34px; line-height: 34px;
+    text-align: center; background: var(--primary); color: #fff;
+    border-radius: 9px; font-size: 13pt; margin-right: 10px;
+  }
+  h3 { font-size: 12.5pt; color: var(--teal); margin: 18px 0 6px; }
+
+  p { margin: 7px 0; }
+  ul, ol { margin: 7px 0; padding-left: 22px; }
+  li { margin: 3px 0; }
+
+  .lead { color: var(--muted); font-size: 11.5pt; margin-bottom: 12px; }
+
+  code, .kbd {
+    font-family: "Consolas", "Courier New", monospace;
+    background: #f1f3f6; padding: 1px 6px; border-radius: 5px; font-size: 10pt;
+  }
+
+  /* steps */
+  ol.steps { counter-reset: step; list-style: none; padding-left: 0; }
+  ol.steps > li {
+    position: relative; padding: 6px 0 6px 38px; margin: 4px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  ol.steps > li:last-child { border-bottom: none; }
+  ol.steps > li::before {
+    counter-increment: step; content: counter(step);
+    position: absolute; left: 0; top: 6px;
+    width: 26px; height: 26px; line-height: 26px; text-align: center;
+    background: var(--teal-soft); color: var(--teal);
+    border: 1.5px solid var(--teal); border-radius: 50%;
+    font-weight: 700; font-size: 10pt;
+  }
+
+  /* callouts */
+  .note { padding: 10px 14px; border-radius: 8px; margin: 12px 0; font-size: 10.5pt; }
+  .tip  { background: var(--tip-bg);  border-left: 4px solid var(--tip-bd); }
+  .warn { background: var(--warn-bg); border-left: 4px solid var(--warn-bd); }
+  .note b { display: block; margin-bottom: 2px; }
+
+  /* tables */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 10pt; }
+  th, td { text-align: left; padding: 8px 10px; border: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--primary-soft); color: var(--primary); font-weight: 700; }
+  tr:nth-child(even) td { background: #fafbfc; }
+
+  /* status pills */
+  .pill { display: inline-block; padding: 1px 9px; border-radius: 999px; font-size: 9pt; font-weight: 700; }
+  .p-yellow { background: #fef3c7; color: #92660b; }
+  .p-blue   { background: #dbeafe; color: #1e40af; }
+  .p-green  { background: #d1fae5; color: #065f46; }
+  .p-red    { background: #fee2e2; color: #991b1b; }
+  .p-gray   { background: #e5e7eb; color: #374151; }
+
+  /* TOC */
+  .toc { page-break-after: always; }
+  .toc ol { list-style: none; padding-left: 0; counter-reset: toc; }
+  .toc li {
+    counter-increment: toc; padding: 9px 4px; border-bottom: 1px solid var(--line);
+    font-size: 11.5pt; display: flex; align-items: baseline; gap: 12px;
+  }
+  .toc li::before {
+    content: counter(toc); min-width: 28px; height: 28px; line-height: 28px;
+    text-align: center; background: var(--primary-soft); color: var(--primary);
+    border-radius: 7px; font-weight: 700; font-size: 10pt;
+  }
+
+  .muted { color: var(--muted); }
+  .icon-name { font-family: "Consolas", monospace; background:#eef2ff; color:#4338ca; padding:0 5px; border-radius:4px; font-size:9.5pt; }
+
+  /* screenshots */
+  figure.shot {
+    margin: 14px 0 4px; page-break-inside: avoid; break-inside: avoid;
+  }
+  figure.shot img {
+    width: 100%; display: block; border-radius: 10px;
+    border: 1px solid var(--line);
+    box-shadow: 0 6px 18px rgba(31,36,48,0.10);
+  }
+  figure.shot figcaption {
+    margin-top: 7px; font-size: 9.5pt; color: var(--muted); text-align: center;
+  }
+  figure.shot figcaption b { color: var(--primary); }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="cover">
+  <span class="badge"><span class="dot"></span> STRETCH.VN ADMIN</span>
+  <h1>Hướng dẫn sử dụng<br/>Hệ thống quản trị CRM</h1>
+  <p class="sub">Tài liệu dành cho người dùng &mdash; quản lý lịch đặt, bài viết, dịch vụ và phân tích.</p>
+  <div class="meta">
+    <b>Phiên bản:</b> 1.0 &nbsp;•&nbsp; <b>Ngày phát hành:</b> 14/06/2026<br/>
+    <b>Đối tượng:</b> Quản trị viên &amp; nhân viên vận hành Stretch.vn<br/>
+    <b>Truy cập:</b> Trình duyệt máy tính (Chrome, Edge, Cốc Cốc…)
+  </div>
+</section>
+
+<!-- ============ TOC ============ -->
+<section class="toc">
+  <h2 class="chapter">Mục lục</h2>
+  <ol>
+    <li>Đăng nhập &amp; tổng quan giao diện</li>
+    <li>Bảng điều khiển (Dashboard)</li>
+    <li>Lịch đặt (Bookings)</li>
+    <li>Lịch hẹn (Calendar) — tạo lịch mới</li>
+    <li>Danh mục (Categories)</li>
+    <li>Bài viết (Blog)</li>
+    <li>Google Analytics &amp; công cụ tạo link UTM</li>
+    <li>Khách tiềm năng (Leads) &amp; Dịch vụ (Services)</li>
+    <li>Mẹo sử dụng &amp; câu hỏi thường gặp</li>
+  </ol>
+</section>
+
+<!-- ============ 1. LOGIN ============ -->
+<section class="section">
+  <h2 class="chapter"><span class="num">1</span>Đăng nhập &amp; tổng quan giao diện</h2>
+  <p class="lead">Hệ thống là một trang web quản trị nội bộ. Bạn cần tài khoản (email &amp; mật khẩu) do quản trị viên cấp.</p>
+
+  <figure class="shot">
+    <img src="shots/01-login.png" alt="Màn hình đăng nhập" />
+    <figcaption><b>Hình 1.</b> Màn hình đăng nhập hệ thống.</figcaption>
+  </figure>
+
+  <h3>Cách đăng nhập</h3>
+  <ol class="steps">
+    <li>Mở trình duyệt và truy cập địa chỉ hệ thống được cấp.</li>
+    <li>Nhập <b>Email</b> và <b>Mật khẩu</b>. Bấm biểu tượng con mắt để xem/ẩn mật khẩu.</li>
+    <li>Bấm <b>Đăng nhập</b>. Nếu thông tin đúng, bạn sẽ được đưa vào <b>Bảng điều khiển</b>.</li>
+  </ol>
+  <div class="note tip"><b>Mẹo</b> Nếu để trống email hoặc mật khẩu, hệ thống sẽ báo lỗi ngay bên dưới ô nhập. Phiên đăng nhập được ghi nhớ trên trình duyệt, nên lần sau vào lại thường không cần đăng nhập lại.</div>
+  <div class="note warn"><b>Lưu ý bảo mật</b> Không dùng tài khoản trên máy tính công cộng. Khi dùng xong nên đóng trình duyệt. Không chia sẻ mật khẩu cho người khác.</div>
+
+  <h3>Bố cục màn hình</h3>
+  <ul>
+    <li><b>Thanh điều hướng bên trái (menu):</b> chuyển nhanh giữa các trang. Mục đang xem được tô màu tím và có vạch dọc bên phải.</li>
+    <li><b>Thanh trên cùng (TopBar):</b> hiển thị tiêu đề trang và các thao tác nhanh.</li>
+    <li><b>Vùng nội dung chính:</b> nơi hiển thị bảng, biểu mẫu và dữ liệu của trang.</li>
+  </ul>
+  <p>Các mục chính trên menu: <b>Bảng điều khiển</b>, <b>Lịch đặt</b>, <b>Danh mục</b>, <b>Lịch hẹn</b>, <b>Bài viết</b>, <b>Google Analytics</b>.</p>
+</section>
+
+<!-- ============ 2. DASHBOARD ============ -->
+<section class="section">
+  <h2 class="chapter"><span class="num">2</span>Bảng điều khiển (Dashboard)</h2>
+  <p class="lead">Trang đầu tiên sau khi đăng nhập, cho cái nhìn tổng quan nhanh về hoạt động.</p>
+
+  <figure class="shot">
+    <img src="shots/02-dashboard.png" alt="Bảng điều khiển" />
+    <figcaption><b>Hình 2.</b> Bảng điều khiển với các thẻ chỉ số, biểu đồ và nguồn truy cập.</figcaption>
+  </figure>
+
+  <h3>Các thẻ chỉ số chính</h3>
+  <ul>
+    <li><b>Tổng lượt đăng ký</b> — tổng số khách đã đăng ký, kèm tỷ lệ tăng trưởng.</li>
+    <li><b>Mới hôm nay</b> — số lượt đăng ký phát sinh trong ngày.</li>
+    <li><b>Biểu mẫu chưa đọc</b> — số form mới cần xử lý (có hiệu ứng nhấp nháy nhắc nhở).</li>
+    <li><b>Dịch vụ đang hoạt động</b> — số dịch vụ đang mở.</li>
+  </ul>
+
+  <h3>Biểu đồ &amp; bảng</h3>
+  <ul>
+    <li><b>Biểu đồ lượt đăng ký:</b> cột theo từng ngày trong tuần.</li>
+    <li><b>Nguồn truy cập:</b> tỷ lệ khách đến từ trực tiếp / tìm kiếm / mạng xã hội.</li>
+    <li><b>Khách hàng gần đây:</b> danh sách các khách mới nhất kèm dịch vụ, ngày và trạng thái.</li>
+  </ul>
+
+  <h3>Thao tác</h3>
+  <ul>
+    <li>Bấm <b>Báo cáo đầy đủ</b> để chuyển sang trang Google Analytics.</li>
+    <li>Bấm <b>Làm mới</b> để tải lại số liệu mới nhất.</li>
+  </ul>
+</section>
+
+<!-- ============ 3. BOOKINGS ============ -->
+<section class="section">
+  <h2 class="chapter"><span class="num">3</span>Lịch đặt (Bookings)</h2>
+  <p class="lead">Quản lý toàn bộ lịch đặt từ khách hàng (qua form website hoặc tạo thủ công). Đây là trang làm việc chính hằng ngày.</p>
+
+  <figure class="shot">
+    <img src="shots/03-bookings.png" alt="Trang lịch đặt" />
+    <figcaption><b>Hình 3.</b> Danh sách lịch đặt với thẻ thống kê, bộ lọc và bảng chi tiết.</figcaption>
+  </figure>
+
+  <h3>Bộ lọc &amp; thống kê</h3>
+  <p>Phía trên có 4 thẻ tổng hợp: <b>Tổng</b>, <b>Chờ xác nhận</b>, <b>Đã xác nhận</b>, <b>Hoàn thành</b>. Thanh lọc cho phép thu hẹp danh sách:</p>
+  <ul>
+    <li><b>Lọc theo trạng thái</b> (Tất cả / Chờ xác nhận / Đã xác nhận / Hoàn thành / Đã huỷ).</li>
+    <li><b>Lọc theo dịch vụ.</b></li>
+    <li><b>Lọc theo ngày.</b></li>
+    <li>Bấm <b>Xoá lọc</b> để bỏ tất cả bộ lọc, hoặc <b>Làm mới</b> để tải lại.</li>
+  </ul>
+
+  <h3>Bảng lịch đặt gồm các cột</h3>
+  <ul>
+    <li><b>Khách hàng</b> — tên, số điện thoại, email, nhãn loại (Cá nhân / Doanh nghiệp). Nếu khách đến từ một phiên truy cập website, sẽ có liên kết tới hồ sơ <b>Khách tiềm năng</b>.</li>
+    <li><b>Dịch vụ</b>, <b>Địa điểm</b>, <b>Thời gian</b>, <b>Cách liên hệ</b> (Gọi điện / Zalo / Email), <b>Ghi chú</b>.</li>
+    <li><b>Trạng thái</b> và <b>Hành động</b> (hiện ra khi rê chuột vào dòng).</li>
+  </ul>
+
+  <h3>Các thao tác</h3>
+  <ol class="steps">
+    <li><b>Xem chi tiết:</b> bấm vào một dòng để mở trang chi tiết lịch đặt.</li>
+    <li><b>Đổi trạng thái:</b> rê chuột vào dòng → chọn trạng thái mới ở ô thả xuống → hệ thống cập nhật ngay.</li>
+    <li><b>Xoá:</b> rê chuột vào dòng → bấm biểu tượng thùng rác → xác nhận.</li>
+  </ol>
+
+  <h3>Bảng trạng thái lịch đặt</h3>
+  <table>
+    <tr><th>Trạng thái</th><th>Ý nghĩa</th><th>Màu</th></tr>
+    <tr><td>Chờ xác nhận</td><td>Khách vừa đặt, chưa được xác nhận</td><td><span class="pill p-yellow">Vàng</span></td></tr>
+    <tr><td>Đã xác nhận</td><td>Đã liên hệ và xác nhận lịch hẹn</td><td><span class="pill p-blue">Xanh dương</span></td></tr>
+    <tr><td>Hoàn thành</td><td>Buổi hẹn đã diễn ra xong</td><td><span class="pill p-green">Xanh lá</span></td></tr>
+    <tr><td>Đã huỷ</td><td>Lịch hẹn bị huỷ</td><td><span class="pill p-red">Đỏ</span></td></tr>
+  </table>
+
+  <h3>Trang chi tiết lịch đặt</h3>
+  <p>Khi mở một lịch đặt, bạn thấy đầy đủ: thẻ <b>thông tin khách</b> (bấm số điện thoại để gọi, bấm email để soạn thư), thẻ <b>thông tin lịch hẹn</b> (dịch vụ, người phụ trách, ngày giờ, địa điểm, ghi chú; với khách doanh nghiệp còn có số người tham gia, không gian, địa chỉ, vai trò) và thẻ <b>thông tin hệ thống</b> (mã lịch đặt, thời gian tạo/cập nhật). Tại đây cũng có thể đổi trạng thái hoặc xoá.</p>
+
+  <h3>Bảng loại dịch vụ</h3>
+  <table>
+    <tr><th>Mã</th><th>Tên hiển thị</th></tr>
+    <tr><td>recovery</td><td>Phục hồi sau vận động</td></tr>
+    <tr><td>pain</td><td>Đau nhức / chấn thương</td></tr>
+    <tr><td>stiffness</td><td>Căng cứng kéo dài</td></tr>
+    <tr><td>wellness</td><td>Sức khỏe doanh nghiệp</td></tr>
+    <tr><td>education</td><td>Giáo dục &amp; Đào tạo</td></tr>
+    <tr><td>not_sure</td><td>Tư vấn chung</td></tr>
+  </table>
+</section>
+
+<!-- ============ 4. CALENDAR ============ -->
+<section class="section">
+  <h2 class="chapter"><span class="num">4</span>Lịch hẹn (Calendar)</h2>
+  <p class="lead">Xem lịch hẹn theo dạng lịch trực quan và tạo lịch đặt mới ngay trên giao diện.</p>
+
+  <figure class="shot">
+    <img src="shots/04-calendar.png" alt="Trang lịch hẹn" />
+    <figcaption><b>Hình 4.</b> Giao diện lịch hẹn dạng tháng/tuần/ngày.</figcaption>
+  </figure>
+
+  <h3>Xem lịch</h3>
+  <ul>
+    <li>Chuyển chế độ xem <b>Tháng / Tuần / Ngày</b> ở thanh trên.</li>
+    <li>Mỗi lịch hẹn hiển thị dạng khối màu kèm giờ và dịch vụ. Bấm vào để xem chi tiết ở khung bên phải.</li>
+    <li>Thẻ <b>Năng suất trong ngày</b> cho biết số khung giờ đã được lấp đầy.</li>
+  </ul>
+
+  <h3>Tạo lịch đặt mới</h3>
+  <ol class="steps">
+    <li>Bấm nút <b>Đặt lịch mới</b> để mở biểu mẫu.</li>
+    <li>Chọn loại: <b>Cá nhân</b> hoặc <b>Doanh nghiệp</b>.</li>
+    <li>Nhập thông tin liên hệ: <b>Họ tên, Số điện thoại, Email</b> (khách doanh nghiệp có thêm <b>Vai trò/Chức vụ</b>).</li>
+    <li>Chọn <b>Dịch vụ</b> (danh sách thay đổi tuỳ loại khách).</li>
+    <li>Chọn <b>Địa điểm</b>: khách cá nhân chọn Tại nhà / Tại cơ sở / Tư vấn thêm; khách doanh nghiệp nhập số người, không gian (trong nhà/ngoài trời), địa chỉ.</li>
+    <li>Chọn <b>Ngày</b> và <b>Giờ</b> (khung 08:00 – 17:00), thêm <b>Ghi chú</b> nếu cần.</li>
+    <li>Bấm <b>Lưu/Đặt lịch</b>. Lịch mới sẽ xuất hiện trên giao diện ngay.</li>
+  </ol>
+  <div class="note tip"><b>Mẹo</b> Lịch tạo từ đây cũng xuất hiện trong trang <b>Lịch đặt</b> với trạng thái mặc định là “Chờ xác nhận”.</div>
+</section>
+
+<!-- ============ 5. CATEGORIES ============ -->
+<section class="section">
+  <h2 class="chapter"><span class="num">5</span>Danh mục (Categories)</h2>
+  <p class="lead">Quản lý các danh mục dùng để phân loại bài viết blog.</p>
+
+  <figure class="shot">
+    <img src="shots/05-categories.png" alt="Trang danh mục" />
+    <figcaption><b>Hình 5.</b> Các thẻ danh mục kèm thống kê bài viết.</figcaption>
+  </figure>
+
+  <h3>Mỗi thẻ danh mục hiển thị</h3>
+  <ul>
+    <li>Biểu tượng &amp; tên danh mục, mô tả, số bài viết.</li>
+    <li>Thống kê: số bài <b>đã đăng</b>, số <b>bản nháp</b>, tổng <b>lượt xem</b>.</li>
+    <li>Danh sách bài viết gần đây (tối đa 3), kèm liên kết “Xem tất cả bài của danh mục”.</li>
+  </ul>
+
+  <h3>Thao tác</h3>
+  <ol class="steps">
+    <li><b>Tạo mới:</b> bấm <b>Danh mục mới</b> → điền form → Lưu.</li>
+    <li><b>Sửa:</b> bấm biểu tượng bút chì → chỉnh sửa → Lưu.</li>
+    <li><b>Xoá:</b> bấm biểu tượng thùng rác → xác nhận.</li>
+  </ol>
+
+  <h3>Các trường khi tạo/sửa danh mục</h3>
+  <ul>
+    <li><b>Nhãn (Label)</b> — tên hiển thị. <span class="muted">(bắt buộc)</span></li>
+    <li><b>Khoá (Key)</b> — mã định danh, tự sinh từ nhãn, <b>không sửa được sau khi tạo</b>.</li>
+    <li><b>Mô tả</b>, <b>Biểu tượng</b> (chọn từ gợi ý), <b>Thứ tự sắp xếp</b>, <b>Màu chủ đề</b> (8 màu).</li>
+  </ul>
+  <div class="note warn"><b>Lưu ý khi xoá</b> Khi xoá một danh mục, các bài viết vẫn giữ “khoá” của danh mục đó nhưng sẽ mất tên hiển thị. Hãy cân nhắc trước khi xoá danh mục đang có bài.</div>
+</section>
+
+<!-- ============ 6. BLOG ============ -->
+<section class="section">
+  <h2 class="chapter"><span class="num">6</span>Bài viết (Blog)</h2>
+  <p class="lead">Soạn, chỉnh sửa và xuất bản bài viết cho website.</p>
+
+  <figure class="shot">
+    <img src="shots/06-blog.png" alt="Trang bài viết" />
+    <figcaption><b>Hình 6.</b> Danh sách bài viết với thống kê, bộ lọc và bảng quản lý.</figcaption>
+  </figure>
+
+  <h3>Tổng quan trang</h3>
+  <ul>
+    <li>4 thẻ thống kê: <b>Tổng bài</b>, <b>Đã đăng</b>, <b>Bản nháp</b>, <b>Tổng lượt xem</b>.</li>
+    <li>Thanh lọc: <b>Tìm kiếm theo tiêu đề</b>, <b>lọc theo danh mục</b>, <b>lọc theo trạng thái</b> (Tất cả / Đã đăng / Bản nháp).</li>
+    <li>Bảng bài viết gồm: ảnh + tiêu đề, danh mục, tác giả, ngày, trạng thái, hành động.</li>
+  </ul>
+
+  <h3>Quy trình soạn bài</h3>
+  <ol class="steps">
+    <li>Bấm <b>Tạo bài viết</b> để mở trình soạn thảo toàn màn hình.</li>
+    <li>Nhập <b>Tiêu đề</b>, <b>đường dẫn (slug)</b>, <b>tóm tắt</b>, chọn <b>danh mục</b>, <b>tác giả</b>, <b>thẻ (tags)</b>, ảnh bìa.</li>
+    <li>Soạn nội dung bằng trình soạn thảo (CKEditor): định dạng chữ, chèn ảnh, danh sách, trích dẫn…</li>
+    <li>Chọn trạng thái <b>Bản nháp</b> hoặc <b>Đã đăng</b> ở ô thả xuống.</li>
+    <li>Bấm <b>Lưu</b>. Hệ thống hiển thị trạng thái tự lưu.</li>
+  </ol>
+
+  <h3>Thao tác nhanh trên bảng</h3>
+  <ul>
+    <li><b>Bật/tắt xuất bản:</b> bấm nút trạng thái (Đã đăng ↔ Bản nháp) ngay trên dòng.</li>
+    <li><b>Sửa:</b> bấm vào dòng hoặc biểu tượng bút chì.</li>
+    <li><b>Xoá:</b> bấm biểu tượng thùng rác → xác nhận.</li>
+  </ul>
+
+  <table>
+    <tr><th>Trạng thái bài viết</th><th>Ý nghĩa</th><th>Màu</th></tr>
+    <tr><td>Đã đăng (Published)</td><td>Hiển thị công khai trên website</td><td><span class="pill p-green">Xanh ngọc ●</span></td></tr>
+    <tr><td>Bản nháp (Draft)</td><td>Đang soạn, chưa công khai</td><td><span class="pill p-yellow">Hổ phách ○</span></td></tr>
+  </table>
+</section>
+
+<!-- ============ 7. GA ============ -->
+<section class="section">
+  <h2 class="chapter"><span class="num">7</span>Google Analytics &amp; tạo link UTM</h2>
+  <p class="lead">Theo dõi lưu lượng truy cập website (Google Analytics 4) và tạo link gắn UTM để đo hiệu quả chiến dịch.</p>
+
+  <figure class="shot">
+    <img src="shots/07-analytics.png" alt="Trang Google Analytics" />
+    <figcaption><b>Hình 7.</b> Bảng phân tích Google Analytics với 6 thẻ tổng quan và các tab.</figcaption>
+  </figure>
+
+  <h3>Thanh điều khiển</h3>
+  <ul>
+    <li>Chọn khoảng thời gian: <b>7 ngày / 30 ngày / 90 ngày</b>.</li>
+    <li>Nút <b>Làm mới</b> và chỉ số <b>người dùng đang truy cập</b> theo thời gian thực (chấm xanh nhấp nháy).</li>
+    <li>6 thẻ tổng quan: Người dùng, Phiên, Lượt xem trang, Tỷ lệ thoát, Tỷ lệ tương tác, Chuyển đổi.</li>
+  </ul>
+
+  <h3>Các tab phân tích</h3>
+  <ul>
+    <li><b>Xu hướng (Trend):</b> biểu đồ &amp; bảng số liệu theo ngày.</li>
+    <li><b>Kênh (Channels):</b> lưu lượng theo nguồn (tự nhiên, trực tiếp, quảng cáo, mạng xã hội…).</li>
+    <li><b>Mạng xã hội (Social):</b> hiệu quả từng nền tảng + chiến dịch.</li>
+    <li><b>UTM:</b> lọc và xem kết quả theo tham số UTM.</li>
+    <li><b>Thiết bị (Devices):</b> tỷ lệ Mobile / Tablet / Desktop, hệ điều hành, trình duyệt.</li>
+  </ul>
+
+  <h3>Công cụ tạo link UTM (trong tab Mạng xã hội)</h3>
+  <ol class="steps">
+    <li>Nhập <b>URL website</b> cần gắn theo dõi.</li>
+    <li>Chọn <b>Nguồn (utm_source)</b> — ví dụ facebook, instagram, tiktok…</li>
+    <li>Chọn <b>Phương tiện (utm_medium)</b> — social, paid_social, cpc, story, bio…</li>
+    <li>Nhập <b>Tên chiến dịch (utm_campaign)</b>; tuỳ chọn thêm <b>Content</b> và <b>Term</b>.</li>
+    <li>Hệ thống tạo sẵn link — bấm <b>Sao chép</b> để dùng khi đăng bài/quảng cáo.</li>
+  </ol>
+  <div class="note tip"><b>Vì sao cần UTM?</b> Link gắn UTM giúp biết chính xác khách đến từ chiến dịch/nền tảng nào, từ đó đo được kênh nào hiệu quả nhất.</div>
+</section>
+
+<!-- ============ 8. LEADS + SERVICES ============ -->
+<section class="section">
+  <h2 class="chapter"><span class="num">8</span>Khách tiềm năng (Leads) &amp; Dịch vụ (Services)</h2>
+  <p class="lead">Hai trang này hiện không nằm trên menu chính nhưng vẫn truy cập được (qua liên kết trong lịch đặt hoặc đường dẫn trực tiếp).</p>
+
+  <h3>Khách tiềm năng (Leads)</h3>
+  <p>Theo dõi các phiên truy cập website và biểu mẫu khách gửi, kèm thông tin nguồn (UTM).</p>
+
+  <figure class="shot">
+    <img src="shots/08-leads.png" alt="Trang khách tiềm năng" />
+    <figcaption><b>Hình 8.</b> Danh sách khách tiềm năng với bộ lọc và nút xuất CSV.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Lọc</b> theo nguồn UTM, chiến dịch, loại thiết bị, khoảng ngày.</li>
+    <li><b>Xuất CSV</b> toàn bộ danh sách để phân tích ngoài (Excel).</li>
+    <li><b>Xem chi tiết</b> một khách: dòng thời gian các sự kiện (xem trang, bấm nút, gửi form), và lịch đặt liên kết nếu có.</li>
+    <li>Dùng <b>Trang trước / Trang sau</b> để xem nhiều dữ liệu.</li>
+  </ul>
+
+  <h3>Dịch vụ (Services)</h3>
+  <p>Quản lý danh mục dịch vụ của phòng khám. Mỗi dịch vụ có thể chỉnh: tiêu đề, đường dẫn, mô tả ngắn/đầy đủ, ảnh bìa &amp; thư viện ảnh, hiển thị &amp; giá, nhóm đối tượng phù hợp, và thiết lập SEO. Có thể <b>lưu nháp</b> hoặc <b>xuất bản</b>.</p>
+  <div class="note warn"><b>Lưu ý</b> Trang Dịch vụ hiện đang được ẩn khỏi menu. Nếu cần dùng, liên hệ quản trị viên để mở lại.</div>
+</section>
+
+<!-- ============ 9. FAQ ============ -->
+<section class="section">
+  <h2 class="chapter"><span class="num">9</span>Mẹo sử dụng &amp; câu hỏi thường gặp</h2>
+
+  <h3>Mẹo chung</h3>
+  <ul>
+    <li>Nhiều thao tác (đổi trạng thái, sửa, xoá) chỉ hiện ra khi <b>rê chuột vào dòng</b> trong bảng.</li>
+    <li>Luôn có nút <b>Làm mới</b> ở các trang dữ liệu — bấm khi nghi ngờ số liệu chưa cập nhật.</li>
+    <li>Dùng <b>bộ lọc</b> thay vì cuộn tìm thủ công để làm việc nhanh hơn.</li>
+  </ul>
+
+  <h3>Câu hỏi thường gặp</h3>
+  <p><b>Đăng nhập báo sai dù gõ đúng?</b><br/>Kiểm tra phím Caps Lock, khoảng trắng thừa, hoặc nhờ quản trị viên đặt lại mật khẩu.</p>
+  <p><b>Lúc mới mở trang thấy nhấp nháy vài chữ lạ rồi mới ra biểu tượng?</b><br/>Đó là phông biểu tượng đang tải. Trang sẽ hiển thị bình thường sau một nhịp; tải lại trang (Ctrl + F5) nếu cần.</p>
+  <p><b>Đổi trạng thái lịch đặt xong có cần lưu không?</b><br/>Không. Hệ thống tự lưu ngay khi bạn chọn trạng thái mới.</p>
+  <p><b>Xoá nhầm dữ liệu thì sao?</b><br/>Thao tác xoá là vĩnh viễn và đều có hộp xác nhận trước. Hãy đọc kỹ trước khi bấm “Đồng ý”.</p>
+  <p><b>Bài viết để “Bản nháp” khách có thấy không?</b><br/>Không. Chỉ bài ở trạng thái “Đã đăng” mới hiển thị công khai trên website.</p>
+
+  <div class="note tip"><b>Cần hỗ trợ?</b> Liên hệ quản trị viên hệ thống Stretch.vn để được cấp tài khoản, đặt lại mật khẩu hoặc mở thêm quyền truy cập các trang bị ẩn.</div>
+
+  <p class="muted" style="margin-top:28px; text-align:center; border-top:1px solid var(--line); padding-top:14px;">— Hết tài liệu — © Stretch.vn Admin · Hướng dẫn sử dụng v1.0</p>
+</section>
+
+</body>
+</html>
