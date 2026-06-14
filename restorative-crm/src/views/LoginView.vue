@@ -37,26 +37,24 @@
 
         <!-- Form -->
         <form @submit.prevent="handleSubmit" class="space-y-5">
-          <!-- Username Field -->
+          <!-- Email Field -->
           <div class="flex flex-col gap-1.5">
-            <label class="text-xs font-bold tracking-widest text-slate-400 uppercase">
-              {{ $t('login.username') }}
-            </label>
+            <label class="text-xs font-bold tracking-widest text-slate-400 uppercase">Email</label>
             <div class="relative flex items-center">
-              <span class="material-symbols-outlined absolute left-3.5 text-slate-500 text-lg">person</span>
+              <span class="material-symbols-outlined absolute left-3.5 text-slate-500 text-lg">alternate_email</span>
               <InputText
-                id="username"
-                v-model="username"
-                type="text"
+                id="email"
+                v-model="email"
+                type="email"
                 class="login-input w-full"
-                :class="{ 'border-red-500/50 focus:border-red-500': errors.username }"
-                :placeholder="$t('login.usernamePlaceholder')"
-                autocomplete="username"
+                :class="{ 'border-red-500/50 focus:border-red-500': errors.email }"
+                placeholder="admin@stretch.vn"
+                autocomplete="email"
               />
             </div>
-            <span v-if="errors.username" class="text-xs text-red-400 mt-1 flex items-center gap-1">
+            <span v-if="errors.email" class="text-xs text-red-400 mt-1 flex items-center gap-1">
               <span class="material-symbols-outlined text-xs">error</span>
-              {{ errors.username }}
+              {{ errors.email }}
             </span>
           </div>
 
@@ -122,8 +120,8 @@
             class="w-full flex items-center justify-between p-3 rounded-xl bg-slate-900/40 border border-slate-800 hover:bg-slate-800/40 transition-all text-left group"
           >
             <div class="flex flex-col gap-0.5">
-              <span class="text-xs font-semibold text-slate-300">admin / password123</span>
-              <span class="text-[10px] text-slate-500 font-light">{{ $t('login.demoHint') }}</span>
+              <span class="text-xs font-semibold text-slate-300">admin@stretch.vn</span>
+              <span class="text-[10px] text-slate-500 font-light">Admin@stretch1 · {{ $t('login.demoHint') }}</span>
             </div>
             <span class="material-symbols-outlined text-base text-slate-500 group-hover:text-emerald-400 transition-colors">
               input
@@ -145,14 +143,14 @@ const router = useRouter()
 const authStore = useAuthStore()
 const { locale, t } = useI18n()
 
-const username = ref('')
+const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
 const loading = ref(false)
 const errorMessage = ref('')
 
 const errors = reactive({
-  username: '',
+  email: '',
   password: ''
 })
 
@@ -161,21 +159,23 @@ const toggleLanguage = () => {
 }
 
 const fillDemoCredentials = () => {
-  username.value = 'admin'
-  password.value = 'password123'
-  // Clear any existing errors
-  errors.username = ''
+  email.value = 'admin@stretch.vn'
+  password.value = 'Admin@stretch1'
+  errors.email = ''
   errors.password = ''
   errorMessage.value = ''
 }
 
 const validate = () => {
   let isValid = true
-  errors.username = ''
+  errors.email = ''
   errors.password = ''
 
-  if (!username.value.trim()) {
-    errors.username = t('login.requiredError')
+  if (!email.value.trim()) {
+    errors.email = t('login.requiredError')
+    isValid = false
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+    errors.email = locale.value === 'vi' ? 'Email không hợp lệ' : 'Invalid email address'
     isValid = false
   }
 
@@ -193,15 +193,11 @@ const handleSubmit = async () => {
   loading.value = true
   errorMessage.value = ''
 
-  // Fake slight network delay for fluid/premium UX feel
-  await new Promise(resolve => setTimeout(resolve, 800))
-
-  const result = authStore.login(username.value, password.value)
+  const result = await authStore.login(email.value.trim(), password.value)
 
   if (result.success) {
     router.push({ name: 'Dashboard' })
   } else {
-    // Show localized error
     errorMessage.value = result.message[locale.value] || result.message.en
   }
   loading.value = false

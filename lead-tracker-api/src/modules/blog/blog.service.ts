@@ -23,11 +23,19 @@ export const blogService = {
       readTime: data.readTime || null,
       featured: data.featured ?? false,
       published: data.published ?? true,
+      publishedAt: data.publishedAt || null,
     } as any)
   },
 
-  async getPosts(filter?: BlogPostFilter): Promise<BlogPost[]> {
-    return blogRepository.getPosts(filter)
+  async getPosts(
+    filter?: BlogPostFilter,
+    pagination?: { page?: number; limit?: number }
+  ): Promise<{ posts: BlogPost[]; total: number }> {
+    return blogRepository.getPosts(filter, pagination)
+  },
+
+  async getStats(): Promise<{ total: number; published: number; draft: number }> {
+    return blogRepository.getStats()
   },
 
   async getPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -42,7 +50,7 @@ export const blogService = {
     return blogRepository.updatePost(id, data as Partial<BlogPost>)
   },
 
-  async deletePost(id: string): Promise<boolean> {
+  async deletePost(id: string): Promise<BlogPost | null> {
     return blogRepository.deletePost(id)
   },
 }

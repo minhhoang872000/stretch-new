@@ -96,13 +96,12 @@ export const recentPatients = [
 
 export const navItems = [
   { path: '/dashboard', icon: 'dashboard', label: 'Dashboard' },
-  { path: '/leads', icon: 'person_search', label: 'Leads' },
   { path: '/bookings', icon: 'event_available', label: 'Bookings' },
   { path: '/categories', icon: 'category', label: 'Categories' },
   { path: '/calendar', icon: 'calendar_month', label: 'Calendar' },
   { path: '/blog', icon: 'article', label: 'Blog' },
-  { path: '/services', icon: 'medical_services', label: 'Services' },
-  { path: '/seo-settings', icon: 'travel_explore', label: 'SEO Settings' }
+  // { path: '/services', icon: 'medical_services', label: 'Services' }, // tạm thời ẩn trang Services
+  { path: '/google-analytics', icon: 'analytics', label: 'Google Analytics' }
 ]
 
 export const blogStats = [

@@ -84,6 +84,21 @@ export interface BookingFilter {
   service?: string
 }
 
+// ─── Categories ──────────────────────────────────────────────────────
+
+export interface Category {
+  id: string
+  key: string
+  label: string
+  description: string | null
+  icon: string
+  iconBg: string
+  iconColor: string
+  sortOrder: number
+  createdAt: string
+  updatedAt: string
+}
+
 // ─── Blog Posts ──────────────────────────────────────────────────────
 
 export interface BlogPost {
@@ -123,7 +138,26 @@ export interface BlogPostFilter {
   tag?: string
   featured?: boolean
   published?: boolean
+  /** Admin listing: include drafts (skip the published-only default). */
+  includeUnpublished?: boolean
   search?: string
+}
+
+// ─── Auth / Admin ────────────────────────────────────────────────────
+
+export interface Admin {
+  id: string
+  email: string
+  name: string
+  password_hash?: string
+  created_at?: string
+}
+
+export interface AdminTokenPayload {
+  id: string
+  email: string
+  name: string
+  role: 'admin'
 }
 
 // ─── Request Extensions ──────────────────────────────────────────────

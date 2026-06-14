@@ -84,7 +84,50 @@ const rules = computed(() => ({
 
 const v$ = useVuelidate(rules, form)
 
-const timeSlots = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00']
+// Giờ làm việc: Thứ 2-6: 8am-6pm | Thứ 7-CN: 8am-4pm
+const weekdaySlots = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00']
+const weekendSlots = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00']
+
+// Reactive "now" cập nhật mỗi phút để lọc giờ đã qua
+const now = ref(new Date())
+let nowTimer: ReturnType<typeof setInterval> | null = null
+onMounted(() => { nowTimer = setInterval(() => { now.value = new Date() }, 60_000) })
+onUnmounted(() => { if (nowTimer) clearInterval(nowTimer) })
+
+function isToday(date: Date) {
+  const today = now.value
+  return date.getDate() === today.getDate()
+    && date.getMonth() === today.getMonth()
+    && date.getFullYear() === today.getFullYear()
+}
+
+const timeSlots = computed(() => {
+  if (!form.value.date) return weekdaySlots // default khi chưa chọn ngày
+  const selected = new Date(form.value.date)
+  const day = selected.getDay() // 0 = CN, 6 = T7
+  const slots = (day === 0 || day === 6) ? weekendSlots : weekdaySlots
+
+  // Nếu ngày được chọn là hôm nay → loại bỏ các slot đã qua
+  if (isToday(selected)) {
+    const currentHour = now.value.getHours()
+    const currentMinute = now.value.getMinutes()
+    return slots.filter(slot => {
+      const [h, m] = slot.split(':').map(Number)
+      // Chỉ hiện slot nếu giờ slot > giờ hiện tại,
+      // hoặc giờ bằng nhau nhưng phút slot > phút hiện tại
+      return h > currentHour || (h === currentHour && m > currentMinute)
+    })
+  }
+
+  return slots
+})
+
+// Reset time khi đổi ngày nếu slot đã chọn không còn hợp lệ
+watch(() => form.value.date, () => {
+  if (form.value.time && !timeSlots.value.includes(form.value.time)) {
+    form.value.time = ''
+  }
+})
 
 function formatDate(date: Date | null) {
   if (!date) return ''

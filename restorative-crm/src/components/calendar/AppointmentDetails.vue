@@ -27,6 +27,28 @@
           </div>
         </div>
 
+        <!-- Contact -->
+        <div class="grid grid-cols-1 gap-3">
+          <div>
+            <span class="label-xs mb-1 block">{{ $t('calendar.phone') }}</span>
+            <a v-if="selectedAppointment.phone" :href="`tel:${selectedAppointment.phone}`"
+               class="flex gap-2 items-center text-sm font-medium text-primary hover:underline">
+              <span class="material-symbols-outlined text-lg">call</span>
+              {{ selectedAppointment.phone }}
+            </a>
+            <p v-else class="text-sm text-on-surface-variant">—</p>
+          </div>
+          <div>
+            <span class="label-xs mb-1 block">{{ $t('calendar.email') }}</span>
+            <a v-if="selectedAppointment.email" :href="`mailto:${selectedAppointment.email}`"
+               class="flex gap-2 items-center text-sm font-medium text-primary hover:underline break-all">
+              <span class="material-symbols-outlined text-lg">mail</span>
+              {{ selectedAppointment.email }}
+            </a>
+            <p v-else class="text-sm text-on-surface-variant">—</p>
+          </div>
+        </div>
+
         <div class="grid grid-cols-2 gap-3">
           <div>
             <span class="label-xs mb-1 block">{{ $t('calendar.provider') }}</span>
@@ -38,9 +60,22 @@
           </div>
         </div>
 
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <span class="label-xs mb-1 block">{{ $t('calendar.appointmentTime') }}</span>
+            <p class="text-sm font-medium text-on-surface">{{ selectedAppointment.time || 'N/A' }}</p>
+          </div>
+          <div>
+            <span class="label-xs mb-1 block">{{ $t('common.status') }}</span>
+            <span class="inline-block text-xs font-bold px-2.5 py-1 rounded-full" :class="statusClass(selectedAppointment.status)">
+              {{ STATUS_LABELS[selectedAppointment.status] || selectedAppointment.status || '—' }}
+            </span>
+          </div>
+        </div>
+
         <div>
           <span class="label-xs mb-1 block">{{ $t('calendar.notes') }}</span>
-          <p class="text-xs text-on-surface-variant leading-relaxed">{{ selectedAppointment.notes || ($t('calendar.notes') + '...') }}</p>
+          <p class="text-xs text-on-surface-variant leading-relaxed whitespace-pre-line">{{ selectedAppointment.notes || ($t('calendar.notes') + '...') }}</p>
         </div>
       </div>
 
@@ -81,6 +116,22 @@ import { updateBookingStatus as apiUpdateStatus } from '@/services/api.js'
 const store = useCalendarStore()
 const { selectedAppointment } = storeToRefs(store)
 const updating = ref(false)
+
+const STATUS_LABELS = {
+  pending: 'Chờ xác nhận',
+  confirmed: 'Đã xác nhận',
+  completed: 'Hoàn thành',
+  cancelled: 'Đã huỷ',
+}
+
+function statusClass(status) {
+  return {
+    pending: 'bg-yellow-50 text-yellow-700 border border-yellow-200',
+    confirmed: 'bg-blue-50 text-blue-700 border border-blue-200',
+    completed: 'bg-green-50 text-green-700 border border-green-200',
+    cancelled: 'bg-red-50 text-red-400 border border-red-200',
+  }[status] || 'bg-surface-container text-on-surface-variant'
+}
 
 const markCompleted = async () => {
   if (!selectedAppointment.value) return

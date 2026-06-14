@@ -1,5 +1,6 @@
 <template>
   <div class="flex min-h-screen bg-surface text-on-surface antialiased">
+    <Toast position="top-right" />
     <SideNav v-if="showLayout" />
     <div 
       class="flex-1 min-w-0 transition-all duration-300 flex flex-col"

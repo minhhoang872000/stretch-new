@@ -1,5 +1,11 @@
 # Render Blueprint — https://render.com/docs/blueprint-spec
 # Database is hosted on Supabase — set DATABASE_URL manually in Render dashboard.
+#
+# NOTE: this repo is a monorepo; the API lives in /lead-tracker-api.
+#  • Easiest: in the Render dashboard set the service "Root Directory" to
+#    lead-tracker-api (then rootDir below is ignored), OR
+#  • Use this Blueprint with a copy of render.yaml at the REPO ROOT — rootDir
+#    below tells Render to build/run inside the subfolder.
 
 services:
   - type: web
@@ -7,6 +13,7 @@ services:
     runtime: node
     region: singapore
     plan: free
+    rootDir: lead-tracker-api
     buildCommand: npm install
     startCommand: npx tsx server.ts
     healthCheckPath: /health
@@ -15,17 +22,56 @@ services:
         value: production
       - key: PORT
         value: "3001"
+
+      # ─── Database (Supabase) ──────────────────────────────────────
       - key: DATABASE_URL
-        sync: false  # Set manually from Supabase connection string
+        sync: false   # Supabase → Project Settings → Database → Connection string (URI)
       - key: DB_SSL
         value: "true"
-      - key: SUPABASE_URL
+
+      # ─── Auth (REQUIRED — server refuses to boot without these) ───
+      - key: JWT_SECRET
+        generateValue: true   # Render generates a secure random value
+      - key: ADMIN_EMAIL
         sync: false
-      - key: SUPABASE_ANON_KEY
+      - key: ADMIN_PASSWORD
+        sync: false   # must NOT be the default; pick a strong password
+      - key: ADMIN_NAME
         sync: false
+
+      # ─── CORS — comma-separated CRM + site origins ────────────────
       - key: CORS_ORIGINS
-        sync: false
+        sync: false   # e.g. https://crm.yourdomain.com,https://stretch.vn
+
+      # ─── Rate limiting ────────────────────────────────────────────
       - key: RATE_LIMIT_WINDOW_MS
         value: "60000"
       - key: RATE_LIMIT_MAX
         value: "60"
+
+      # ─── Optional: Supabase SDK (not required for pg connection) ──
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+
+      # ─── Optional: image upload (Cloudflare R2) ───────────────────
+      # Leave unset if you don't use the /images upload endpoint.
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET
+        sync: false
+      - key: R2_PUBLIC_BASE_URL
+        sync: false
+
+      # ─── Optional: Google Analytics reporting ─────────────────────
+      - key: GA_PROPERTY_ID
+        sync: false
+      - key: GA_CLIENT_EMAIL
+        sync: false
+      - key: GA_PRIVATE_KEY
+        sync: false

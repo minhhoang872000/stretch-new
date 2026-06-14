@@ -1,19 +1,23 @@
 <template>
-  <main class="p-8 bg-surface min-h-screen">
+  <main class="p-4 lg:p-8 bg-surface min-h-screen">
     <!-- Header -->
-    <div class="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+    <div class="mb-6 lg:mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
       <div>
         <span class="text-xs font-bold text-primary tracking-[0.2em] uppercase mb-2 block">
-          Lead Tracking System
+          Google Analytics
         </span>
         <h2 class="text-3xl sm:text-4xl font-extrabold text-on-surface tracking-tight">
           Analytics Dashboard
         </h2>
       </div>
       <div class="flex flex-wrap gap-3">
-        <button @click="store.loadAll()" class="px-6 py-2.5 rounded-full bg-surface-container-highest text-on-surface-variant font-semibold text-sm hover:bg-surface-container-high transition-colors">
-          <span class="material-symbols-outlined text-lg align-middle mr-1">refresh</span>
-          Refresh
+        <router-link to="/google-analytics"
+          class="px-6 py-2.5 rounded-full bg-[#F37C20] text-white font-semibold text-sm hover:bg-[#e06a10] transition-colors flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-base">analytics</span>Full Report
+        </router-link>
+        <button @click="store.loadAll()"
+          class="px-6 py-2.5 rounded-full bg-surface-container-highest text-on-surface-variant font-semibold text-sm hover:bg-surface-container-high transition-colors flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-base">refresh</span>Refresh
         </button>
       </div>
     </div>
@@ -21,7 +25,7 @@
     <!-- Loading -->
     <div v-if="store.loading" class="text-center py-20 text-on-surface-variant">
       <span class="material-symbols-outlined animate-spin text-4xl">progress_activity</span>
-      <p class="mt-4">Loading analytics...</p>
+      <p class="mt-4">Loading Google Analytics...</p>
     </div>
 
     <!-- Error -->
@@ -35,16 +39,16 @@
     </div>
 
     <template v-else>
-      <!-- KPI Cards -->
+      <!-- KPI Cards (from GA) -->
       <KpiGrid />
 
       <!-- Charts Row -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-8 mb-8">
         <RegistrationsChart />
         <TrafficSources />
       </div>
 
-      <!-- Recent Leads -->
+      <!-- Top Pages (from GA) -->
       <RecentRegistrations />
     </template>
   </main>

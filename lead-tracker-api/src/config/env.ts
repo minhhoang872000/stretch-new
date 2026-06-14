@@ -32,4 +32,69 @@ export const env = {
     windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000', 10),
     max: parseInt(process.env.RATE_LIMIT_MAX || '60', 10),
   },
+
+  jwtSecret: process.env.JWT_SECRET || 'change-me-in-production-stretch-crm',
+
+  admin: {
+    email: (process.env.ADMIN_EMAIL || 'admin@stretch.vn').toLowerCase().trim(),
+    password: process.env.ADMIN_PASSWORD || 'Admin@stretch1',
+    name: process.env.ADMIN_NAME || 'Stretch Admin',
+  },
+
+  ga: {
+    propertyId: process.env.GA_PROPERTY_ID || '',
+    clientEmail: process.env.GA_CLIENT_EMAIL || '',
+    privateKey: (process.env.GA_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+  },
+
+  /** Cloudflare R2 (S3-compatible object storage) — image uploads */
+  r2: {
+    /** Cloudflare account id (the 32-char hex in the dashboard URL) */
+    accountId: process.env.R2_ACCOUNT_ID || '',
+    accessKeyId: process.env.R2_ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
+    bucket: process.env.R2_BUCKET || '',
+    /**
+     * Public base URL for serving objects — either the bucket's r2.dev URL
+     * (https://pub-<hash>.r2.dev) or a connected custom domain (https://cdn.example.com).
+     * No trailing slash.
+     */
+    publicBaseUrl: (process.env.R2_PUBLIC_BASE_URL || '').replace(/\/$/, ''),
+    /** Key prefix/folder for uploads (default: blog) */
+    prefix: process.env.R2_PREFIX || 'blog',
+    /** Max upload size in bytes (default 10MB) */
+    maxUploadBytes: parseInt(process.env.R2_MAX_BYTES || '10485760', 10),
+    /** Resize images wider than this before storing (px). Set 0 to disable. */
+    imageMaxWidth: parseInt(process.env.R2_IMAGE_MAX_WIDTH || '1920', 10),
+    /** WebP re-encode quality (1–100) */
+    imageQuality: parseInt(process.env.R2_IMAGE_QUALITY || '82', 10),
+  },
 } as const
+
+// Default fallbacks that MUST NOT be used in production.
+const DEFAULT_JWT_SECRET = 'change-me-in-production-stretch-crm'
+const DEFAULT_ADMIN_PASSWORD = 'Admin@stretch1'
+
+/**
+ * Fail-fast in production if security-critical secrets are missing or left at defaults.
+ * Called from the server entrypoint so the process refuses to start misconfigured.
+ */
+export function assertSecretsConfigured(): void {
+  if (!env.isProd) return
+
+  const problems: string[] = []
+  if (!process.env.JWT_SECRET || env.jwtSecret === DEFAULT_JWT_SECRET) {
+    problems.push('JWT_SECRET is missing or still the default value')
+  } else if (env.jwtSecret.length < 16) {
+    problems.push('JWT_SECRET is too short (use ≥ 16 random characters)')
+  }
+  if (!process.env.ADMIN_PASSWORD || env.admin.password === DEFAULT_ADMIN_PASSWORD) {
+    problems.push('ADMIN_PASSWORD is missing or still the default value')
+  }
+
+  if (problems.length) {
+    throw new Error(
+      `Refusing to start in production with insecure config:\n  - ${problems.join('\n  - ')}`
+    )
+  }
+}

@@ -2,22 +2,21 @@ import { Router } from 'express'
 import { bookingController } from './booking.controller'
 import { validate } from '../../middleware/validate'
 import { createBookingSchema, updateBookingStatusSchema } from './booking.schema'
+import { requireAuth } from '../../middleware/requireAuth'
 
 const router = Router()
 
-// ─── Bookings ────────────────────────────────────────────────────────
+// ─── Public (site form uses these) ───────────────────────────────────
 router.post('/', validate(createBookingSchema), bookingController.create)
-router.get('/', bookingController.list)
 router.get('/availability', bookingController.availability)
-router.get('/:id', bookingController.getById)
-router.patch('/:id', validate(updateBookingStatusSchema), bookingController.updateStatus)
-router.delete('/:id', bookingController.remove)
-
-// ─── Products ────────────────────────────────────────────────────────
 router.get('/products', bookingController.listProducts)
 router.get('/products/:slug', bookingController.getProductBySlug)
-
-// ─── Practitioners ───────────────────────────────────────────────────
 router.get('/practitioners', bookingController.listPractitioners)
+
+// ─── Admin only ──────────────────────────────────────────────────────
+router.get('/', requireAuth, bookingController.list)
+router.get('/:id', requireAuth, bookingController.getById)
+router.patch('/:id', requireAuth, validate(updateBookingStatusSchema), bookingController.updateStatus)
+router.delete('/:id', requireAuth, bookingController.remove)
 
 export default router

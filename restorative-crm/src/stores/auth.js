@@ -1,44 +1,57 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api/v1'
 
 export const useAuthStore = defineStore('auth', () => {
-  const isAuthenticated = ref(localStorage.getItem('auth_authenticated') === 'true')
+  const token = ref(localStorage.getItem('auth_token') || '')
   const user = ref(JSON.parse(localStorage.getItem('auth_user') || 'null'))
 
-  function login(username, password) {
-    // Demo credentials check
-    if (username.trim() === 'admin' && password === 'password123') {
-      isAuthenticated.value = true
-      user.value = {
-        username: username.trim(),
-        name: 'Dr. Sarah Chen',
-        role: 'Lead Practitioner'
-      }
-      localStorage.setItem('auth_authenticated', 'true')
-      localStorage.setItem('auth_user', JSON.stringify(user.value))
-      return { success: true }
-    } else {
-      return { 
-        success: false, 
-        message: {
-          en: 'Invalid username or password.',
-          vi: 'Tên đăng nhập hoặc mật khẩu không chính xác.'
+  const isAuthenticated = computed(() => !!token.value && !!user.value)
+
+  async function login(email, password) {
+    try {
+      const res = await fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+
+      const json = await res.json()
+
+      if (!json.success) {
+        return {
+          success: false,
+          message: {
+            en: json.error?.message || 'Invalid credentials',
+            vi: 'Email hoặc mật khẩu không đúng',
+          },
         }
+      }
+
+      token.value = json.data.token
+      user.value = json.data.admin
+      localStorage.setItem('auth_token', json.data.token)
+      localStorage.setItem('auth_user', JSON.stringify(json.data.admin))
+
+      return { success: true }
+    } catch {
+      return {
+        success: false,
+        message: {
+          en: 'Connection error. Please check the API server.',
+          vi: 'Lỗi kết nối. Vui lòng kiểm tra server API.',
+        },
       }
     }
   }
 
   function logout() {
-    isAuthenticated.value = false
+    token.value = ''
     user.value = null
-    localStorage.removeItem('auth_authenticated')
+    localStorage.removeItem('auth_token')
     localStorage.removeItem('auth_user')
   }
 
-  return {
-    isAuthenticated,
-    user,
-    login,
-    logout
-  }
+  return { token, user, isAuthenticated, login, logout }
 })

@@ -1,9 +1,12 @@
 import app from './src/app'
-import { env } from './src/config/env'
+import { env, assertSecretsConfigured } from './src/config/env'
 import { testConnection } from './src/config/db'
 
 async function start(): Promise<void> {
   console.log(`[Server] Environment: ${env.nodeEnv}`)
+
+  // Refuse to boot in production with default/missing secrets.
+  assertSecretsConfigured()
 
   const dbOk = await testConnection()
   if (!dbOk) {

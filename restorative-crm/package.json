@@ -17,6 +17,8 @@
     "vite": "^8.0.10"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-vue": "^8.1.1",
+    "ckeditor5": "^48.2.0",
     "pinia": "^3.0.4",
     "primeicons": "^7.0.0",
     "primevue": "^3.53.1",

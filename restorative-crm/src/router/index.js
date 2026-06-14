@@ -11,19 +11,14 @@ const routes = [
     component: () => import('@/views/LoginView.vue')
   },
   {
-    path: '/leads',
-    name: 'Leads',
-    component: () => import('@/views/LeadsView.vue')
-  },
-  {
-    path: '/leads/:sessionId',
-    name: 'LeadDetail',
-    component: () => import('@/views/LeadDetailView.vue')
-  },
-  {
     path: '/bookings',
     name: 'Bookings',
     component: () => import('@/views/BookingsView.vue')
+  },
+  {
+    path: '/bookings/:id',
+    name: 'BookingDetail',
+    component: () => import('@/views/BookingDetailView.vue')
   },
   {
     path: '/categories',
@@ -41,19 +36,25 @@ const routes = [
     component: () => import('@/views/BlogView.vue')
   },
   {
-    path: '/services',
-    name: 'Services',
-    component: () => import('@/views/ServicesView.vue')
+    path: '/blog/:slug',
+    name: 'BlogDetail',
+    component: () => import('@/views/BlogDetailView.vue')
   },
+  // Tạm thời ẩn trang Services
+  // {
+  //   path: '/services',
+  //   name: 'Services',
+  //   component: () => import('@/views/ServicesView.vue')
+  // },
+  // {
+  //   path: '/services/edit',
+  //   name: 'EditService',
+  //   component: () => import('@/views/EditServiceView.vue')
+  // },
   {
-    path: '/services/edit',
-    name: 'EditService',
-    component: () => import('@/views/EditServiceView.vue')
-  },
-  {
-    path: '/seo-settings',
-    name: 'SeoSettings',
-    component: () => import('@/views/SeoSettingsView.vue')
+    path: '/google-analytics',
+    name: 'GoogleAnalytics',
+    component: () => import('@/views/GoogleAnalyticsView.vue')
   }
 ]
 

@@ -6,9 +6,10 @@ import type { BlogPost, BlogPostFilter } from '../../types'
  */
 export const blogRepository = {
 
-  async createPost(data: Omit<BlogPost, 'id' | 'createdAt' | 'updatedAt' | 'publishedAt'>): Promise<BlogPost> {
+  async createPost(data: Omit<BlogPost, 'id' | 'createdAt' | 'updatedAt'>): Promise<BlogPost> {
     const id = `bp-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`
     const now = new Date().toISOString()
+    const publishedAt = data.publishedAt || now
 
     const sql = `
       INSERT INTO blog_posts (
@@ -26,53 +27,87 @@ export const blogRepository = {
       data.category, JSON.stringify(data.tags || []),
       data.coverImage || null, data.author || 'Stretch Team',
       data.readTime || null, data.featured ?? false, data.published ?? true,
-      now, now, now,
+      publishedAt, now, now,
     ])
 
     return mapBlogRow(result.rows[0])
   },
 
-  async getPosts(filter?: BlogPostFilter): Promise<BlogPost[]> {
-    let sql = 'SELECT * FROM blog_posts WHERE 1=1'
+  async getPosts(
+    filter?: BlogPostFilter,
+    pagination?: { page?: number; limit?: number }
+  ): Promise<{ posts: BlogPost[]; total: number }> {
+    const conditions: string[] = []
     const params: any[] = []
     let paramIndex = 1
 
-    // Default: only show published posts (unless explicitly filtered)
+    // Default: only show published posts (unless explicitly filtered or admin includes drafts)
     if (filter?.published !== undefined) {
-      sql += ` AND published = $${paramIndex++}`
+      conditions.push(`published = $${paramIndex++}`)
       params.push(filter.published)
-    } else {
-      sql += ` AND published = true`
+    } else if (!filter?.includeUnpublished) {
+      conditions.push(`published = true`)
     }
 
     if (filter?.category) {
-      sql += ` AND category = $${paramIndex++}`
+      conditions.push(`category = $${paramIndex++}`)
       params.push(filter.category)
     }
 
     if (filter?.featured !== undefined) {
-      sql += ` AND featured = $${paramIndex++}`
+      conditions.push(`featured = $${paramIndex++}`)
       params.push(filter.featured)
     }
 
     if (filter?.tag) {
-      sql += ` AND tags @> $${paramIndex++}::jsonb`
+      conditions.push(`tags @> $${paramIndex++}::jsonb`)
       params.push(JSON.stringify([filter.tag]))
     }
 
     if (filter?.search) {
-      sql += ` AND (
+      conditions.push(`(
         title_en ILIKE $${paramIndex} OR title_vi ILIKE $${paramIndex}
         OR excerpt_en ILIKE $${paramIndex} OR excerpt_vi ILIKE $${paramIndex}
-      )`
+      )`)
       params.push(`%${filter.search}%`)
       paramIndex++
     }
 
-    sql += ' ORDER BY featured DESC, published_at DESC'
+    const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : ''
+    const order = 'ORDER BY featured DESC, published_at DESC'
 
-    const result = await pool.query(sql, params)
-    return result.rows.map(mapBlogRow)
+    // Pagination is opt-in: without page/limit, return the full list (used by the public site).
+    const usePaging = !!(pagination && (pagination.page || pagination.limit))
+    if (!usePaging) {
+      const result = await pool.query(`SELECT * FROM blog_posts ${where} ${order}`, params)
+      const posts = result.rows.map(mapBlogRow)
+      return { posts, total: posts.length }
+    }
+
+    const page = Math.max(1, pagination!.page || 1)
+    const limit = Math.min(Math.max(1, pagination!.limit || 20), 100)
+    const offset = (page - 1) * limit
+
+    const countResult = await pool.query(`SELECT COUNT(*) AS total FROM blog_posts ${where}`, params)
+    const total = parseInt(countResult.rows[0].total, 10)
+
+    const dataResult = await pool.query(
+      `SELECT * FROM blog_posts ${where} ${order} LIMIT ${limit} OFFSET ${offset}`,
+      params
+    )
+    return { posts: dataResult.rows.map(mapBlogRow), total }
+  },
+
+  async getStats(): Promise<{ total: number; published: number; draft: number }> {
+    const result = await pool.query(
+      `SELECT
+         COUNT(*)::int AS total,
+         COUNT(*) FILTER (WHERE published)::int AS published,
+         COUNT(*) FILTER (WHERE NOT published)::int AS draft
+       FROM blog_posts`
+    )
+    const row = result.rows[0] || {}
+    return { total: row.total || 0, published: row.published || 0, draft: row.draft || 0 }
   },
 
   async getPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -84,8 +119,9 @@ export const blogRepository = {
   },
 
   async getPostById(id: string): Promise<BlogPost | null> {
+    // Accept either the internal id or the unique slug as identifier.
     const result = await pool.query(
-      'SELECT * FROM blog_posts WHERE id = $1',
+      'SELECT * FROM blog_posts WHERE id = $1 OR slug = $1',
       [id]
     )
     return result.rows.length ? mapBlogRow(result.rows[0]) : null
@@ -112,6 +148,7 @@ export const blogRepository = {
       readTime: 'read_time',
       featured: 'featured',
       published: 'published',
+      publishedAt: 'published_at',
     }
 
     for (const [key, column] of Object.entries(fieldMap)) {
@@ -134,19 +171,20 @@ export const blogRepository = {
     params.push(new Date().toISOString())
 
     params.push(id)
-    const sql = `UPDATE blog_posts SET ${setClauses.join(', ')} WHERE id = $${paramIndex} RETURNING *`
+    const sql = `UPDATE blog_posts SET ${setClauses.join(', ')} WHERE id = $${paramIndex} OR slug = $${paramIndex} RETURNING *`
 
     const result = await pool.query(sql, params)
     if (result.rows.length === 0) return null
     return mapBlogRow(result.rows[0])
   },
 
-  async deletePost(id: string): Promise<boolean> {
+  /** Deletes by id or slug. Returns the deleted post (for cleanup) or null if not found. */
+  async deletePost(id: string): Promise<BlogPost | null> {
     const result = await pool.query(
-      'DELETE FROM blog_posts WHERE id = $1',
+      'DELETE FROM blog_posts WHERE id = $1 OR slug = $1 RETURNING *',
       [id]
     )
-    return (result.rowCount ?? 0) > 0
+    return result.rows.length ? mapBlogRow(result.rows[0]) : null
   },
 }
 

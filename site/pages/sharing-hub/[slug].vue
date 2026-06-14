@@ -4,174 +4,45 @@ const localePath = useLocalePath();
 const route = useRoute();
 const router = useRouter();
 
-// Retrieve slug from route params
 const slug = computed(() => route.params.slug as string);
-
-// Active section for Table of Contents
 const activeSection = ref('');
 
-// Structured data for articles, with "what-is-sport-recovery" matching the mockup exactly
-const activeArticle = computed(() => {
-  const currentSlug = slug.value || 'what-is-sport-recovery';
+// ── Fetch post from API ──────────────────────────────────────────────
+const { data: activeArticle, error } = await useFetch(() => `/api/posts/${slug.value}`, {
+  default: () => null,
+})
 
-  // Article Database
-  const articles: Record<string, any> = {
-    'what-is-sport-recovery': {
-      title: t('sharing_hub.detail.what_is_sport_recovery.title'),
-      excerpt: t('sharing_hub.detail.what_is_sport_recovery.excerpt'),
-      category: t('sharing_hub.featured_posts.f1_category'),
-      categoryKey: 'articles',
-      date: 'May 10, 2025',
-      author: 'Stretch Team',
-      readTime: '6 min read',
-      image: '/business_solution_sidebar.png',
-      sections: [
-        {
-          id: 'what-is-sport-recovery',
-          title: t('sharing_hub.detail.what_is_sport_recovery.intro.title'),
-          type: 'intro',
-          text: t('sharing_hub.detail.what_is_sport_recovery.intro.text'),
-          quote: t('sharing_hub.detail.what_is_sport_recovery.intro.quote'),
-        },
-        {
-          id: 'why-it-matters',
-          title: t('sharing_hub.detail.what_is_sport_recovery.why.title'),
-          type: 'why',
-          text: t('sharing_hub.detail.what_is_sport_recovery.why.text'),
-          bullets: [
-            t('sharing_hub.detail.what_is_sport_recovery.why.b1'),
-            t('sharing_hub.detail.what_is_sport_recovery.why.b2'),
-            t('sharing_hub.detail.what_is_sport_recovery.why.b3'),
-            t('sharing_hub.detail.what_is_sport_recovery.why.b4'),
-          ],
-          image: '/homepage-hero.webp',
-        },
-        {
-          id: 'key-components',
-          title: t(
-            'sharing_hub.detail.what_is_sport_recovery.components.title',
-          ),
-          type: 'components',
-          items: [
-            {
-              title: t(
-                'sharing_hub.detail.what_is_sport_recovery.components.c1.title',
-              ),
-              desc: t(
-                'sharing_hub.detail.what_is_sport_recovery.components.c1.desc',
-              ),
-              icon: 'movement',
-            },
-            {
-              title: t(
-                'sharing_hub.detail.what_is_sport_recovery.components.c2.title',
-              ),
-              desc: t(
-                'sharing_hub.detail.what_is_sport_recovery.components.c2.desc',
-              ),
-              icon: 'soft_tissue',
-            },
-            {
-              title: t(
-                'sharing_hub.detail.what_is_sport_recovery.components.c3.title',
-              ),
-              desc: t(
-                'sharing_hub.detail.what_is_sport_recovery.components.c3.desc',
-              ),
-              icon: 'modalities',
-            },
-            {
-              title: t(
-                'sharing_hub.detail.what_is_sport_recovery.components.c4.title',
-              ),
-              desc: t(
-                'sharing_hub.detail.what_is_sport_recovery.components.c4.desc',
-              ),
-              icon: 'hydration',
-            },
-            {
-              title: t(
-                'sharing_hub.detail.what_is_sport_recovery.components.c5.title',
-              ),
-              desc: t(
-                'sharing_hub.detail.what_is_sport_recovery.components.c5.desc',
-              ),
-              icon: 'sleep',
-            },
-          ],
-        },
-        {
-          id: 'who-can-benefit',
-          title: t('sharing_hub.detail.what_is_sport_recovery.who.title'),
-          type: 'text',
-          text: t('sharing_hub.detail.what_is_sport_recovery.who.text'),
-        },
-        {
-          id: 'how-to-get-started',
-          title: t('sharing_hub.detail.what_is_sport_recovery.start.title'),
-          type: 'text',
-          text: t('sharing_hub.detail.what_is_sport_recovery.start.text'),
-        },
-        {
-          id: 'key-takeaways',
-          title: t('sharing_hub.detail.what_is_sport_recovery.takeaways.title'),
-          type: 'text',
-          text: t('sharing_hub.detail.what_is_sport_recovery.takeaways.text'),
-        },
-      ],
-    },
-    // Generic dynamic articles so that ALL other cards function cleanly
-    'foam-rolling-101': {
-      title: 'Foam Rolling 101: Simple Habits for Better Recovery',
-      excerpt:
-        'How this accessible tool can reduce tension and support your daily performance.',
-      category: t('sharing_hub.categories.articles'),
-      categoryKey: 'articles',
-      date: 'May 8, 2025',
-      author: 'Stretch Team',
-      readTime: '5 min read',
-      image: '/recovery-who.png',
-      sections: [
-        {
-          id: 'what-is-foam-rolling',
-          title: 'What is Foam Rolling?',
-          type: 'text',
-          text: 'Foam rolling is a self-myofascial release (SMR) technique. It can help relieve muscle tightness, soreness, and inflammation, and increase your joint range of motion.',
-        },
-        {
-          id: 'how-it-helps',
-          title: 'How Foam Rolling Helps Your Recovery',
-          type: 'text',
-          text: 'By applying targeted pressure to specific points on your body, you are able to aid in the recovery of muscles and assist in returning them to normal function. Normal function means your muscles are elastic, healthy, and ready to perform.',
-        },
-        {
-          id: 'getting-started',
-          title: 'Getting Started with Foam Rolling',
-          type: 'text',
-          text: 'Start slow and apply light pressure. When you find a trigger point or tight knot, hold the pressure there for 20 to 30 seconds to allow the tissue to release. Keep breathing and maintain regular sessions for the best results.',
-        },
-      ],
-    },
-  };
+if (error.value || !activeArticle.value) {
+  throw createError({ statusCode: 404, statusMessage: 'Post not found', fatal: true })
+}
 
-  // Fallback to "what-is-sport-recovery" if slug is not matched
-  return (
-    articles[currentSlug] || {
-      ...articles['what-is-sport-recovery'],
-      title: currentSlug
-        .split('-')
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' '),
-    }
-  );
-});
-
-// Set page SEO based on article metadata
 useSeo({
   title: `${activeArticle.value.title} — Stretch.vn`,
   description: activeArticle.value.excerpt,
+  image: activeArticle.value.image,
   type: 'article',
+  article: {
+    author: activeArticle.value.author,
+    publishedTime: activeArticle.value.createdAt,
+    modifiedTime: activeArticle.value.updatedAt,
+    tags: activeArticle.value.tags,
+  },
 });
+
+// Render the CKEditor HTML and derive a Table of Contents from its <h2> headings.
+const processed = computed(() => {
+  const raw = (activeArticle.value as any)?.html || ''
+  const toc: { id: string; title: string }[] = []
+  let i = 0
+  const html = raw.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (_m: string, attrs: string, inner: string) => {
+    const text = String(inner).replace(/<[^>]+>/g, '').trim()
+    i += 1
+    const id = `sec-${i}-${text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40)}`
+    toc.push({ id, title: text })
+    return `<h2 id="${id}"${attrs}>${inner}</h2>`
+  })
+  return { html, toc }
+})
 
 // Category Badge Color
 function getCategoryColor(key: string) {
@@ -212,48 +83,27 @@ const categories = computed(() => [
   { key: 'events', label: t('sharing_hub.categories.events') },
 ]);
 
-// Hardcoded tags in sidebar
-const tags = [
-  'Recovery',
-  'Movement',
-  'Performance',
-  'Mobility',
-  'Rehabilitation',
-];
+// Tags derived from current post
+const tags = computed(() => activeArticle.value?.tags ?? ['Recovery', 'Movement', 'Performance', 'Mobility', 'Rehabilitation'])
 
-// Related Articles (3 cards at the footer)
-const relatedPosts = computed(() => [
-  {
-    category: t('sharing_hub.posts.p5_category'),
-    categoryKey: 'articles',
-    title: t('sharing_hub.posts.p5_title'),
-    desc: t('sharing_hub.posts.p5_desc'),
-    image: '/runner-who.png',
-    slug: 'hip-mobility-key',
-    date: 'Apr 30, 2025',
-    readTime: '6 min read',
-  },
-  {
-    category: t('sharing_hub.featured_posts.f3_category'),
-    categoryKey: 'team_stories',
-    title: t('sharing_hub.featured_posts.f3_title'),
-    desc: t('sharing_hub.featured_posts.f3_desc'),
-    image: '/individual-hero.webp',
-    slug: 'meet-huy-team-story',
-    date: 'May 2, 2025',
-    readTime: '5 min read',
-  },
-  {
-    category: t('sharing_hub.posts.p8_category'),
-    categoryKey: 'events',
-    title: t('sharing_hub.posts.p8_title'),
-    desc: t('sharing_hub.posts.p8_desc'),
-    image: '/warm-up.webp',
-    slug: 'sunrise-stretch-sala',
-    date: 'Apr 22, 2025',
-    readTime: '4 min read',
-  },
-]);
+// Related posts: 3 other published posts (same category first, then others)
+const { data: allPosts } = await useFetch('/api/posts', { query: { status: 'published' }, default: () => [] })
+
+const relatedPosts = computed(() => {
+  const others = (allPosts.value as any[]).filter((p: any) => p.slug !== slug.value)
+  const sameCat = others.filter((p: any) => p.categoryKey === activeArticle.value?.categoryKey)
+  const diffCat = others.filter((p: any) => p.categoryKey !== activeArticle.value?.categoryKey)
+  return [...sameCat, ...diffCat].slice(0, 3).map((p: any) => ({
+    category: p.category,
+    categoryKey: p.categoryKey,
+    title: p.title,
+    desc: p.excerpt,
+    image: p.image,
+    slug: p.slug,
+    date: p.date,
+    readTime: p.readTime,
+  }))
+});
 
 // Table of Contents Smooth Scrolling offset controller
 const scrollToSection = (id: string) => {
@@ -288,7 +138,7 @@ onMounted(() => {
     });
   }, observerOptions);
 
-  activeArticle.value.sections.forEach((section: any) => {
+  processed.value.toc.forEach((section) => {
     const el = document.getElementById(section.id);
     if (el) {
       observer?.observe(el);
@@ -401,216 +251,8 @@ onUnmounted(() => {
           <div
             class="lg:col-span-8 bg-white border border-border rounded-2xl p-6 lg:p-10 shadow-card"
           >
-            <div class="prose max-w-none">
-              <div
-                v-for="sec in activeArticle.sections"
-                :key="sec.id"
-                :id="sec.id"
-                class="mb-8 lg:mb-10 last:mb-0 scroll-mt-24"
-              >
-                <!-- Section Headings -->
-                <h2
-                  class="font-heading text-lg lg:text-xl font-bold text-navy border-b border-border pb-3 mb-4"
-                >
-                  {{ sec.title }}
-                </h2>
-
-                <!-- Type: Intro Section -->
-                <div
-                  v-if="sec.type === 'intro'"
-                  class="font-sans text-sm leading-relaxed text-text-primary"
-                >
-                  <p class="mb-5">{{ sec.text }}</p>
-
-                  <!-- Quote block matching design -->
-                  <div
-                    class="bg-off-white border-l-4 border-accent rounded-r-xl p-5 my-6 relative overflow-hidden flex flex-col justify-center"
-                  >
-                    <span
-                      class="absolute right-4 bottom-2 text-6xl text-accent/10 font-serif leading-none select-none"
-                      >”</span
-                    >
-                    <p
-                      class="italic text-navy font-heading font-semibold text-sm lg:text-base text-center leading-relaxed"
-                    >
-                      " {{ sec.quote }} "
-                    </p>
-                  </div>
-                </div>
-
-                <!-- Type: Why Section (Includes list & side image matching mockup) -->
-                <div
-                  v-else-if="sec.type === 'why'"
-                  class="grid grid-cols-1 md:grid-cols-12 gap-6 font-sans text-sm text-text-primary"
-                >
-                  <div class="md:col-span-7 flex flex-col justify-center">
-                    <p class="mb-4">{{ sec.text }}</p>
-                    <ul class="space-y-3 pl-0 list-none">
-                      <li
-                        v-for="(bullet, bIdx) in sec.bullets"
-                        :key="bIdx"
-                        class="flex items-start gap-3 text-text-primary"
-                      >
-                        <svg class="text-accent w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                          <polyline points="22 4 12 14.01 9 11.01" />
-                        </svg>
-                        <span class="leading-relaxed">{{ bullet }}</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- Side Image Inside Content -->
-                  <div class="md:col-span-5">
-                    <div
-                      class="rounded-xl overflow-hidden border border-border aspect-[4/3]"
-                    >
-                      <NuxtImg
-                        :src="sec.image"
-                        alt="Why it matters"
-                        class="w-full h-full object-cover"
-                        format="webp"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Type: Components Grid Section -->
-                <div v-else-if="sec.type === 'components'" class="font-sans">
-                  <!-- Custom Flex Grid of 5 components matching design exactly -->
-                  <div
-                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mt-6"
-                  >
-                    <div
-                      v-for="(item, cIdx) in sec.items"
-                      :key="cIdx"
-                      class="flex flex-col items-center text-center bg-off-white border border-border rounded-xl p-4 transition-all duration-300 hover:shadow-card hover:border-accent-light"
-                    >
-                      <!-- Custom Premium SVGs for component categories -->
-                      <div
-                        class="w-12 h-12 rounded-full bg-navy/5 flex items-center justify-center text-navy mb-3"
-                      >
-                        <svg
-                          v-if="item.icon === 'movement'"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          class="w-6 h-6"
-                        >
-                          <!-- Curved flexibility arrow -->
-                          <path
-                            d="M12 2a10 10 0 0 1 10 10c0 2.2-.7 4.2-2 5.9l-2-2"
-                            stroke-linecap="round"
-                          />
-                          <path
-                            d="M12 22A10 10 0 0 1 2 12C2 9.8 2.7 7.8 4 6.1l2 2"
-                            stroke-linecap="round"
-                          />
-                          <polyline
-                            points="20 14 20 20 14 20"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <polyline
-                            points="4 10 4 4 10 4"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-
-                        <svg
-                          v-else-if="item.icon === 'soft_tissue'"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          class="w-6 h-6"
-                        >
-                          <!-- Massage hands / wellness waves -->
-                          <path d="M4 10h16M4 14h16" stroke-linecap="round" />
-                          <path
-                            d="M12 4c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8z"
-                            stroke-linecap="round"
-                          />
-                          <circle cx="12" cy="12" r="2" fill="currentColor" />
-                        </svg>
-
-                        <svg
-                          v-else-if="item.icon === 'modalities'"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          class="w-6 h-6"
-                        >
-                          <!-- Pulse waves / tool support -->
-                          <path
-                            d="M2 10s3-3 5-3 5 6 7 6 5-3 7-3l1 1"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M2 14s3-3 5-3 5 6 7 6 5-3 7-3l1 1"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-
-                        <svg
-                          v-else-if="item.icon === 'hydration'"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          class="w-6 h-6"
-                        >
-                          <!-- Water droplet -->
-                          <path
-                            d="M12 22a7 7 0 0 0 7-7c0-4.3-7-13-7-13S5 10.7 5 15a7 7 0 0 0 7 7z"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-
-                        <svg
-                          v-else-if="item.icon === 'sleep'"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          class="w-6 h-6"
-                        >
-                          <!-- Crescent Moon / rest -->
-                          <path
-                            d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </div>
-
-                      <h3
-                        class="font-heading text-xs font-bold text-navy mb-1 leading-snug"
-                      >
-                        {{ item.title }}
-                      </h3>
-
-                      <p class="text-[10px] text-text-secondary leading-normal">
-                        {{ item.desc }}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Type: Text/Generic Section -->
-                <div
-                  v-else
-                  class="font-sans text-sm leading-relaxed text-text-primary"
-                >
-                  <p>{{ sec.text }}</p>
-                </div>
-              </div>
-            </div>
+            <!-- Article body: CKEditor HTML rendered via v-html -->
+            <div class="article-html font-sans text-text-primary" v-html="processed.html"></div>
 
             <!-- In-Article CTA Banner (CTA BLOCK matching design) -->
             <div
@@ -783,7 +425,7 @@ onUnmounted(() => {
                 class="space-y-2 text-xs font-heading font-semibold text-text-secondary"
               >
                 <li
-                  v-for="sec in activeArticle.sections"
+                  v-for="sec in processed.toc"
                   :key="sec.id"
                   @click="scrollToSection(sec.id)"
                   class="flex items-center gap-2.5 py-1.5 cursor-pointer transition-colors hover:text-accent"
@@ -801,6 +443,7 @@ onUnmounted(() => {
                   ></span>
                   {{ sec.title }}
                 </li>
+                <li v-if="processed.toc.length === 0" class="text-text-secondary/50 py-1.5">—</li>
               </ul>
             </div>
 
@@ -1028,13 +671,70 @@ onUnmounted(() => {
   scroll-margin-top: 6rem;
 }
 
-/* Custom list items inside rich text */
-.prose ul {
-  list-style: none;
-  padding-left: 0;
+/* ── Article body: style the CKEditor HTML injected via v-html ── */
+.article-html :deep(h2) {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--color-navy);
+  line-height: 1.3;
+  border-bottom: 1px solid var(--color-border, #e6ecf2);
+  padding-bottom: 0.75rem;
+  margin: 2rem 0 1rem;
+  scroll-margin-top: 6rem;
 }
-
-.prose li {
+.article-html :deep(h2:first-child) { margin-top: 0; }
+.article-html :deep(h3) {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-navy);
+  margin: 1.5rem 0 0.75rem;
+}
+.article-html :deep(p) {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--color-text-primary, #1f2937);
+  margin: 0 0 1.1rem;
+}
+.article-html :deep(ul),
+.article-html :deep(ol) {
+  margin: 0 0 1.25rem;
+  padding-left: 1.4rem;
+}
+.article-html :deep(ul) { list-style: disc; }
+.article-html :deep(ol) { list-style: decimal; }
+.article-html :deep(li) {
   margin-bottom: 0.5rem;
+  line-height: 1.7;
+  font-size: 0.95rem;
 }
+.article-html :deep(a) {
+  color: var(--color-accent, #f47a1f);
+  text-decoration: underline;
+  font-weight: 600;
+}
+.article-html :deep(strong) { font-weight: 700; color: var(--color-navy); }
+.article-html :deep(em) { font-style: italic; }
+.article-html :deep(blockquote) {
+  background: var(--color-off-white, #f8f8f6);
+  border-left: 4px solid var(--color-accent, #f47a1f);
+  border-radius: 0 0.75rem 0.75rem 0;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 600;
+  color: var(--color-navy);
+}
+.article-html :deep(blockquote p) { margin: 0; }
+.article-html :deep(img) {
+  border-radius: 0.75rem;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem 0;
+  border: 1px solid var(--color-border, #e6ecf2);
+}
+.article-html :deep(h2 + p),
+.article-html :deep(h3 + p) { margin-top: 0; }
 </style>

@@ -57,7 +57,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
           <div><span class="text-on-surface-variant">Status:</span> <span class="font-semibold ml-1">{{ store.leadDetail.booking.status }}</span></div>
           <div><span class="text-on-surface-variant">Service:</span> <span class="font-semibold ml-1">{{ store.leadDetail.booking.service }}</span></div>
-          <div><span class="text-on-surface-variant">Date:</span> <span class="font-semibold ml-1">{{ store.leadDetail.booking.date }}</span></div>
+          <div><span class="text-on-surface-variant">Date:</span> <span class="font-semibold ml-1">{{ formatDate(store.leadDetail.booking.date) }}</span></div>
           <div><span class="text-on-surface-variant">Customer:</span> <span class="font-semibold ml-1">{{ store.leadDetail.booking.name }}</span></div>
         </div>
       </div>
@@ -101,6 +101,7 @@
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useLeadsStore } from '@/stores/leads.js'
+import { formatDate, formatDateTime } from '@/utils/date.js'
 
 const route = useRoute()
 const store = useLeadsStore()
@@ -120,7 +121,7 @@ function getDotColor(event) {
 
 function formatTime(d) {
   if (!d) return '—'
-  return new Date(d).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+  return formatDateTime(d)
 }
 
 onMounted(() => {

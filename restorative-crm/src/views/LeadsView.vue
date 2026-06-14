@@ -122,6 +122,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useLeadsStore } from '@/stores/leads.js'
+import { formatDateTime } from '@/utils/date.js'
 
 const store = useLeadsStore()
 
@@ -159,7 +160,7 @@ function resetFilters() {
 
 function formatTime(d) {
   if (!d) return '—'
-  return new Date(d).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+  return formatDateTime(d)
 }
 
 function exportCSV() {

@@ -3,6 +3,16 @@
 -- Run this once to create the tables.
 -- ============================================================
 
+-- ─── Admins ──────────────────────────────────────────────────────────
+
+CREATE TABLE IF NOT EXISTS admins (
+  id            UUID          PRIMARY KEY DEFAULT gen_random_uuid(),
+  email         VARCHAR(200)  NOT NULL UNIQUE,
+  name          VARCHAR(100)  NOT NULL,
+  password_hash VARCHAR(255)  NOT NULL,
+  created_at    TIMESTAMPTZ   DEFAULT NOW()
+);
+
 -- ─── Lead Events (Tracking) ──────────────────────────────────────────
 
 CREATE TABLE IF NOT EXISTS lead_events (
@@ -105,6 +115,24 @@ CREATE INDEX IF NOT EXISTS idx_bk_service    ON bookings (service);
 CREATE INDEX IF NOT EXISTS idx_bk_created_at ON bookings (created_at);
 CREATE INDEX IF NOT EXISTS idx_bk_session    ON bookings (session_id);
 
+-- ─── Categories (Blog content categories) ───────────────────────────
+
+CREATE TABLE IF NOT EXISTS categories (
+  id            VARCHAR(30)   PRIMARY KEY,
+  key           VARCHAR(60)   NOT NULL UNIQUE,
+  label         VARCHAR(120)  NOT NULL,
+  description   VARCHAR(300)  DEFAULT NULL,
+  icon          VARCHAR(60)   NOT NULL DEFAULT 'category',
+  icon_bg       VARCHAR(60)   NOT NULL DEFAULT 'bg-teal-50',
+  icon_color    VARCHAR(60)   NOT NULL DEFAULT 'text-teal-600',
+  sort_order    INTEGER       NOT NULL DEFAULT 0,
+  created_at    TIMESTAMPTZ   DEFAULT NOW(),
+  updated_at    TIMESTAMPTZ   DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_cat_key  ON categories (key);
+CREATE INDEX IF NOT EXISTS idx_cat_sort ON categories (sort_order);
+
 -- ─── Blog Posts ──────────────────────────────────────────────────────
 
 CREATE TABLE IF NOT EXISTS blog_posts (
@@ -116,8 +144,8 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   excerpt_vi    TEXT          DEFAULT NULL,
   content_en    JSONB         DEFAULT '[]',   -- Array of section objects
   content_vi    JSONB         DEFAULT '[]',   -- Array of section objects
-  category      VARCHAR(50)   NOT NULL
-                CHECK (category IN ('articles', 'company_updates', 'team_stories', 'events')),
+  -- Category key references the dynamic `categories` table — no fixed CHECK list.
+  category      VARCHAR(60)   NOT NULL,
   tags          JSONB         DEFAULT '[]',
   cover_image   VARCHAR(500)  DEFAULT NULL,
   author        VARCHAR(200)  DEFAULT 'Stretch Team',
@@ -129,8 +157,16 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   updated_at    TIMESTAMPTZ   DEFAULT NOW()
 );
 
+-- Drop the legacy fixed-category CHECK on databases created before categories went dynamic.
+ALTER TABLE blog_posts DROP CONSTRAINT IF EXISTS blog_posts_category_check;
+
 CREATE INDEX IF NOT EXISTS idx_bp_slug        ON blog_posts (slug);
 CREATE INDEX IF NOT EXISTS idx_bp_category    ON blog_posts (category);
 CREATE INDEX IF NOT EXISTS idx_bp_featured    ON blog_posts (featured);
 CREATE INDEX IF NOT EXISTS idx_bp_published   ON blog_posts (published);
 CREATE INDEX IF NOT EXISTS idx_bp_published_at ON blog_posts (published_at);
+-- Composite index matching the list query (WHERE published ... ORDER BY featured DESC, published_at DESC).
+CREATE INDEX IF NOT EXISTS idx_bp_list        ON blog_posts (published, featured, published_at DESC);
+
+-- Speeds up the leads list device_type filter.
+CREATE INDEX IF NOT EXISTS idx_le_device      ON lead_events (device_type);

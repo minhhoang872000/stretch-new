@@ -1,4 +1,5 @@
 import { pool } from './config/db'
+import bcrypt from 'bcryptjs'
 
 /**
  * Seed script — inserts the mock data into PostgreSQL.
@@ -127,6 +128,24 @@ async function seed(): Promise<void> {
   }
   console.log(`[Seed] ✓ ${links.length} practitioner-service links inserted`)
 
+  // ─── Categories ────────────────────────────────────────────────
+  const categories = [
+    { id: 'cat-articles', key: 'articles', label: 'Knowledge', description: 'Educational articles, guides, and research', icon: 'menu_book', icon_bg: 'bg-teal-50', icon_color: 'text-teal-600', sort_order: 0 },
+    { id: 'cat-company-updates', key: 'company_updates', label: 'Company Updates', description: 'News, announcements, and milestones', icon: 'campaign', icon_bg: 'bg-blue-50', icon_color: 'text-blue-600', sort_order: 1 },
+    { id: 'cat-team-stories', key: 'team_stories', label: 'Team Stories', description: 'People, culture, and behind the scenes', icon: 'groups', icon_bg: 'bg-purple-50', icon_color: 'text-purple-600', sort_order: 2 },
+    { id: 'cat-events', key: 'events', label: 'Events', description: 'Workshops, sessions, and community events', icon: 'event', icon_bg: 'bg-orange-50', icon_color: 'text-orange-500', sort_order: 3 },
+  ]
+
+  for (const c of categories) {
+    await pool.query(
+      `INSERT INTO categories (id, key, label, description, icon, icon_bg, icon_color, sort_order)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+       ON CONFLICT (id) DO NOTHING`,
+      [c.id, c.key, c.label, c.description, c.icon, c.icon_bg, c.icon_color, c.sort_order]
+    )
+  }
+  console.log(`[Seed] ✓ ${categories.length} categories inserted`)
+
   // ─── Blog Posts ────────────────────────────────────────────────
   const blogPosts = [
     // ── Featured Posts (4) ──
@@ -138,7 +157,7 @@ async function seed(): Promise<void> {
       excerpt_vi: 'Phục hồi thể thao không chỉ đơn thuần là nghỉ ngơi. Đó là một quy trình có cấu trúc giúp cơ thể thích nghi, giảm đau và vận động tốt hơn.',
       content_en: JSON.stringify([
         { id: 'what-is-sport-recovery', title: 'What is Sport Recovery?', type: 'intro', text: 'Sport recovery is the deliberate process of helping your body return to balance after physical stress. It supports tissue repair, reduces soreness, and prepares you for your next session or competition.', quote: 'Recovery is where progress happens. Without it, performance won\'t last.' },
-        { id: 'why-it-matters', title: 'Why It Matters', type: 'why', text: 'Good recovery helps you:', bullets: ['Reduce soreness and muscle fatigue', 'Lower injury risk', 'Improve flexibility and movement quality', 'Achieve peak performance, more consistently'], image: '/hero-physiotherapy.png' },
+        { id: 'why-it-matters', title: 'Why It Matters', type: 'why', text: 'Good recovery helps you:', bullets: ['Reduce soreness and muscle fatigue', 'Lower injury risk', 'Improve flexibility and movement quality', 'Achieve peak performance, more consistently'], image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/recovery-place.webp' },
         { id: 'key-components', title: 'Key Components of Sport Recovery', type: 'components', items: [{ title: 'Movement Restoration', desc: 'Improve flexibility and restore range of motion', icon: 'movement' }, { title: 'Soft Tissue Therapy', desc: 'Release tension and reduce muscle stiffness', icon: 'soft_tissue' }, { title: 'Recovery Modalities', desc: 'Use appropriate tools to accelerate recovery', icon: 'modalities' }, { title: 'Nutrition & Hydration', desc: 'Fuel the body for repair and activity', icon: 'hydration' }, { title: 'Sleep & Rest', desc: 'Quality rest is where the body adapts and grows', icon: 'sleep' }] },
         { id: 'who-can-benefit', title: 'Who Can Benefit?', type: 'text', text: 'Anyone who moves. From professional athletes, recreational sports enthusiasts to office workers, sport recovery helps you move better, feel healthier and maintain consistency.' },
         { id: 'how-to-get-started', title: 'How to Get Started', type: 'text', text: 'Start by understanding your body. Listen to the signals. Then, build a simple recovery routine that works for you. Need support? Our team is always ready to journey alongside you.' },
@@ -146,14 +165,14 @@ async function seed(): Promise<void> {
       ]),
       content_vi: JSON.stringify([
         { id: 'what-is-sport-recovery', title: 'Phục hồi thể thao là gì?', type: 'intro', text: 'Phục hồi thể thao là quá trình có chủ ý nhằm giúp cơ thể bạn trở lại trạng thái cân bằng sau những căng thẳng về thể chất. Nó hỗ trợ sửa chữa mô cơ, giảm đau nhức và chuẩn bị cho bạn cho buổi tập luyện hoặc thi đấu tiếp theo.', quote: 'Phục hồi là nơi sự tiến bộ diễn ra. Không có nó, hiệu suất sẽ không kéo dài.' },
-        { id: 'why-it-matters', title: 'Tại sao nó quan trọng', type: 'why', text: 'Phục hồi tốt giúp bạn:', bullets: ['Giảm đau nhức và mỏi cơ', 'Giảm nguy cơ chấn thương', 'Cải thiện tính linh hoạt và chất lượng vận động', 'Đạt hiệu suất tốt nhất, ổn định hơn'], image: '/hero-physiotherapy.png' },
+        { id: 'why-it-matters', title: 'Tại sao nó quan trọng', type: 'why', text: 'Phục hồi tốt giúp bạn:', bullets: ['Giảm đau nhức và mỏi cơ', 'Giảm nguy cơ chấn thương', 'Cải thiện tính linh hoạt và chất lượng vận động', 'Đạt hiệu suất tốt nhất, ổn định hơn'], image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/recovery-place.webp' },
         { id: 'key-components', title: 'Các thành phần chính của phục hồi thể thao', type: 'components', items: [{ title: 'Khôi phục Vận Động', desc: 'Cải thiện tính linh hoạt và khôi phục biên độ vận động', icon: 'movement' }, { title: 'Trị liệu Mô mềm', desc: 'Giải phóng căng thẳng và giảm cứng cơ', icon: 'soft_tissue' }, { title: 'Phương pháp Phục hồi', desc: 'Sử dụng các công cụ phù hợp để tăng tốc độ phục hồi', icon: 'modalities' }, { title: 'Dinh dưỡng & Nước', desc: 'Cung cấp năng lượng cho cơ thể để sửa chữa và hoạt động', icon: 'hydration' }, { title: 'Giấc ngủ & Nghỉ ngơi', desc: 'Nghỉ ngơi chất lượng là nơi cơ thể thích nghi và phát triển', icon: 'sleep' }] },
         { id: 'who-can-benefit', title: 'Ai có thể hưởng lợi?', type: 'text', text: 'Bất kỳ ai vận động. Từ vận động viên chuyên nghiệp, người chơi thể thao phong trào đến những người làm việc văn phòng, phục hồi thể thao đều giúp bạn vận động tốt hơn, cảm thấy khỏe hơn và duy trì sự ổn định.' },
         { id: 'how-to-get-started', title: 'Làm thế nào để bắt đầu', type: 'text', text: 'Hãy bắt đầu bằng việc thấu hiểu cơ thể bạn. Lắng nghe các tín hiệu. Sau đó, xây dựng một thói quen phục hồi đơn giản phù hợp với bạn. Cần hỗ trợ? Đội ngũ của chúng tôi luôn sẵn sàng đồng hành cùng bạn.' },
         { id: 'key-takeaways', title: 'Điểm mấu chốt cần nhớ', type: 'text', text: 'Phục hồi là một hành trình dài hạn, không phải là đích đến nhất thời. Hãy lắng nghe cơ thể bạn, duy trì tính nhất quán và đừng ngần ngại tìm kiếm sự hướng dẫn chuyên nghiệp khi cần thiết.' },
       ]),
       category: 'articles', tags: JSON.stringify(['Recovery', 'Movement', 'Performance']),
-      cover_image: '/business_solution_sidebar.png', author: 'Stretch Team', read_time: '6 min read',
+      cover_image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/business_solution_sidebar.png', author: 'Stretch Team', read_time: '6 min read',
       featured: true, published: true, published_at: '2025-05-10T00:00:00Z',
     },
     {
@@ -173,7 +192,7 @@ async function seed(): Promise<void> {
         { id: 'looking-ahead', title: 'Hướng tới tương lai', type: 'text', text: 'Tương lai rất tươi sáng. Chúng tôi đang lên kế hoạch cho các sự kiện cộng đồng, hội thảo giáo dục và hợp tác mang lại giá trị nhiều hơn cho khách hàng và cộng đồng.' },
       ]),
       category: 'company_updates', tags: JSON.stringify(['Stretch.vn']),
-      cover_image: '/monaco-healthcare.png', author: 'Stretch Team', read_time: '4 min read',
+      cover_image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/monaco-healthcare.png', author: 'Stretch Team', read_time: '4 min read',
       featured: true, published: true, published_at: '2025-05-08T00:00:00Z',
     },
     {
@@ -193,7 +212,7 @@ async function seed(): Promise<void> {
         { id: 'advice', title: 'Lời khuyên của Huy', type: 'text', text: 'Đừng đợi đến khi bị chấn thương mới bắt đầu phục hồi. Hãy đưa nó vào thói quen ngay bây giờ, cơ thể bạn sẽ cảm ơn bạn sau này.' },
       ]),
       category: 'team_stories', tags: JSON.stringify(['Recovery', 'Performance']),
-      cover_image: '/individual-hero.png', author: 'Stretch Team', read_time: '5 min read',
+      cover_image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/individual-hero.webp', author: 'Stretch Team', read_time: '5 min read',
       featured: true, published: true, published_at: '2025-05-02T00:00:00Z',
     },
     {
@@ -213,7 +232,7 @@ async function seed(): Promise<void> {
         { id: 'community', title: 'Xây dựng cộng đồng', type: 'text', text: 'Những sự kiện như thế này nhắc nhở chúng tôi tại sao chúng tôi làm những gì chúng tôi làm. Năng lượng, câu hỏi, niềm đam mê chung về vận động — đó là điều thúc đẩy chúng tôi tiếp tục phát triển và chia sẻ.' },
       ]),
       category: 'events', tags: JSON.stringify(['Movement', 'Recovery']),
-      cover_image: '/marathon.png', author: 'Stretch Team', read_time: '4 min read',
+      cover_image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/marathon.png', author: 'Stretch Team', read_time: '4 min read',
       featured: true, published: true, published_at: '2025-04-28T00:00:00Z',
     },
     // ── Regular Posts (8) ──
@@ -234,7 +253,7 @@ async function seed(): Promise<void> {
         { id: 'getting-started', title: 'Bắt đầu với Foam Rolling', type: 'text', text: 'Bắt đầu chậm và áp dụng áp lực nhẹ. Khi bạn tìm thấy điểm kích hoạt hoặc nút thắt chặt, giữ áp lực ở đó trong 20 đến 30 giây để cho phép mô giải phóng. Tiếp tục thở và duy trì các buổi tập thường xuyên để đạt kết quả tốt nhất.' },
       ]),
       category: 'articles', tags: JSON.stringify(['Recovery', 'Mobility']),
-      cover_image: '/recovery-who.png', author: 'Stretch Team', read_time: '5 min read',
+      cover_image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/recovery-who.png', author: 'Stretch Team', read_time: '5 min read',
       featured: false, published: true, published_at: '2025-05-08T00:00:00Z',
     },
     {
@@ -252,7 +271,7 @@ async function seed(): Promise<void> {
         { id: 'features', title: 'Điều gì làm nó đặc biệt', type: 'text', text: 'Không gian mới có phòng điều trị riêng, studio vận động và khu tiếp tân thân thiện. Mọi chi tiết đều được xem xét để nâng cao trải nghiệm của bạn.' },
       ]),
       category: 'company_updates', tags: JSON.stringify(['Stretch.vn']),
-      cover_image: '/education-workshop.png', author: 'Stretch Team', read_time: '3 min read',
+      cover_image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/education-workshop.png', author: 'Stretch Team', read_time: '3 min read',
       featured: false, published: true, published_at: '2025-05-06T00:00:00Z',
     },
     {
@@ -270,7 +289,7 @@ async function seed(): Promise<void> {
         { id: 'why-it-matters', title: 'Tại sao lắng nghe quan trọng', type: 'text', text: 'Hai người có cùng triệu chứng có thể có nguyên nhân rất khác nhau. Bằng cách dành thời gian thực sự hiểu tình huống của bạn, chúng tôi có thể tạo ra kế hoạch điều trị giải quyết nguyên nhân gốc rễ, không chỉ triệu chứng.' },
       ]),
       category: 'team_stories', tags: JSON.stringify(['Recovery', 'Performance']),
-      cover_image: '/active-who.png', author: 'Stretch Team', read_time: '4 min read',
+      cover_image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/active-who.png', author: 'Stretch Team', read_time: '4 min read',
       featured: false, published: true, published_at: '2025-05-04T00:00:00Z',
     },
     {
@@ -288,7 +307,7 @@ async function seed(): Promise<void> {
         { id: 'takeaways', title: 'Điểm chính', type: 'text', text: 'Hội thảo bao gồm đánh giá di động cơ bản, các bài kéo giãn phù hợp cho người ngồi bàn và chiến lược kết hợp vận động vào lịch trình học tập bận rộn. Sự tham gia và câu hỏi từ người tham dự làm cho đây trở thành trải nghiệm thực sự đáng giá.' },
       ]),
       category: 'events', tags: JSON.stringify(['Movement', 'Rehabilitation']),
-      cover_image: '/education-hero.png', author: 'Stretch Team', read_time: '4 min read',
+      cover_image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/education-hero.png', author: 'Stretch Team', read_time: '4 min read',
       featured: false, published: true, published_at: '2025-05-01T00:00:00Z',
     },
     {
@@ -308,7 +327,7 @@ async function seed(): Promise<void> {
         { id: 'exercises', title: 'Bài tập hàng đầu cho khả năng vận động hông', type: 'text', text: 'Bắt đầu với kéo giãn 90/90, xoay hông và giữ squat sâu. Tính nhất quán là chìa khóa — chỉ 5-10 phút mỗi ngày có thể tạo ra sự khác biệt đáng kể theo thời gian.' },
       ]),
       category: 'articles', tags: JSON.stringify(['Mobility', 'Movement', 'Performance']),
-      cover_image: '/runner-who.png', author: 'Stretch Team', read_time: '6 min read',
+      cover_image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/runner-who.png', author: 'Stretch Team', read_time: '6 min read',
       featured: false, published: true, published_at: '2025-04-30T00:00:00Z',
     },
     {
@@ -326,7 +345,7 @@ async function seed(): Promise<void> {
         { id: 'standards', title: 'Tiêu chuẩn của chúng tôi', type: 'text', text: 'Mỗi thành viên đội ngũ đều trải qua chương trình đào tạo toàn diện, đảm bảo tính nhất quán trong chất lượng chăm sóc và phù hợp với phương pháp dựa trên bằng chứng. Tăng trưởng không chỉ về số lượng — mà về nâng cao tiêu chuẩn chăm sóc chúng tôi cung cấp.' },
       ]),
       category: 'company_updates', tags: JSON.stringify(['Stretch.vn', 'Recovery']),
-      cover_image: '/education-gallery-1.png', author: 'Stretch Team', read_time: '3 min read',
+      cover_image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/education-gallery-1.png', author: 'Stretch Team', read_time: '3 min read',
       featured: false, published: true, published_at: '2025-04-26T00:00:00Z',
     },
     {
@@ -346,7 +365,7 @@ async function seed(): Promise<void> {
         { id: 'today', title: 'Hiện tại', type: 'text', text: 'Kevin đã trở lại tập luyện hết công suất. Trải nghiệm dạy anh giá trị của phục hồi, và anh giờ kết hợp các buổi bảo dưỡng thường xuyên vào thói quen. Câu chuyện của anh truyền cảm hứng cho chúng tôi mỗi ngày.' },
       ]),
       category: 'team_stories', tags: JSON.stringify(['Rehabilitation', 'Recovery']),
-      cover_image: '/athlete-who.png', author: 'Stretch Team', read_time: '5 min read',
+      cover_image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/athlete-who.png', author: 'Stretch Team', read_time: '5 min read',
       featured: false, published: true, published_at: '2025-04-24T00:00:00Z',
     },
     {
@@ -366,10 +385,33 @@ async function seed(): Promise<void> {
         { id: 'next-event', title: 'Tham gia cùng chúng tôi', type: 'text', text: 'Chúng tôi có kế hoạch tổ chức thêm các sự kiện cộng đồng như thế này. Theo dõi chúng tôi trên mạng xã hội để cập nhật và tham gia buổi tiếp theo!' },
       ]),
       category: 'events', tags: JSON.stringify(['Movement', 'Recovery']),
-      cover_image: '/event-warmup.png', author: 'Stretch Team', read_time: '3 min read',
+      cover_image: 'https://pub-a2c60e7c031c4f5dad3d1dfae791570a.r2.dev/blog/seed/warm-up.webp', author: 'Stretch Team', read_time: '3 min read',
       featured: false, published: true, published_at: '2025-04-22T00:00:00Z',
     },
   ]
+
+  // ── Convert structured sections → a single CKEditor HTML block ──
+  // The CMS uses CKEditor (one HTML string), so all blog content is stored as
+  // one `text` section holding rich HTML. This keeps create/update/detail and
+  // the public site all on the same format.
+  const structuredToHtml = (sections: any[]): string => {
+    const parts: string[] = []
+    for (const s of sections || []) {
+      if (s.title) parts.push(`<h2>${s.title}</h2>`)
+      if (s.text) parts.push(`<p>${s.text}</p>`)
+      if (s.quote) parts.push(`<blockquote><p>${s.quote}</p></blockquote>`)
+      if (Array.isArray(s.bullets) && s.bullets.length) {
+        parts.push(`<ul>${s.bullets.map((b: string) => `<li>${b}</li>`).join('')}</ul>`)
+      }
+      if (Array.isArray(s.items) && s.items.length) {
+        parts.push(`<ul>${s.items.map((i: any) => `<li><strong>${i.title}</strong>${i.desc ? ` — ${i.desc}` : ''}</li>`).join('')}</ul>`)
+      }
+      if (s.image) parts.push(`<p><img src="${s.image}" alt="${s.title || ''}"></p>`)
+    }
+    return parts.join('\n')
+  }
+  const toHtmlContent = (rawJson: string): string =>
+    JSON.stringify([{ id: 'content', title: '', type: 'text', text: structuredToHtml(JSON.parse(rawJson)) }])
 
   for (const bp of blogPosts) {
     await pool.query(
@@ -378,15 +420,35 @@ async function seed(): Promise<void> {
         content_en, content_vi, category, tags, cover_image,
         author, read_time, featured, published, published_at
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
-       ON CONFLICT (id) DO NOTHING`,
+       ON CONFLICT (id) DO UPDATE SET
+        content_en = EXCLUDED.content_en,
+        content_vi = EXCLUDED.content_vi,
+        excerpt_en = EXCLUDED.excerpt_en,
+        excerpt_vi = EXCLUDED.excerpt_vi,
+        cover_image = EXCLUDED.cover_image,
+        updated_at = NOW()`,
       [
         bp.id, bp.slug, bp.title_en, bp.title_vi, bp.excerpt_en, bp.excerpt_vi,
-        bp.content_en, bp.content_vi, bp.category, bp.tags, bp.cover_image,
+        toHtmlContent(bp.content_en), toHtmlContent(bp.content_vi), bp.category, bp.tags, bp.cover_image,
         bp.author, bp.read_time, bp.featured, bp.published, bp.published_at,
       ]
     )
   }
-  console.log(`[Seed] ✓ ${blogPosts.length} blog posts inserted`)
+  console.log(`[Seed] ✓ ${blogPosts.length} blog posts inserted (content → CKEditor HTML)`)
+
+  // ─── Default Admin ─────────────────────────────────────────────
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@stretch.vn'
+  const adminPassword = process.env.ADMIN_PASSWORD || 'Admin@stretch1'
+  const adminName = process.env.ADMIN_NAME || 'Stretch Admin'
+  const passwordHash = await bcrypt.hash(adminPassword, 12)
+
+  await pool.query(
+    `INSERT INTO admins (email, name, password_hash)
+     VALUES ($1, $2, $3)
+     ON CONFLICT (email) DO NOTHING`,
+    [adminEmail, adminName, passwordHash]
+  )
+  console.log(`[Seed] ✓ Admin seeded: ${adminEmail}`)
 
   console.log('[Seed] Done!')
   await pool.end()

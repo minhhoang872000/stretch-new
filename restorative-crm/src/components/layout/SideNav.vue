@@ -19,10 +19,10 @@
       </div>
       <div class="min-w-0">
         <h1 class="text-base font-bold text-teal-900 font-headline tracking-tight leading-tight truncate">
-          Restorative CRM
+          Stretch.vn
         </h1>
         <p class="text-[9px] uppercase tracking-widest text-secondary font-bold opacity-70">
-          Physical Therapy Admin
+          Admin
         </p>
       </div>
     </div>
@@ -46,25 +46,6 @@
       </RouterLink>
     </nav>
 
-    <!-- Bottom Links -->
-    <div class="mt-auto pt-4 border-t border-outline-variant/20 space-y-0.5">
-      <RouterLink
-        to="/settings"
-        @click="layoutStore.closeSidebar"
-        class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-[13px] text-slate-500 hover:text-teal-600 hover:bg-white/50 transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-xl">settings</span>
-        <span class="font-headline tracking-tight">{{ $t('common.settings') }}</span>
-      </RouterLink>
-      <RouterLink
-        to="/support"
-        @click="layoutStore.closeSidebar"
-        class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-[13px] text-slate-500 hover:text-teal-600 hover:bg-white/50 transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-xl">help_outline</span>
-        <span class="font-headline tracking-tight">{{ $t('common.support') }}</span>
-      </RouterLink>
-    </div>
   </aside>
 </template>
 
@@ -80,13 +61,12 @@ const isActive = (path) => route.path === path
 const getNavKey = (label) => {
   const map = {
     'Dashboard': 'common.dashboard',
-    'Leads': 'common.leads',
     'Bookings': 'common.bookings',
     'Categories': 'common.categories',
     'Calendar': 'common.calendar',
     'Blog': 'common.blog',
     'Services': 'common.services',
-    'SEO Settings': 'common.seoSettings'
+    'Google Analytics': 'common.googleAnalytics'
   }
   return map[label] || label
 }

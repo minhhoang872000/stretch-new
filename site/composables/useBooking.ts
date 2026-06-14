@@ -94,15 +94,17 @@ export function useBooking() {
     }
 
     try {
-      // TẠM THỜI COMMENT API BOOKING THEO YÊU CẦU
-      /*
-      const apiPromise = apiUrl
-        ? getApiInstance(apiUrl).post('/api/v1/bookings', body)
-        : $fetch('/api/bookings', { method: 'POST', body })
-      */
+      // Lưu booking vào database
+      if (apiUrl) {
+        await getApiInstance(apiUrl).post('/api/v1/bookings', body)
+      } else {
+        await $fetch('/api/bookings', { method: 'POST', body })
+      }
 
-      // Gửi email qua EmailJS. Nếu gửi thành công -> success = true.
-      await sendEmailNotification(body)
+      // Gửi email thông báo qua EmailJS (không chặn luồng chính)
+      sendEmailNotification(body).catch((e: any) => {
+        console.warn('[useBooking] Email notification failed (non-blocking):', e?.message || e)
+      })
 
       success.value = true
     } catch (e: any) {

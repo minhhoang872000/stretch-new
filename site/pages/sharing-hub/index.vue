@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { t } = useI18n();
+const { t, te } = useI18n();
 const localePath = useLocalePath();
 const route = useRoute();
 
@@ -7,6 +7,7 @@ useSeo({
   title: "Stretch.vn — Sharing Hub",
   description:
     "Movement insights, recovery education, team stories, company updates, and event highlights — all in one place.",
+  image: "/homepage-hero.webp",
   type: "website",
 });
 
@@ -36,134 +37,66 @@ const collageImages = [
   '/stretch-zone.webp'
 ];
 
+// ── Fetch categories from the API (managed in the CRM / lead-tracker-api) ──
+const { data: apiCategories } = await useFetch('/api/categories', {
+  default: () => [],
+})
+
+// Build the filter tabs. Keep i18n labels for built-in keys, fall back to
+// the API-provided label for dynamically created categories.
 const categories = computed(() => [
   { key: "all", label: t("sharing_hub.categories.all") },
-  { key: "articles", label: t("sharing_hub.categories.articles") },
-  {
-    key: "company_updates",
-    label: t("sharing_hub.categories.company_updates"),
-  },
-  { key: "team_stories", label: t("sharing_hub.categories.team_stories") },
-  { key: "events", label: t("sharing_hub.categories.events") },
+  ...(apiCategories.value as any[]).map((c: any) => ({
+    key: c.key,
+    label: te(`sharing_hub.categories.${c.key}`)
+      ? t(`sharing_hub.categories.${c.key}`)
+      : c.label,
+  })),
 ]);
 
-// Featured posts data
-const featuredPosts = computed(() => [
-  {
-    category: t("sharing_hub.featured_posts.f1_category"),
-    categoryKey: "articles",
-    title: t("sharing_hub.featured_posts.f1_title"),
-    desc: t("sharing_hub.featured_posts.f1_desc"),
-    image: "/homepage-hero.webp",
-    large: true,
-    slug: "what-is-sport-recovery",
-  },
-  {
-    category: t("sharing_hub.featured_posts.f2_category"),
-    categoryKey: "company_updates",
-    title: t("sharing_hub.featured_posts.f2_title"),
-    desc: t("sharing_hub.featured_posts.f2_desc"),
-    image: "/monaco-healthcare.png",
-    slug: "new-chapter-stretch",
-  },
-  {
-    category: t("sharing_hub.featured_posts.f3_category"),
-    categoryKey: "team_stories",
-    title: t("sharing_hub.featured_posts.f3_title"),
-    desc: t("sharing_hub.featured_posts.f3_desc"),
-    image: "/individual-hero.webp",
-    slug: "meet-huy-team-story",
-  },
-  {
-    category: t("sharing_hub.featured_posts.f4_category"),
-    categoryKey: "events",
-    title: t("sharing_hub.featured_posts.f4_title"),
-    desc: t("sharing_hub.featured_posts.f4_desc"),
-    image: "/marathon.png",
-    slug: "recovery-day-vn-runners",
-  },
-]);
+// ── Fetch all published posts from API ──────────────────────────────
+const { data: apiPosts } = await useFetch('/api/posts', {
+  query: { status: 'published' },
+  default: () => [],
+})
 
-// Latest posts data
-const allPosts = computed(() => [
-  {
-    category: t("sharing_hub.posts.p1_category"),
-    categoryKey: "articles",
-    title: t("sharing_hub.posts.p1_title"),
-    desc: t("sharing_hub.posts.p1_desc"),
-    image: "/recovery-who.png",
-    slug: "foam-rolling-101",
-    tags: ["Recovery", "Mobility"],
-  },
-  {
-    category: t("sharing_hub.posts.p2_category"),
-    categoryKey: "company_updates",
-    title: t("sharing_hub.posts.p2_title"),
-    desc: t("sharing_hub.posts.p2_desc"),
-    image: "/education-workshop.png",
-    slug: "new-space-thao-dien",
-    tags: ["Stretch.vn"],
-  },
-  {
-    category: t("sharing_hub.posts.p3_category"),
-    categoryKey: "team_stories",
-    title: t("sharing_hub.posts.p3_title"),
-    desc: t("sharing_hub.posts.p3_desc"),
-    image: "/active-who.png",
-    slug: "behind-session-listening",
-    tags: ["Recovery", "Performance"],
-  },
-  {
-    category: t("sharing_hub.posts.p4_category"),
-    categoryKey: "events",
-    title: t("sharing_hub.posts.p4_title"),
-    desc: t("sharing_hub.posts.p4_desc"),
-    image: "/education-hero.png",
-    slug: "movement-workshop-rmit",
-    tags: ["Movement", "Rehabilitation"],
-  },
-  {
-    category: t("sharing_hub.posts.p5_category"),
-    categoryKey: "articles",
-    title: t("sharing_hub.posts.p5_title"),
-    desc: t("sharing_hub.posts.p5_desc"),
-    image: "/runner-who.png",
-    slug: "hip-mobility-key",
-    tags: ["Mobility", "Movement", "Performance"],
-  },
-  {
-    category: t("sharing_hub.posts.p6_category"),
-    categoryKey: "company_updates",
-    title: t("sharing_hub.posts.p6_title"),
-    desc: t("sharing_hub.posts.p6_desc"),
-    image: "/education-gallery-1.png",
-    slug: "growing-team-elevating-care",
-    tags: ["Stretch.vn", "Recovery"],
-  },
-  {
-    category: t("sharing_hub.posts.p7_category"),
-    categoryKey: "team_stories",
-    title: t("sharing_hub.posts.p7_title"),
-    desc: t("sharing_hub.posts.p7_desc"),
-    image: "/athlete-who.png",
-    slug: "setbacks-to-strength-kevin",
-    tags: ["Rehabilitation", "Recovery"],
-  },
-  {
-    category: t("sharing_hub.posts.p8_category"),
-    categoryKey: "events",
-    title: t("sharing_hub.posts.p8_title"),
-    desc: t("sharing_hub.posts.p8_desc"),
-    image: "/warm-up.webp",
-    slug: "sunrise-stretch-sala",
-    tags: ["Movement", "Recovery"],
-  },
-]);
+// Map API post to template-compatible shape
+function toCard(p: any, extra: Record<string, any> = {}) {
+  return {
+    category: p.category,
+    categoryKey: p.categoryKey,
+    title: p.title,
+    desc: p.excerpt,
+    image: p.image,
+    slug: p.slug,
+    tags: p.tags ?? [],
+    date: p.date,
+    readTime: p.readTime,
+    ...extra,
+  }
+}
+
+const FEATURED_SLUGS = ['what-is-sport-recovery', 'new-chapter-stretch', 'meet-huy-team-story', 'recovery-day-vn-runners']
+
+const featuredPosts = computed(() => {
+  const posts = apiPosts.value as any[]
+  return FEATURED_SLUGS.map((slug, i) => {
+    const p = posts.find((x: any) => x.slug === slug)
+    return p ? toCard(p, { large: i === 0 }) : null
+  }).filter(Boolean)
+})
+
+const allPosts = computed(() => {
+  const posts = apiPosts.value as any[]
+  return posts
+    .filter((p: any) => !FEATURED_SLUGS.includes(p.slug))
+    .map((p: any) => toCard(p))
+})
 
 // All available tags (derived from posts)
 const allTags = computed(() => {
   const tagSet = new Set<string>();
-  allPosts.value.forEach((p) => {
+  (apiPosts.value as any[]).forEach((p: any) => {
     if (p.tags) p.tags.forEach((tag: string) => tagSet.add(tag));
   });
   return Array.from(tagSet).sort();
@@ -184,12 +117,12 @@ function toggleTag(tag: string) {
 const filteredPosts = computed(() => {
   let posts = allPosts.value;
   if (activeCategory.value !== "all") {
-    posts = posts.filter((p) => p.categoryKey === activeCategory.value);
+    posts = posts.filter((p: any) => p.categoryKey === activeCategory.value);
   }
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.trim().toLowerCase();
     posts = posts.filter(
-      (p) =>
+      (p: any) =>
         p.title.toLowerCase().includes(q) ||
         p.desc.toLowerCase().includes(q) ||
         p.category.toLowerCase().includes(q),
@@ -197,7 +130,7 @@ const filteredPosts = computed(() => {
   }
   if (selectedTags.value.length > 0) {
     posts = posts.filter(
-      (p) => p.tags && p.tags.some((tag: string) => selectedTags.value.includes(tag)),
+      (p: any) => p.tags && p.tags.some((tag: string) => selectedTags.value.includes(tag)),
     );
   }
   return posts;

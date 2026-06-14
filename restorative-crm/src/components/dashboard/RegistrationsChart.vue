@@ -1,6 +1,6 @@
 <template>
-  <div class="lg:col-span-2 bg-surface-container-lowest p-8 rounded-xl relative overflow-hidden">
-    <div class="flex justify-between items-center mb-8">
+  <div class="lg:col-span-2 bg-surface-container-lowest p-5 lg:p-8 rounded-xl relative overflow-hidden">
+    <div class="flex justify-between items-center mb-6 lg:mb-8 gap-3">
       <div>
         <h4 class="text-xl font-bold text-on-surface">Registrations Over Time</h4>
         <p class="text-sm text-on-surface-variant">Daily clinical intake volume</p>

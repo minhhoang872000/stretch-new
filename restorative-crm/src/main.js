@@ -7,6 +7,8 @@ import './assets/main.css'
 
 // PrimeVue Setup
 import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice'
+import Toast from 'primevue/toast'
 import InputText from 'primevue/inputtext'
 import Dropdown from 'primevue/dropdown'
 import Calendar from 'primevue/calendar'
@@ -23,6 +25,8 @@ app.use(i18n)
 
 // Enable PrimeVue
 app.use(PrimeVue, { ripple: true })
+app.use(ToastService)
+app.component('Toast', Toast)
 app.component('InputText', InputText)
 app.component('Dropdown', Dropdown)
 app.component('Calendar', Calendar)
