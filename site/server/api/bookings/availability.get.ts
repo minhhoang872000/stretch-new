@@ -1,16 +1,26 @@
-import { getAvailableSlots } from '~/server/utils/db'
-
-export default defineEventHandler((event) => {
+/**
+ * Proxies available time-slots from the lead-tracker-api so the landing page
+ * reflects real bookings. Returns a plain string[] of slots.
+ */
+export default defineEventHandler(async (event) => {
   const query = getQuery(event)
-  const practitioner = query.practitioner as string
   const date = query.date as string
+  const practitioner = query.practitioner as string | undefined
 
   if (!date) {
     throw createError({ statusCode: 400, message: 'Missing date parameter' })
   }
 
-  // If no practitioner specified, return all slots
-  const practitionerId = practitioner || 'any'
+  const base = useRuntimeConfig().public.trackingApiUrl
+  if (!base) return []
 
-  return getAvailableSlots(practitionerId, date)
+  try {
+    const res = await $fetch<{ data?: string[] }>(`${base}/api/v1/bookings/availability`, {
+      query: { date, practitioner: practitioner || undefined },
+      timeout: 6000,
+    })
+    return res?.data || []
+  } catch {
+    return []
+  }
 })

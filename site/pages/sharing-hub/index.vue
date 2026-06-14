@@ -37,8 +37,10 @@ const collageImages = [
   '/stretch-zone.webp'
 ];
 
-// ── Fetch categories from the API (managed in the CRM / lead-tracker-api) ──
-const { data: apiCategories } = await useFetch('/api/categories', {
+// ── Fetch directly from the lead-tracker-api (browser → API) ──
+const { getPosts, getCategories } = useBlogClient()
+
+const { data: apiCategories } = await useAsyncData('hub-categories', () => getCategories(), {
   default: () => [],
 })
 
@@ -54,9 +56,8 @@ const categories = computed(() => [
   })),
 ]);
 
-// ── Fetch all published posts from API ──────────────────────────────
-const { data: apiPosts } = await useFetch('/api/posts', {
-  query: { status: 'published' },
+// ── Fetch all published posts directly from the API ──────────────────
+const { data: apiPosts } = await useAsyncData('hub-posts', () => getPosts({ status: 'published' }), {
   default: () => [],
 })
 

@@ -1,5 +1,4 @@
 import emailjs from '@emailjs/browser'
-import { getApiInstance } from '~/services/api'
 import { useTrackingStore } from '~/stores/tracking'
 
 /**
@@ -94,9 +93,11 @@ export function useBooking() {
     }
 
     try {
-      // Lưu booking vào database
+      // Call the lead-tracker-api DIRECTLY (browser → API). Requires the API's
+      // CORS_ORIGINS to include this site's origin. Falls back to the Nuxt
+      // server route when no external API is configured.
       if (apiUrl) {
-        await getApiInstance(apiUrl).post('/api/v1/bookings', body)
+        await $fetch(`${apiUrl}/api/v1/bookings`, { method: 'POST', body })
       } else {
         await $fetch('/api/bookings', { method: 'POST', body })
       }

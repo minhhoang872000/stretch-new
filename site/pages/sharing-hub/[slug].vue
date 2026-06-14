@@ -7,10 +7,14 @@ const router = useRouter();
 const slug = computed(() => route.params.slug as string);
 const activeSection = ref('');
 
-// ── Fetch post from API ──────────────────────────────────────────────
-const { data: activeArticle, error } = await useFetch(() => `/api/posts/${slug.value}`, {
-  default: () => null,
-})
+// ── Fetch post directly from the lead-tracker-api (browser → API) ──────
+const { getPostBySlug, getPosts } = useBlogClient()
+
+const { data: activeArticle, error } = await useAsyncData(
+  () => `hub-post-${slug.value}`,
+  () => getPostBySlug(slug.value),
+  { default: () => null, watch: [slug] },
+)
 
 if (error.value || !activeArticle.value) {
   throw createError({ statusCode: 404, statusMessage: 'Post not found', fatal: true })
@@ -87,7 +91,7 @@ const categories = computed(() => [
 const tags = computed(() => activeArticle.value?.tags ?? ['Recovery', 'Movement', 'Performance', 'Mobility', 'Rehabilitation'])
 
 // Related posts: 3 other published posts (same category first, then others)
-const { data: allPosts } = await useFetch('/api/posts', { query: { status: 'published' }, default: () => [] })
+const { data: allPosts } = await useAsyncData('hub-related-posts', () => getPosts({ status: 'published' }), { default: () => [] })
 
 const relatedPosts = computed(() => {
   const others = (allPosts.value as any[]).filter((p: any) => p.slug !== slug.value)
