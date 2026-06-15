@@ -4,6 +4,13 @@ const localePath = useLocalePath();
 const route = useRoute();
 const router = useRouter();
 
+// Re-create this page per slug. Without a key, navigating between two articles
+// (e.g. tapping a "related" card) REUSES the component, so setup (with its data
+// fetch + 404 guard) never re-runs — the template would then briefly render
+// against null data and crash to a white screen. Keying by path forces a fresh
+// mount so the data is always awaited before render.
+definePageMeta({ key: (route) => route.path })
+
 const slug = computed(() => route.params.slug as string);
 const activeSection = ref('');
 
@@ -13,7 +20,7 @@ const { getArticleData } = useBlogClient()
 const { data: articleData, error } = await useAsyncData(
   () => `hub-article-${slug.value}`,
   () => getArticleData(slug.value),
-  { default: () => ({ article: null, related: [] }), watch: [slug] },
+  { default: () => ({ article: null, related: [] }) },
 )
 const activeArticle = computed(() => articleData.value?.article ?? null)
 
@@ -748,8 +755,10 @@ onUnmounted(() => {
 .article-html :deep(blockquote p) { margin: 0; }
 .article-html :deep(img) {
   border-radius: 0.75rem;
-  max-width: 100%;
-  height: auto;
+  /* !important beats inline styles like style="max-width:1152px" that come from
+     images pasted out of Google results — otherwise they overflow the column. */
+  max-width: 100% !important;
+  height: auto !important;
   margin: 1.5rem 0;
   border: 1px solid var(--color-border, #e6ecf2);
 }
@@ -759,7 +768,7 @@ onUnmounted(() => {
    with an inner <img style="width:100%">. Without this the figure keeps its inline
    width and overflows the article column, breaking the layout. */
 .article-html :deep(figure) {
-  max-width: 100%;
+  max-width: 100% !important;
   height: auto;
   margin: 1.5rem 0;
 }
