@@ -37,12 +37,15 @@ const collageImages = [
   '/stretch-zone.webp'
 ];
 
-// ── Fetch directly from the lead-tracker-api (browser → API) ──
-const { getPosts, getCategories } = useBlogClient()
+// ── Fetch categories + published posts in ONE parallel round-trip ────
+// (single /categories call + one summary /blog call, no waterfall).
+const { getHubIndex } = useBlogClient()
 
-const { data: apiCategories } = await useAsyncData('hub-categories', () => getCategories(), {
-  default: () => [],
+const { data: hub } = await useAsyncData('hub-index', () => getHubIndex(), {
+  default: () => ({ categories: [], posts: [] }),
 })
+const apiCategories = computed(() => hub.value?.categories ?? [])
+const apiPosts = computed(() => hub.value?.posts ?? [])
 
 // Build the filter tabs. Keep i18n labels for built-in keys, fall back to
 // the API-provided label for dynamically created categories.
@@ -55,11 +58,6 @@ const categories = computed(() => [
       : c.label,
   })),
 ]);
-
-// ── Fetch all published posts directly from the API ──────────────────
-const { data: apiPosts } = await useAsyncData('hub-posts', () => getPosts({ status: 'published' }), {
-  default: () => [],
-})
 
 // Map API post to template-compatible shape
 function toCard(p: any, extra: Record<string, any> = {}) {

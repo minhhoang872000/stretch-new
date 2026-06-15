@@ -58,47 +58,101 @@ function mapApiPost(p: any, catMap: Record<string, string>): SitePost {
   }
 }
 
+interface PostQuery {
+  status?: string
+  categoryKey?: string
+  search?: string
+  /** Card listing: ask the API to omit the heavy HTML body. */
+  summary?: boolean
+  /** Cap the number of rows fetched (defaults to 100). */
+  limit?: number
+}
+
 export function useBlogClient() {
   const base = (useRuntimeConfig().public.trackingApiUrl as string) || ''
 
-  async function fetchCatMap(): Promise<Record<string, string>> {
-    try {
-      const res = await $fetch<{ data?: { categories: any[] } }>(`${base}/api/v1/categories`, { cache: 'no-store' })
-      const map: Record<string, string> = {}
-      for (const c of res?.data?.categories || []) map[c.key] = c.label
-      return map
-    } catch {
-      return {}
-    }
+  // ── Low-level fetchers (no category-label resolution) ───────────────
+  async function fetchCategoriesRaw(): Promise<any[]> {
+    if (!base) return []
+    const res = await $fetch<{ data?: { categories: any[] } }>(`${base}/api/v1/categories`).catch(() => null)
+    return res?.data?.categories || []
   }
 
-  async function getPosts(filters: { status?: string; categoryKey?: string; search?: string } = {}): Promise<SitePost[]> {
+  function buildCatMap(cats: any[]): Record<string, string> {
+    const map: Record<string, string> = {}
+    for (const c of cats) map[c.key] = c.label
+    return map
+  }
+
+  async function fetchPostsRaw(filters: PostQuery = {}): Promise<any[]> {
     if (!base) return []
-    const query: Record<string, any> = { limit: 100, published: filters.status === 'draft' ? 'false' : 'true' }
+    const query: Record<string, any> = {
+      limit: filters.limit ?? 100,
+      published: filters.status === 'draft' ? 'false' : 'true',
+    }
     if (filters.categoryKey) query.category = filters.categoryKey
     if (filters.search) query.search = filters.search
-    const [res, catMap] = await Promise.all([
-      $fetch<{ data?: { posts: any[] } }>(`${base}/api/v1/blog`, { query, cache: 'no-store' }).catch(() => null),
-      fetchCatMap(),
-    ])
-    return (res?.data?.posts || []).map((p) => mapApiPost(p, catMap))
+    if (filters.summary) query.summary = 'true'
+    const res = await $fetch<{ data?: { posts: any[] } }>(`${base}/api/v1/blog`, { query }).catch(() => null)
+    return res?.data?.posts || []
+  }
+
+  // ── Public API (resolve category labels, single categories fetch) ───
+  async function getPosts(filters: PostQuery = {}): Promise<SitePost[]> {
+    const [posts, cats] = await Promise.all([fetchPostsRaw(filters), fetchCategoriesRaw()])
+    const catMap = buildCatMap(cats)
+    return posts.map((p) => mapApiPost(p, catMap))
   }
 
   async function getPostBySlug(slug: string): Promise<SitePost | null> {
     if (!base) return null
-    const [res, catMap] = await Promise.all([
-      $fetch<{ data?: { post: any } }>(`${base}/api/v1/blog/${slug}`, { cache: 'no-store' }).catch(() => null),
-      fetchCatMap(),
+    const [res, cats] = await Promise.all([
+      $fetch<{ data?: { post: any } }>(`${base}/api/v1/blog/${slug}`).catch(() => null),
+      fetchCategoriesRaw(),
     ])
     if (!res?.data?.post) return null
-    return mapApiPost(res.data.post, catMap)
+    return mapApiPost(res.data.post, buildCatMap(cats))
   }
 
   async function getCategories(): Promise<{ key: string; label: string }[]> {
-    if (!base) return []
-    const res = await $fetch<{ data?: { categories: any[] } }>(`${base}/api/v1/categories`, { cache: 'no-store' }).catch(() => null)
-    return (res?.data?.categories || []).map((c: any) => ({ key: c.key, label: c.label }))
+    return (await fetchCategoriesRaw()).map((c) => ({ key: c.key, label: c.label }))
   }
 
-  return { getPosts, getPostBySlug, getCategories }
+  /**
+   * Sharing Hub index: ONE categories call + ONE posts call, in parallel.
+   * Posts come back in summary mode (no HTML body) since the listing only
+   * renders cards — saves transferring every post's full content.
+   */
+  async function getHubIndex(): Promise<{ categories: { key: string; label: string }[]; posts: SitePost[] }> {
+    const [cats, posts] = await Promise.all([
+      fetchCategoriesRaw(),
+      fetchPostsRaw({ status: 'published', summary: true }),
+    ])
+    const catMap = buildCatMap(cats)
+    return {
+      categories: cats.map((c) => ({ key: c.key, label: c.label })),
+      posts: posts.map((p) => mapApiPost(p, catMap)),
+    }
+  }
+
+  /**
+   * Article page: the full post + a small pool of related cards + categories,
+   * all in parallel sharing a single categories fetch. Related posts use
+   * summary mode (cards only) instead of pulling every post's full HTML.
+   */
+  async function getArticleData(slug: string): Promise<{ article: SitePost | null; related: SitePost[] }> {
+    if (!base) return { article: null, related: [] }
+    const [postRes, related, cats] = await Promise.all([
+      $fetch<{ data?: { post: any } }>(`${base}/api/v1/blog/${slug}`).catch(() => null),
+      fetchPostsRaw({ status: 'published', summary: true, limit: 12 }),
+      fetchCategoriesRaw(),
+    ])
+    const catMap = buildCatMap(cats)
+    return {
+      article: postRes?.data?.post ? mapApiPost(postRes.data.post, catMap) : null,
+      related: related.map((p) => mapApiPost(p, catMap)),
+    }
+  }
+
+  return { getPosts, getPostBySlug, getCategories, getHubIndex, getArticleData }
 }

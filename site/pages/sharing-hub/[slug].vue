@@ -7,14 +7,15 @@ const router = useRouter();
 const slug = computed(() => route.params.slug as string);
 const activeSection = ref('');
 
-// ── Fetch post directly from the lead-tracker-api (browser → API) ──────
-const { getPostBySlug, getPosts } = useBlogClient()
+// ── Fetch the post + related cards + categories in ONE parallel round-trip ──
+const { getArticleData } = useBlogClient()
 
-const { data: activeArticle, error } = await useAsyncData(
-  () => `hub-post-${slug.value}`,
-  () => getPostBySlug(slug.value),
-  { default: () => null, watch: [slug] },
+const { data: articleData, error } = await useAsyncData(
+  () => `hub-article-${slug.value}`,
+  () => getArticleData(slug.value),
+  { default: () => ({ article: null, related: [] }), watch: [slug] },
 )
+const activeArticle = computed(() => articleData.value?.article ?? null)
 
 if (error.value || !activeArticle.value) {
   throw createError({ statusCode: 404, statusMessage: 'Post not found', fatal: true })
@@ -104,11 +105,10 @@ const categories = computed(() => [
 // Tags derived from current post
 const tags = computed(() => activeArticle.value?.tags ?? ['Recovery', 'Movement', 'Performance', 'Mobility', 'Rehabilitation'])
 
-// Related posts: 3 other published posts (same category first, then others)
-const { data: allPosts } = await useAsyncData('hub-related-posts', () => getPosts({ status: 'published' }), { default: () => [] })
-
+// Related posts: 3 other published posts (same category first, then others),
+// drawn from the small summary pool fetched alongside the article above.
 const relatedPosts = computed(() => {
-  const others = (allPosts.value as any[]).filter((p: any) => p.slug !== slug.value)
+  const others = (articleData.value?.related ?? []).filter((p: any) => p.slug !== slug.value)
   const sameCat = others.filter((p: any) => p.categoryKey === activeArticle.value?.categoryKey)
   const diffCat = others.filter((p: any) => p.categoryKey !== activeArticle.value?.categoryKey)
   return [...sameCat, ...diffCat].slice(0, 3).map((p: any) => ({
@@ -753,6 +753,52 @@ onUnmounted(() => {
   margin: 1.5rem 0;
   border: 1px solid var(--color-border, #e6ecf2);
 }
+
+/* ── CKEditor figures: cap any inline pixel/percent width to the column ── */
+/* Resized images come through as <figure class="image image_resized" style="width:1200px">
+   with an inner <img style="width:100%">. Without this the figure keeps its inline
+   width and overflows the article column, breaking the layout. */
+.article-html :deep(figure) {
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem 0;
+}
+.article-html :deep(figure img) {
+  margin: 0;
+  display: block;
+}
+.article-html :deep(figure.image) {
+  display: table;
+}
+.article-html :deep(figcaption) {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary, #6b7280);
+  text-align: center;
+  padding: 0.5rem 0.25rem 0;
+  font-style: italic;
+}
+/* Inline / centered image styles */
+.article-html :deep(.image-style-align-center) { margin-left: auto; margin-right: auto; }
+.article-html :deep(.image-style-align-left) { float: left; margin-right: 1.25rem; max-width: 50%; }
+.article-html :deep(.image-style-align-right) { float: right; margin-left: 1.25rem; max-width: 50%; }
+.article-html :deep(.image-inline) { max-width: 100%; }
+
+/* ── Tables: scroll horizontally instead of stretching the page ── */
+.article-html :deep(.table),
+.article-html :deep(figure.table) { overflow-x: auto; max-width: 100%; }
+.article-html :deep(table) {
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+/* ── Media embeds (iframes/video) stay responsive ── */
+.article-html :deep(iframe),
+.article-html :deep(video) { max-width: 100%; }
+.article-html :deep(.media) { max-width: 100%; }
+
+/* ── Code blocks wrap / scroll instead of overflowing ── */
+.article-html :deep(pre) { max-width: 100%; overflow-x: auto; }
+
 .article-html :deep(h2 + p),
 .article-html :deep(h3 + p) { margin-top: 0; }
 </style>

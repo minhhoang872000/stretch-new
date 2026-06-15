@@ -155,18 +155,20 @@ export default defineNuxtConfig({
     },
   },
 
-  // Per-route rules: blog is dynamic content (edited in the CMS), so render it
-  // fresh per request and never let the browser/CDN cache the HTML or the
-  // Nuxt _payload.json — otherwise edits keep showing the old cached version.
+  // Per-route rules: blog is dynamic content (edited in the CMS). Instead of
+  // re-rendering + re-hitting the API on every single request (no-store), cache
+  // the rendered page for 60s with stale-while-revalidate: the first visitor
+  // pays the render cost, everyone in the next 60s gets an instant cached page,
+  // and a CMS edit shows up within ~60s. Big latency win, tiny staleness window.
   routeRules: {
-    '/sharing-hub': { prerender: false, headers: { 'cache-control': 'no-store' } },
-    '/sharing-hub/**': { prerender: false, headers: { 'cache-control': 'no-store' } },
-    '/vi/sharing-hub': { prerender: false, headers: { 'cache-control': 'no-store' } },
-    '/vi/sharing-hub/**': { prerender: false, headers: { 'cache-control': 'no-store' } },
-    '/goc-chia-se': { prerender: false, headers: { 'cache-control': 'no-store' } },
-    '/goc-chia-se/**': { prerender: false, headers: { 'cache-control': 'no-store' } },
-    '/vi/goc-chia-se': { prerender: false, headers: { 'cache-control': 'no-store' } },
-    '/vi/goc-chia-se/**': { prerender: false, headers: { 'cache-control': 'no-store' } },
+    '/sharing-hub': { prerender: false, swr: 60 },
+    '/sharing-hub/**': { prerender: false, swr: 60 },
+    '/vi/sharing-hub': { prerender: false, swr: 60 },
+    '/vi/sharing-hub/**': { prerender: false, swr: 60 },
+    '/goc-chia-se': { prerender: false, swr: 60 },
+    '/goc-chia-se/**': { prerender: false, swr: 60 },
+    '/vi/goc-chia-se': { prerender: false, swr: 60 },
+    '/vi/goc-chia-se/**': { prerender: false, swr: 60 },
   },
 
   // Runtime config
