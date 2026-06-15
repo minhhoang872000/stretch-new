@@ -141,6 +141,8 @@ export interface BlogPostFilter {
   /** Admin listing: include drafts (skip the published-only default). */
   includeUnpublished?: boolean
   search?: string
+  /** List mode: omit the heavy content body (for card listings on the public site). */
+  summary?: boolean
 }
 
 // ─── Auth / Admin ────────────────────────────────────────────────────

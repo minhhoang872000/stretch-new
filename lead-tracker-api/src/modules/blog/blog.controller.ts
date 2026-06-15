@@ -22,6 +22,8 @@ export const blogController = {
       if (typeof published === 'string') filter.published = published === 'true'
       // Admin listing (CRM) passes includeUnpublished=true to also get drafts.
       if (includeUnpublished === 'true') filter.includeUnpublished = true
+      // Public card listings pass summary=true to skip the heavy content body.
+      if (req.query.summary === 'true') filter.summary = true
 
       // Pagination is opt-in (CRM admin); the public site omits page/limit to get all.
       const pageRaw = parseInt(req.query.page as string, 10)

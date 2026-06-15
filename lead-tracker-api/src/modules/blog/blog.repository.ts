@@ -76,10 +76,19 @@ export const blogRepository = {
     const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : ''
     const order = 'ORDER BY featured DESC, published_at DESC'
 
+    // Summary mode: return every column EXCEPT the heavy content JSONB (replaced by
+    // empty arrays so mapBlogRow keeps working). Used by public card listings.
+    const cols = filter?.summary
+      ? `id, slug, title_en, title_vi, excerpt_en, excerpt_vi,
+         '[]'::jsonb AS content_en, '[]'::jsonb AS content_vi,
+         category, tags, cover_image, author, read_time, featured,
+         published, published_at, created_at, updated_at`
+      : '*'
+
     // Pagination is opt-in: without page/limit, return the full list (used by the public site).
     const usePaging = !!(pagination && (pagination.page || pagination.limit))
     if (!usePaging) {
-      const result = await pool.query(`SELECT * FROM blog_posts ${where} ${order}`, params)
+      const result = await pool.query(`SELECT ${cols} FROM blog_posts ${where} ${order}`, params)
       const posts = result.rows.map(mapBlogRow)
       return { posts, total: posts.length }
     }
@@ -92,7 +101,7 @@ export const blogRepository = {
     const total = parseInt(countResult.rows[0].total, 10)
 
     const dataResult = await pool.query(
-      `SELECT * FROM blog_posts ${where} ${order} LIMIT ${limit} OFFSET ${offset}`,
+      `SELECT ${cols} FROM blog_posts ${where} ${order} LIMIT ${limit} OFFSET ${offset}`,
       params
     )
     return { posts: dataResult.rows.map(mapBlogRow), total }
