@@ -208,6 +208,14 @@
                 <input v-model="form.image" type="text" class="input-field text-xs flex-1" placeholder="/image.webp or https://… (or upload)" />
                 <button
                   type="button"
+                  class="btn-outline text-xs whitespace-nowrap px-3 flex items-center gap-1"
+                  @click="pickerOpen = true"
+                >
+                  <span class="material-symbols-outlined text-sm">photo_library</span>
+                  Thư viện
+                </button>
+                <button
+                  type="button"
                   class="btn-secondary text-xs whitespace-nowrap px-3"
                   :disabled="coverUploading"
                   @click="coverFileInput?.click()"
@@ -220,6 +228,7 @@
               <div v-if="form.image" class="mt-2 rounded-xl overflow-hidden h-28 bg-surface-container">
                 <img :src="form.image" class="w-full h-full object-cover" @error="form.image = ''" />
               </div>
+              <ImagePicker v-model="form.image" v-model:isOpen="pickerOpen" />
             </div>
             <div>
               <label class="label-xs mb-1.5 block">Category *</label>
@@ -373,6 +382,7 @@ import CKEditorField from '@/components/ui/CKEditorField.vue'
 import { useBlogStore } from '@/stores/blog.js'
 import { useCategoriesStore } from '@/stores/categories.js'
 import { uploadImage } from '@/services/api'
+import ImagePicker from '@/components/ui/ImagePicker.vue'
 import { formatDate } from '@/utils/date.js'
 import { useNotify } from '@/composables/useNotify.js'
 
@@ -547,6 +557,7 @@ const dateInput = computed({
 })
 
 // ─── Cover image upload ─────────────────────────────────────────
+const pickerOpen = ref(false)
 const coverFileInput = ref(null)
 const coverUploading = ref(false)
 const coverUploadError = ref('')

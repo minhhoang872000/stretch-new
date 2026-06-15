@@ -100,6 +100,7 @@ export const navItems = [
   { path: '/categories', icon: 'category', label: 'Categories' },
   { path: '/calendar', icon: 'calendar_month', label: 'Calendar' },
   { path: '/blog', icon: 'article', label: 'Blog' },
+  { path: '/media', icon: 'photo_library', label: 'Media' },
   // { path: '/services', icon: 'medical_services', label: 'Services' }, // tạm thời ẩn trang Services
   { path: '/google-analytics', icon: 'analytics', label: 'Google Analytics' }
 ]

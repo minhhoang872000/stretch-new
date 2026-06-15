@@ -14,6 +14,7 @@ const routes = [
   { path: '/blog/:slug', name: 'BlogDetail', component: () => import('@/views/BlogDetailView.vue') },
   { path: '/google-analytics', name: 'GoogleAnalytics', component: () => import('@/views/GoogleAnalyticsView.vue') },
   { path: '/leads', name: 'Leads', component: () => import('@/views/LeadsView.vue') },
+  { path: '/media', name: 'Media', component: () => import('@/views/MediaView.vue') },
 ]
 
 const router = createRouter({

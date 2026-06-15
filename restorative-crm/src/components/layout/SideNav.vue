@@ -57,6 +57,7 @@ const NAV_LABELS = {
   'Categories': 'Danh mục',
   'Calendar': 'Lịch hẹn',
   'Blog': 'Bài viết',
+  'Media': 'Thư viện ảnh',
   'Services': 'Dịch vụ',
   'Google Analytics': 'Google Analytics',
   'Leads': 'Khách tiềm năng',

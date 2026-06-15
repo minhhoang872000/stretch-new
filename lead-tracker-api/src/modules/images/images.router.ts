@@ -39,7 +39,10 @@ function handleUpload(req: Request, res: Response, next: NextFunction): void {
 }
 
 // ─── Image Endpoints ─────────────────────────────────────────────────
+router.get('/', imagesController.list)
+router.delete('/', imagesController.remove)
 router.post('/upload', handleUpload, imagesController.upload)
+router.post('/crop', imagesController.crop)
 router.post('/direct-upload', imagesController.directUpload)
 
 export default router

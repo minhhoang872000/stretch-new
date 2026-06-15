@@ -19,6 +19,9 @@ const MESSAGES = {
   'toast.bookingDeleted': 'Đã xoá lịch hẹn.',
   'toast.imageUploaded': 'Đã tải ảnh lên thành công.',
   'toast.imageUploadError': 'Tải ảnh lên thất bại.',
+  'toast.imageDeleted': 'Đã xoá ảnh.',
+  'toast.imageDeleteError': 'Xoá ảnh thất bại.',
+  'toast.urlCopied': 'Đã sao chép đường dẫn ảnh.',
 }
 
 const SEVERITY_LABELS = {

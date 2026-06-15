@@ -62,6 +62,36 @@ export async function uploadImage(file) {
   return json.data
 }
 
+/**
+ * List uploaded images (media library), paginated via an opaque cursor.
+ * @param {{ cursor?: string, limit?: number }} opts
+ * @returns {Promise<{ images: {key,url,size,uploadedAt}[], cursor: string|null }>}
+ */
+export function fetchImages({ cursor, limit = 60 } = {}) {
+  const params = new URLSearchParams()
+  params.set('limit', limit)
+  if (cursor) params.set('cursor', cursor)
+  return request(`/images?${params}`)
+}
+
+/** Delete one uploaded image by its bucket key. */
+export function deleteImage(key) {
+  return request(`/images?key=${encodeURIComponent(key)}`, { method: 'DELETE' })
+}
+
+/**
+ * Crop an existing image (server-side, via sharp) into a NEW image.
+ * @param {string} key source object key
+ * @param {{left:number,top:number,width:number,height:number}} rect in source pixels
+ * @returns {Promise<{key:string,url:string}>}
+ */
+export function cropImage(key, rect) {
+  return request('/images/crop', {
+    method: 'POST',
+    body: JSON.stringify({ key, ...rect }),
+  })
+}
+
 // ─── Leads (internal tracking) ────────────────────────────────────
 
 export function fetchLeads(filters = {}) {
