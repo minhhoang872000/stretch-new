@@ -43,11 +43,12 @@
     <template v-else>
       <!-- Overview KPI Cards -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div v-for="kpi in overviewKPIs" :key="kpi.label"
-          class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/20 hover:shadow-md transition-shadow">
+        <div v-for="kpi in overviewKPIs" :key="kpi.label" :title="kpi.tip"
+          class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/20 hover:shadow-md transition-shadow cursor-help">
           <div class="flex items-center gap-2 mb-2">
             <span class="material-symbols-outlined text-base" :style="{ color: kpi.color }">{{ kpi.icon }}</span>
             <p class="text-xs text-on-surface-variant font-medium truncate">{{ kpi.label }}</p>
+            <span class="material-symbols-outlined text-sm text-on-surface-variant/40 ml-auto">info</span>
           </div>
           <p class="text-2xl font-extrabold text-on-surface">{{ kpi.value }}</p>
           <p v-if="kpi.sub" class="text-[11px] text-on-surface-variant mt-0.5">{{ kpi.sub }}</p>
@@ -56,7 +57,7 @@
 
       <!-- Tabs -->
       <div class="flex gap-1 bg-surface-container rounded-xl p-1 mb-6 overflow-x-auto no-scrollbar">
-        <button v-for="tab in tabs" :key="tab.key" @click="activeTab = tab.key"
+        <button v-for="tab in tabs" :key="tab.key" @click="activeTab = tab.key" :title="tab.tip"
           class="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap transition-all"
           :class="activeTab === tab.key ? 'bg-white shadow text-on-surface' : 'text-on-surface-variant hover:text-on-surface'">
           <span class="material-symbols-outlined text-base">{{ tab.icon }}</span>{{ tab.label }}
@@ -204,11 +205,11 @@ const periods = [
 ]
 
 const tabs = [
-  { key: 'trend', label: 'Trend', icon: 'show_chart' },
-  { key: 'queries', label: 'Queries', icon: 'search' },
-  { key: 'pages', label: 'Pages', icon: 'description' },
-  { key: 'countries', label: 'Countries', icon: 'public' },
-  { key: 'devices', label: 'Devices', icon: 'devices' },
+  { key: 'trend', label: 'Trend', icon: 'show_chart', tip: 'Biến động clicks & impressions theo từng ngày.' },
+  { key: 'queries', label: 'Queries', icon: 'search', tip: 'Từ khoá người dùng gõ trên Google để tìm thấy bạn.' },
+  { key: 'pages', label: 'Pages', icon: 'description', tip: 'Các trang của bạn nhận traffic từ tìm kiếm Google.' },
+  { key: 'countries', label: 'Countries', icon: 'public', tip: 'Lượng tìm kiếm chia theo quốc gia.' },
+  { key: 'devices', label: 'Devices', icon: 'devices', tip: 'Thiết bị người dùng dùng để tìm: máy tính / điện thoại / máy tính bảng.' },
 ]
 const activeTab = ref('trend')
 
@@ -219,10 +220,14 @@ function fmt(n) {
 const overviewKPIs = computed(() => {
   const o = store.overview || {}
   return [
-    { label: 'Total Clicks', value: fmt(o.clicks), icon: 'ads_click', color: '#34A853' },
-    { label: 'Total Impressions', value: fmt(o.impressions), icon: 'visibility', color: '#4285F4' },
-    { label: 'Avg CTR', value: `${o.ctr ?? 0}%`, icon: 'percent', color: '#F37C20' },
-    { label: 'Avg Position', value: o.position ?? 0, icon: 'leaderboard', color: '#A142F4' },
+    { label: 'Total Clicks', value: fmt(o.clicks), icon: 'ads_click', color: '#34A853',
+      tip: 'Số lần người dùng bấm vào kết quả của bạn trên Google Search để vào website.' },
+    { label: 'Total Impressions', value: fmt(o.impressions), icon: 'visibility', color: '#4285F4',
+      tip: 'Số lần website xuất hiện trong kết quả tìm kiếm — dù người dùng có bấm hay không.' },
+    { label: 'Avg CTR', value: `${o.ctr ?? 0}%`, icon: 'percent', color: '#F37C20',
+      tip: 'Click-Through Rate = Clicks ÷ Impressions. Tỷ lệ % người thấy rồi bấm vào. Càng cao càng tốt.' },
+    { label: 'Avg Position', value: o.position ?? 0, icon: 'leaderboard', color: '#A142F4',
+      tip: 'Thứ hạng trung bình của website trên trang kết quả tìm kiếm (1 = cao nhất / tốt nhất).' },
   ]
 })
 

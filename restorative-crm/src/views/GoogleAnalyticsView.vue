@@ -52,11 +52,12 @@
 
       <!-- Overview KPI Cards -->
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-        <div v-for="kpi in overviewKPIs" :key="kpi.label"
-          class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/20 hover:shadow-md transition-shadow">
+        <div v-for="kpi in overviewKPIs" :key="kpi.label" :title="kpi.tip"
+          class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/20 hover:shadow-md transition-shadow cursor-help">
           <div class="flex items-center gap-2 mb-2">
             <span class="material-symbols-outlined text-base" :style="{ color: kpi.color }">{{ kpi.icon }}</span>
             <p class="text-xs text-on-surface-variant font-medium truncate">{{ kpi.label }}</p>
+            <span class="material-symbols-outlined text-sm text-on-surface-variant/40 ml-auto">info</span>
           </div>
           <p class="text-2xl font-extrabold text-on-surface">{{ kpi.value }}</p>
           <p v-if="kpi.sub" class="text-[11px] text-on-surface-variant mt-0.5">{{ kpi.sub }}</p>
@@ -65,7 +66,7 @@
 
       <!-- Tabs -->
       <div class="flex gap-1 bg-surface-container rounded-xl p-1 mb-6 overflow-x-auto no-scrollbar">
-        <button v-for="tab in tabs" :key="tab.key" @click="activeTab = tab.key"
+        <button v-for="tab in tabs" :key="tab.key" @click="activeTab = tab.key" :title="tab.tip"
           class="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap transition-all"
           :class="activeTab === tab.key ? 'bg-white shadow text-on-surface' : 'text-on-surface-variant hover:text-on-surface'">
           <span class="material-symbols-outlined text-base">{{ tab.icon }}</span>{{ tab.label }}
@@ -743,15 +744,15 @@ const periods = [
 ]
 
 const tabs = [
-  { key: 'trend',    label: 'Trend',    icon: 'show_chart' },
-  { key: 'channels', label: 'Channels', icon: 'pie_chart' },
-  { key: 'social',   label: 'Social',   icon: 'thumb_up' },
-  { key: 'utm',      label: 'UTM',      icon: 'link' },
-  { key: 'devices',  label: 'Devices',  icon: 'devices' },
-  { key: 'geo',      label: 'Geo',      icon: 'public' },
-  { key: 'events',   label: 'Events',   icon: 'bolt' },
-  { key: 'pages',    label: 'Pages',    icon: 'article' },
-  { key: 'realtime', label: 'Realtime', icon: 'radio_button_checked' },
+  { key: 'trend',    label: 'Trend',    icon: 'show_chart', tip: 'Biến động Sessions / Users / Engaged theo từng ngày.' },
+  { key: 'channels', label: 'Channels', icon: 'pie_chart', tip: 'Nguồn traffic theo nhóm kênh: Organic, Direct, Social, Referral, Paid...' },
+  { key: 'social',   label: 'Social',   icon: 'thumb_up', tip: 'Traffic từ các nền tảng mạng xã hội (Facebook, Instagram, TikTok, YouTube...).' },
+  { key: 'utm',      label: 'UTM',      icon: 'link', tip: 'Phân tích theo tham số UTM (source / medium / campaign) gắn trong link chiến dịch.' },
+  { key: 'devices',  label: 'Devices',  icon: 'devices', tip: 'Phân bổ theo thiết bị / hệ điều hành / trình duyệt.' },
+  { key: 'geo',      label: 'Geo',      icon: 'public', tip: 'Phân bổ người dùng theo quốc gia & thành phố.' },
+  { key: 'events',   label: 'Events',   icon: 'bolt', tip: 'Các sự kiện GA4 (click, scroll, form...) và số lần xảy ra.' },
+  { key: 'pages',    label: 'Pages',    icon: 'article', tip: 'Các trang được xem nhiều nhất kèm chỉ số tương tác.' },
+  { key: 'realtime', label: 'Realtime', icon: 'radio_button_checked', tip: 'Người dùng đang online ngay lúc này.' },
 ]
 
 onMounted(() => store.loadAll())
@@ -775,18 +776,30 @@ const overviewKPIs = computed(() => {
   const ov = store.overview
   if (!ov) return []
   return [
-    { label: 'Sessions',       value: fmt(ov.sessions),        icon: 'show_chart',    color: '#F37C20' },
-    { label: 'Total Users',    value: fmt(ov.totalUsers),       icon: 'group',         color: '#4285F4' },
-    { label: 'New Users',      value: fmt(ov.newUsers),         icon: 'person_add',    color: '#34A853' },
-    { label: 'Page Views',     value: fmt(ov.pageViews),        icon: 'visibility',    color: '#9C27B0' },
-    { label: 'Bounce Rate',    value: ov.bounceRate + '%',      icon: 'exit_to_app',   color: '#EA4335' },
-    { label: 'Engagement',     value: ov.engagementRate + '%',  icon: 'thumb_up',      color: '#00BCD4' },
-    { label: 'Avg Duration',   value: fmtDur(ov.avgSessionDuration), icon: 'timer',   color: '#FF9800' },
-    { label: 'Engaged Sess.',  value: fmt(ov.engagedSessions),  icon: 'check_circle',  color: '#34A853' },
-    { label: 'Pages/Session',  value: ov.pagesPerSession,       icon: 'book',          color: '#607D8B' },
-    { label: 'Events',         value: fmt(ov.eventCount),       icon: 'bolt',          color: '#E91E63' },
-    { label: 'Conversions',    value: fmt(ov.conversions),      icon: 'flag',          color: '#F37C20' },
-    { label: 'Active Now',     value: fmt(store.realtime.totalActive), icon: 'radio_button_checked', color: '#34A853' },
+    { label: 'Sessions',       value: fmt(ov.sessions),        icon: 'show_chart',    color: '#F37C20',
+      tip: 'Phiên truy cập — một lượt người dùng vào và tương tác với web. Tự kết thúc sau 30 phút không hoạt động.' },
+    { label: 'Total Users',    value: fmt(ov.totalUsers),       icon: 'group',         color: '#4285F4',
+      tip: 'Tổng số người dùng khác nhau đã vào web trong kỳ.' },
+    { label: 'New Users',      value: fmt(ov.newUsers),         icon: 'person_add',    color: '#34A853',
+      tip: 'Số người LẦN ĐẦU vào web (chưa từng ghé trước đó).' },
+    { label: 'Page Views',     value: fmt(ov.pageViews),        icon: 'visibility',    color: '#9C27B0',
+      tip: 'Tổng số lượt xem trang. 1 người xem 3 trang = 3 page views.' },
+    { label: 'Bounce Rate',    value: ov.bounceRate + '%',      icon: 'exit_to_app',   color: '#EA4335',
+      tip: 'Tỷ lệ thoát — % phiên vào rồi rời đi mà không tương tác gì. Càng THẤP càng tốt.' },
+    { label: 'Engagement',     value: ov.engagementRate + '%',  icon: 'thumb_up',      color: '#00BCD4',
+      tip: 'Tỷ lệ tương tác — % phiên có tương tác thật (xem >10s, có sự kiện, hoặc xem nhiều trang). Càng CAO càng tốt.' },
+    { label: 'Avg Duration',   value: fmtDur(ov.avgSessionDuration), icon: 'timer',   color: '#FF9800',
+      tip: 'Thời lượng trung bình mỗi phiên truy cập.' },
+    { label: 'Engaged Sess.',  value: fmt(ov.engagedSessions),  icon: 'check_circle',  color: '#34A853',
+      tip: 'Số phiên có tương tác thật (engaged), ngược lại với phiên thoát ngay.' },
+    { label: 'Pages/Session',  value: ov.pagesPerSession,       icon: 'book',          color: '#607D8B',
+      tip: 'Trung bình số trang được xem trong mỗi phiên.' },
+    { label: 'Events',         value: fmt(ov.eventCount),       icon: 'bolt',          color: '#E91E63',
+      tip: 'Tổng số sự kiện được ghi nhận (click, scroll, xem video, submit form...).' },
+    { label: 'Conversions',    value: fmt(ov.conversions),      icon: 'flag',          color: '#F37C20',
+      tip: 'Số lượt chuyển đổi — hành động giá trị bạn đặt làm mục tiêu (vd đặt lịch, gửi form).' },
+    { label: 'Active Now',     value: fmt(store.realtime.totalActive), icon: 'radio_button_checked', color: '#34A853',
+      tip: 'Số người đang truy cập web ngay lúc này (realtime, ~30 phút gần nhất).' },
   ]
 })
 
