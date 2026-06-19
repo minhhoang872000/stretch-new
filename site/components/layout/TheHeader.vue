@@ -11,6 +11,7 @@ const navLinks = computed(() => [
     label: t('nav.business'),
     href: '/business',
     dropdown: [
+      { label: t('nav.business_intro'), href: '/business' },
       { label: t('nav.business_recovery'), href: '/business/recovery-event' },
       {
         label: t('nav.business_training'),
@@ -154,15 +155,17 @@ function switchLanguage(code: string) {
                   @mouseenter="showBusinessDropdown"
                   @mouseleave="hideBusinessDropdown"
                 >
-                  <NuxtLink
-                    v-for="sub in link.dropdown"
-                    :key="sub.href"
-                    :to="localePath(sub.href)"
-                    class="nav-dropdown-item"
-                    @click="isBusinessDropdownOpen = false"
-                  >
-                    {{ sub.label }}
-                  </NuxtLink>
+                  <div class="nav-dropdown-panel">
+                    <NuxtLink
+                      v-for="sub in link.dropdown"
+                      :key="sub.href"
+                      :to="localePath(sub.href)"
+                      class="nav-dropdown-item"
+                      @click="isBusinessDropdownOpen = false"
+                    >
+                      {{ sub.label }}
+                    </NuxtLink>
+                  </div>
                 </div>
               </Transition>
             </div>
@@ -377,13 +380,6 @@ function switchLanguage(code: string) {
               class="pb-3 pl-4 flex flex-col gap-1"
             >
               <NuxtLink
-                :to="localePath(link.href)"
-                class="mobile-sub-link py-2 text-sm font-heading text-text-secondary hover:text-accent transition-colors"
-                @click="closeMobileMenu"
-              >
-                {{ link.label }}
-              </NuxtLink>
-              <NuxtLink
                 v-for="sub in link.dropdown"
                 :key="sub.href"
                 :to="localePath(sub.href)"
@@ -454,12 +450,19 @@ function switchLanguage(code: string) {
 }
 
 /* ── Dropdown ── */
+/* The container touches the trigger (top: 100%) and uses a transparent
+   padding-top as the hover bridge, so there is never an uncovered gap. */
 .nav-dropdown {
   position: absolute;
-  top: calc(100% + 4px); /* ✅ FIX: giảm gap xuống 4px thay vì 8px */
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   min-width: 240px;
+  padding-top: 10px;
+  z-index: 60;
+}
+
+.nav-dropdown-panel {
   background: white;
   border: 1px solid #e6ecf2;
   border-radius: 12px;
@@ -467,18 +470,6 @@ function switchLanguage(code: string) {
   box-shadow:
     0 8px 32px rgba(11, 42, 74, 0.08),
     0 2px 8px rgba(0, 0, 0, 0.04);
-  z-index: 60;
-}
-
-/* ✅ FIX: Bridge vô hình lấp đầy khoảng cách giữa trigger và dropdown */
-.nav-dropdown::before {
-  content: '';
-  position: absolute;
-  top: -12px;
-  left: 0;
-  right: 0;
-  height: 12px;
-  background: transparent;
 }
 
 .nav-dropdown-item {

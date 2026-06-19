@@ -33,10 +33,10 @@ const uspIcons = [
     </div>
 
     <div class="max-w-[1400px] mx-auto px-6 md:px-10 relative z-10">
-      <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
-        
+      <div class="flex flex-col md:flex-row items-center gap-8 md:gap-8 lg:gap-12">
+
         <!-- Left: Content -->
-        <div class="w-full lg:w-[50%] flex flex-col justify-center pt-6 lg:pt-0">
+        <div class="w-full md:w-[50%] flex flex-col justify-center pt-6 md:pt-0">
           
           <!-- Eyebrow Badge -->
           <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white shadow-[0_4px_12px_rgba(0,0,0,0.02)] mb-6 animate-fade-in-up w-fit group cursor-default hover:bg-white/80 transition-all duration-500">
@@ -96,8 +96,8 @@ const uspIcons = [
           
         </div>
 
-        <div class="w-full lg:w-[50%] relative animate-fade-in-up" style="animation-delay: 200ms">
-          <div class="relative w-full aspect-[4/5] lg:aspect-auto lg:h-[580px] rounded-[24px] overflow-hidden shadow-[0_20px_60px_rgba(11,42,74,0.12)]">
+        <div class="w-full md:w-[50%] relative animate-fade-in-up" style="animation-delay: 200ms">
+          <div class="relative w-auto -mx-6 sm:mx-0 sm:w-full aspect-[4/5] sm:aspect-[16/10] md:aspect-auto md:h-[460px] lg:h-[580px] rounded-none sm:rounded-[24px] overflow-hidden shadow-[0_20px_60px_rgba(11,42,74,0.12)]">
             <NuxtImg
               src="/individual-hero.webp"
               alt="Stretch.vn — Professional physiotherapy treatment session"
@@ -111,7 +111,7 @@ const uspIcons = [
           </div>
 
           <!-- Floating Stat Card -->
-          <div class="absolute bottom-6 left-[-2rem] md:left-[-4rem] flex items-center gap-4 px-6 py-4 bg-white/90 backdrop-blur-xl rounded-[24px] shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-white z-20 animate-fade-in-up hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-all duration-500 cursor-default" style="animation-delay: 600ms">
+          <div class="absolute bottom-4 right-4 sm:bottom-6 sm:-right-8 md:-right-16 flex items-center gap-3 sm:gap-4 px-4 py-3 sm:px-6 sm:py-4 bg-white/90 backdrop-blur-xl rounded-[20px] sm:rounded-[24px] shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-white z-20 animate-fade-in-up hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-all duration-500 cursor-default" style="animation-delay: 600ms">
             <div class="flex items-center gap-0.5">
               <svg v-for="s in 5" :key="s" width="18" height="18" viewBox="0 0 24 24" :fill="s <= 4 ? '#F47A1F' : 'none'" :stroke="s <= 4 ? '#F47A1F' : '#CBD5E1'" stroke-width="1.5">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -120,18 +120,6 @@ const uspIcons = [
             <div class="pl-3 border-l border-border-default">
               <p class="text-[22px] font-heading font-bold text-navy leading-none mb-0.5">4.9</p>
               <p class="text-[10px] text-navy/50 font-bold tracking-[0.1em] uppercase">{{ locale === 'vi' ? '500+ khách hàng' : '500+ clients' }}</p>
-            </div>
-          </div>
-          
-          <!-- Floating Avatar Group -->
-          <div class="hidden sm:flex absolute top-8 right-[-2rem] items-center gap-3 px-5 py-3 bg-white/90 backdrop-blur-xl rounded-[20px] shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-white z-20 animate-fade-in-up hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-all duration-500" style="animation-delay: 800ms">
-            <div class="flex -space-x-3">
-              <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden"><NuxtImg src="https://i.pravatar.cc/100?img=1" class="w-full h-full object-cover" format="webp" /></div>
-              <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden"><NuxtImg src="https://i.pravatar.cc/100?img=2" class="w-full h-full object-cover" format="webp" /></div>
-              <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden"><NuxtImg src="https://i.pravatar.cc/100?img=3" class="w-full h-full object-cover" format="webp" /></div>
-            </div>
-            <div class="pl-2">
-              <p class="text-[12px] font-bold text-navy">Join them</p>
             </div>
           </div>
 

@@ -95,14 +95,18 @@ export const recentPatients = [
 ]
 
 export const navItems = [
+  // ─── Vận hành ──────────────────────────────────────────────
   { path: '/dashboard', icon: 'dashboard', label: 'Dashboard' },
   { path: '/bookings', icon: 'event_available', label: 'Bookings' },
-  { path: '/categories', icon: 'category', label: 'Categories' },
   { path: '/calendar', icon: 'calendar_month', label: 'Calendar' },
+  // ─── Nội dung ──────────────────────────────────────────────
   { path: '/blog', icon: 'article', label: 'Blog' },
+  { path: '/categories', icon: 'category', label: 'Categories' },
   { path: '/media', icon: 'photo_library', label: 'Media' },
   // { path: '/services', icon: 'medical_services', label: 'Services' }, // tạm thời ẩn trang Services
-  { path: '/google-analytics', icon: 'analytics', label: 'Google Analytics' }
+  // ─── Phân tích ─────────────────────────────────────────────
+  { path: '/google-analytics', icon: 'analytics', label: 'Google Analytics' },
+  { path: '/search-console', icon: 'travel_explore', label: 'Search Console' }
 ]
 
 export const blogStats = [

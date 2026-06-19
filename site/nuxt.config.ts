@@ -4,7 +4,9 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxtjs/seo',
-    '@nuxt/content',
+    // '@nuxt/content' removed: it was unused (blog content comes from the
+    // external lead-tracker API, not Nuxt Content) and on Cloudflare it would
+    // force a D1 database binding. Run `npm uninstall @nuxt/content` to drop the dep.
     '@pinia/nuxt',
     '@vueuse/nuxt',
     '@nuxt/image',
@@ -46,7 +48,8 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      htmlAttrs: { lang: 'en' },
+      // `lang` is set reactively per-locale in app.vue via useI18n so Vietnamese
+      // pages report lang="vi-VN" instead of a hardcoded "en".
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
       meta: [
@@ -147,6 +150,12 @@ export default defineNuxtConfig({
 
   // Nitro SSR / prerender
   nitro: {
+    // Deploy target: Cloudflare Pages with SSR (edge functions). This generates
+    // dist/_worker.js + dist/_routes.json so the prerendered static pages are
+    // served as files while dynamic blog routes (sharing-hub/*, goc-chia-se/*)
+    // are server-rendered on the edge — Googlebot gets full HTML, and the
+    // `swr: 60` route rules below actually take effect. Build output dir: dist/
+    preset: 'cloudflare-pages',
     prerender: {
       routes: ['/'],
       crawlLinks: true,

@@ -31,9 +31,9 @@ const metrics = computed(() => [
       <!-- Main Hero Content -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center pt-8 pb-4 lg:pt-14 lg:pb-8">
         <!-- Left column: Copy -->
-        <div class="order-2 lg:order-1">
+        <div class="order-2 lg:order-1 sm:text-center lg:text-left">
           <!-- Label -->
-          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-off-white border border-border-default mb-4">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-off-white border border-border-default mb-4 sm:mx-auto lg:mx-0">
             <div class="w-1.5 h-1.5 rounded-full bg-accent" />
             <span class="text-[11px] font-heading font-semibold text-text-secondary uppercase tracking-widest">
               {{ $t('hero.eyebrow') }}
@@ -47,12 +47,12 @@ const metrics = computed(() => [
           </h1>
 
           <!-- Subtext -->
-          <p class="text-body text-text-secondary max-w-lg mb-5">
+          <p class="text-body text-text-secondary max-w-lg mb-5 sm:mx-auto lg:mx-0">
             {{ $t('hero.subtitle') }}
           </p>
 
           <!-- USP Chips -->
-          <div class="flex flex-wrap gap-6 mb-6">
+          <div class="flex flex-wrap gap-6 mb-6 sm:justify-center lg:justify-start">
             <div class="flex items-center gap-2.5">
               <div class="w-9 h-9 rounded-full bg-off-white border border-border-default flex items-center justify-center">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B2A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -93,14 +93,14 @@ const metrics = computed(() => [
           </div>
 
           <!-- CTA Buttons -->
-          <div class="flex flex-wrap gap-4">
-            <NuxtLink :to="localePath('/booking')" class="btn-navy px-8">
+          <div class="flex flex-wrap gap-4 sm:justify-center lg:justify-start">
+            <NuxtLink :to="localePath('/booking')" class="btn-navy px-8 sm:px-10 sm:py-4 lg:py-3 sm:text-base">
               {{ $t('hero.bookSession') }}
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M6 12l4-4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </NuxtLink>
-            <a href="#services" class="btn-outline px-8">
+            <a href="#services" class="btn-outline px-8 sm:px-10 sm:py-4 lg:py-3 sm:text-base">
               {{ $t('hero.learnMore') }}
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M6 12l4-4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

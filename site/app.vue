@@ -1,4 +1,13 @@
 <script setup lang="ts">
+// Keep <html lang> in sync with the active locale (en-US / vi-VN) for correct
+// multilingual SEO. The hardcoded lang in nuxt.config was removed in favour of this.
+const { locale, locales } = useI18n()
+const htmlLang = computed(() => {
+  const current = (locales.value as any[]).find((l) => l.code === locale.value)
+  return current?.language || locale.value
+})
+useHead({ htmlAttrs: { lang: htmlLang } })
+
 // Global Schema.org for the entire site — HealthClub type
 useSchemaOrg([
   defineLocalBusiness({

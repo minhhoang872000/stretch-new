@@ -11,6 +11,7 @@ import blogRouter from './modules/blog/blog.router'
 import categoryRouter from './modules/category/category.router'
 import imagesRouter from './modules/images/images.router'
 import gaRouter from './modules/google-analytics/ga.router'
+import scRouter from './modules/search-console/sc.router'
 import authRouter from './modules/auth/auth.router'
 import { requireAuth } from './middleware/requireAuth'
 import { success } from './utils/response'
@@ -55,6 +56,7 @@ app.use('/api/v1/categories', categoryRouter)        // mixed: GET public, write
 app.use('/api/v1/images', requireAuth, imagesRouter)         // admin only (uploads)
 app.use('/api/v1/analytics', requireAuth, analyticsRouter)
 app.use('/api/v1/google-analytics', requireAuth, gaRouter)
+app.use('/api/v1/search-console', requireAuth, scRouter)
 
 // ─── 404 Handler ─────────────────────────────────────────────────────
 app.use((req, res) => {

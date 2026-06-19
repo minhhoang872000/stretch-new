@@ -7,6 +7,7 @@
     "membership": "Membership",
     "individual": "For Individual",
     "business": "For Business",
+    "business_intro": "Introduction",
     "business_recovery": "Recovery Event Solutions",
     "business_training": "Education & Training",
     "business_wellness": "Corporate Wellness",
@@ -328,6 +329,13 @@
     "ctaTitle": "Ready to Ascend?",
     "ctaDesc": "Book your first session today and feel the difference."
   },
+  "reviews": {
+    "eyebrow": "Client Reviews",
+    "title": "What our clients say",
+    "count_label": "Google reviews",
+    "prev": "Previous reviews",
+    "next": "Next reviews"
+  },
   "partners": {
     "eyebrow": "PARTNERS & COMMUNITY",
     "title": "Trusted by Partners",
@@ -509,12 +517,13 @@
     },
     "delivery": {
       "title": "What we deliver",
-      "workshop_title": "Movement workshops",
-      "workshop_desc": "Guided sessions your team can apply immediately.",
-      "assessment_title": "Mini assessment station",
-      "assessment_desc": "Quick checks to help employees understand their body.",
-      "recovery_title": "Recovery day activation",
-      "recovery_desc": "A structured session combining assessment, treatment, and guidance."
+      "cta_label": "Learn more",
+      "workshop_title": "Movement Workshops (Topic-Based)",
+      "workshop_desc": "Workshops covering common office-related issues like neck pain, lower back pain, poor posture, and repetitive strain — helping employees move better at work.",
+      "coffeetalk_title": "Wellness Coffee Talk",
+      "coffeetalk_desc": "Casual sessions led by doctors and movement specialists to help employees understand pain, self-assess, and apply practical recovery strategies.",
+      "recovery_title": "Employee Recovery Day",
+      "recovery_desc": "An in-office recovery experience by our stretching specialists to reduce tension, restore energy, and improve movement quality."
     },
     "why": {
       "title": "Why it works",

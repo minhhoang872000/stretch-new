@@ -142,11 +142,24 @@ export function useBlogClient() {
    */
   async function getArticleData(slug: string): Promise<{ article: SitePost | null; related: SitePost[] }> {
     if (!base) return { article: null, related: [] }
-    const [postRes, related, cats] = await Promise.all([
-      $fetch<{ data?: { post: any } }>(`${base}/api/v1/blog/${slug}`).catch(() => null),
+    // Related cards + categories are best-effort: a failure just hides them.
+    const [related, cats] = await Promise.all([
       fetchPostsRaw({ status: 'published', summary: true, limit: 12 }),
       fetchCategoriesRaw(),
     ])
+    // The MAIN post fetch must NOT swallow transient failures. Previously a
+    // `.catch(() => null)` turned a timeout / 5xx into `null`, which the page
+    // then rendered as a 404 — making Google DEINDEX a live article. Only a
+    // real 404 from the API means "no such post"; any other error is rethrown
+    // so the page can return 503 (Google retries later and keeps the page).
+    let postRes: { data?: { post: any } } | null = null
+    try {
+      postRes = await $fetch<{ data?: { post: any } }>(`${base}/api/v1/blog/${slug}`, { timeout: 6000 })
+    } catch (e: any) {
+      const status = e?.statusCode ?? e?.response?.status
+      if (status === 404) postRes = null
+      else throw e
+    }
     const catMap = buildCatMap(cats)
     return {
       article: postRes?.data?.post ? mapApiPost(postRes.data.post, catMap) : null,

@@ -47,6 +47,18 @@ export const env = {
     privateKey: (process.env.GA_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
   },
 
+  /**
+   * Google Search Console (Search Analytics API). Uses the SAME Google service
+   * account as GA4 by default — just add that service-account email as a user on
+   * the GSC property and enable the Search Console API in the GCP project.
+   * `siteUrl` for a Domain property must be `sc-domain:<domain>` (NOT https://…).
+   */
+  gsc: {
+    siteUrl: process.env.GSC_SITE_URL || 'sc-domain:stretch.vn',
+    clientEmail: process.env.GSC_CLIENT_EMAIL || process.env.GA_CLIENT_EMAIL || '',
+    privateKey: (process.env.GSC_PRIVATE_KEY || process.env.GA_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+  },
+
   /** Cloudflare R2 (S3-compatible object storage) — image uploads */
   r2: {
     /** Cloudflare account id (the 32-char hex in the dashboard URL) */

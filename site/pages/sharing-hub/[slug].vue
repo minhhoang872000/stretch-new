@@ -9,7 +9,16 @@ const router = useRouter();
 // fetch + 404 guard) never re-runs — the template would then briefly render
 // against null data and crash to a white screen. Keying by path forces a fresh
 // mount so the data is always awaited before render.
-definePageMeta({ key: (route) => route.path })
+//
+// pageTransition is disabled here on purpose: the global 'out-in' page
+// transition + a changing page key race on the same DOM nodes during
+// navigation and throw "Failed to execute 'insertBefore'… not a child of this
+// node", which blanks the page on mobile. No animation is worth that crash.
+definePageMeta({
+  key: (route) => route.path,
+  pageTransition: false,
+  layoutTransition: false,
+})
 
 const slug = computed(() => route.params.slug as string);
 const activeSection = ref('');
@@ -24,7 +33,13 @@ const { data: articleData, error } = await useAsyncData(
 )
 const activeArticle = computed(() => articleData.value?.article ?? null)
 
-if (error.value || !activeArticle.value) {
+// A transient backend failure (timeout / 5xx) must NOT masquerade as a 404:
+// returning 503 tells Google "try again later" so a live article isn't dropped
+// from the index. Only a clean response with no matching post is a real 404.
+if (error.value) {
+  throw createError({ statusCode: 503, statusMessage: 'Temporarily unavailable', fatal: true })
+}
+if (!activeArticle.value) {
   throw createError({ statusCode: 404, statusMessage: 'Post not found', fatal: true })
 }
 
@@ -690,6 +705,29 @@ onUnmounted(() => {
 <style scoped>
 .blog-detail-page {
   font-family: var(--font-body);
+  /* Entrance animation. Nuxt's global 'out-in' pageTransition is disabled on
+     this page (see definePageMeta) because it races with the per-slug `key`
+     and crashes. We replay the same fade-up here on mount instead — the `key`
+     forces a fresh mount per article, so this fires on every navigation while
+     staying fully decoupled from Vue's transition machinery. */
+  animation: blogDetailEnter 0.3s ease both;
+}
+
+@keyframes blogDetailEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-detail-page {
+    animation: none;
+  }
 }
 
 .scroll-mt-24 {

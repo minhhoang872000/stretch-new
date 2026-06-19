@@ -13,6 +13,7 @@ const routes = [
   { path: '/blog', name: 'Blog', component: () => import('@/views/BlogView.vue') },
   { path: '/blog/:slug', name: 'BlogDetail', component: () => import('@/views/BlogDetailView.vue') },
   { path: '/google-analytics', name: 'GoogleAnalytics', component: () => import('@/views/GoogleAnalyticsView.vue') },
+  { path: '/search-console', name: 'SearchConsole', component: () => import('@/views/SearchConsoleView.vue') },
   { path: '/leads', name: 'Leads', component: () => import('@/views/LeadsView.vue') },
   { path: '/media', name: 'Media', component: () => import('@/views/MediaView.vue') },
 ]

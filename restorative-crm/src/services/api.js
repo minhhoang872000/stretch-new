@@ -164,6 +164,32 @@ export function fetchGaSocial(period = '30d') {
   return request(`/google-analytics/social?period=${period}`)
 }
 
+// ─── Google Search Console (organic search) ───────────────────────
+
+export function fetchScOverview(period = '30d') {
+  return request(`/search-console/overview?period=${period}`)
+}
+
+export function fetchScTrend(period = '30d') {
+  return request(`/search-console/trend?period=${period}`)
+}
+
+export function fetchScQueries(period = '30d') {
+  return request(`/search-console/queries?period=${period}`)
+}
+
+export function fetchScPages(period = '30d') {
+  return request(`/search-console/pages?period=${period}`)
+}
+
+export function fetchScCountries(period = '30d') {
+  return request(`/search-console/countries?period=${period}`)
+}
+
+export function fetchScDevices(period = '30d') {
+  return request(`/search-console/devices?period=${period}`)
+}
+
 // ─── Bookings (lead-tracker-api — source of truth) ────────────────
 
 export function fetchBookings(filters = {}) {

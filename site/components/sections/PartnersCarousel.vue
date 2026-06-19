@@ -158,7 +158,7 @@ onUnmounted(() => {
         </button>
 
         <!-- Track -->
-        <div class="overflow-hidden mx-14">
+        <div class="overflow-hidden mx-9 md:mx-14">
           <div
             ref="trackRef"
             class="flex items-center"
@@ -171,12 +171,12 @@ onUnmounted(() => {
               :style="{ width: `${100 / visibleCount}%` }"
             >
               <div
-                class="flex items-center justify-center px-6 select-none cursor-default group/logo"
+                class="flex items-center justify-center px-2 md:px-6 select-none cursor-default group/logo"
               >
                 <NuxtImg
                   :src="partner.logo"
                   :alt="partner.name"
-                  class="h-13 md:h-16 lg:h-20 w-auto object-contain grayscale opacity-60 group-hover/logo:grayscale-0 group-hover/logo:opacity-100 transition-all duration-300"
+                  class="h-14 md:h-16 lg:h-20 w-auto object-contain grayscale opacity-60 group-hover/logo:grayscale-0 group-hover/logo:opacity-100 transition-all duration-300"
                   format="webp"
                   :style="
                     partner.name === 'Lululemon'

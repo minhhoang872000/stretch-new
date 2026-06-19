@@ -75,3 +75,9 @@ services:
         sync: false
       - key: GA_PRIVATE_KEY
         sync: false
+
+      # ─── Optional: Google Search Console reporting ────────────────
+      # Reuses the GA_CLIENT_EMAIL / GA_PRIVATE_KEY service account by default —
+      # just set the site URL (Domain property → keep the sc-domain: prefix).
+      - key: GSC_SITE_URL
+        value: "sc-domain:stretch.vn"

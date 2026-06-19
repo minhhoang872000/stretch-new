@@ -27,11 +27,11 @@ const locations = computed(() => [
   <section class="py-16 md:py-24 bg-white relative">
     <div class="section-container relative">
       <div
-        class="bg-[#FCFDFE] border border-slate-200/80 rounded-[20px] p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.015)] relative overflow-hidden"
+        class="bg-[#FCFDFE] border border-slate-200/80 rounded-[20px] p-5 sm:p-6 md:p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.015)] relative overflow-hidden"
       >
         <div class="relative z-10">
           <!-- Title -->
-          <div class="text-center mb-12 relative">
+          <div class="text-center mb-8 md:mb-10 relative">
             <h2
               class="text-2xl md:text-[32px] font-heading font-extrabold text-[#0B2A4A] tracking-tight"
             >
@@ -41,29 +41,29 @@ const locations = computed(() => [
 
           <!-- Grid -->
           <div
-            class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 relative mb-4"
+            class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:gap-0 relative mb-2"
           >
             <div
               v-for="(loc, index) in locations"
               :key="loc.id"
-              class="flex items-center gap-5 px-4 md:px-10 py-6 md:py-4 relative"
+              class="flex items-center text-left gap-3 sm:gap-4 px-2 sm:px-3 md:px-4 lg:px-6 py-3 sm:py-4 relative"
             >
               <!-- Icon Circle Container with Sleek Shadow and Subtle Bezel Gradient -->
               <div
-                class="w-16 h-16 md:w-[76px] md:h-[76px] rounded-full bg-gradient-to-br from-white to-[#F8FAFC] flex items-center justify-center flex-shrink-0 shadow-[0_8px_25px_rgba(11,42,74,0.05)] border border-slate-200/60 relative z-10 transition-transform duration-300 hover:scale-105"
+                class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-[68px] lg:h-[68px] rounded-full bg-gradient-to-br from-white to-[#F8FAFC] flex items-center justify-center flex-shrink-0 shadow-[0_8px_25px_rgba(11,42,74,0.05)] border border-slate-200/60 relative z-10 transition-transform duration-300 hover:scale-105"
               >
                 <div class="text-[#0B2A4A]" v-html="loc.icon" />
               </div>
 
               <!-- Content -->
-              <div class="flex-1">
+              <div class="flex-1 min-w-0">
                 <h3
-                  class="font-heading font-extrabold text-[#0B2A4A] text-[16px] md:text-[18px] mb-1.5 leading-snug"
+                  class="font-heading font-extrabold text-[#0B2A4A] text-[15px] sm:text-[16px] md:text-[16px] lg:text-[17px] mb-1 leading-snug"
                 >
                   {{ loc.title }}
                 </h3>
                 <p
-                  class="text-[13px] md:text-[13.5px] text-[#475569] leading-relaxed max-w-[240px]"
+                  class="text-[12.5px] md:text-[12.5px] lg:text-[13px] text-[#475569] leading-snug max-w-[200px] sm:max-w-[220px] md:max-w-[190px] lg:max-w-[210px]"
                 >
                   {{ loc.desc }}
                 </p>
@@ -72,7 +72,7 @@ const locations = computed(() => [
               <!-- Vertical Divider -->
               <div
                 v-if="index < locations.length - 1"
-                class="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[1px] h-20 bg-[#E2E8F0]/80"
+                class="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[1px] h-14 lg:h-16 bg-[#E2E8F0]/80"
               />
             </div>
           </div>

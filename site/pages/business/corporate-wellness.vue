@@ -13,7 +13,6 @@ useSeo({
     <TheHeader />
     <main>
       <WellnessHero />
-      <WellnessWhoIsFor />
       <WellnessProblem />
       <WellnessDelivery />
       <WellnessWhy />

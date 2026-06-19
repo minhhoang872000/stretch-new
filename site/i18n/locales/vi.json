@@ -7,9 +7,10 @@
     "membership": "Thẻ thành viên",
     "individual": "Cá nhân",
     "business": "Doanh nghiệp",
-    "business_recovery": "Giải pháp phục hồi Sức khỏe",
-    "business_training": "Chương trình đào tạo",
-    "business_wellness": "Giải pháp sức khỏe DN",
+    "business_intro": "Giới thiệu",
+    "business_recovery": "Phục hồi Y tế tại sự kiện",
+    "business_training": "Đào tạo chuyên môn",
+    "business_wellness": "Sức Khoẻ doanh nghiệp",
     "blog": "Blog",
     "about": "Về chúng tôi",
     "freeTrial": "Dùng thử miễn phí",
@@ -329,6 +330,13 @@
     "ctaTitle": "Sẵn Sàng Thăng Hoa?",
     "ctaDesc": "Đặt lịch buổi đầu tiên ngay hôm nay và cảm nhận sự khác biệt."
   },
+  "reviews": {
+    "eyebrow": "Đánh giá khách hàng",
+    "title": "Khách hàng nói gì về chúng tôi",
+    "count_label": "đánh giá trên Google",
+    "prev": "Đánh giá trước",
+    "next": "Đánh giá tiếp theo"
+  },
   "partners": {
     "eyebrow": "ĐỐI TÁC & CỘNG ĐỒNG",
     "title": "Đối tác & cộng đồng đã đồng hành",
@@ -510,12 +518,13 @@
     },
     "delivery": {
       "title": "Chúng tôi triển khai",
-      "workshop_title": "Workshop vận động",
-      "workshop_desc": "Hướng dẫn vận động có thể áp dụng ngay trong công việc.",
-      "assessment_title": "Trạm đánh giá nhanh",
-      "assessment_desc": "Đánh giá nhanh giúp nhân sự hiểu cơ thể và vấn đề của mình.",
-      "recovery_title": "Ngày phục hồi tại doanh nghiệp",
-      "recovery_desc": "Trải nghiệm kết hợp đánh giá, trị liệu và hướng dẫn."
+      "cta_label": "Tìm hiểu thêm",
+      "workshop_title": "Workshop vận động (theo chủ đề)",
+      "workshop_desc": "Workshop về các hội chứng văn phòng như đau cổ vai gáy, lưng dưới, tư thế sai, căng cơ – giúp nhân sự hiểu và vận động tốt hơn.",
+      "coffeetalk_title": "Buổi chia sẻ kiến thức cùng chuyên gia",
+      "coffeetalk_desc": "Các buổi chia sẻ ngắn cùng bác sĩ và chuyên gia vận động, giúp nhân sự hiểu về đau mỏi, cách tự đánh giá và áp dụng giải pháp phục hồi thực tế.",
+      "recovery_title": "Ngày phục hồi cho nhân viên",
+      "recovery_desc": "Trải nghiệm phục hồi ngay tại văn phòng cùng đội ngũ chuyên viên giãn cơ, giúp giảm căng mỏi, tái tạo năng lượng và cải thiện chất lượng vận động."
     },
     "why": {
       "title": "Tại sao hiệu quả",

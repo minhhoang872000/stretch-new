@@ -13,6 +13,7 @@ useSeo({
     <TheHeader />
     <main>
       <IndividualHero />
+      <ReviewsSection />
       <WhoIsThisFor />
       <WhoWeWorkWith />
       <FindSituation />

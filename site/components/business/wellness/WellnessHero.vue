@@ -52,7 +52,7 @@ const { t } = useI18n()
       <!-- Right: Mobile/Tablet Flow Image -->
       <div class="w-full lg:hidden px-6 pb-12">
         <NuxtImg
-          src="/images/wellness-solution.png"
+          src="/image-business1.webp"
           alt="Corporate Wellness Program"
           class="w-full aspect-[4/3] object-cover rounded-2xl"
           fetchpriority="high"
@@ -66,7 +66,7 @@ const { t } = useI18n()
       <!-- Fade mask for desktop -->
       <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10" />
       <NuxtImg
-        src="/images/wellness-solution.png"
+        src="/image-business1.webp"
         alt="Corporate Wellness Program"
         class="w-full h-full object-cover object-center rounded-l-[40px]"
         fetchpriority="high"

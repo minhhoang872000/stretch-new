@@ -60,6 +60,7 @@ const NAV_LABELS = {
   'Media': 'Thư viện ảnh',
   'Services': 'Dịch vụ',
   'Google Analytics': 'Google Analytics',
+  'Search Console': 'Search Console',
   'Leads': 'Khách tiềm năng',
 }
 </script>

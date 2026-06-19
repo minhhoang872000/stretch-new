@@ -21,6 +21,7 @@ onMounted(() => {
       <ServicesSection />
       <WhereWeWork />
       <WhyStretch />
+      <ReviewsSection />
       <CtaSection />
     </main>
     <TheFooter />
