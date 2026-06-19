@@ -102,6 +102,9 @@ useSchemaOrg([
 
 <template>
   <div class="min-h-screen gradient-bg">
+    <!-- Instant top progress bar the moment a navigation starts — visible
+         feedback even before the destination page mounts. -->
+    <NuxtLoadingIndicator color="#F47A1F" :height="3" />
     <NuxtPage />
     <ContactWidget />
   </div>

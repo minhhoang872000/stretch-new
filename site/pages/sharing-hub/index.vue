@@ -41,11 +41,18 @@ const collageImages = [
 // (single /categories call + one summary /blog call, no waterfall).
 const { getHubIndex } = useBlogClient()
 
-const { data: hub } = await useAsyncData('hub-index', () => getHubIndex(), {
+const { data: hub, status } = await useAsyncData('hub-index', () => getHubIndex(), {
   default: () => ({ categories: [], posts: [] }),
+  // Block on the SERVER (SEO + direct loads get full HTML). On CLIENT navigation
+  // fetch lazily so the page appears instantly and shows skeleton cards while
+  // the posts stream in.
+  lazy: import.meta.client,
 })
 const apiCategories = computed(() => hub.value?.categories ?? [])
 const apiPosts = computed(() => hub.value?.posts ?? [])
+// Skeleton while the lazy client fetch is still resolving. False on the blocking
+// SSR pass (data is already present) and once the posts have loaded.
+const isLoading = computed(() => status.value === 'idle' || status.value === 'pending')
 
 // Build the filter tabs. Keep i18n labels for built-in keys, fall back to
 // the API-provided label for dynamically created categories.
@@ -271,7 +278,15 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
           </div>
 
           <!-- Featured Grid: 1 large + 3 small in a single row -->
-          <div class="featured-grid">
+          <div v-if="isLoading" class="featured-grid">
+            <div class="featured-card-large rounded-2xl bg-gray-200 animate-pulse"></div>
+            <div
+              v-for="n in 3"
+              :key="n"
+              class="featured-card-small rounded-2xl bg-gray-200 animate-pulse"
+            ></div>
+          </div>
+          <div v-else class="featured-grid">
             <!-- Large Featured Card -->
             <NuxtLink
               :to="localePath('/sharing-hub/' + featuredPosts[0].slug)"
@@ -457,7 +472,26 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
           </div>
 
           <!-- Posts Grid -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div
+            v-if="isLoading"
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+          >
+            <div
+              v-for="n in 8"
+              :key="n"
+              class="rounded-2xl overflow-hidden bg-white border border-border shadow-card animate-pulse"
+            >
+              <div class="aspect-[16/10] bg-gray-200"></div>
+              <div class="p-4">
+                <div class="h-3 w-16 bg-gray-200 rounded mb-2.5"></div>
+                <div class="h-4 w-full bg-gray-200 rounded mb-1.5"></div>
+                <div class="h-4 w-3/4 bg-gray-200 rounded mb-3"></div>
+                <div class="h-3 w-full bg-gray-100 rounded mb-1"></div>
+                <div class="h-3 w-5/6 bg-gray-100 rounded"></div>
+              </div>
+            </div>
+          </div>
+          <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <TransitionGroup name="post-card">
               <NuxtLink
                 v-for="(post, idx) in filteredPosts"

@@ -1,8 +1,10 @@
 <script setup lang="ts">
-const { t, locale } = useI18n();
+const { t, locale, locales } = useI18n();
 const localePath = useLocalePath();
 const route = useRoute();
 const router = useRouter();
+const config = useRuntimeConfig();
+const switchLocalePath = useSwitchLocalePath();
 
 // Re-create this page per slug. Without a key, navigating between two articles
 // (e.g. tapping a "related" card) REUSES the component, so setup (with its data
@@ -26,47 +28,115 @@ const activeSection = ref('');
 // ── Fetch the post + related cards + categories in ONE parallel round-trip ──
 const { getArticleData } = useBlogClient()
 
-const { data: articleData, error } = await useAsyncData(
+const { data: articleData, error, status } = await useAsyncData(
   () => `hub-article-${slug.value}`,
   () => getArticleData(slug.value),
-  { default: () => ({ article: null, related: [] }) },
+  {
+    default: () => ({ article: null, related: [] }),
+    // Block on the SERVER so crawlers + direct loads always get full HTML (SEO).
+    // On CLIENT navigation, fetch lazily: the route switches instantly and the
+    // template renders a skeleton while the article streams in.
+    lazy: import.meta.client,
+  },
 )
 const activeArticle = computed(() => articleData.value?.article ?? null)
+// "Loading" = we have no article yet and the request hasn't errored. Covers the
+// idle/pending window of a lazy client navigation; false on the blocking SSR
+// pass (data is already there) and after the article resolves.
+const isLoading = computed(() => !activeArticle.value && status.value !== 'error')
 
-// A transient backend failure (timeout / 5xx) must NOT masquerade as a 404:
-// returning 503 tells Google "try again later" so a live article isn't dropped
-// from the index. Only a clean response with no matching post is a real 404.
-if (error.value) {
-  throw createError({ statusCode: 503, statusMessage: 'Temporarily unavailable', fatal: true })
+// On the SERVER the fetch is blocking, so data is settled here — surface the
+// right status to crawlers. A transient backend failure (timeout / 5xx) is a
+// 503 ("try again later", keeps the page indexed); a clean response with no
+// matching post is a real 404.
+if (import.meta.server) {
+  if (error.value) {
+    throw createError({ statusCode: 503, statusMessage: 'Temporarily unavailable', fatal: true })
+  }
+  if (!activeArticle.value) {
+    throw createError({ statusCode: 404, statusMessage: 'Post not found', fatal: true })
+  }
 }
-if (!activeArticle.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Post not found', fatal: true })
+
+// On the CLIENT the fetch is lazy, so nothing is ready at setup. Only raise an
+// error page once the request has actually settled — never during the skeleton.
+if (import.meta.client) {
+  watch(
+    [status, activeArticle],
+    () => {
+      if (status.value === 'pending') return
+      if (error.value) {
+        showError({ statusCode: 503, statusMessage: 'Temporarily unavailable', fatal: true })
+      } else if (!activeArticle.value) {
+        showError({ statusCode: 404, statusMessage: 'Post not found', fatal: true })
+      }
+    },
+    { immediate: true },
+  )
 }
 
-useSeo({
-  title: `${activeArticle.value.title} — Stretch.vn`,
-  description: activeArticle.value.excerpt,
-  image: activeArticle.value.image,
-  type: 'article',
-  article: {
-    author: activeArticle.value.author,
-    publishedTime: activeArticle.value.createdAt,
-    modifiedTime: activeArticle.value.updatedAt,
-    tags: activeArticle.value.tags,
-  },
-});
+// ── SEO (reactive) ──────────────────────────────────────────────────────────
+// Built from getters so the <title>/description/OG tags update when the article
+// arrives during a lazy client navigation — not only on the blocking SSR pass.
+const siteUrl = config.public.siteUrl as string
+const canonicalUrl = computed(() => `${siteUrl}${route.path}`)
+const seoTitle = computed(() => (activeArticle.value ? `${activeArticle.value.title} — Stretch.vn` : 'Stretch.vn'))
+const seoDesc = computed(() => activeArticle.value?.excerpt || '')
+const seoImage = computed(() => activeArticle.value?.image || '/og-default.jpg')
 
-// JSON-LD structured data (BlogPosting) → Google rich results.
+const alternateLinks = computed(() => {
+  const links = (locales.value as any[])
+    .map((l: any) => {
+      const path = switchLocalePath(l.code)
+      return path ? { rel: 'alternate', hreflang: l.language || l.code, href: `${siteUrl}${path}` } : null
+    })
+    .filter(Boolean) as { rel: string; hreflang: string; href: string }[]
+  const def = switchLocalePath('en')
+  if (def) links.push({ rel: 'alternate', hreflang: 'x-default', href: `${siteUrl}${def}` })
+  return links
+})
+
+useSeoMeta({
+  title: () => seoTitle.value,
+  description: () => seoDesc.value,
+  ogTitle: () => seoTitle.value,
+  ogDescription: () => seoDesc.value,
+  ogImage: () => seoImage.value,
+  ogUrl: () => canonicalUrl.value,
+  ogType: 'article',
+  twitterCard: 'summary_large_image',
+  twitterTitle: () => seoTitle.value,
+  twitterDescription: () => seoDesc.value,
+  twitterImage: () => seoImage.value,
+  robots: 'index, follow',
+  articleAuthor: () => activeArticle.value?.author,
+  articlePublishedTime: () => activeArticle.value?.createdAt,
+  articleModifiedTime: () => activeArticle.value?.updatedAt,
+  articleTag: () => activeArticle.value?.tags,
+})
+
+useHead({
+  link: computed(() => [{ rel: 'canonical', href: canonicalUrl.value }, ...alternateLinks.value]),
+  meta: [
+    { name: 'geo.position', content: '10.7725;106.6784' },
+    { name: 'geo.region', content: 'VN-SG' },
+    { name: 'geo.placename', content: 'Ho Chi Minh City' },
+    { name: 'ICBM', content: '10.7725, 106.6784' },
+  ],
+})
+
+// JSON-LD structured data (BlogPosting) → Google rich results. Values are read
+// at setup; on the SEO-critical server render the article is always present.
 useSchemaOrg([
   defineArticle({
     '@type': 'BlogPosting',
-    headline: activeArticle.value.title,
-    description: activeArticle.value.excerpt,
-    image: activeArticle.value.image || undefined,
-    datePublished: activeArticle.value.createdAt || undefined,
-    dateModified: activeArticle.value.updatedAt || activeArticle.value.createdAt || undefined,
-    author: { '@type': 'Organization', name: activeArticle.value.author || 'Stretch Team' },
-    keywords: (activeArticle.value.tags || []).join(', ') || undefined,
+    headline: activeArticle.value?.title,
+    description: activeArticle.value?.excerpt,
+    image: activeArticle.value?.image || undefined,
+    datePublished: activeArticle.value?.createdAt || undefined,
+    dateModified: activeArticle.value?.updatedAt || activeArticle.value?.createdAt || undefined,
+    author: { '@type': 'Organization', name: activeArticle.value?.author || 'Stretch Team' },
+    keywords: (activeArticle.value?.tags || []).join(', ') || undefined,
   }),
 ]);
 
@@ -163,39 +233,56 @@ const scrollToSection = (id: string) => {
 // Table of Contents intersection observer to track active section with zero forced reflow overhead
 let observer: IntersectionObserver | null = null;
 
-onMounted(() => {
-  const observerOptions = {
-    root: null,
-    rootMargin: '-140px 0px -60% 0px', // matches our top trigger offset (140px)
-    threshold: 0,
-  };
-
-  observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        activeSection.value = entry.target.id;
-      }
-    });
-  }, observerOptions);
-
+function setupTocObserver() {
+  observer?.disconnect();
+  if (!processed.value.toc.length) return;
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          activeSection.value = entry.target.id;
+        }
+      });
+    },
+    {
+      root: null,
+      rootMargin: '-140px 0px -60% 0px', // matches our top trigger offset (140px)
+      threshold: 0,
+    },
+  );
   processed.value.toc.forEach((section) => {
     const el = document.getElementById(section.id);
-    if (el) {
-      observer?.observe(el);
-    }
+    if (el) observer?.observe(el);
   });
+}
+
+onMounted(() => {
+  // On a lazy client navigation the article (and its heading ids) arrive AFTER
+  // mount — the skeleton renders first. Rebuild the observer whenever the TOC
+  // changes, after the DOM has the real headings.
+  watch(
+    () => processed.value.toc,
+    async () => {
+      await nextTick();
+      setupTocObserver();
+    },
+    { immediate: true },
+  );
 });
 
 onUnmounted(() => {
-  if (observer) {
-    observer.disconnect();
-  }
+  observer?.disconnect();
 });
 </script>
 <template>
   <div class="blog-detail-page bg-off-white min-h-screen flex flex-col">
     <TheHeader />
 
+    <!-- On a lazy client navigation the route switches instantly; show a
+         skeleton until the article has streamed in. -->
+    <BlogDetailSkeleton v-if="isLoading" class="flex-1" />
+
+    <template v-else-if="activeArticle">
     <!-- Hero Section with solid white background -->
     <div class="bg-white border-b border-[#E6ECF2] py-8 lg:py-12">
       <div class="section-container">
@@ -697,6 +784,7 @@ onUnmounted(() => {
         </div>
       </div>
     </main>
+    </template>
 
     <TheFooter />
   </div>
