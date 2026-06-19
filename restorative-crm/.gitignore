@@ -16,6 +16,9 @@ dist-ssr
 .env
 .env.*
 !.env.example
+# Production build config — public, non-secret (API URL is bundled into client JS).
+# Tracked so `vite build` always targets the prod API regardless of local .env.
+!.env.production
 
 # Editor directories and files
 .vscode/*
