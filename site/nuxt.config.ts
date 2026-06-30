@@ -97,6 +97,10 @@ export default defineNuxtConfig({
 
   sitemap: {
     sources: ['/api/__sitemap-urls'],
+    // Drop the auto-discovered dynamic-route placeholder (e.g. `/sharing-hub/:slug`,
+    // `/vi/sharing-hub/:slug`) — those are not real URLs. The real per-post URLs
+    // are supplied explicitly by the API source above.
+    exclude: [/:slug/],
   },
 
   ogImage: {
@@ -124,28 +128,13 @@ export default defineNuxtConfig({
     lazy: true,
     langDir: 'locales/',
     vueI18n: '~/i18n/i18n.config.ts',
-    pages: {
-      'business/recovery-event': {
-        en: '/business/recovery-event',
-        vi: '/kinh-doanh/phuc-hoi-su-kien',
-      },
-      'business/corporate-wellness': {
-        en: '/business/corporate-wellness',
-        vi: '/kinh-doanh/cham-soc-doanh-nghiep',
-      },
-      'business/education-training': {
-        en: '/business/education-training',
-        vi: '/kinh-doanh/dao-tao-huan-luyen',
-      },
-      'sharing-hub/index': {
-        en: '/sharing-hub',
-        vi: '/goc-chia-se',
-      },
-      'sharing-hub/[slug]': {
-        en: '/sharing-hub/:slug',
-        vi: '/goc-chia-se/:slug',
-      },
-    },
+    // NOTE: no `pages` (custom route) block here on purpose. `customRoutes`
+    // defaults to 'page', so a `pages` config block would be IGNORED by the
+    // router anyway — but @nuxtjs/sitemap DOES read it, which previously made
+    // the sitemap advertise translated paths (`/goc-chia-se`, `/vi/kinh-doanh/*`)
+    // that all 404. The site actually serves every VN page at `/vi/<en-path>`.
+    // If you want pretty Vietnamese URLs, add `customRoutes: 'config'` + the
+    // `pages` block AND 301-redirect the old `/vi/<en-path>` URLs.
   },
 
   // Nitro SSR / prerender
@@ -160,7 +149,7 @@ export default defineNuxtConfig({
       routes: ['/'],
       crawlLinks: true,
       // Don't bake the dynamic blog pages into static files at build time.
-      ignore: ['/sharing-hub', '/goc-chia-se', '/vi/sharing-hub', '/vi/goc-chia-se'],
+      ignore: ['/sharing-hub', '/vi/sharing-hub'],
     },
   },
 
@@ -174,10 +163,6 @@ export default defineNuxtConfig({
     '/sharing-hub/**': { prerender: false, swr: 60 },
     '/vi/sharing-hub': { prerender: false, swr: 60 },
     '/vi/sharing-hub/**': { prerender: false, swr: 60 },
-    '/goc-chia-se': { prerender: false, swr: 60 },
-    '/goc-chia-se/**': { prerender: false, swr: 60 },
-    '/vi/goc-chia-se': { prerender: false, swr: 60 },
-    '/vi/goc-chia-se/**': { prerender: false, swr: 60 },
   },
 
   // Runtime config
