@@ -4,9 +4,8 @@ const localePath = useLocalePath();
 const route = useRoute();
 
 useSeo({
-  title: "Stretch.vn — Sharing Hub",
-  description:
-    "Movement insights, recovery education, team stories, company updates, and event highlights — all in one place.",
+  title: t("seo.sharing_hub_title"),
+  description: t("seo.sharing_hub_desc"),
   image: "/homepage-hero.webp",
   type: "website",
 });

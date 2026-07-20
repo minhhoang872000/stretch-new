@@ -3,7 +3,7 @@ const { t } = useI18n()
 
 useSeo({
   title: t('products.title') + ' – Stretch.vn',
-  description: 'Explore all professional recovery programs by Stretch.vn: Deep Tissue Massage, Aromatherapy, Facial Hydration, and Hot Stone Therapy.',
+  description: t('seo.products_desc'),
   type: 'website',
 })
 

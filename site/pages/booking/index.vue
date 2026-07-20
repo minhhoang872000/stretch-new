@@ -8,7 +8,7 @@ const { trackPageView } = useTracking()
 
 useSeo({
   title: t('nav.bookSession') + ' – Stretch.vn',
-  description: 'Proper care. Effective recovery. Book your personalized session online.',
+  description: t('seo.booking_desc'),
   type: 'website',
 })
 

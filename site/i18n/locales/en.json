@@ -16,6 +16,14 @@
     "freeTrial": "Free Trial",
     "bookSession": "Book Session"
   },
+  "seo": {
+    "home_title": "Stretch.vn — Professional Movement Recovery",
+    "home_desc": "Personalized recovery & movement support — at our clinic, at home, or at your event. Book your session online.",
+    "sharing_hub_title": "Stretch.vn — Sharing Hub",
+    "sharing_hub_desc": "Movement insights, recovery education, team stories, company updates, and event highlights — all in one place.",
+    "products_desc": "Explore all professional recovery programs by Stretch.vn: Deep Tissue Massage, Aromatherapy, Facial Hydration, and Hot Stone Therapy.",
+    "booking_desc": "Proper care. Effective recovery. Book your personalized session online."
+  },
   "hero": {
     "eyebrow": "Professional Movement Recovery",
     "title1": "Move better.",

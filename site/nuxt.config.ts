@@ -148,6 +148,13 @@ export default defineNuxtConfig({
     prerender: {
       routes: ['/'],
       crawlLinks: true,
+      // Emit `/individual.html` instead of `/individual/index.html`. On
+      // Cloudflare Pages the subfolder form makes `/individual` 308-redirect
+      // to `/individual/`, while canonical + sitemap + hreflang all say the
+      // slash-less URL — Google then sees "page with redirect" and ignores
+      // the hreflang pair (this is why /vi never got indexed). The flat
+      // `.html` form serves the slash-less URL directly with 200.
+      autoSubfolderIndex: false,
       // Don't bake the dynamic blog pages into static files at build time.
       ignore: ['/sharing-hub', '/vi/sharing-hub'],
     },

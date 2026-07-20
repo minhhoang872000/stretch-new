@@ -1,9 +1,10 @@
 <script setup lang="ts">
 const { trackPageView } = useTracking()
+const { t } = useI18n()
 
 useSeo({
-  title: 'Stretch.vn — Professional Movement Recovery',
-  description: 'Personalized recovery & movement support — at our clinic, at home, or at your event. Book your session online.',
+  title: t('seo.home_title'),
+  description: t('seo.home_desc'),
   type: 'website',
 })
 
