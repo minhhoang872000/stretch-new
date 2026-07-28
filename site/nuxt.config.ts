@@ -162,14 +162,22 @@ export default defineNuxtConfig({
 
   // Per-route rules: blog is dynamic content (edited in the CMS). Instead of
   // re-rendering + re-hitting the API on every single request (no-store), cache
-  // the rendered page for 60s with stale-while-revalidate: the first visitor
-  // pays the render cost, everyone in the next 60s gets an instant cached page,
-  // and a CMS edit shows up within ~60s. Big latency win, tiny staleness window.
+  // the rendered page with stale-while-revalidate: the first visitor pays the
+  // render cost, everyone after gets an instant cached page, and a CMS edit
+  // shows up within the window below.
+  //
+  // Widened from 60s to 300s (2026-07-28): the external lead-tracker API
+  // occasionally responds slowly on a cold start, and at swr:60 that meant
+  // Googlebot had a real chance of re-hitting the origin (instead of the SWR
+  // cache) during a slow window and getting a 503/524 — repeated 5xx on
+  // recrawl is one of the ways Google silently drops an already-indexed page.
+  // 5 minutes cuts how often the origin is hit ~5x while still picking up CMS
+  // edits well within a business day.
   routeRules: {
-    '/sharing-hub': { prerender: false, swr: 60 },
-    '/sharing-hub/**': { prerender: false, swr: 60 },
-    '/vi/sharing-hub': { prerender: false, swr: 60 },
-    '/vi/sharing-hub/**': { prerender: false, swr: 60 },
+    '/sharing-hub': { prerender: false, swr: 300 },
+    '/sharing-hub/**': { prerender: false, swr: 300 },
+    '/vi/sharing-hub': { prerender: false, swr: 300 },
+    '/vi/sharing-hub/**': { prerender: false, swr: 300 },
   },
 
   // Runtime config

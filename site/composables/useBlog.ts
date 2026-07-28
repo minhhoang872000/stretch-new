@@ -68,13 +68,23 @@ interface PostQuery {
   limit?: number
 }
 
+// Module-scope (survives across requests on the same warm Worker isolate,
+// reset on cold start) last-known-good result for the Sharing Hub listing.
+// Purpose: if the lead-tracker API has a slow/failed moment, serve the last
+// successful listing instead of an empty one. An empty listing is technically
+// a valid page (not an error), but it looks broken to a first-time visitor
+// AND to Googlebot re-crawling an already-indexed page — showing "0 posts"
+// where yesterday there were 20 is exactly the kind of unreliable-content
+// signal that gets a page quietly dropped from the index.
+let hubIndexCache: { categories: { key: string; label: string }[]; posts: SitePost[] } | null = null
+
 export function useBlogClient() {
   const base = (useRuntimeConfig().public.trackingApiUrl as string) || ''
 
   // ── Low-level fetchers (no category-label resolution) ───────────────
   async function fetchCategoriesRaw(): Promise<any[]> {
     if (!base) return []
-    const res = await $fetch<{ data?: { categories: any[] } }>(`${base}/api/v1/categories`).catch(() => null)
+    const res = await $fetch<{ data?: { categories: any[] } }>(`${base}/api/v1/categories`, { timeout: 4000 }).catch(() => null)
     return res?.data?.categories || []
   }
 
@@ -93,7 +103,29 @@ export function useBlogClient() {
     if (filters.categoryKey) query.category = filters.categoryKey
     if (filters.search) query.search = filters.search
     if (filters.summary) query.summary = 'true'
-    const res = await $fetch<{ data?: { posts: any[] } }>(`${base}/api/v1/blog`, { query }).catch(() => null)
+    const res = await $fetch<{ data?: { posts: any[] } }>(`${base}/api/v1/blog`, { query, timeout: 6000 }).catch(() => null)
+    return res?.data?.posts || []
+  }
+
+  /** Same as fetchCategoriesRaw/fetchPostsRaw, but rejects instead of swallowing
+   *  the error — so callers that need to tell "API failed" apart from "API
+   *  legitimately returned zero rows" (e.g. getHubIndex's stale-cache fallback)
+   *  can do so. */
+  async function fetchCategoriesOrThrow(): Promise<any[]> {
+    if (!base) return []
+    const res = await $fetch<{ data?: { categories: any[] } }>(`${base}/api/v1/categories`, { timeout: 4000 })
+    return res?.data?.categories || []
+  }
+  async function fetchPostsOrThrow(filters: PostQuery = {}): Promise<any[]> {
+    if (!base) return []
+    const query: Record<string, any> = {
+      limit: filters.limit ?? 100,
+      published: filters.status === 'draft' ? 'false' : 'true',
+    }
+    if (filters.categoryKey) query.category = filters.categoryKey
+    if (filters.search) query.search = filters.search
+    if (filters.summary) query.summary = 'true'
+    const res = await $fetch<{ data?: { posts: any[] } }>(`${base}/api/v1/blog`, { query, timeout: 6000 })
     return res?.data?.posts || []
   }
 
@@ -122,16 +154,27 @@ export function useBlogClient() {
    * Sharing Hub index: ONE categories call + ONE posts call, in parallel.
    * Posts come back in summary mode (no HTML body) since the listing only
    * renders cards — saves transferring every post's full content.
+   *
+   * On a transient API failure, serve the last successful result (module-scope
+   * `hubIndexCache`) instead of an empty list — see the comment on that
+   * variable. Only falls through to an empty listing on the very first
+   * request after a cold start, before anything has ever succeeded.
    */
   async function getHubIndex(): Promise<{ categories: { key: string; label: string }[]; posts: SitePost[] }> {
-    const [cats, posts] = await Promise.all([
-      fetchCategoriesRaw(),
-      fetchPostsRaw({ status: 'published', summary: true }),
-    ])
-    const catMap = buildCatMap(cats)
-    return {
-      categories: cats.map((c) => ({ key: c.key, label: c.label })),
-      posts: posts.map((p) => mapApiPost(p, catMap)),
+    try {
+      const [cats, posts] = await Promise.all([
+        fetchCategoriesOrThrow(),
+        fetchPostsOrThrow({ status: 'published', summary: true }),
+      ])
+      const catMap = buildCatMap(cats)
+      const result = {
+        categories: cats.map((c) => ({ key: c.key, label: c.label })),
+        posts: posts.map((p) => mapApiPost(p, catMap)),
+      }
+      hubIndexCache = result
+      return result
+    } catch {
+      return hubIndexCache ?? { categories: [], posts: [] }
     }
   }
 
