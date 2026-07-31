@@ -21,7 +21,6 @@
     "home_desc": "Hỗ trợ phục hồi & vận động cá nhân hóa — tại phòng khám, tại nhà hoặc tại sự kiện của bạn. Đặt lịch online ngay hôm nay.",
     "sharing_hub_title": "Stretch.vn — Góc Chia Sẻ",
     "sharing_hub_desc": "Kiến thức vận động, giáo dục phục hồi, câu chuyện đội ngũ, tin tức công ty và điểm nhấn sự kiện — tất cả tại một nơi.",
-    "products_desc": "Khám phá các chương trình phục hồi chuyên nghiệp của Stretch.vn: Massage Mô Sâu, Liệu Pháp Hương Thơm, Cấp Ẩm Da Mặt và Đá Nóng Trị Liệu.",
     "booking_desc": "Chăm sóc đúng cách. Phục hồi hiệu quả. Đặt lịch buổi trị liệu cá nhân hóa của bạn online."
   },
   "hero": {
@@ -38,16 +37,6 @@
     "usp3_sub": "kết quả lâu dài",
     "bookSession": "Đặt lịch ngay",
     "learnMore": "Khám phá dịch vụ"
-  },
-  "products": {
-    "eyebrow": "Chương trình",
-    "title": "Chương Trình Của Chúng Tôi",
-    "subtitle": "Khám phá các buổi phục hồi được thiết kế cho mục tiêu của bạn — từ căn chỉnh nền tảng đến rèn luyện hệ thần kinh tinh hoa.",
-    "viewAll": "Xem tất cả chương trình",
-    "allPrograms": "TẤT CẢ",
-    "allProgramsHighlight": "CHƯƠNG TRÌNH",
-    "allProgramsSubtitle": "Chọn buổi trị liệu phù hợp với mục tiêu của bạn. Từ cân bằng nền tảng đến rèn luyện hiệu suất cao.",
-    "mostPopular": "Phổ biến nhất"
   },
   "bookingSection": {
     "eyebrow": "Đặt Lịch Ngay",

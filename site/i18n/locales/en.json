@@ -21,7 +21,6 @@
     "home_desc": "Personalized recovery & movement support — at our clinic, at home, or at your event. Book your session online.",
     "sharing_hub_title": "Stretch.vn — Sharing Hub",
     "sharing_hub_desc": "Movement insights, recovery education, team stories, company updates, and event highlights — all in one place.",
-    "products_desc": "Explore all professional recovery programs by Stretch.vn: Deep Tissue Massage, Aromatherapy, Facial Hydration, and Hot Stone Therapy.",
     "booking_desc": "Proper care. Effective recovery. Book your personalized session online."
   },
   "hero": {
@@ -38,16 +37,6 @@
     "usp3_sub": "long-term results",
     "bookSession": "Book a Session",
     "learnMore": "Explore Services"
-  },
-  "products": {
-    "eyebrow": "Programs",
-    "title": "Our Programs",
-    "subtitle": "Discover recovery sessions designed for your goals — from foundational alignment to elite neurological conditioning.",
-    "viewAll": "View All Programs",
-    "allPrograms": "ALL",
-    "allProgramsHighlight": "PROGRAMS",
-    "allProgramsSubtitle": "Choose the session that matches your goals. From foundational alignment to elite performance conditioning.",
-    "mostPopular": "Most Popular"
   },
   "bookingSection": {
     "eyebrow": "Book Now",
