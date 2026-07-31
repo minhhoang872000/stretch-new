@@ -145,8 +145,57 @@ export default defineNuxtConfig({
     // are server-rendered on the edge — Googlebot gets full HTML, and the
     // `swr: 60` route rules below actually take effect. Build output dir: dist/
     preset: 'cloudflare-pages',
+    cloudflare: {
+      pages: {
+        // Nitro's AUTO-generated `_routes.json` lists every prerendered static
+        // path individually in `exclude` (one entry per HTML page + every
+        // image/font in public/) and Cloudflare hard-caps `_routes.json` at
+        // 100 total include+exclude rules — Nitro silently `.splice()`s
+        // whatever doesn't fit (sorted shortest-path-first), so once the site
+        // has enough pages/assets, some LATER (usually `/vi/...`, deeper-path)
+        // static routes get dropped from the exclude list without warning.
+        // Anything dropped then falls through to the SSR Worker on every
+        // request instead of being served as a static file — which is exactly
+        // what caused `/vi/individual` to intermittently 500/503 in
+        // production despite `dist/vi/individual.html` existing on disk.
+        //
+        // Fix: invert the model. Only 5 route patterns actually need the
+        // Worker (the dynamic blog + API); everything else prerenders to a
+        // static file. Listing those few as `include` instead of listing every
+        // static file as `exclude` can never hit the 100-rule cap, no matter
+        // how many pages/images the site grows to.
+        defaultRoutes: false,
+        routes: {
+          version: 1,
+          include: [
+            '/sharing-hub', '/sharing-hub/*',
+            '/vi/sharing-hub', '/vi/sharing-hub/*',
+            '/api/*',
+          ],
+          exclude: [],
+        },
+      },
+    },
     prerender: {
-      routes: ['/'],
+      // List every static route explicitly (both locales) instead of relying
+      // solely on crawlLinks to discover them. crawlLinks is non-deterministic
+      // build-to-build — it depends on successfully parsing links out of
+      // already-rendered HTML during the build, and a miss silently drops that
+      // route from `dist/_routes.json`'s exclude list. That's what happened to
+      // `/vi/individual`: the static file WAS emitted, but a previous deploy's
+      // `_routes.json` didn't list it as prerendered, so every request fell
+      // through to the SSR Worker instead of the static file — intermittent
+      // 500/503/1102 depending on Worker load. Explicit routes make this
+      // deterministic regardless of crawl order/timing.
+      routes: [
+        '/', '/vi',
+        '/individual', '/vi/individual',
+        '/business', '/vi/business',
+        '/business/corporate-wellness', '/vi/business/corporate-wellness',
+        '/business/education-training', '/vi/business/education-training',
+        '/business/recovery-event', '/vi/business/recovery-event',
+        '/booking', '/vi/booking',
+      ],
       crawlLinks: true,
       // Emit `/individual.html` instead of `/individual/index.html`. On
       // Cloudflare Pages the subfolder form makes `/individual` 308-redirect
@@ -174,6 +223,13 @@ export default defineNuxtConfig({
   // 5 minutes cuts how often the origin is hit ~5x while still picking up CMS
   // edits well within a business day.
   routeRules: {
+    // The /products listing + detail pages were removed (2026-07-31). They were
+    // in the sitemap, so old URLs may still be indexed / linked — 301 them to the
+    // closest topical page instead of serving a 404.
+    '/products': { redirect: { to: '/individual', statusCode: 301 } },
+    '/products/**': { redirect: { to: '/individual', statusCode: 301 } },
+    '/vi/products': { redirect: { to: '/vi/individual', statusCode: 301 } },
+    '/vi/products/**': { redirect: { to: '/vi/individual', statusCode: 301 } },
     '/sharing-hub': { prerender: false, swr: 300 },
     '/sharing-hub/**': { prerender: false, swr: 300 },
     '/vi/sharing-hub': { prerender: false, swr: 300 },
