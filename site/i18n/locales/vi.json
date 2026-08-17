@@ -14,7 +14,9 @@
     "blog": "Blog",
     "about": "Về chúng tôi",
     "freeTrial": "Dùng thử miễn phí",
-    "bookSession": "Đặt lịch"
+    "bookSession": "Đặt lịch",
+    "loginGoogle": "Đăng nhập bằng Google",
+    "logout": "Đăng xuất"
   },
   "seo": {
     "home_title": "Stretch.vn — Phục Hồi Vận Động Chuyên Nghiệp",

@@ -24,6 +24,7 @@
     "axios": "^1.16.0",
     "better-sqlite3": "^12.9.0",
     "nuxt": "^3.17.2",
+    "nuxt-auth-utils": "^0.5.30",
     "pinia": "^3.0.2",
     "primeicons": "^7.0.0",
     "primevue": "^3.53.1",

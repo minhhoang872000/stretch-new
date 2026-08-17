@@ -14,7 +14,9 @@
     "blog": "Blog",
     "about": "About Us",
     "freeTrial": "Free Trial",
-    "bookSession": "Book Session"
+    "bookSession": "Book Session",
+    "loginGoogle": "Sign in with Google",
+    "logout": "Sign out"
   },
   "seo": {
     "home_title": "Stretch.vn — Professional Movement Recovery",

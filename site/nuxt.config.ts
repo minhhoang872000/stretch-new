@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/i18n',
     '@nuxtjs/google-fonts',
+    'nuxt-auth-utils',
   ],
 
   googleFonts: {
@@ -57,6 +58,27 @@ export default defineNuxtConfig({
         { name: 'geo.region', content: 'VN-SG' },
         { name: 'geo.placename', content: 'Ho Chi Minh City' },
         { name: 'ICBM', content: '10.7725, 106.6784' },
+      ],
+      script: [
+        // SMAX chat plugin. `smAsyncInit` must be defined BEFORE sdk.min.js
+        // evaluates, so both tags are injected at bodyClose in this order.
+        {
+          tagPosition: 'bodyClose',
+          innerHTML: `window.smAsyncInit = function () {
+  SM.init({
+    page_pid: 'ctm6a827fa7f4ed6d532ceeb454',
+    trigger_id: '6a82806628e2f4ae79767757',
+    chat_type: 'PLUGIN',
+    env: 'prod'
+  })
+}`,
+        },
+        {
+          tagPosition: 'bodyClose',
+          src: 'https://chatbox.smax.ai/sdk.min.js',
+          async: true,
+          defer: true,
+        },
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
