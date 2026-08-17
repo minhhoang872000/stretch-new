@@ -244,7 +244,7 @@ function switchLanguage(code: string) {
           </div>
 
           <!-- Auth: Google login / logged-in user -->
-          <div v-if="loggedIn" class="flex items-center gap-2">
+          <!-- <div v-if="loggedIn" class="flex items-center gap-2">
             <img
               v-if="user?.avatar"
               :src="user.avatar"
@@ -271,7 +271,7 @@ function switchLanguage(code: string) {
               <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.6 5.6C41.5 36.3 44 30.6 44 24c0-1.3-.1-2.7-.4-3.5z"/>
             </svg>
             {{ t('nav.loginGoogle') }}
-          </a>
+          </a> -->
 
           <NuxtLink :to="localePath('/booking')" class="btn-navy">
             {{ $t('nav.bookSession') }}
@@ -437,7 +437,7 @@ function switchLanguage(code: string) {
         </NuxtLink>
 
         <!-- Auth: Google login / logged-in user -->
-        <div v-if="loggedIn" class="flex items-center gap-3 mt-4">
+        <!-- <div v-if="loggedIn" class="flex items-center gap-3 mt-4">
           <img
             v-if="user?.avatar"
             :src="user.avatar"
@@ -451,8 +451,8 @@ function switchLanguage(code: string) {
           >
             {{ t('nav.logout') }}
           </button>
-        </div>
-        <a
+        </div> -->
+        <!-- <a
           v-else
           href="/api/auth/google"
           class="flex items-center justify-center gap-2 px-4 py-3 mt-4 rounded-xl border border-border-default text-sm font-heading font-bold text-navy"
@@ -465,7 +465,7 @@ function switchLanguage(code: string) {
             <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.6 5.6C41.5 36.3 44 30.6 44 24c0-1.3-.1-2.7-.4-3.5z"/>
           </svg>
           {{ t('nav.loginGoogle') }}
-        </a>
+        </a> -->
       </div>
     </Transition>
   </div>
