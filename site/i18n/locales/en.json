@@ -23,7 +23,185 @@
     "home_desc": "Personalized recovery & movement support — at our clinic, at home, or at your event. Book your session online.",
     "sharing_hub_title": "Stretch.vn — Sharing Hub",
     "sharing_hub_desc": "Movement insights, recovery education, team stories, company updates, and event highlights — all in one place.",
-    "booking_desc": "Proper care. Effective recovery. Book your personalized session online."
+    "booking_desc": "Proper care. Effective recovery. Book your personalized session online.",
+    "learning_hub_title": "Stretch.vn — Learning Hub",
+    "learning_hub_desc": "Applied movement and recovery education for coaches, therapists and anyone who moves. Online courses, live workshops and practical case labs."
+  },
+  "learning": {
+    "brand": "Learning Hub",
+    "login": "Sign in",
+    "signup": "Create account",
+    "back_to_site": "Back to Stretch.vn",
+    "see_all": "See all",
+    "nav": {
+      "home": "Home",
+      "programs": "All programs",
+      "schedule": "Class schedule",
+      "hub": "Sharing Hub",
+      "support": "Support",
+      "my_courses": "My courses",
+      "account": "Account"
+    },
+    "hero": {
+      "title1": "Learn the right knowledge.",
+      "title2": "Apply it effectively.",
+      "subtitle": "Applied movement and recovery education, built for coaches and everyone who moves.",
+      "cta_primary": "Explore programs",
+      "have_account": "Already have an account?",
+      "image_alt": "A Stretch.vn coach guiding a movement assessment",
+      "f1_title": "Expert-verified knowledge",
+      "f1_desc": "Built by specialists and trusted instructors in the field",
+      "f2_title": "Learn anytime, anywhere",
+      "f2_desc": "Study online or join a live class that fits your schedule",
+      "f3_title": "Practical application",
+      "f3_desc": "Case-based lessons you can put to work right away"
+    },
+    "programs": {
+      "title": "Featured programs",
+      "mini": "Mini-course",
+      "course": "Course",
+      "start_free": "Start free",
+      "view_course": "View course"
+    },
+    "schedule": {
+      "title": "Upcoming classes",
+      "status_open": "Seats open",
+      "status_few": "Almost full",
+      "status_full": "Sold out",
+      "see_all_sessions": "See the full schedule"
+    },
+    "articles": {
+      "title": "Featured posts from Sharing Hub",
+      "read": "Read article",
+      "empty": "No posts to show right now.",
+      "go_hub": "Visit Sharing Hub"
+    },
+    "values": {
+      "v1_title": "Quality content",
+      "v1_desc": "Built and reviewed by specialists",
+      "v2_title": "Flexible learning",
+      "v2_desc": "Online at your pace, or live in class",
+      "v3_title": "Practical application",
+      "v3_desc": "Ready to use in daily practice",
+      "v4_title": "Learning community",
+      "v4_desc": "Connect with peers in the field"
+    },
+    "footer": {
+      "desc": "Applied movement and recovery education from the Stretch.vn team.",
+      "learn": "Learn",
+      "support": "Support"
+    },
+    "auth": {
+      "login_title": "Sign in",
+      "login_sub": "Continue your learning journey",
+      "email": "Email",
+      "email_ph": "Enter your email",
+      "password": "Password",
+      "password_ph": "Enter your password",
+      "password_new_ph": "At least 8 characters",
+      "show_password": "Show password",
+      "hide_password": "Hide password",
+      "remember": "Remember me",
+      "forgot_link": "Forgot password?",
+      "login_cta": "Sign in",
+      "or": "or",
+      "google": "Continue with Google",
+      "no_account": "Don't have an account?",
+      "to_register": "Create account",
+      "register_title": "Create account",
+      "register_sub": "Start learning with Stretch Learning Hub",
+      "name": "Full name",
+      "name_ph": "Enter your full name",
+      "register_cta": "Create account",
+      "have_account": "Already have an account?",
+      "to_login": "Sign in",
+      "benefits_title": "With your account you can",
+      "benefit_1": "Take mini-courses for free",
+      "benefit_2": "Follow the training schedule",
+      "benefit_3": "Save materials & programmes",
+      "benefit_4": "Track your learning progress",
+      "benefit_5": "Earn certificates",
+      "forgot_title": "Forgot password",
+      "forgot_sub": "Enter your registered email to reset your password",
+      "forgot_cta": "Send reset link",
+      "back_to_login": "Back to sign in",
+      "sent_title": "Link sent!",
+      "sent_sub": "We've emailed you instructions to reset your password.",
+      "close": "Close",
+      "err_name_required": "Please enter your full name",
+      "err_email_required": "Please enter your email",
+      "err_email_invalid": "That email address is not valid",
+      "err_password_required": "Please enter your password",
+      "err_password_short": "Password must be at least 8 characters",
+      "err_unavailable": "Email sign-in is not available yet. Please use “Continue with Google”.",
+      "err_credentials": "Incorrect username or password.",
+      "email_or_user_ph": "Enter your email or username",
+      "account_menu": "Account"
+    },
+    "catalog": {
+      "breadcrumb_home": "Home",
+      "breadcrumb": "All programmes",
+      "title": "All programmes",
+      "subtitle": "Explore courses, mini-courses and workshops on movement and rehabilitation.",
+      "search_ph": "Search courses, workshops...",
+      "filters": "Filters",
+      "active_filters": "Active filters:",
+      "clear_all": "Clear all",
+      "clear_filters": "Clear filters",
+      "sort_label": "Sort:",
+      "sort_newest": "Newest",
+      "sort_price_asc": "Price: low to high",
+      "sort_price_desc": "Price: high to low",
+      "view_grid": "Grid view",
+      "view_list": "List view",
+      "kind_title": "Programme type",
+      "all": "All",
+      "kind_course": "Course",
+      "kind_mini": "Mini-course",
+      "kind_workshop": "Workshop",
+      "mode_title": "Format",
+      "mode_online": "Online",
+      "mode_offline": "In person",
+      "badge_online": "Online",
+      "badge_offline": "In person",
+      "topic_title": "Topic",
+      "topic_anatomy": "Anatomy & Movement",
+      "topic_assessment": "Assessment & Technique",
+      "topic_sports": "Sports rehabilitation",
+      "topic_functional": "Functional movement",
+      "lessons": "{count} lessons",
+      "results": "Showing {from}–{to} of {total} results",
+      "empty_title": "No matching programmes",
+      "empty_sub": "Try removing a filter or searching for something else.",
+      "save": "Save programme",
+      "unsave": "Remove from saved",
+      "prev": "Previous page",
+      "next": "Next page"
+    },
+    "my": {
+      "breadcrumb": "My courses",
+      "title": "My courses",
+      "subtitle": "Track your progress and pick up where you left off.",
+      "tip_title": "Keep learning every day",
+      "tip_sub": "A steady habit is what turns study into practice.",
+      "tab_learning": "In progress ({count})",
+      "tab_done": "Completed ({count})",
+      "lesson_progress": "Lesson {current}/{total}",
+      "next_up": "Up next:",
+      "time_left": "About {time} left",
+      "updated": "Updated: {date}",
+      "continue": "Continue",
+      "completed_title": "Completed ({count})",
+      "completed_on": "Completed: {date}",
+      "relearn": "Retake",
+      "certificate": "View certificate",
+      "badge_title": "You've completed {count} courses",
+      "badge_sub": "Keep going to unlock more certificates",
+      "empty_learning": "You haven't started a course yet.",
+      "empty_done": "No completed courses yet.",
+      "browse": "Browse programmes",
+      "options": "Course options"
+    }
   },
   "hero": {
     "eyebrow": "Professional Movement Recovery",
@@ -477,11 +655,26 @@
     "why": {
       "label": "WHY PARTNER WITH STRETCH?",
       "heading": "More than a service. A long-term partner.",
-      "item1": { "title": "Experienced Team", "desc": "Professional therapists and trainers with real-world experience." },
-      "item2": { "title": "Safe & Effective", "desc": "Evidence-informed approach with safety as our top priority." },
-      "item3": { "title": "Custom Solutions", "desc": "Programs tailored to your goals, people, and industry." },
-      "item4": { "title": "Measurable Impact", "desc": "Track progress and see the impact on well-being and performance." },
-      "item5": { "title": "People First", "desc": "We care about your people as much as you do." }
+      "item1": {
+        "title": "Experienced Team",
+        "desc": "Professional therapists and trainers with real-world experience."
+      },
+      "item2": {
+        "title": "Safe & Effective",
+        "desc": "Evidence-informed approach with safety as our top priority."
+      },
+      "item3": {
+        "title": "Custom Solutions",
+        "desc": "Programs tailored to your goals, people, and industry."
+      },
+      "item4": {
+        "title": "Measurable Impact",
+        "desc": "Track progress and see the impact on well-being and performance."
+      },
+      "item5": {
+        "title": "People First",
+        "desc": "We care about your people as much as you do."
+      }
     },
     "trust": {
       "label": "TRUSTED PARTNERS",
@@ -565,19 +758,43 @@
     "who_is_for": {
       "label": "WHO THIS IS FOR",
       "heading": "Recovery infrastructure for all types of events.",
-      "item1": { "title": "Tournament organizers", "desc": "Deliver a better athlete experience at every event." },
-      "item2": { "title": "Sport events & races", "desc": "Support participants across all performance levels." },
-      "item3": { "title": "Brand activations", "desc": "Elevate engagement with a meaningful recovery experience." },
-      "item4": { "title": "Corporate sport days", "desc": "Care for your people and strengthen team wellness." }
+      "item1": {
+        "title": "Tournament organizers",
+        "desc": "Deliver a better athlete experience at every event."
+      },
+      "item2": {
+        "title": "Sport events & races",
+        "desc": "Support participants across all performance levels."
+      },
+      "item3": {
+        "title": "Brand activations",
+        "desc": "Elevate engagement with a meaningful recovery experience."
+      },
+      "item4": {
+        "title": "Corporate sport days",
+        "desc": "Care for your people and strengthen team wellness."
+      }
     },
     "differences": {
       "label": "THE DIFFERENCE",
       "heading": "What makes our event support different",
       "subtext": "A recovery zone should do more than help people feel better — it should support flow, reduce friction, and reflect how well your event is run.",
-      "card1": { "title": "Professional Stretch Zone", "desc": "Clean, branded setup that looks event-ready and represents your brand well." },
-      "card2": { "title": "Smart Station Flow", "desc": "Smart station flow even in minimal spaces to reduce wait time and keep athletes moving smoothly." },
-      "card3": { "title": "Fast Response Support", "desc": "Ambulance & fast response team on standby to prevent injuries or handle cramps and urgent on-site needs." },
-      "card4": { "title": "Warm-up Icebreaker", "desc": "Guided warm-up activities to increase participation, energy, and overall event satisfaction." },
+      "card1": {
+        "title": "Professional Stretch Zone",
+        "desc": "Clean, branded setup that looks event-ready and represents your brand well."
+      },
+      "card2": {
+        "title": "Smart Station Flow",
+        "desc": "Smart station flow even in minimal spaces to reduce wait time and keep athletes moving smoothly."
+      },
+      "card3": {
+        "title": "Fast Response Support",
+        "desc": "Ambulance & fast response team on standby to prevent injuries or handle cramps and urgent on-site needs."
+      },
+      "card4": {
+        "title": "Warm-up Icebreaker",
+        "desc": "Guided warm-up activities to increase participation, energy, and overall event satisfaction."
+      },
       "learn_more": "Learn more"
     },
     "where_works": {
@@ -593,8 +810,14 @@
       "label": "HOW IT WORKS",
       "heading": "Simple steps. Smooth execution.",
       "subtext": "From planning to onsite delivery, we handle the details so you don't have to.",
-      "step1": { "title": "1. Plan", "desc": "We understand your event goals, space, athlete profile, and flow." },
-      "step2": { "title": "2. Deliver", "desc": "We set up the recovery zone and run the service seamlessly throughout the event." }
+      "step1": {
+        "title": "1. Plan",
+        "desc": "We understand your event goals, space, athlete profile, and flow."
+      },
+      "step2": {
+        "title": "2. Deliver",
+        "desc": "We set up the recovery zone and run the service seamlessly throughout the event."
+      }
     },
     "trust": {
       "label": "TRUSTED PARTNERS",

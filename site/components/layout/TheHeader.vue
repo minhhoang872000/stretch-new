@@ -30,6 +30,7 @@ const navLinks = computed(() => [
     ],
   },
   { label: t('sharing_hub.nav'), href: '/sharing-hub' },
+  { label: t('learning.brand'), href: '/learning-hub' },
 ]);
 
 const isBusinessDropdownOpen = ref(false);
@@ -91,30 +92,22 @@ function switchLanguage(code: string) {
         <!-- Logo -->
         <NuxtLink
           :to="localePath('/')"
-          class="flex items-center gap-2 flex-shrink-0"
+          class="flex flex-col items-start justify-center flex-shrink-0 leading-none"
           @click="closeMobileMenu"
         >
-          <div class="flex items-center">
-            <img
-              src="/stretch.jpg"
-              alt="Stretch.vn"
-              class="h-12 w-auto object-contain opacity-80"
-            />
-          </div>
-          <div
-            class="hidden sm:flex items-center gap-3 border-l border-border-default pl-3 ml-3"
-          >
-            <span
-              class="text-[10px] text-text-secondary font-bold uppercase tracking-tight"
-            >
-              {{ $t('footer.poweredBy') }} Monaco Healthcare
-            </span>
-          </div>
+          <img
+            src="/stretch.jpg"
+            alt="Stretch.vn"
+            class="h-12 w-auto object-contain opacity-80"
+          />
+          <span class="brand-sub hidden sm:block">
+            {{ $t('footer.poweredBy') }} Monaco Healthcare
+          </span>
         </NuxtLink>
 
         <!-- Desktop Nav -->
         <div
-          class="hidden lg:flex items-center gap-8 font-heading text-sm font-medium"
+          class="hidden lg:flex items-center gap-8 font-heading text-[13px] font-medium"
         >
           <template v-for="link in navLinks" :key="link.href">
             <!-- Regular nav link -->
@@ -273,7 +266,7 @@ function switchLanguage(code: string) {
             {{ t('nav.loginGoogle') }}
           </a> -->
 
-          <NuxtLink :to="localePath('/booking')" class="btn-navy">
+          <NuxtLink :to="localePath('/booking')" class="btn-navy header-cta">
             {{ $t('nav.bookSession') }}
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
@@ -383,7 +376,7 @@ function switchLanguage(code: string) {
           <NuxtLink
             v-if="!link.dropdown"
             :to="localePath(link.href)"
-            class="mobile-nav-link py-4 text-base font-heading font-medium text-navy border-b border-border-default hover:text-accent transition-colors"
+            class="mobile-nav-link py-4 text-[15px] font-heading font-medium text-navy border-b border-border-default hover:text-accent transition-colors"
             @click="closeMobileMenu"
           >
             {{ link.label }}
@@ -392,7 +385,7 @@ function switchLanguage(code: string) {
           <!-- Mobile dropdown -->
           <div v-else class="border-b border-border-default">
             <button
-              class="mobile-nav-link w-full py-4 text-base font-heading font-medium text-navy hover:text-accent transition-colors flex items-center justify-between"
+              class="mobile-nav-link w-full py-4 text-[15px] font-heading font-medium text-navy hover:text-accent transition-colors flex items-center justify-between"
               @click="isMobileBusinessOpen = !isMobileBusinessOpen"
             >
               {{ link.label }}
@@ -537,6 +530,27 @@ function switchLanguage(code: string) {
   box-shadow:
     0 8px 32px rgba(11, 42, 74, 0.08),
     0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Attribution line sits under the wordmark, mirroring the Learning Hub
+   header's brand lockup. Stacking it also frees ~160px of the header row,
+   which the nav was previously overflowing into. */
+.brand-sub {
+  margin-top: 3px;
+  padding-left: 2px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+/* `.btn-navy` is a global button used all over the site at 14px — the header
+   copy sits a notch smaller to match the Learning Hub header, so the size is
+   overridden here rather than on the shared class. */
+.header-cta {
+  font-size: 12.5px;
 }
 
 .nav-dropdown-item {

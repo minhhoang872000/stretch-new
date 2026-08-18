@@ -34,6 +34,7 @@ export default defineEventHandler(async () => {
     { loc: '/business/education-training', priority: 0.8 },
     { loc: '/business/recovery-event', priority: 0.8 },
     { loc: '/booking', priority: 0.8 },
+    { loc: '/learning-hub', priority: 0.8 },
     // Sharing Hub (blog) index + published posts (en + vi, from the API)
     { loc: '/sharing-hub', priority: 0.8 },
     ...publishedPosts.flatMap(p => bilingual(`/sharing-hub/${p.slug}`, {

@@ -23,7 +23,185 @@
     "home_desc": "Hỗ trợ phục hồi & vận động cá nhân hóa — tại phòng khám, tại nhà hoặc tại sự kiện của bạn. Đặt lịch online ngay hôm nay.",
     "sharing_hub_title": "Stretch.vn — Góc Chia Sẻ",
     "sharing_hub_desc": "Kiến thức vận động, giáo dục phục hồi, câu chuyện đội ngũ, tin tức công ty và điểm nhấn sự kiện — tất cả tại một nơi.",
-    "booking_desc": "Chăm sóc đúng cách. Phục hồi hiệu quả. Đặt lịch buổi trị liệu cá nhân hóa của bạn online."
+    "booking_desc": "Chăm sóc đúng cách. Phục hồi hiệu quả. Đặt lịch buổi trị liệu cá nhân hóa của bạn online.",
+    "learning_hub_title": "Stretch.vn — Learning Hub",
+    "learning_hub_desc": "Kiến thức ứng dụng về vận động và phục hồi dành cho HLV, kỹ thuật viên và người yêu vận động. Khóa học online, workshop trực tiếp và lớp thực hành tình huống."
+  },
+  "learning": {
+    "brand": "Learning Hub",
+    "login": "Đăng nhập",
+    "signup": "Tạo tài khoản",
+    "back_to_site": "Về trang Stretch.vn",
+    "see_all": "Xem tất cả",
+    "nav": {
+      "home": "Trang chủ",
+      "programs": "Tất cả chương trình",
+      "schedule": "Lịch đào tạo",
+      "hub": "Sharing Hub",
+      "support": "Hỗ trợ",
+      "my_courses": "Khóa học của tôi",
+      "account": "Tài khoản"
+    },
+    "hero": {
+      "title1": "Học đúng kiến thức.",
+      "title2": "Ứng dụng hiệu quả.",
+      "subtitle": "Kiến thức ứng dụng vận động và phục hồi dành cho HLV & người yêu vận động.",
+      "cta_primary": "Khám phá chương trình",
+      "have_account": "Đã có tài khoản?",
+      "image_alt": "Chuyên viên Stretch.vn hướng dẫn đánh giá vận động",
+      "f1_title": "Kiến thức chuẩn chuyên môn",
+      "f1_desc": "Nội dung được xây dựng bởi chuyên gia và giảng viên uy tín trong ngành",
+      "f2_title": "Học linh hoạt mọi lúc, mọi nơi",
+      "f2_desc": "Học online hoặc tham gia trực tiếp theo lịch phù hợp",
+      "f3_title": "Ứng dụng thực tế",
+      "f3_desc": "Bài học bám sát thực tiễn, giúp bạn áp dụng ngay trong công việc"
+    },
+    "programs": {
+      "title": "Chương trình nổi bật",
+      "mini": "Mini-course",
+      "course": "Khóa học",
+      "start_free": "Học miễn phí",
+      "view_course": "Xem khóa học"
+    },
+    "schedule": {
+      "title": "Lịch đào tạo sắp tới",
+      "status_open": "Còn chỗ",
+      "status_few": "Sắp hết chỗ",
+      "status_full": "Hết chỗ",
+      "see_all_sessions": "Xem tất cả lịch đào tạo"
+    },
+    "articles": {
+      "title": "Bài viết nổi bật từ Sharing Hub",
+      "read": "Đọc bài viết",
+      "empty": "Hiện chưa có bài viết để hiển thị.",
+      "go_hub": "Đến Sharing Hub"
+    },
+    "values": {
+      "v1_title": "Nội dung chất lượng",
+      "v1_desc": "Được xây dựng bởi chuyên gia",
+      "v2_title": "Học tập linh hoạt",
+      "v2_desc": "Online theo tiến độ hoặc học trực tiếp",
+      "v3_title": "Ứng dụng thực tế",
+      "v3_desc": "Bám sát thực tiễn công việc",
+      "v4_title": "Cộng đồng học tập",
+      "v4_desc": "Kết nối với người cùng chuyên môn"
+    },
+    "footer": {
+      "desc": "Kiến thức ứng dụng về vận động và phục hồi từ đội ngũ Stretch.vn.",
+      "learn": "Học tập",
+      "support": "Hỗ trợ"
+    },
+    "auth": {
+      "login_title": "Đăng nhập",
+      "login_sub": "Tiếp tục hành trình học tập của bạn",
+      "email": "Email",
+      "email_ph": "Nhập email của bạn",
+      "password": "Mật khẩu",
+      "password_ph": "Nhập mật khẩu",
+      "password_new_ph": "Tối thiểu 8 ký tự",
+      "show_password": "Hiện mật khẩu",
+      "hide_password": "Ẩn mật khẩu",
+      "remember": "Ghi nhớ đăng nhập",
+      "forgot_link": "Quên mật khẩu?",
+      "login_cta": "Đăng nhập",
+      "or": "hoặc",
+      "google": "Tiếp tục với Google",
+      "no_account": "Chưa có tài khoản?",
+      "to_register": "Tạo tài khoản",
+      "register_title": "Tạo tài khoản",
+      "register_sub": "Bắt đầu học cùng Stretch Learning Hub",
+      "name": "Họ và tên",
+      "name_ph": "Nhập họ và tên",
+      "register_cta": "Tạo tài khoản",
+      "have_account": "Đã có tài khoản?",
+      "to_login": "Đăng nhập",
+      "benefits_title": "Với tài khoản của bạn, bạn có thể",
+      "benefit_1": "Học mini-course miễn phí",
+      "benefit_2": "Theo dõi lịch đào tạo",
+      "benefit_3": "Lưu tài liệu & chương trình",
+      "benefit_4": "Quản lý tiến độ học tập",
+      "benefit_5": "Nhận chứng nhận",
+      "forgot_title": "Quên mật khẩu",
+      "forgot_sub": "Nhập email đã đăng ký để đặt lại mật khẩu",
+      "forgot_cta": "Gửi liên kết đặt lại mật khẩu",
+      "back_to_login": "Quay lại đăng nhập",
+      "sent_title": "Liên kết đã được gửi!",
+      "sent_sub": "Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu đến email của bạn.",
+      "close": "Đóng",
+      "err_name_required": "Vui lòng nhập họ và tên",
+      "err_email_required": "Vui lòng nhập email",
+      "err_email_invalid": "Email không hợp lệ",
+      "err_password_required": "Vui lòng nhập mật khẩu",
+      "err_password_short": "Mật khẩu cần tối thiểu 8 ký tự",
+      "err_unavailable": "Đăng nhập bằng email đang được hoàn thiện. Vui lòng dùng “Tiếp tục với Google”.",
+      "err_credentials": "Tài khoản hoặc mật khẩu không đúng.",
+      "email_or_user_ph": "Nhập email hoặc tên đăng nhập",
+      "account_menu": "Tài khoản"
+    },
+    "catalog": {
+      "breadcrumb_home": "Trang chủ",
+      "breadcrumb": "Tất cả chương trình học",
+      "title": "Tất cả chương trình học",
+      "subtitle": "Khám phá các khóa học, mini-course và workshop về vận động và phục hồi.",
+      "search_ph": "Tìm khóa học, workshop...",
+      "filters": "Bộ lọc",
+      "active_filters": "Bộ lọc đang chọn:",
+      "clear_all": "Xóa tất cả",
+      "clear_filters": "Xóa bộ lọc",
+      "sort_label": "Sắp xếp:",
+      "sort_newest": "Mới nhất",
+      "sort_price_asc": "Giá thấp đến cao",
+      "sort_price_desc": "Giá cao đến thấp",
+      "view_grid": "Dạng lưới",
+      "view_list": "Dạng danh sách",
+      "kind_title": "Loại chương trình",
+      "all": "Tất cả",
+      "kind_course": "Khóa học",
+      "kind_mini": "Mini-course",
+      "kind_workshop": "Workshop",
+      "mode_title": "Hình thức",
+      "mode_online": "Trực tuyến (Online)",
+      "mode_offline": "Trực tiếp (Offline)",
+      "badge_online": "Online",
+      "badge_offline": "Offline",
+      "topic_title": "Chủ đề",
+      "topic_anatomy": "Giải phẫu & Vận động",
+      "topic_assessment": "Đánh giá & Kỹ thuật",
+      "topic_sports": "Phục hồi thể thao",
+      "topic_functional": "Vận động chức năng",
+      "lessons": "{count} bài",
+      "results": "Hiển thị {from}–{to} trong {total} kết quả",
+      "empty_title": "Không tìm thấy chương trình phù hợp",
+      "empty_sub": "Thử bỏ bớt bộ lọc hoặc tìm với từ khóa khác.",
+      "save": "Lưu chương trình",
+      "unsave": "Bỏ lưu chương trình",
+      "prev": "Trang trước",
+      "next": "Trang sau"
+    },
+    "my": {
+      "breadcrumb": "Khóa học của tôi",
+      "title": "Khóa học của tôi",
+      "subtitle": "Theo dõi tiến độ học tập và tiếp tục hành trình nâng cao kiến thức của bạn.",
+      "tip_title": "Tiếp tục học mỗi ngày",
+      "tip_sub": "Duy trì thói quen học tập giúp bạn tiến bộ và ứng dụng hiệu quả hơn.",
+      "tab_learning": "Đang học ({count})",
+      "tab_done": "Đã hoàn thành ({count})",
+      "lesson_progress": "Bài {current}/{total}",
+      "next_up": "Tiếp theo:",
+      "time_left": "Khoảng {time} còn lại",
+      "updated": "Cập nhật: {date}",
+      "continue": "Tiếp tục học",
+      "completed_title": "Đã hoàn thành ({count})",
+      "completed_on": "Hoàn thành: {date}",
+      "relearn": "Học lại",
+      "certificate": "Xem chứng nhận",
+      "badge_title": "Bạn đã hoàn thành {count} khóa học",
+      "badge_sub": "Tiếp tục học để mở khóa thêm chứng nhận mới",
+      "empty_learning": "Bạn chưa bắt đầu khóa học nào.",
+      "empty_done": "Chưa có khóa học nào hoàn thành.",
+      "browse": "Khám phá chương trình",
+      "options": "Tùy chọn khóa học"
+    }
   },
   "hero": {
     "eyebrow": "Phục hồi vận động chuyên nghiệp",
@@ -364,22 +542,22 @@
       "item3": "Đang phục hồi sau chấn thương",
       "item4": "Muốn vận động tốt hơn mà không cần chịu đau"
     },
-      "customer_carousel": {
-        "title": "Chúng tôi đồng hành cùng",
-        "subtitle": "Mỗi người khác nhau. Mỗi cơ thể khác nhau. Cùng một mục tiêu: vận động và cảm thấy tốt hơn.",
-        "card1": "Người chạy bộ",
-        "card1_desc": "Tập luyện cự ly hoặc tốc độ",
-        "card2": "Người chơi thể thao vợt",
-        "card2_desc": "Pickleball, tennis, cầu lông",
-        "card3": "Nhân viên văn phòng",
-        "card3_desc": "Ngồi lâu, căng thẳng cổ & lưng",
-        "card4": "Người năng động",
-        "card4_desc": "Gym, yoga, hoặc tập luyện đều đặn",
-        "card5": "Phục hồi chấn thương",
-        "card5_desc": "Hỗ trợ sau chấn thương hoặc phẫu thuật",
-        "card6": "Người lớn tuổi",
-        "card6_desc": "Duy trì sự linh hoạt và thoải mái"
-      },
+    "customer_carousel": {
+      "title": "Chúng tôi đồng hành cùng",
+      "subtitle": "Mỗi người khác nhau. Mỗi cơ thể khác nhau. Cùng một mục tiêu: vận động và cảm thấy tốt hơn.",
+      "card1": "Người chạy bộ",
+      "card1_desc": "Tập luyện cự ly hoặc tốc độ",
+      "card2": "Người chơi thể thao vợt",
+      "card2_desc": "Pickleball, tennis, cầu lông",
+      "card3": "Nhân viên văn phòng",
+      "card3_desc": "Ngồi lâu, căng thẳng cổ & lưng",
+      "card4": "Người năng động",
+      "card4_desc": "Gym, yoga, hoặc tập luyện đều đặn",
+      "card5": "Phục hồi chấn thương",
+      "card5_desc": "Hỗ trợ sau chấn thương hoặc phẫu thuật",
+      "card6": "Người lớn tuổi",
+      "card6_desc": "Duy trì sự linh hoạt và thoải mái"
+    },
     "situation": {
       "title": "Tìm dịch vụ cho riêng bạn",
       "card1": "Phục hồi sau vận động",
@@ -478,11 +656,26 @@
     "why": {
       "label": "TẠI SAO HỢP TÁC VỚI STRETCH?",
       "heading": "Hơn cả dịch vụ. Là đối tác lâu dài.",
-      "item1": { "title": "Đội ngũ giàu kinh nghiệm", "desc": "Trị liệu viên và huấn luyện viên chuyên nghiệp với kinh nghiệm thực tế." },
-      "item2": { "title": "An toàn & Hiệu quả", "desc": "Phương pháp tiếp cận dựa trên thực chứng với an toàn là ưu tiên hàng đầu của chúng tôi." },
-      "item3": { "title": "Giải pháp tùy chỉnh", "desc": "Chương trình được thiết kế riêng theo mục tiêu, nhân sự và đặc thù ngành." },
-      "item4": { "title": "Hiệu quả đo lường", "desc": "Theo dõi tiến độ và thấy rõ tác động đến sức khỏe toàn diện và hiệu suất." },
-      "item5": { "title": "Đặt con người làm đầu", "desc": "Chúng tôi chăm sóc con người của bạn tận tâm như chính bạn." }
+      "item1": {
+        "title": "Đội ngũ giàu kinh nghiệm",
+        "desc": "Trị liệu viên và huấn luyện viên chuyên nghiệp với kinh nghiệm thực tế."
+      },
+      "item2": {
+        "title": "An toàn & Hiệu quả",
+        "desc": "Phương pháp tiếp cận dựa trên thực chứng với an toàn là ưu tiên hàng đầu của chúng tôi."
+      },
+      "item3": {
+        "title": "Giải pháp tùy chỉnh",
+        "desc": "Chương trình được thiết kế riêng theo mục tiêu, nhân sự và đặc thù ngành."
+      },
+      "item4": {
+        "title": "Hiệu quả đo lường",
+        "desc": "Theo dõi tiến độ và thấy rõ tác động đến sức khỏe toàn diện và hiệu suất."
+      },
+      "item5": {
+        "title": "Đặt con người làm đầu",
+        "desc": "Chúng tôi chăm sóc con người của bạn tận tâm như chính bạn."
+      }
     },
     "trust": {
       "label": "ĐỐI TÁC TIN CẬY",
@@ -566,19 +759,43 @@
     "who_is_for": {
       "label": "DÀNH CHO AI",
       "heading": "Hỗ trợ phục hồi cho mọi loại hình sự kiện.",
-      "item1": { "title": "Ban tổ chức giải đấu", "desc": "Mang đến trải nghiệm tốt hơn cho vận động viên tại mỗi sự kiện." },
-      "item2": { "title": "Sự kiện & giải chạy", "desc": "Hỗ trợ người tham gia ở mọi cấp độ hiệu suất." },
-      "item3": { "title": "Hoạt động thương hiệu", "desc": "Nâng cao sự gắn kết với trải nghiệm phục hồi đầy ý nghĩa." },
-      "item4": { "title": "Ngày hội thể thao doanh nghiệp", "desc": "Chăm sóc nhân viên và củng cố sức khỏe đội ngũ." }
+      "item1": {
+        "title": "Ban tổ chức giải đấu",
+        "desc": "Mang đến trải nghiệm tốt hơn cho vận động viên tại mỗi sự kiện."
+      },
+      "item2": {
+        "title": "Sự kiện & giải chạy",
+        "desc": "Hỗ trợ người tham gia ở mọi cấp độ hiệu suất."
+      },
+      "item3": {
+        "title": "Hoạt động thương hiệu",
+        "desc": "Nâng cao sự gắn kết với trải nghiệm phục hồi đầy ý nghĩa."
+      },
+      "item4": {
+        "title": "Ngày hội thể thao doanh nghiệp",
+        "desc": "Chăm sóc nhân viên và củng cố sức khỏe đội ngũ."
+      }
     },
     "differences": {
       "label": "ĐIỀU KHÁC BIỆT",
       "heading": "Điều làm nên sự khác biệt trong hỗ trợ sự kiện",
       "subtext": "Một khu vực phục hồi không chỉ giúp mọi người cảm thấy tốt hơn — mà còn phải duy trì sự mượt mà, giảm ùn tắc và thể hiện sự chuyên nghiệp của sự kiện.",
-      "card1": { "title": "Khu Vực Phục Hồi Chuyên Nghiệp", "desc": "Thiết lập sạch sẽ, mang đậm dấu ấn thương hiệu, sẵn sàng cho sự kiện và đại diện tốt cho hình ảnh của bạn." },
-      "card2": { "title": "Luồng Di Chuyển Thông Minh", "desc": "Quản lý luồng thông minh ngay cả trong không gian hẹp để giảm thời gian chờ và giữ vận động viên luôn di chuyển mượt mà." },
-      "card3": { "title": "Hỗ Trợ Phản Ứng Nhanh", "desc": "Đội ngũ phản ứng nhanh và cứu thương luôn túc trực để ngăn ngừa chấn thương hoặc xử lý chuột rút và nhu cầu khẩn cấp tại chỗ." },
-      "card4": { "title": "Khởi Động Làm Nóng", "desc": "Các hoạt động khởi động có hướng dẫn giúp tăng sự tham gia, năng lượng và sự hài lòng chung của sự kiện." },
+      "card1": {
+        "title": "Khu Vực Phục Hồi Chuyên Nghiệp",
+        "desc": "Thiết lập sạch sẽ, mang đậm dấu ấn thương hiệu, sẵn sàng cho sự kiện và đại diện tốt cho hình ảnh của bạn."
+      },
+      "card2": {
+        "title": "Luồng Di Chuyển Thông Minh",
+        "desc": "Quản lý luồng thông minh ngay cả trong không gian hẹp để giảm thời gian chờ và giữ vận động viên luôn di chuyển mượt mà."
+      },
+      "card3": {
+        "title": "Hỗ Trợ Phản Ứng Nhanh",
+        "desc": "Đội ngũ phản ứng nhanh và cứu thương luôn túc trực để ngăn ngừa chấn thương hoặc xử lý chuột rút và nhu cầu khẩn cấp tại chỗ."
+      },
+      "card4": {
+        "title": "Khởi Động Làm Nóng",
+        "desc": "Các hoạt động khởi động có hướng dẫn giúp tăng sự tham gia, năng lượng và sự hài lòng chung của sự kiện."
+      },
       "learn_more": "Tìm hiểu thêm"
     },
     "where_works": {
@@ -594,8 +811,14 @@
       "label": "CÁCH THỨC HOẠT ĐỘNG",
       "heading": "Quy trình triển khai mượt mà",
       "subtext": "Các bước đơn giản. Thực thi mượt mà.",
-      "step1": { "title": "1. Lên Kế Hoạch", "desc": "Chúng tôi tìm hiểu mục tiêu sự kiện, không gian, đối tượng vận động viên và luồng di chuyển." },
-      "step2": { "title": "2. Triển Khai", "desc": "Chúng tôi thiết lập khu vực phục hồi và vận hành dịch vụ một cách trơn tru suốt sự kiện." }
+      "step1": {
+        "title": "1. Lên Kế Hoạch",
+        "desc": "Chúng tôi tìm hiểu mục tiêu sự kiện, không gian, đối tượng vận động viên và luồng di chuyển."
+      },
+      "step2": {
+        "title": "2. Triển Khai",
+        "desc": "Chúng tôi thiết lập khu vực phục hồi và vận hành dịch vụ một cách trơn tru suốt sự kiện."
+      }
     },
     "trust": {
       "label": "ĐỐI TÁC TIN CẬY",
@@ -1082,11 +1305,11 @@
         }
       },
       "sunrise_stretch_sala": {
-        "title": "Stretch \u0026 Phục hồi Bình minh tại Công viên Sala",
+        "title": "Stretch & Phục hồi Bình minh tại Công viên Sala",
         "excerpt": "Một buổi sáng tươi mới của kéo giãn hướng dẫn, giáo dục vận động và kết nối cộng đồng tại một trong những công viên đẹp nhất TP.HCM.",
         "intro": {
           "title": "Vận động buổi sáng trong công viên",
-          "text": "Có điều gì đó đặc biệt khi vận động cơ thể vào sáng sớm, được bao quanh bởi thiên nhiên, với những người cùng chí hướng bên cạnh. Đó chính xác là điều chúng tôi muốn tạo ra với sự kiện Stretch \u0026 Phục hồi Bình minh tại Công viên Sala. Diễn ra vào sáng Chủ Nhật từ 6:00 đến 8:00, sự kiện tập hợp hơn 60 người tham gia ở mọi lứa tuổi và trình độ thể lực cho buổi kéo giãn, mobility và vận động nhẹ có hướng dẫn. Không khí thư thái, năng lượng tích cực, và bình minh trên công viên tạo phông nền hoàn hảo cho buổi sáng vận động chánh niệm.",
+          "text": "Có điều gì đó đặc biệt khi vận động cơ thể vào sáng sớm, được bao quanh bởi thiên nhiên, với những người cùng chí hướng bên cạnh. Đó chính xác là điều chúng tôi muốn tạo ra với sự kiện Stretch & Phục hồi Bình minh tại Công viên Sala. Diễn ra vào sáng Chủ Nhật từ 6:00 đến 8:00, sự kiện tập hợp hơn 60 người tham gia ở mọi lứa tuổi và trình độ thể lực cho buổi kéo giãn, mobility và vận động nhẹ có hướng dẫn. Không khí thư thái, năng lượng tích cực, và bình minh trên công viên tạo phông nền hoàn hảo cho buổi sáng vận động chánh niệm.",
           "quote": "Vận động không phải lúc nào cũng cần mãnh liệt. Đôi khi điều mạnh mẽ nhất bạn có thể làm là chậm lại, thở và kéo giãn."
         },
         "session": {
@@ -1099,7 +1322,7 @@
         },
         "join": {
           "title": "Tham gia cùng chúng tôi lần tới",
-          "text": "Chúng tôi dự kiến tổ chức Stretch \u0026 Phục hồi Bình minh như sự kiện cộng đồng hàng tháng, luân phiên giữa công viên và không gian ngoài trời khắp TP.HCM. Sự kiện mở cho tất cả — không cần kinh nghiệm, không cần thiết bị. Chúng tôi cung cấp thảm, hướng dẫn và không khí chào đón. Mục tiêu là làm cho vận động và phục hồi dễ tiếp cận, thú vị và mang tính xã hội. Nếu bạn muốn tham gia buổi tiếp theo hoặc cập nhật sự kiện cộng đồng sắp tới, theo dõi Stretch.vn trên mạng xã hội hoặc liên hệ trực tiếp đội ngũ. Vận động tốt hơn. Sống tốt hơn. Cùng nhau."
+          "text": "Chúng tôi dự kiến tổ chức Stretch & Phục hồi Bình minh như sự kiện cộng đồng hàng tháng, luân phiên giữa công viên và không gian ngoài trời khắp TP.HCM. Sự kiện mở cho tất cả — không cần kinh nghiệm, không cần thiết bị. Chúng tôi cung cấp thảm, hướng dẫn và không khí chào đón. Mục tiêu là làm cho vận động và phục hồi dễ tiếp cận, thú vị và mang tính xã hội. Nếu bạn muốn tham gia buổi tiếp theo hoặc cập nhật sự kiện cộng đồng sắp tới, theo dõi Stretch.vn trên mạng xã hội hoặc liên hệ trực tiếp đội ngũ. Vận động tốt hơn. Sống tốt hơn. Cùng nhau."
         }
       }
     }
