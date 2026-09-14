@@ -1,7 +1,11 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const localePath = useLocalePath()
-const { courses, sessions, formatPrice } = useLearningHub()
+const { courses, formatPrice } = useLearningHub()
+const { upcoming, monthShort } = useLearningSchedule()
+
+/** The panel is a teaser for /learning-hub/schedule — three rows, nearest first. */
+const sessions = computed(() => upcoming.value.slice(0, 3))
 </script>
 
 <template>
@@ -65,13 +69,13 @@ const { courses, sessions, formatPrice } = useLearningHub()
               <span v-if="course.price === 0" class="free-pill">{{ formatPrice(0) }}</span>
               <p v-else class="course-card__price">{{ formatPrice(course.price) }}</p>
 
-              <a href="#programs" class="course-card__cta">
+              <NuxtLink :to="localePath(`/learning-hub/programs/${course.slug}`)" class="course-card__cta">
                 {{ course.price === 0 ? t('learning.programs.start_free') : t('learning.programs.view_course') }}
                 <svg class="course-card__cta-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12" />
                   <polyline points="12 5 19 12 12 19" />
                 </svg>
-              </a>
+              </NuxtLink>
             </div>
           </article>
         </div>
@@ -81,28 +85,33 @@ const { courses, sessions, formatPrice } = useLearningHub()
       <div id="schedule" class="scroll-mt-[70px]">
         <div class="hub-section-head">
           <h2 class="hub-section-title">{{ t('learning.schedule.title') }}</h2>
-          <a href="#schedule" class="hub-more">
+          <NuxtLink :to="localePath('/learning-hub/schedule')" class="hub-more">
             {{ t('learning.see_all') }}
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
             </svg>
-          </a>
+          </NuxtLink>
         </div>
 
         <div class="session-panel">
-          <a v-for="s in sessions" :key="s.id" href="#schedule" class="session-row group">
+          <NuxtLink
+            v-for="s in sessions"
+            :key="s.slug"
+            :to="localePath(`/learning-hub/programs/${s.slug}`)"
+            class="session-row group"
+          >
             <span class="session-date">
               <span class="session-date__day">{{ s.day }}</span>
-              <span class="session-date__month">{{ s.month }}</span>
+              <span class="session-date__month">{{ monthShort(s.month) }}</span>
             </span>
 
             <span class="min-w-0 flex-1">
-              <span class="session-kind" :class="`session-kind--${s.kind}`">{{ s.format }}</span>
-              <span class="session-title">{{ s.title }}</span>
-              <span class="session-meta">
-                {{ s.mode }}<template v-if="s.location !== s.mode"> · {{ s.location }}</template>
+              <span class="session-kind" :class="`session-kind--${s.kind}`">
+                {{ t(`learning.catalog.kind_${s.kind}`) }}
               </span>
+              <span class="session-title">{{ s.title }}</span>
+              <span class="session-meta">{{ s.time }} · {{ s.location }}</span>
             </span>
 
             <span class="flex flex-col items-end gap-1 flex-shrink-0">
@@ -120,17 +129,17 @@ const { courses, sessions, formatPrice } = useLearningHub()
             >
               <polyline points="9 18 15 12 9 6" />
             </svg>
-          </a>
+          </NuxtLink>
         </div>
 
         <div class="mt-2.5 text-right">
-          <a href="#schedule" class="hub-more">
+          <NuxtLink :to="localePath('/learning-hub/schedule')" class="hub-more">
             {{ t('learning.schedule.see_all_sessions') }}
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
             </svg>
-          </a>
+          </NuxtLink>
         </div>
       </div>
     </div>

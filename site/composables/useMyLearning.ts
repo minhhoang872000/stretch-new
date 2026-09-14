@@ -1,11 +1,11 @@
 /**
- * The signed-in learner's enrolments.
+ * The signed-in learner's enrolments, from `/api/me/courses`.
  *
- * PLACEHOLDER DATA — there is no enrolment API yet, so this is a fixed sample
- * shaped the way the real endpoint should return it: one list of in-progress
- * enrolments carrying resume state, one list of finished ones carrying the
- * certificate reference. Swap the arrays for a `$fetch` keyed by the signed-in
- * user and the page needs no changes.
+ * The learner is resolved on the server from the Google session — this
+ * composable never sends an id, and there is none to send. A signed-out
+ * visitor gets two empty lists rather than an error, because the pages that
+ * read this (the account page, the course page's "you already own this"
+ * state) render for guests too.
  */
 
 export interface ActiveEnrolment {
@@ -21,6 +21,8 @@ export interface ActiveEnrolment {
   nextLesson: string
   timeLeft: string
   updatedAt: string
+  /** Where to drop them back in; null before they have opened anything. */
+  resume: { moduleIndex: number; itemIndex: number; ordinal: number | null; title: string } | null
 }
 
 export interface CompletedEnrolment {
@@ -32,60 +34,30 @@ export interface CompletedEnrolment {
 }
 
 export function useMyLearning() {
-  const { locale } = useI18n()
-  const vi = computed(() => locale.value === 'vi')
-  const pick = (viText: string, enText: string) => (vi.value ? viText : enText)
+  const { loggedIn } = useUserSession()
 
-  const active = computed<ActiveEnrolment[]>(() => [
+  /**
+   * Keyed on the session, so signing in or out refetches rather than showing
+   * the previous state. `immediate` is off for guests: an unauthenticated call
+   * would only ever 401.
+   */
+  const { data, refresh } = useAsyncData(
+    'my-learning',
+    () => $fetch<{ active: ActiveEnrolment[]; completed: CompletedEnrolment[] }>('/api/me/courses'),
     {
-      slug: 'giai-phau-van-dong-hoc-ung-dung',
-      title: pick('Giải phẫu & Vận động học ứng dụng', 'Applied Anatomy & Kinesiology'),
-      image: '/images/man-neck-pain.png',
-      mode: 'online',
-      lesson: 12,
-      lessons: 45,
-      percent: 60,
-      nextLesson: pick('Cơ vai và cánh tay — Phần 1', 'Shoulder & arm muscles — Part 1'),
-      timeLeft: pick('2 giờ 15 phút', '2 hr 15 min'),
-      updatedAt: '20/07/2026',
+      immediate: loggedIn.value,
+      watch: [loggedIn],
+      default: () => ({ active: [] as ActiveEnrolment[], completed: [] as CompletedEnrolment[] }),
     },
-    {
-      slug: 'danh-gia-van-dong-co-ban',
-      title: pick('Đánh giá vận động cơ bản', 'Movement Assessment Basics'),
-      image: '/education-workshop.png',
-      mode: 'online',
-      lesson: 3,
-      lessons: 12,
-      percent: 25,
-      nextLesson: pick('Quan sát chuyển động', 'Observing movement'),
-      timeLeft: pick('1 giờ', '1 hour'),
-      updatedAt: '18/07/2026',
-    },
-  ])
+  )
 
-  const completed = computed<CompletedEnrolment[]>(() => [
-    {
-      slug: 'road2rehab-foundation',
-      title: 'Road2Rehab Foundation',
-      image: '/education-gallery-3.png',
-      completedAt: '15/06/2026',
-      certificateCode: 'R2R-2026-0148',
-    },
-    {
-      slug: 'phuc-hoi-vai-toan-dien',
-      title: pick('Phục hồi vai toàn diện', 'Complete Shoulder Rehab'),
-      image: '/experiencing-pain-absolute.png',
-      completedAt: '10/07/2026',
-      certificateCode: 'PHV-2026-0072',
-    },
-    {
-      slug: 'mobility-cho-than-duoi',
-      title: pick('Mobility cho thân dưới', 'Lower Body Mobility'),
-      image: '/education-gallery-1.png',
-      completedAt: '28/05/2026',
-      certificateCode: 'MOB-2026-0031',
-    },
-  ])
+  const active = computed<ActiveEnrolment[]>(() => (loggedIn.value ? data.value?.active ?? [] : []))
+  const completed = computed<CompletedEnrolment[]>(() =>
+    loggedIn.value ? data.value?.completed ?? [] : [],
+  )
 
-  return { active, completed }
+  /** Call after finishing a lesson so the counters on other screens catch up. */
+  const reload = () => refresh()
+
+  return { active, completed, reload }
 }

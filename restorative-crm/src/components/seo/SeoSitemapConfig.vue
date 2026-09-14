@@ -38,11 +38,14 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useNotify } from '@/composables/useNotify.js'
+
+const notify = useNotify()
 
 const autoGenerate = ref(true)
 const pingGoogle = ref(true)
 
 const regenerate = () => {
-  alert('Sitemap regenerated successfully!')
+  notify.success('Đã yêu cầu tạo lại sitemap.')
 }
 </script>

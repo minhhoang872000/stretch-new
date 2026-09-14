@@ -8,6 +8,26 @@ const htmlLang = computed(() => {
 })
 useHead({ htmlAttrs: { lang: htmlLang } })
 
+/**
+ * Google OAuth is a full-page redirect, so the sign-in outcome arrives as a
+ * query flag (`?auth=ok|failed`, set by /api/auth/google) rather than a promise
+ * anyone can await. Read it once on mount, toast it, and strip it from the URL
+ * so a bookmark or reload does not repeat the announcement.
+ */
+const route = useRoute()
+const router = useRouter()
+const { notify } = useNotification()
+const { t } = useI18n()
+
+onMounted(() => {
+  const flag = route.query.auth
+  if (flag !== 'ok' && flag !== 'failed') return
+  if (flag === 'ok') notify(t('learning.auth.login_success'), 'success')
+  else notify(t('learning.auth.login_failed'), 'error', 6000)
+  const { auth: _auth, ...rest } = route.query
+  router.replace({ query: rest })
+})
+
 // Global Schema.org for the entire site — HealthClub type
 useSchemaOrg([
   defineLocalBusiness({
@@ -106,7 +126,25 @@ useSchemaOrg([
          feedback even before the destination page mounts. -->
     <NuxtLoadingIndicator color="#F47A1F" :height="3" />
     <NuxtPage />
-    <ContactWidget />
+    <!--
+      The wrapper is load-bearing. `<NuxtPage>` runs inside Suspense with an
+      out-in page transition: when the outgoing page finishes leaving, Suspense
+      inserts the incoming one BEFORE whatever node followed it — this widget.
+      But the widget shows and hides on scroll behind its own <Transition>, so a
+      navigation that also changes the scroll position can delete that node
+      mid-flight. Suspense then inserts before a node that is no longer a child
+      of this div and throws NotFoundError, which rolls the navigation back
+      (course page → player was the reliable way to hit it).
+
+      A wrapper that is always present keeps this element list stable, so the
+      anchor stays valid no matter what the widget does inside it. It is
+      position:fixed, so an extra div costs no layout.
+    -->
+    <div class="contact-widget-host">
+      <ContactWidget />
+    </div>
+    <!-- Global toast host — without it every notify() is silent. -->
+    <AppToasts />
   </div>
 </template>
 

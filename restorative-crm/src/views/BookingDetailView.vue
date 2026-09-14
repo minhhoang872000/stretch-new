@@ -1,5 +1,5 @@
 <template>
-  <main class="p-4 lg:p-8 max-w-3xl mx-auto w-full">
+  <main class="page-narrow">
     <!-- Top bar -->
     <div class="flex items-center justify-between gap-3 mb-6">
       <button @click="goBack" class="flex items-center gap-1.5 text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors">
@@ -21,7 +21,14 @@
           <option value="completed">Hoàn thành</option>
           <option value="cancelled">Huỷ</option>
         </select>
-        <button @click="remove" :disabled="busy" class="text-error/70 hover:text-error p-1.5 rounded-lg hover:bg-error-container/20" title="Xoá">
+        <button
+          type="button"
+          class="btn-ghost btn-sm btn-icon text-danger"
+          :disabled="busy"
+          title="Xoá lịch hẹn"
+          aria-label="Xoá lịch hẹn"
+          @click="confirmOpen = true"
+        >
           <span class="material-symbols-outlined text-lg">delete</span>
         </button>
       </div>
@@ -51,7 +58,7 @@
               <h1 class="text-xl font-headline font-extrabold text-on-surface">{{ bk.name }}</h1>
               <span
                 class="text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1"
-                :class="bkType === 'business' ? 'bg-teal-50 text-teal-700 border border-teal-200' : 'bg-primary/10 text-primary border border-primary/20'"
+                :class="bkType === 'business' ? 'bg-info-soft text-info border border-teal-200' : 'bg-primary/10 text-primary border border-primary/20'"
               >
                 <span class="material-symbols-outlined text-sm">{{ bkType === 'business' ? 'corporate_fare' : 'person' }}</span>
                 {{ TYPE_LABELS[bkType] }}
@@ -169,10 +176,21 @@
         </dl>
       </div>
     </template>
+
+    <ConfirmDialog
+      v-model:open="confirmOpen"
+      danger
+      icon="delete"
+      title="Xoá lịch hẹn này?"
+      :message="bk ? `${bk.name} — ${bk.time} ngày ${formatDate(bk.date)}. Khách không nhận được thông báo tự động khi xoá.` : ''"
+      confirm-label="Xoá lịch hẹn"
+      @confirm="remove"
+    />
   </main>
 </template>
 
 <script setup>
+import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { fetchBookingById, updateBookingStatus, deleteBooking } from '@/services/api.js'
@@ -223,8 +241,10 @@ async function changeStatus(status) {
   }
 }
 
+const confirmOpen = ref(false)
+
 async function remove() {
-  if (!bk.value || !confirm('Xoá lịch hẹn này?')) return
+  if (!bk.value) return
   busy.value = true
   try {
     await deleteBooking(bk.value.id)

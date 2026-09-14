@@ -153,6 +153,17 @@ function mapBookingRow(row: any): Booking {
     status: row.status,
     createdAt: row.created_at,
     updatedAt: row.updated_at || undefined,
+    // Columns the console added. All optional: a booking created by the public
+    // form fills none of them, and the site's own screens never read them.
+    code: row.code || undefined,
+    initials: row.initials || undefined,
+    serviceId: row.service_id || undefined,
+    serviceName: row.service_name || undefined,
+    practitionerId: row.practitioner_id || undefined,
+    studio: row.studio || undefined,
+    type: row.type || undefined,
+    price: row.price ?? undefined,
+    source: row.source || undefined,
   }
 }
 

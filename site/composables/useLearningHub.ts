@@ -5,11 +5,13 @@
  * language variants inline instead of in i18n/locales (which would bloat the
  * locale files with per-item keys). When a real courses API exists, swap the
  * static arrays below for a `$fetch` and keep the same returned shape.
+ *
+ * The dated sessions used to live here too; they are derived from the catalogue
+ * in `useLearningSchedule` now, so the hub panel and /learning-hub/schedule can
+ * never disagree about a date, a price or how many seats are left.
  */
 
 export type LearningLevel = 'mini' | 'course'
-export type LearningSeatStatus = 'open' | 'few' | 'full'
-export type LearningSessionKind = 'course' | 'workshop'
 
 export interface LearningCourse {
   slug: string
@@ -24,31 +26,17 @@ export interface LearningCourse {
   dark: boolean
 }
 
-export interface LearningSession {
-  id: string
-  day: string
-  month: string
-  title: string
-  /** Drives the badge colour on the schedule row. */
-  kind: LearningSessionKind
-  format: string
-  mode: string
-  location: string
-  price: number
-  status: LearningSeatStatus
-}
-
 export function useLearningHub() {
-  const { locale } = useI18n()
-  const vi = computed(() => locale.value === 'vi')
-  const pick = (viText: string, enText: string) => (vi.value ? viText : enText)
+  // The Learning Hub ships in Vietnamese only (2026-08): its audience is local
+  // practitioners, and half-translated course copy reads worse than none. The
+  // English strings below stay as `pick()`'s second argument — restoring the
+  // translation means restoring the locale check here, nothing else.
+  const pick = (viText: string, _enText: string) => viText
 
-  /** 4.500.000đ / ₫4,500,000 depending on locale. */
+  /** 4.500.000đ */
   function formatPrice(value: number): string {
     if (value <= 0) return pick('Miễn phí', 'Free')
-    return vi.value
-      ? `${value.toLocaleString('vi-VN')}đ`
-      : `₫${value.toLocaleString('en-US')}`
+    return `${value.toLocaleString('vi-VN')}đ`
   }
 
   const courses = computed<LearningCourse[]>(() => [
@@ -77,44 +65,5 @@ export function useLearningHub() {
     },
   ])
 
-  const sessions = computed<LearningSession[]>(() => [
-    {
-      id: 'road2rehab-foundation',
-      day: '18',
-      month: pick('TH9', 'SEP'),
-      title: 'Road2Rehab Foundation',
-      kind: 'course',
-      format: pick('Khóa học', 'Course'),
-      mode: pick('Trực tiếp', 'In person'),
-      location: pick('TP.HCM', 'Ho Chi Minh City'),
-      price: 4500000,
-      status: 'open',
-    },
-    {
-      id: 'shoulder-assessment-lab',
-      day: '24',
-      month: pick('TH9', 'SEP'),
-      title: 'Shoulder Assessment Lab',
-      kind: 'workshop',
-      format: 'Workshop',
-      mode: pick('Trực tuyến', 'Online'),
-      location: pick('Trực tuyến', 'Online'),
-      price: 490000,
-      status: 'open',
-    },
-    {
-      id: 'lower-body-case-lab',
-      day: '28',
-      month: pick('TH9', 'SEP'),
-      title: 'Lower Body Case Lab',
-      kind: 'workshop',
-      format: 'Workshop',
-      mode: pick('Trực tiếp', 'In person'),
-      location: pick('TP.HCM', 'Ho Chi Minh City'),
-      price: 750000,
-      status: 'few',
-    },
-  ])
-
-  return { courses, sessions, formatPrice }
+  return { courses, formatPrice }
 }

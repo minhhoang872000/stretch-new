@@ -76,6 +76,24 @@ export interface Booking {
   status: BookingStatus
   createdAt: string
   updatedAt?: string
+  /**
+   * Fields the admin console records that the public booking form does not.
+   * All optional: a booking that came from the site has none of them, and the
+   * site's own screens read none of them either.
+   *
+   * Note `service` above is the enquiry CATEGORY the form sends ('recovery',
+   * 'pain', 'wellness'); `serviceId` is the product actually booked. They are
+   * different things and the console renders each differently.
+   */
+  code?: string
+  initials?: string
+  serviceId?: string
+  serviceName?: string
+  practitionerId?: string
+  studio?: string
+  type?: string
+  price?: number
+  source?: string
 }
 
 export interface BookingFilter {

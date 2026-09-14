@@ -1,18 +1,11 @@
 /**
- * Learning Hub session — the real Google OAuth session plus a DEMO login.
+ * Learning Hub session — a thin, typed view over the Google OAuth session that
+ * nuxt-auth-utils keeps in its sealed cookie.
  *
- * ⚠️ DEMO LOGIN — REMOVE BEFORE PRODUCTION
- * `admin` / `123456` is checked in the browser and only sets a cookie holding a
- * display name. It grants nothing: there is no protected learner API behind it,
- * and the cookie is trivially forged. It exists so the logged-in header, avatar
- * and account states can be reviewed before the real auth backend lands.
- * Deleting `DEMO_USERNAME`/`DEMO_PASSWORD` and `signInDemo()` removes it
- * entirely — everything else here works off the real session.
+ * Everything the header, account menu and learner pages need comes from here,
+ * so no component reads `useUserSession()` directly and the shape of the
+ * session object stays a detail of `server/api/auth/google.get.ts`.
  */
-
-const DEMO_USERNAME = 'admin'
-const DEMO_PASSWORD = '123456'
-const DEMO_COOKIE = 'stretch-demo-user'
 
 export interface HubUser {
   name: string
@@ -30,56 +23,34 @@ function toInitials(name: string): string {
 }
 
 export function useHubSession() {
-  const { loggedIn: realLoggedIn, user: realUser, clear } = useUserSession()
+  const { loggedIn, user: sessionUser, clear } = useUserSession()
 
-  // The cookie is read on the server too, so the header renders signed-in on
-  // first paint instead of flashing the logged-out buttons. It is mirrored into
-  // `useState` because every `useCookie()` call returns its OWN ref — without
-  // the shared state, signing in from the modal would not update the header.
-  const cookie = useCookie<string | null>(DEMO_COOKIE, {
-    default: () => null,
-    sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 7,
+  /**
+   * The learner row behind the session, or null.
+   *
+   * Null also covers the edge case where Google sign-in succeeded but the
+   * learner API was unreachable at that moment: the person is signed in and can
+   * browse, and the pages that need an enrolment check this rather than
+   * `loggedIn`. The next sign-in retries.
+   */
+  const learner = computed<{ id: string; name: string; email: string } | null>(() => {
+    if (!loggedIn.value) return null
+    return ((sessionUser.value as any)?.learner as any) ?? null
   })
-  const demoName = useState<string | null>('hub-demo-user', () => cookie.value)
-
-  function setDemoName(value: string | null) {
-    demoName.value = value
-    cookie.value = value
-  }
-
-  const loggedIn = computed(() => realLoggedIn.value || Boolean(demoName.value))
 
   const user = computed<HubUser | null>(() => {
-    if (realLoggedIn.value && realUser.value) {
-      const name = (realUser.value as any).name ?? ''
-      return {
-        name,
-        avatar: (realUser.value as any).avatar ?? null,
-        initials: toInitials(name),
-      }
+    if (!loggedIn.value || !sessionUser.value) return null
+    const name = (sessionUser.value as any).name ?? ''
+    return {
+      name,
+      avatar: (sessionUser.value as any).avatar ?? null,
+      initials: toInitials(name),
     }
-    if (demoName.value) {
-      return { name: demoName.value, avatar: null, initials: toInitials(demoName.value) }
-    }
-    return null
   })
 
-  /** Returns false on a wrong username/password so the form can show an error. */
-  function signInDemo(username: string, password: string): boolean {
-    if (username.trim().toLowerCase() !== DEMO_USERNAME || password !== DEMO_PASSWORD) {
-      return false
-    }
-    setDemoName(DEMO_USERNAME.charAt(0).toUpperCase() + DEMO_USERNAME.slice(1))
-    return true
-  }
-
-  const isDemoCandidate = (value: string) => value.trim().toLowerCase() === DEMO_USERNAME
-
   async function logout() {
-    setDemoName(null)
-    if (realLoggedIn.value) await clear()
+    await clear()
   }
 
-  return { loggedIn, user, signInDemo, isDemoCandidate, logout }
+  return { loggedIn, user, learner, logout }
 }

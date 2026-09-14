@@ -29,27 +29,46 @@ export interface CatalogProgram {
   /** Self-paced items: lesson count + total length. */
   lessons?: number
   duration?: string
-  /** Scheduled items: start date + place. */
+  /** Scheduled items: start date, hours and place. */
   date?: string
+  time?: string
   location?: string
 }
 
 export const PROGRAMS_PER_PAGE = 8
 
 export function useLearningCatalog() {
-  const { locale } = useI18n()
-  const vi = computed(() => locale.value === 'vi')
-  const pick = (viText: string, enText: string) => (vi.value ? viText : enText)
+  // The Learning Hub ships in Vietnamese only (2026-08): its audience is local
+  // practitioners, and half-translated course copy reads worse than none. The
+  // English strings below stay as `pick()`'s second argument — restoring the
+  // translation means restoring the locale check here, nothing else.
+  const pick = (viText: string, _enText: string) => viText
 
   function formatPrice(value: number): string {
     if (value <= 0) return pick('Miễn phí', 'Free')
-    return vi.value
-      ? `${value.toLocaleString('vi-VN')}đ`
-      : `₫${value.toLocaleString('en-US')}`
+    return `${value.toLocaleString('vi-VN')}đ`
   }
 
+  /**
+   * The catalogue, from the API.
+   *
+   * `useAsyncData` with a fixed key so every component that calls this composable
+   * shares one request and one SSR payload — the card, the panel and the filter
+   * bar all call it, and three fetches for one list would be three.
+   *
+   * FALLBACK is what renders when the API is unreachable. A hub with no courses
+   * is a broken page; a hub with the seeded list is a stale one, which is the
+   * better of the two failures on a marketing surface. Remove it the day the
+   * catalogue is business-critical and an outage should be visible.
+   */
+  const { data } = useAsyncData(
+    'learning-catalog',
+    () => $fetch<{ programs: CatalogProgram[] }>('/api/programs'),
+    { default: () => ({ programs: [] as CatalogProgram[] }) },
+  )
+
   /** Newest first — `sort: 'newest'` keeps this order. */
-  const programs = computed<CatalogProgram[]>(() => [
+  const FALLBACK: CatalogProgram[] = ([
     {
       slug: 'giai-phau-van-dong-hoc-ung-dung',
       kind: 'course', mode: 'online', topic: 'anatomy',
@@ -62,21 +81,21 @@ export function useLearningCatalog() {
       kind: 'workshop', mode: 'offline', topic: 'assessment',
       title: pick('Đánh giá vận động cơ bản', 'Movement Assessment Basics'),
       image: '/education-workshop.png',
-      price: 490000, date: '24/09/2025', location: pick('TP.HCM', 'Ho Chi Minh City'),
+      price: 490000, date: '24/09/2026', time: '08:30 – 16:30', location: pick('TP.HCM', 'Ho Chi Minh City'),
     },
     {
       slug: 'phuc-hoi-vai-toan-dien',
       kind: 'course', mode: 'online', topic: 'sports',
       title: pick('Phục hồi vai toàn diện', 'Complete Shoulder Rehab'),
       image: '/experiencing-pain-absolute.png',
-      price: 590000, date: '30/09/2025', location: pick('Trực tuyến', 'Online'),
+      price: 590000, date: '30/09/2026', time: '19:30 – 21:30', location: pick('Trực tuyến', 'Online'),
     },
     {
       slug: 'lower-body-case-lab',
       kind: 'workshop', mode: 'offline', topic: 'sports',
       title: 'Lower Body Case Lab',
       image: '/marathon.png',
-      price: 750000, date: '28/09/2025', location: pick('TP.HCM', 'Ho Chi Minh City'),
+      price: 750000, date: '28/09/2026', time: '08:30 – 16:30', location: pick('TP.HCM', 'Ho Chi Minh City'),
     },
     {
       slug: 'hieu-ve-dau-khi-van-dong',
@@ -97,7 +116,7 @@ export function useLearningCatalog() {
       kind: 'workshop', mode: 'offline', topic: 'assessment',
       title: pick('Kỹ thuật mô mềm nâng cao', 'Advanced Soft Tissue Techniques'),
       image: '/education-gallery-2.png',
-      price: 690000, date: '18/10/2025', location: pick('Hà Nội', 'Hanoi'),
+      price: 690000, date: '18/10/2026', time: '08:30 – 16:30', location: pick('Hà Nội', 'Hanoi'),
     },
     {
       slug: 'phan-tich-toi-uu-hieu-suat',
@@ -111,21 +130,21 @@ export function useLearningCatalog() {
       kind: 'course', mode: 'offline', topic: 'anatomy',
       title: 'Road2Rehab Foundation',
       image: '/education-gallery-3.png',
-      price: 4500000, date: '18/09/2025', location: pick('TP.HCM', 'Ho Chi Minh City'),
+      price: 4500000, date: '18/09/2026', time: '08:30 – 16:30', location: pick('TP.HCM', 'Ho Chi Minh City'),
     },
     {
       slug: 'shoulder-assessment-lab',
       kind: 'workshop', mode: 'online', topic: 'assessment',
       title: 'Shoulder Assessment Lab',
       image: '/athlete-who.png',
-      price: 490000, date: '24/09/2025', location: pick('Trực tuyến', 'Online'),
+      price: 490000, date: '24/09/2026', time: '19:30 – 21:30', location: pick('Trực tuyến', 'Online'),
     },
     {
       slug: 'cot-song-kiem-soat-trung-tam',
       kind: 'course', mode: 'offline', topic: 'anatomy',
       title: pick('Cột sống & Kiểm soát trung tâm', 'Spine & Core Control'),
       image: '/education-gallery-4.png',
-      price: 1290000, date: '05/12/2025', location: pick('TP.HCM', 'Ho Chi Minh City'),
+      price: 1290000, date: '05/12/2026', time: '08:30 – 16:30', location: pick('TP.HCM', 'Ho Chi Minh City'),
     },
     {
       slug: 'khoi-dong-phong-ngua-chan-thuong',
@@ -146,14 +165,14 @@ export function useLearningCatalog() {
       kind: 'workshop', mode: 'offline', topic: 'assessment',
       title: pick('Đánh giá dáng đi & Bàn chân', 'Gait & Foot Assessment'),
       image: '/tennis.png',
-      price: 850000, date: '09/11/2025', location: pick('TP.HCM', 'Ho Chi Minh City'),
+      price: 850000, date: '09/11/2026', time: '08:30 – 16:30', location: pick('TP.HCM', 'Ho Chi Minh City'),
     },
     {
       slug: 'giai-phau-chi-tren-ung-dung',
       kind: 'course', mode: 'offline', topic: 'anatomy',
       title: pick('Giải phẫu chi trên ứng dụng', 'Applied Upper Limb Anatomy'),
       image: '/education-gallery-5.png',
-      price: 2290000, date: '12/10/2025', location: pick('TP.HCM', 'Ho Chi Minh City'),
+      price: 2290000, date: '12/10/2026', time: '08:30 – 16:30', location: pick('TP.HCM', 'Ho Chi Minh City'),
     },
     {
       slug: 'tho-kiem-soat-van-dong',
@@ -167,7 +186,7 @@ export function useLearningCatalog() {
       kind: 'course', mode: 'offline', topic: 'sports',
       title: pick('Phục hồi sau chấn thương gối', 'Knee Injury Rehabilitation'),
       image: '/active-who.png',
-      price: 2590000, date: '22/11/2025', location: pick('Hà Nội', 'Hanoi'),
+      price: 2590000, date: '22/11/2026', time: '08:30 – 16:30', location: pick('Hà Nội', 'Hanoi'),
     },
     {
       slug: 'giai-phau-chi-duoi-ung-dung',
@@ -176,7 +195,11 @@ export function useLearningCatalog() {
       image: '/corporate-sports.png',
       price: 0, lessons: 7, duration: pick('50 phút', '50 min'),
     },
-  ])
+  ] as CatalogProgram[])
+
+  const programs = computed<CatalogProgram[]>(() =>
+    data.value?.programs?.length ? data.value.programs : FALLBACK,
+  )
 
   /** Facet counts come from the whole catalogue, not the filtered slice —
       otherwise every option would read 0 as soon as a filter narrowed things. */

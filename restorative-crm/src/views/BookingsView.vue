@@ -1,28 +1,45 @@
 <template>
-  <main class="p-4 lg:p-8 max-w-7xl mx-auto w-full">
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
-      <div>
-        <span class="text-xs font-bold text-primary tracking-[0.2em] uppercase mb-2 block">Lịch hẹn</span>
-        <h1 class="text-2xl lg:text-3xl font-headline font-extrabold text-on-surface tracking-tight">Quản lý lịch hẹn</h1>
-        <p class="text-on-surface-variant mt-1.5 text-sm">{{ total }} lịch hẹn — xác nhận, theo dõi, cập nhật trạng thái.</p>
-      </div>
-    </div>
+  <main class="page">
+    <PageHeader
+      eyebrow="Trị liệu"
+      title="Lịch hẹn"
+      :subtitle="`${total} lịch hẹn — xác nhận, theo dõi, cập nhật trạng thái.`"
+    >
+      <template #actions>
+        <RouterLink to="/calendar" class="btn-outline btn-sm">
+          <span class="material-symbols-outlined text-lg">calendar_month</span>
+          Xem lịch tuần
+        </RouterLink>
+        <button type="button" class="btn-ghost btn-sm" @click="loadBookings">
+          <span class="material-symbols-outlined text-lg">refresh</span>
+          Làm mới
+        </button>
+      </template>
+    </PageHeader>
+
+    <p
+      v-if="usingMock"
+      class="panel-quiet px-3 py-2.5 mb-3 flex items-start gap-2 text-xs text-ink-2"
+    >
+      <span class="material-symbols-outlined text-base text-warn shrink-0">science</span>
+      API lịch hẹn không phản hồi nên trang đang hiển thị dữ liệu mẫu. Thao tác xác nhận hoặc xoá
+      sẽ không gửi được lên server.
+    </p>
 
     <!-- Stats Row -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-      <div v-for="s in stats" :key="s.label" class="bg-surface-container-low rounded-xl p-4">
+      <div v-for="s in stats" :key="s.label" class="panel px-3.5 py-3">
         <p class="text-xs text-on-surface-variant uppercase tracking-wider">{{ s.label }}</p>
         <p class="text-2xl font-bold mt-1" :class="s.color">{{ s.value }}</p>
       </div>
     </div>
 
     <!-- Filters -->
-    <div class="bg-surface-container-low rounded-2xl p-4 mb-6 flex flex-wrap gap-3 items-center">
+    <div class="panel px-3 py-2.5 mb-3 flex flex-wrap gap-2 items-center">
       <select
         v-model="filterStatus"
         @change="applyFilters"
-        class="text-sm rounded-xl border border-outline-variant/20 px-3 py-2 bg-surface text-on-surface w-40"
+        class="select w-40"
       >
         <option value="">Tất cả trạng thái</option>
         <option value="pending">Chờ xác nhận</option>
@@ -34,7 +51,7 @@
       <select
         v-model="filterService"
         @change="applyFilters"
-        class="text-sm rounded-xl border border-outline-variant/20 px-3 py-2 bg-surface text-on-surface w-48"
+        class="select w-48"
       >
         <option value="">Tất cả dịch vụ</option>
         <option v-for="(label, key) in SERVICE_LABELS" :key="key" :value="key">{{ label }}</option>
@@ -44,14 +61,12 @@
         v-model="filterDate"
         type="date"
         @change="applyFilters"
-        class="text-sm rounded-xl border border-outline-variant/20 px-3 py-2 bg-surface text-on-surface w-44"
+        class="select w-44"
       />
 
-      <button @click="resetFilters" class="text-xs text-on-surface-variant hover:text-primary font-semibold ml-auto flex items-center gap-1">
-        <span class="material-symbols-outlined text-sm">filter_alt_off</span> Xoá lọc
-      </button>
-      <button @click="loadBookings" class="text-xs text-primary font-semibold flex items-center gap-1">
-        <span class="material-symbols-outlined text-sm">refresh</span> Làm mới
+      <button type="button" class="btn-ghost btn-sm ml-auto" @click="resetFilters">
+        <span class="material-symbols-outlined text-base">filter_alt_off</span>
+        Xoá lọc
       </button>
     </div>
 
@@ -61,18 +76,18 @@
     </div>
 
     <!-- Table -->
-    <div v-else class="bg-surface-container-low rounded-2xl overflow-x-auto">
-      <table class="w-full text-sm min-w-[900px]">
+    <div v-else class="panel overflow-x-auto">
+      <table class="tbl tbl-rows min-w-[900px]">
         <thead>
           <tr class="border-b border-outline-variant/20 text-left">
-            <th class="p-4 font-semibold text-xs uppercase tracking-wider text-on-surface-variant">Khách hàng</th>
-            <th class="p-4 font-semibold text-xs uppercase tracking-wider text-on-surface-variant">Dịch vụ</th>
-            <th class="p-4 font-semibold text-xs uppercase tracking-wider text-on-surface-variant">Địa điểm</th>
-            <th class="p-4 font-semibold text-xs uppercase tracking-wider text-on-surface-variant">Thời gian</th>
-            <th class="p-4 font-semibold text-xs uppercase tracking-wider text-on-surface-variant">Liên hệ</th>
-            <th class="p-4 font-semibold text-xs uppercase tracking-wider text-on-surface-variant">Ghi chú</th>
-            <th class="p-4 font-semibold text-xs uppercase tracking-wider text-on-surface-variant">Trạng thái</th>
-            <th class="p-4 font-semibold text-xs uppercase tracking-wider text-on-surface-variant w-8"></th>
+            <th>Khách hàng</th>
+            <th>Dịch vụ</th>
+            <th>Địa điểm</th>
+            <th>Thời gian</th>
+            <th>Liên hệ</th>
+            <th>Ghi chú</th>
+            <th>Trạng thái</th>
+            <th class="w-8"></th>
           </tr>
         </thead>
         <tbody>
@@ -83,12 +98,12 @@
             class="border-b border-outline-variant/10 hover:bg-surface-container-high/50 transition-colors group cursor-pointer"
           >
             <!-- Khách hàng -->
-            <td class="p-4">
+            <td>
               <div class="flex items-center gap-1.5">
                 <p class="font-semibold text-on-surface">{{ bk.name }}</p>
                 <span
                   class="text-[9px] font-bold px-1.5 py-0.5 rounded-full inline-flex items-center gap-0.5 shrink-0"
-                  :class="bookingType(parseNote(bk.note)) === 'business' ? 'bg-teal-50 text-teal-700' : 'bg-primary/10 text-primary'"
+                  :class="bookingType(parseNote(bk.note)) === 'business' ? 'bg-info-soft text-info' : 'bg-primary/10 text-primary'"
                 >
                   <span class="material-symbols-outlined text-[11px]">{{ bookingType(parseNote(bk.note)) === 'business' ? 'corporate_fare' : 'person' }}</span>
                   {{ TYPE_LABELS[bookingType(parseNote(bk.note))] }}
@@ -107,14 +122,14 @@
             </td>
 
             <!-- Dịch vụ -->
-            <td class="p-4">
+            <td>
               <span class="text-xs font-semibold px-2 py-1 rounded-full" :class="serviceClass(bk.service)">
                 {{ SERVICE_LABELS[bk.service] || bk.service }}
               </span>
             </td>
 
             <!-- Địa điểm -->
-            <td class="p-4">
+            <td>
               <div v-if="parseNote(bk.note).location" class="flex items-center gap-1 text-xs text-on-surface-variant">
                 <span class="material-symbols-outlined text-sm">{{ locationIcon(parseNote(bk.note).location) }}</span>
                 {{ LOCATION_LABELS[parseNote(bk.note).location] || parseNote(bk.note).location }}
@@ -127,14 +142,14 @@
             </td>
 
             <!-- Thời gian -->
-            <td class="p-4">
+            <td>
               <p class="text-xs font-semibold text-on-surface">{{ formatDate(bk.date) }}</p>
               <p class="text-xs text-on-surface-variant">{{ bk.time }}</p>
               <p v-if="bk.createdAt" class="text-[10px] text-on-surface-variant/50 mt-0.5">Đặt: {{ formatDate(bk.createdAt?.slice(0,10)) }}</p>
             </td>
 
             <!-- Liên hệ qua -->
-            <td class="p-4">
+            <td>
               <template v-if="parseNote(bk.note).contact">
                 <span class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full" :class="contactClass(parseNote(bk.note).contact)">
                   <span class="material-symbols-outlined text-xs">{{ contactIcon(parseNote(bk.note).contact) }}</span>
@@ -145,7 +160,7 @@
             </td>
 
             <!-- Ghi chú -->
-            <td class="p-4 max-w-[180px]">
+            <td class="max-w-[180px]">
               <p v-if="parseNote(bk.note).text" class="text-xs text-on-surface-variant truncate" :title="parseNote(bk.note).text">
                 {{ parseNote(bk.note).text }}
               </p>
@@ -156,7 +171,7 @@
             </td>
 
             <!-- Trạng thái -->
-            <td class="p-4">
+            <td>
               <span class="text-xs font-bold px-2.5 py-1 rounded-full" :class="statusClass(bk.status)">
                 {{ STATUS_LABELS[bk.status] || bk.status }}
               </span>
@@ -175,7 +190,7 @@
                   <option value="completed">Hoàn thành</option>
                   <option value="cancelled">Huỷ</option>
                 </select>
-                <button @click="removeBooking(bk.id)" class="text-error/50 hover:text-error p-1" title="Xoá">
+                <button @click="askRemove(bk)" class="text-error/50 hover:text-error p-1" title="Xoá lịch hẹn" aria-label="Xoá lịch hẹn">
                   <span class="material-symbols-outlined text-sm">delete</span>
                 </button>
               </div>
@@ -195,6 +210,15 @@
       </table>
     </div>
 
+    <ConfirmDialog
+      v-model:open="confirmOpen"
+      danger
+      icon="delete"
+      title="Xoá lịch hẹn này?"
+      :message="deleteMessage"
+      confirm-label="Xoá lịch hẹn"
+      @confirm="removeBooking(pendingDelete.id)"
+    />
   </main>
 </template>
 
@@ -204,12 +228,16 @@ import { useRouter } from 'vue-router'
 import { fetchBookings, updateBookingStatus, deleteBooking } from '@/services/api.js'
 import { formatDate } from '@/utils/date.js'
 import { useNotify } from '@/composables/useNotify.js'
+import PageHeader from '@/components/ui/PageHeader.vue'
+import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
+import { useMockDb } from '@/stores/db.js'
 import {
   SERVICE_LABELS, LOCATION_LABELS, CONTACT_LABELS, STATUS_LABELS, SETTING_LABELS, TYPE_LABELS,
   parseNote, bookingType, statusClass, serviceClass, locationIcon, contactIcon, contactClass,
 } from '@/constants/booking.js'
 
 const router = useRouter()
+const db = useMockDb()
 const notify = useNotify()
 
 const bookings = ref([])
@@ -224,10 +252,10 @@ function openDetail(bk) {
 }
 
 const stats = computed(() => [
-  { label: 'Tổng', value: total.value, color: 'text-on-surface' },
-  { label: 'Chờ xác nhận', value: bookings.value.filter(b => b.status === 'pending').length, color: 'text-yellow-600' },
-  { label: 'Đã xác nhận', value: bookings.value.filter(b => b.status === 'confirmed').length, color: 'text-blue-600' },
-  { label: 'Hoàn thành', value: bookings.value.filter(b => b.status === 'completed').length, color: 'text-green-600' },
+  { label: 'Tổng', value: total.value, color: 'text-ink' },
+  { label: 'Chờ xác nhận', value: bookings.value.filter(b => b.status === 'pending').length, color: 'text-warn' },
+  { label: 'Đã xác nhận', value: bookings.value.filter(b => b.status === 'confirmed').length, color: 'text-info' },
+  { label: 'Hoàn thành', value: bookings.value.filter(b => b.status === 'completed').length, color: 'text-ok' },
 ])
 
 // One-line summary of business-only note markers (participants/setting/role).
@@ -240,6 +268,25 @@ function bizExtras(note) {
   return parts.join(' · ')
 }
 
+/**
+ * The API stays the source of truth. When it cannot be reached the screen falls
+ * back to the mock dataset instead of showing an empty table — otherwise the
+ * dashboard counts lịch hẹn the list claims do not exist.
+ */
+const usingMock = ref(false)
+
+function loadFromMock() {
+  const rows = db.list('bookings').filter((b) => {
+    if (filterStatus.value && b.status !== filterStatus.value) return false
+    if (filterService.value && b.service !== filterService.value) return false
+    if (filterDate.value && b.date !== filterDate.value) return false
+    return true
+  })
+  bookings.value = rows
+  total.value = rows.length
+  usingMock.value = true
+}
+
 async function loadBookings() {
   loading.value = true
   try {
@@ -250,8 +297,10 @@ async function loadBookings() {
     })
     bookings.value = data.bookings || []
     total.value = data.total || 0
+    usingMock.value = false
   } catch (e) {
     console.error(e)
+    loadFromMock()
   } finally {
     loading.value = false
   }
@@ -259,6 +308,14 @@ async function loadBookings() {
 
 async function updateStatus(id, status) {
   if (!status) return
+  // On mock data the write goes to the mock DB, so the demo stays coherent
+  // instead of showing an error for every action.
+  if (usingMock.value) {
+    db.patch('bookings', id, { status })
+    loadFromMock()
+    notify.success('toast.bookingUpdated')
+    return
+  }
   try {
     await updateBookingStatus(id, status)
     notify.success('toast.bookingUpdated')
@@ -269,8 +326,31 @@ async function updateStatus(id, status) {
   }
 }
 
+/** Deleting a booking is irreversible, so it goes through a real dialog that
+    can name the customer and slot being removed. */
+const pendingDelete = ref(null)
+const confirmOpen = ref(false)
+
+const deleteMessage = computed(() => {
+  const bk = pendingDelete.value
+  if (!bk) return ''
+  const service = SERVICE_LABELS[bk.service] || bk.service
+  return `${bk.name} — ${service}, ${bk.time} ngày ${formatDate(bk.date)}. `
+    + 'Khách không nhận được thông báo tự động khi xoá.'
+})
+
+function askRemove(booking) {
+  pendingDelete.value = booking
+  confirmOpen.value = true
+}
+
 async function removeBooking(id) {
-  if (!confirm('Xoá lịch hẹn này?')) return
+  if (usingMock.value) {
+    db.remove('bookings', id)
+    loadFromMock()
+    notify.success('toast.bookingDeleted')
+    return
+  }
   try {
     await deleteBooking(id)
     notify.success('toast.bookingDeleted')

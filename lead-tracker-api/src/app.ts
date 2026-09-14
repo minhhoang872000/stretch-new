@@ -10,9 +10,18 @@ import analyticsRouter from './modules/analytics/analytics.router'
 import blogRouter from './modules/blog/blog.router'
 import categoryRouter from './modules/category/category.router'
 import imagesRouter from './modules/images/images.router'
+import videosRouter from './modules/videos/videos.router'
+import mentorshipRouter from './modules/mentorship/mentorship.router'
 import gaRouter from './modules/google-analytics/ga.router'
 import scRouter from './modules/search-console/sc.router'
 import authRouter from './modules/auth/auth.router'
+import academyRouter from './modules/academy/academy.router'
+import salesRouter from './modules/sales/sales.router'
+import therapyRouter from './modules/therapy/therapy.router'
+import contentRouter from './modules/content/content.router'
+import crmRouter from './modules/crm/enquiries.router'
+import systemRouter from './modules/system/system.router'
+import learnerRouter from './modules/learner/learner.router'
 import { requireAuth } from './middleware/requireAuth'
 import { success } from './utils/response'
 
@@ -27,7 +36,7 @@ app.set('trust proxy', 1)
 // ─── Global Middleware ───────────────────────────────────────────────
 app.use(corsMiddleware)
 app.use(loggerMiddleware)
-app.use(rateLimiterMiddleware)
+app.use(...rateLimiterMiddleware)
 app.use(express.json({ limit: '100kb' }))
 
 // ─── No caching ──────────────────────────────────────────────────────
@@ -54,9 +63,25 @@ app.use('/api/v1/bookings', bookingRouter)           // mixed: POST/availability
 app.use('/api/v1/blog', blogRouter)                  // mixed: GET public, write admin
 app.use('/api/v1/categories', categoryRouter)        // mixed: GET public, write admin
 app.use('/api/v1/images', requireAuth, imagesRouter)         // admin only (uploads)
+app.use('/api/v1/videos', videosRouter)              // mixed: uploads admin, playback admin or site
+app.use('/api/v1/mentorship', mentorshipRouter)      // mixed: availability public, booking via site, rest admin
 app.use('/api/v1/analytics', requireAuth, analyticsRouter)
 app.use('/api/v1/google-analytics', requireAuth, gaRouter)
 app.use('/api/v1/search-console', requireAuth, scRouter)
+
+// ─── Console resources (CRUD engine; see src/core/crud.ts) ───────────
+// Each router mounts several collections under its own paths, so the URL a
+// frontend calls is flat: /api/v1/programs, /api/v1/orders, /api/v1/faqs.
+app.use('/api/v1', academyRouter)   // programs, learners, enrolments, certificates…
+app.use('/api/v1', salesRouter)     // orders, payments, coupons
+app.use('/api/v1', therapyRouter)   // services, practitioners, availability, slots
+app.use('/api/v1', contentRouter)   // pages, faqs, translations, media-assets
+app.use('/api/v1', crmRouter)       // enquiries, funnel
+app.use('/api/v1', systemRouter)    // users, audit-log, settings
+
+// Learner-facing. Called by stretch.vn's server after it has checked the
+// Google session — never by a browser. See middleware/requireSite.ts.
+app.use('/api/v1/learner', learnerRouter)
 
 // ─── 404 Handler ─────────────────────────────────────────────────────
 app.use((req, res) => {

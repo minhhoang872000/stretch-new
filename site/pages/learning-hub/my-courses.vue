@@ -11,6 +11,28 @@ const { trackPageView } = useTracking()
 const { loggedIn } = useHubSession()
 const { open: openAuth } = useAuthModal()
 const { active, completed } = useMyLearning()
+const { programs } = useLearningCatalog()
+const { notify } = useNotification()
+
+/**
+ * "Keep studying" opens the player, at the lesson they stopped on — but only
+ * when that slug is really in the catalogue. Enrolments and the catalogue are
+ * separate placeholder lists today, so a missing slug falls back to the
+ * catalogue instead of a 404.
+ */
+function courseLink(slug: string) {
+  return programs.value.some((p) => p.slug === slug)
+    ? localePath(`/learning-hub/learn/${slug}`)
+    : localePath('/learning-hub/programs')
+}
+
+/**
+ * There is no certificate viewer route yet. Naming the code is more use than a
+ * link into a 404 — and a dead `NuxtLink` also fails the prerender crawl.
+ */
+function openCertificate(code: string) {
+  notify(t('learning.my.certificate_pending', { code }), 'info', 6000)
+}
 
 const tab = ref<'learning' | 'done'>('learning')
 
@@ -143,7 +165,7 @@ onMounted(() => {
                     {{ t('learning.my.updated', { date: item.updatedAt }) }}
                   </span>
 
-                  <NuxtLink :to="localePath('/learning-hub/programs')" class="ecard__cta">
+                  <NuxtLink :to="courseLink(item.slug)" class="ecard__cta">
                     {{ t('learning.my.continue') }}
                   </NuxtLink>
                 </div>
@@ -179,12 +201,12 @@ onMounted(() => {
                   <p class="drow__title">{{ item.title }}</p>
                   <p class="drow__date">{{ t('learning.my.completed_on', { date: item.completedAt }) }}</p>
                   <div class="drow__actions">
-                    <NuxtLink :to="localePath('/learning-hub/programs')" class="drow__btn">
+                    <NuxtLink :to="courseLink(item.slug)" class="drow__btn">
                       {{ t('learning.my.relearn') }}
                     </NuxtLink>
-                    <NuxtLink :to="localePath(`/certificates/${item.certificateCode}`)" class="drow__link">
+                    <button type="button" class="drow__link" @click="openCertificate(item.certificateCode)">
                       {{ t('learning.my.certificate') }} →
-                    </NuxtLink>
+                    </button>
                   </div>
                 </div>
 

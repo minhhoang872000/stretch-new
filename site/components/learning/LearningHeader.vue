@@ -21,7 +21,7 @@ function openAuth(view: 'login' | 'register') {
 const navLinks = computed(() => [
   { label: t('learning.nav.home'), to: localePath('/learning-hub'), exact: true },
   { label: t('learning.nav.programs'), to: localePath('/learning-hub/programs') },
-  { label: t('learning.nav.schedule'), hash: '#schedule' },
+  { label: t('learning.nav.schedule'), to: localePath('/learning-hub/schedule') },
   { label: t('learning.nav.hub'), to: localePath('/sharing-hub') },
   { label: t('learning.nav.support'), hash: '#support' },
 ])

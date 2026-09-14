@@ -8,8 +8,11 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 const { formatPrice } = useLearningCatalog()
 const { toggle, isSaved } = useSavedPrograms()
+
+const to = computed(() => localePath(`/learning-hub/programs/${props.program.slug}`))
 
 const kindLabel = computed(() => t(`learning.catalog.kind_${props.program.kind}`))
 const modeLabel = computed(() => t(`learning.catalog.badge_${props.program.mode}`))
@@ -20,7 +23,7 @@ const scheduled = computed(() => Boolean(props.program.date))
 
 <template>
   <article class="pcard" :class="{ 'pcard--list': list }">
-    <div class="pcard__media">
+    <NuxtLink :to="to" class="pcard__media" :aria-label="program.title">
       <NuxtImg
         :src="program.image"
         :alt="program.title"
@@ -31,10 +34,12 @@ const scheduled = computed(() => Boolean(props.program.date))
       />
       <span class="pcard__kind" :class="`pcard__kind--${program.kind}`">{{ kindLabel }}</span>
       <span class="pcard__mode">{{ modeLabel }}</span>
-    </div>
+    </NuxtLink>
 
     <div class="pcard__body">
-      <h3 class="pcard__title">{{ program.title }}</h3>
+      <NuxtLink :to="to" class="pcard__titlelink">
+        <h3 class="pcard__title">{{ program.title }}</h3>
+      </NuxtLink>
 
       <p class="pcard__meta">
         <template v-if="scheduled">
@@ -114,6 +119,7 @@ const scheduled = computed(() => Boolean(props.program.date))
 
 .pcard__media {
   position: relative;
+  display: block;
   aspect-ratio: 16 / 10;
   flex-shrink: 0;
   background: var(--color-off-white);
@@ -173,8 +179,13 @@ const scheduled = computed(() => Boolean(props.program.date))
   padding: 0.8rem 0.85rem 0.75rem;
 }
 
+.pcard__titlelink:hover .pcard__title {
+  color: var(--color-accent);
+}
+
 .pcard__title {
   display: -webkit-box;
+  transition: color 0.2s ease;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;

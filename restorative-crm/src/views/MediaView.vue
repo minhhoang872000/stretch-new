@@ -1,26 +1,35 @@
 <template>
-  <div class="p-6 lg:p-8 max-w-7xl mx-auto">
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-      <div>
-        <p class="label-xs mb-1">Thư viện</p>
-        <h1 class="text-2xl font-bold text-on-surface font-headline">Thư viện ảnh</h1>
-        <p class="text-sm text-on-surface-variant mt-1">
-          Quản lý ảnh đã tải lên — sao chép đường dẫn để dùng lại, hoặc xoá ảnh không cần.
-        </p>
-      </div>
-      <div class="flex items-center gap-2">
-        <button type="button" class="btn-outline !py-2.5 !px-4 text-sm flex items-center gap-1.5" :disabled="media.loading.value" @click="media.load()">
-          <span class="material-symbols-outlined text-sm" :class="{ 'animate-spin': media.loading.value }">refresh</span>
+  <div class="page">
+    <PageHeader
+      eyebrow="Nội dung"
+      title="Thư viện ảnh"
+      subtitle="Ảnh dùng chung cho bài viết, chương trình và dịch vụ — sao chép đường dẫn để dùng lại, hoặc xoá ảnh không cần."
+    >
+      <template #actions>
+        <button
+          type="button"
+          class="btn-outline btn-sm"
+          :disabled="media.loading.value"
+          @click="media.load()"
+        >
+          <span class="material-symbols-outlined text-lg" :class="{ 'animate-spin': media.loading.value }">refresh</span>
           Làm mới
         </button>
-        <button type="button" class="btn-primary !py-2.5 !px-5 text-sm flex items-center gap-1.5" :disabled="media.uploading.value" @click="fileInput?.click()">
-          <span class="material-symbols-outlined text-sm" :class="{ 'animate-spin': media.uploading.value }">{{ media.uploading.value ? 'progress_activity' : 'upload' }}</span>
+        <button
+          type="button"
+          class="btn-primary btn-sm"
+          :disabled="media.uploading.value"
+          @click="fileInput?.click()"
+        >
+          <span
+            class="material-symbols-outlined text-lg"
+            :class="{ 'animate-spin': media.uploading.value }"
+          >{{ media.uploading.value ? 'progress_activity' : 'upload' }}</span>
           {{ media.uploading.value ? 'Đang tải…' : 'Tải ảnh lên' }}
         </button>
         <input ref="fileInput" type="file" accept="image/*" multiple class="hidden" @change="onUpload" />
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
     <div v-if="media.error.value" class="mb-4 p-3 rounded-xl bg-error/5 text-error text-sm">{{ media.error.value }}</div>
 
@@ -111,6 +120,7 @@
 </template>
 
 <script setup>
+import PageHeader from '@/components/ui/PageHeader.vue'
 import { onMounted, ref } from 'vue'
 import { useMediaLibrary, formatBytes } from '@/composables/useMediaLibrary'
 import { useNotify } from '@/composables/useNotify'

@@ -1,0 +1,35 @@
+# Local PostgreSQL for lead-tracker-api.
+#
+#   docker compose up -d
+#
+# The credentials match the defaults in .env.example (localhost:5432,
+# postgres/postgres/postgres) so a fresh checkout connects without editing
+# anything. Change them in both places or in neither.
+#
+# Data lives in a named volume, so `docker compose down` keeps it and
+# `docker compose down -v` is the deliberate way to throw it away.
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: stretch-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      # Vietnamese sorts correctly under ICU; the default C collation puts
+      # "Đ" after "Z" and every name list in the console comes out wrong.
+      POSTGRES_INITDB_ARGS: "--locale-provider=icu --icu-locale=vi-VN --encoding=UTF8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:

@@ -1,28 +1,29 @@
 <template>
-  <main class="p-4 lg:p-8 max-w-7xl mx-auto w-full">
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
-      <div>
-        <span class="label-xs mb-1 block">Content Management</span>
-        <h1 class="text-2xl lg:text-3xl font-headline font-extrabold text-on-surface tracking-tight">Categories</h1>
-      </div>
-      <button @click="openCreate" class="btn-primary flex items-center gap-2 justify-center w-full sm:w-auto">
-        <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1">add</span>
-        New Category
-      </button>
-    </div>
+  <main class="page">
+    <PageHeader
+      eyebrow="Nội dung"
+      title="Danh mục"
+      subtitle="Danh mục dùng cho bài viết trên sharing-hub. Xoá một danh mục đang có bài sẽ để lại bài không phân loại."
+    >
+      <template #actions>
+        <button type="button" class="btn-primary btn-sm" @click="openCreate">
+          <span class="material-symbols-outlined text-lg">add</span>
+          Danh mục mới
+        </button>
+      </template>
+    </PageHeader>
 
     <!-- Loading / Error -->
-    <div v-if="catStore.loading" class="card p-8 text-center text-on-surface-variant">Loading categories…</div>
+    <div v-if="catStore.loading" class="card p-8 text-center text-on-surface-variant">Đang tải danh mục…</div>
     <div v-else-if="catStore.error" class="card p-8 text-center text-error">{{ catStore.error }}</div>
 
     <template v-else>
       <!-- Empty state -->
       <div v-if="categories.length === 0" class="card p-10 text-center">
         <span class="material-symbols-outlined text-4xl text-outline mb-3 block">category</span>
-        <p class="text-sm text-on-surface-variant mb-4">No categories yet.</p>
+        <p class="text-sm text-on-surface-variant mb-4">Chưa có danh mục nào.</p>
         <button @click="openCreate" class="btn-primary !text-xs inline-flex items-center gap-1.5">
-          <span class="material-symbols-outlined text-sm">add</span> Create your first category
+          <span class="material-symbols-outlined text-sm">add</span> Tạo danh mục đầu tiên
         </button>
       </div>
 
@@ -44,30 +45,30 @@
             </div>
             <div class="text-right shrink-0">
               <p class="text-2xl font-extrabold text-on-surface">{{ cat.posts.length }}</p>
-              <p class="text-xs text-on-surface-variant">posts</p>
+              <p class="text-xs text-on-surface-variant">bài viết</p>
             </div>
           </div>
 
           <!-- Stats Row -->
           <div class="grid grid-cols-3 divide-x divide-outline-variant/20 bg-surface-container-lowest">
             <div class="px-4 py-3 text-center">
-              <p class="text-base font-bold text-teal-600">{{ cat.publishedCount }}</p>
-              <p class="text-xs text-on-surface-variant">Published</p>
+              <p class="text-base font-bold text-ok">{{ cat.publishedCount }}</p>
+              <p class="text-xs text-on-surface-variant">Đã xuất bản</p>
             </div>
             <div class="px-4 py-3 text-center">
-              <p class="text-base font-bold text-amber-500">{{ cat.draftCount }}</p>
-              <p class="text-xs text-on-surface-variant">Draft</p>
+              <p class="text-base font-bold text-warn">{{ cat.draftCount }}</p>
+              <p class="text-xs text-on-surface-variant">Nháp</p>
             </div>
             <div class="px-4 py-3 text-center">
               <p class="text-base font-bold text-on-surface">{{ cat.totalViews.toLocaleString() }}</p>
-              <p class="text-xs text-on-surface-variant">Views</p>
+              <p class="text-xs text-on-surface-variant">Lượt xem</p>
             </div>
           </div>
 
           <!-- Recent Posts -->
           <div class="px-6 py-4 space-y-3">
-            <p class="label-xs">Recent posts</p>
-            <div v-if="cat.posts.length === 0" class="text-sm text-on-surface-variant py-2">No posts yet.</div>
+            <p class="label-xs">Bài mới nhất</p>
+            <div v-if="cat.posts.length === 0" class="text-sm text-on-surface-variant py-2">Chưa có bài nào.</div>
             <router-link
               v-for="post in cat.posts.slice(0, 3)"
               :key="post.slug"
@@ -79,15 +80,15 @@
               </div>
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-semibold text-on-surface truncate group-hover/item:text-primary transition-colors hover:underline">{{ post.title }}</p>
-                <p class="text-xs text-on-surface-variant">{{ post.date }} · {{ post.views }} views</p>
+                <p class="text-xs text-on-surface-variant">{{ post.date }} · {{ post.views }} lượt xem</p>
               </div>
               <span
                 class="text-xs font-bold shrink-0"
-                :class="post.status === 'published' ? 'text-teal-600' : 'text-amber-500'"
+                :class="post.status === 'published' ? 'text-ok' : 'text-warn'"
               >{{ post.status === 'published' ? '●' : '○' }}</span>
             </router-link>
             <div v-if="cat.posts.length > 3" class="text-xs text-on-surface-variant pt-1">
-              +{{ cat.posts.length - 3 }} more posts
+              +{{ cat.posts.length - 3 }} bài khác
             </div>
           </div>
 
@@ -98,7 +99,7 @@
               @click="setFilter(cat.label)"
               class="flex items-center gap-1.5 text-xs font-bold text-primary hover:opacity-70 transition-opacity"
             >
-              View all {{ cat.label }} posts
+              Xem tất cả bài {{ cat.label }}
               <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </router-link>
             <div class="flex items-center gap-1">
@@ -116,25 +117,25 @@
       <!-- Overall Summary -->
       <div v-if="categories.length" class="mt-6 card p-5 flex flex-wrap gap-6">
         <div>
-          <p class="label-xs mb-0.5">Categories</p>
+          <p class="label-xs mb-0.5">Danh mục</p>
           <p class="text-2xl font-extrabold text-on-surface">{{ categories.length }}</p>
         </div>
         <div>
-          <p class="label-xs mb-0.5">Total Posts</p>
+          <p class="label-xs mb-0.5">Tổng bài viết</p>
           <p class="text-2xl font-extrabold text-on-surface">{{ blogStore.stats.total }}</p>
         </div>
         <div>
-          <p class="label-xs mb-0.5">Published</p>
-          <p class="text-2xl font-extrabold text-teal-600">{{ blogStore.stats.published }}</p>
+          <p class="label-xs mb-0.5">Đã xuất bản</p>
+          <p class="text-2xl font-extrabold text-ok">{{ blogStore.stats.published }}</p>
         </div>
         <div>
-          <p class="label-xs mb-0.5">Draft</p>
-          <p class="text-2xl font-extrabold text-amber-500">{{ blogStore.stats.draft }}</p>
+          <p class="label-xs mb-0.5">Nháp</p>
+          <p class="text-2xl font-extrabold text-warn">{{ blogStore.stats.draft }}</p>
         </div>
         <div class="ml-auto self-center">
           <router-link :to="{ name: 'Blog' }" class="btn-primary flex items-center gap-2 !py-2 !text-xs">
             <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">add</span>
-            New Post
+            Bài viết mới
           </router-link>
         </div>
       </div>
@@ -143,8 +144,8 @@
     <!-- ════════════ Create / Edit Modal ════════════ -->
     <ActionModal
       v-model:isOpen="editorOpen"
-      :title="editingCat ? 'Edit Category' : 'New Category'"
-      :submitLabel="editingCat ? 'Save Changes' : 'Create Category'"
+      :title="editingCat ? 'Sửa danh mục' : 'Danh mục mới'"
+      :submitLabel="editingCat ? 'Lưu thay đổi' : 'Tạo danh mục'"
       :loading="saving"
       @submit="handleSubmit"
     >
@@ -233,6 +234,7 @@
 </template>
 
 <script setup>
+import PageHeader from '@/components/ui/PageHeader.vue'
 import { computed, reactive, ref, onMounted } from 'vue'
 import ActionModal from '@/components/ui/ActionModal.vue'
 import { useBlogStore } from '@/stores/blog.js'
@@ -249,7 +251,7 @@ onMounted(() => {
 })
 
 const COLOR_THEMES = [
-  { name: 'Teal', iconBg: 'bg-teal-50', iconColor: 'text-teal-600' },
+  { name: 'Teal', iconBg: 'bg-teal-50', iconColor: 'text-ok' },
   { name: 'Blue', iconBg: 'bg-blue-50', iconColor: 'text-blue-600' },
   { name: 'Purple', iconBg: 'bg-purple-50', iconColor: 'text-purple-600' },
   { name: 'Orange', iconBg: 'bg-orange-50', iconColor: 'text-orange-500' },
@@ -291,7 +293,7 @@ const emptyForm = () => ({
   description: '',
   icon: 'category',
   iconBg: 'bg-teal-50',
-  iconColor: 'text-teal-600',
+  iconColor: 'text-ok',
   sortOrder: catStore.categories.length,
 })
 

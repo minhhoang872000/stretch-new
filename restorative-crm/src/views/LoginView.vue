@@ -1,103 +1,138 @@
 <template>
-  <div class="relative min-h-screen flex items-center justify-center p-4 overflow-hidden bg-slate-950">
-    <div class="absolute inset-0 z-0">
-      <div class="absolute -top-[30%] -left-[20%] w-[70%] h-[70%] rounded-full bg-emerald-500/10 blur-[120px] animate-pulse-slow"></div>
-      <div class="absolute -bottom-[30%] -right-[20%] w-[70%] h-[70%] rounded-full bg-teal-500/10 blur-[120px] animate-pulse-slow-delayed"></div>
-      <div class="absolute top-[40%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[40%] h-[40%] rounded-full bg-indigo-500/5 blur-[100px]"></div>
-    </div>
-
-    <div class="relative z-10 w-full max-w-md animate-fade-in-up">
-      <div class="backdrop-blur-xl bg-slate-900/60 border border-slate-800 rounded-3xl shadow-2xl p-8 lg:p-10">
-        <div class="flex flex-col items-center mb-8">
-          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-slate-950 shadow-lg shadow-emerald-500/20 mb-4 animate-scale-up">
-            <span class="material-symbols-outlined text-2xl font-bold">clinical_notes</span>
+  <!-- Two-panel sign-in: the form on the left, what this console covers on the
+       right. Same token palette as the rest of the app — no separate dark
+       gradient world for one screen. -->
+  <div class="min-h-screen grid lg:grid-cols-[minmax(0,1fr),minmax(0,1.1fr)] bg-canvas">
+    <div class="flex items-center justify-center px-5 py-10 lg:px-12">
+      <div class="w-full max-w-sm">
+        <div class="flex items-center gap-2.5 mb-8">
+          <span
+            class="w-9 h-9 rounded-md bg-accent text-white flex items-center justify-center"
+            aria-hidden="true"
+          >
+            <span class="material-symbols-outlined ms-fill text-xl">accessibility_new</span>
+          </span>
+          <div>
+            <p class="font-headline font-extrabold text-[0.9375rem] text-ink leading-tight">Stretch.vn</p>
+            <p class="text-2xs text-ink-3 font-semibold">Bảng điều khiển</p>
           </div>
-          <h1 class="text-2xl font-extrabold text-white text-center tracking-tight font-headline">Chào mừng trở lại</h1>
-          <p class="text-sm text-slate-400 text-center mt-1.5 font-light">Truy cập tài khoản Stretch.vn Admin của bạn</p>
         </div>
 
-        <form @submit.prevent="handleSubmit" class="space-y-5">
-          <div class="flex flex-col gap-1.5">
-            <label class="text-xs font-bold tracking-widest text-slate-400 uppercase">Email</label>
-            <div class="relative flex items-center">
-              <span class="material-symbols-outlined absolute left-3.5 text-slate-500 text-lg">alternate_email</span>
-              <InputText
-                id="email"
+        <h1 class="text-2xl font-headline font-extrabold text-ink tracking-tight">Đăng nhập</h1>
+        <p class="mt-1.5 text-[0.8125rem] text-ink-2">
+          Dành cho nhân sự Stretch. Học viên đăng nhập ở
+          <a href="https://stretch.vn/learning-hub" class="link">trang học viện</a>.
+        </p>
+
+        <form class="mt-6 space-y-4" @submit.prevent="handleSubmit">
+          <FormRow label="Email" required :error="errors.email">
+            <template #default="{ id }">
+              <input
+                :id="id"
                 v-model="email"
                 type="email"
-                class="login-input w-full"
-                :class="{ 'border-red-500/50': errors.email }"
-                placeholder="admin@stretch.vn"
+                class="input"
                 autocomplete="email"
+                placeholder="ten@stretch.vn"
+                :aria-invalid="!!errors.email"
               />
-            </div>
-            <span v-if="errors.email" class="text-xs text-red-400 mt-1 flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs">error</span>{{ errors.email }}
-            </span>
-          </div>
+            </template>
+          </FormRow>
 
-          <div class="flex flex-col gap-1.5">
-            <label class="text-xs font-bold tracking-widest text-slate-400 uppercase">Mật khẩu</label>
-            <div class="relative flex items-center">
-              <span class="material-symbols-outlined absolute left-3.5 text-slate-500 text-lg">lock</span>
-              <InputText
-                id="password"
-                v-model="password"
-                :type="showPassword ? 'text' : 'password'"
-                class="login-input w-full pr-10"
-                :class="{ 'border-red-500/50': errors.password }"
-                placeholder="Nhập mật khẩu của bạn"
-                autocomplete="current-password"
-              />
-              <button type="button" @click="showPassword = !showPassword"
-                class="absolute right-3 text-slate-500 hover:text-slate-300 transition-colors flex items-center focus:outline-none">
-                <span class="material-symbols-outlined text-lg">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
-              </button>
-            </div>
-            <span v-if="errors.password" class="text-xs text-red-400 mt-1 flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs">error</span>{{ errors.password }}
-            </span>
-          </div>
+          <FormRow label="Mật khẩu" required :error="errors.password">
+            <template #default="{ id }">
+              <div class="relative">
+                <input
+                  :id="id"
+                  v-model="password"
+                  :type="showPassword ? 'text' : 'password'"
+                  class="input pr-10"
+                  autocomplete="current-password"
+                  :aria-invalid="!!errors.password"
+                />
+                <button
+                  type="button"
+                  class="absolute right-1 top-1/2 -translate-y-1/2 btn-ghost btn-sm btn-icon"
+                  :aria-label="showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'"
+                  @click="showPassword = !showPassword"
+                >
+                  <span class="material-symbols-outlined text-lg">
+                    {{ showPassword ? 'visibility_off' : 'visibility' }}
+                  </span>
+                </button>
+              </div>
+            </template>
+          </FormRow>
 
-          <div v-if="errorMessage" class="p-3.5 rounded-xl bg-red-950/40 border border-red-900/50 text-red-400 text-xs flex items-start gap-2.5 animate-shake">
-            <span class="material-symbols-outlined text-base text-red-400 shrink-0">error</span>
-            <span>{{ errorMessage }}</span>
-          </div>
-
-          <button type="submit" :disabled="loading"
-            class="relative w-full h-11 flex items-center justify-center rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-sm tracking-wide hover:from-emerald-400 hover:to-teal-400 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none transition-all shadow-lg shadow-emerald-500/10 mt-6"
+          <p
+            v-if="errorMessage"
+            class="panel-quiet !bg-danger-soft !border-danger-line px-3 py-2.5 text-xs text-danger flex items-start gap-2"
+            role="alert"
           >
-            <span v-if="loading" class="flex items-center gap-2">
-              <span class="material-symbols-outlined animate-spin text-lg">progress_activity</span>
-              Đang đăng nhập...
-            </span>
-            <span v-else>Đăng nhập</span>
+            <span class="material-symbols-outlined text-base shrink-0">error</span>
+            {{ errorMessage }}
+          </p>
+
+          <button type="submit" class="btn-primary btn-lg w-full" :disabled="loading">
+            <span v-if="loading" class="material-symbols-outlined text-lg animate-spin">progress_activity</span>
+            {{ loading ? 'Đang kiểm tra…' : 'Đăng nhập' }}
           </button>
         </form>
 
-        <div class="mt-8 pt-6 border-t border-slate-800/80">
-          <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold text-center mb-3">Tài khoản Demo</p>
-          <button @click="fillDemoCredentials"
-            class="w-full flex items-center justify-between p-3 rounded-xl bg-slate-900/40 border border-slate-800 hover:bg-slate-800/40 transition-all text-left group">
-            <div class="flex flex-col gap-0.5">
-              <span class="text-xs font-semibold text-slate-300">admin@stretch.vn</span>
-              <span class="text-[10px] text-slate-500 font-light">· Nhấp để tự điền</span>
-            </div>
-            <span class="material-symbols-outlined text-base text-slate-500 group-hover:text-emerald-400 transition-colors">input</span>
+        <div class="mt-6 pt-5 border-t border-line">
+          <p class="label-xs mb-2">Tài khoản mẫu</p>
+          <button
+            type="button"
+            class="w-full panel-quiet px-3 py-2.5 flex items-center gap-3 text-left hover:border-accent-line transition-colors"
+            @click="fillDemo"
+          >
+            <span class="material-symbols-outlined text-lg text-ink-3">science</span>
+            <span class="min-w-0 flex-1">
+              <span class="block text-xs font-bold text-ink">admin@stretch.vn</span>
+              <span class="block text-2xs text-ink-3">Bấm để điền — dùng khi chưa bật API</span>
+            </span>
+            <span class="kbd">↵</span>
           </button>
         </div>
       </div>
     </div>
+
+    <!-- What the console manages: sets expectations before the first login. -->
+    <aside class="hidden lg:flex flex-col justify-center px-12 py-10 bg-panel border-l border-line">
+      <p class="label-xs">Bảng điều khiển quản lý</p>
+      <ul class="mt-4 space-y-3 max-w-md">
+        <li v-for="area in areas" :key="area.title" class="flex items-start gap-3">
+          <span
+            class="w-8 h-8 rounded-md bg-accent-soft text-accent-ink flex items-center justify-center shrink-0"
+            aria-hidden="true"
+          >
+            <span class="material-symbols-outlined text-lg">{{ area.icon }}</span>
+          </span>
+          <span class="min-w-0">
+            <span class="block text-[0.8125rem] font-bold text-ink">{{ area.title }}</span>
+            <span class="block text-xs text-ink-2">{{ area.detail }}</span>
+          </span>
+        </li>
+      </ul>
+      <p class="mt-8 text-2xs text-ink-3 max-w-md">
+        Các module học viện, bán hàng, chuyên viên và nội dung đang chạy trên dữ liệu mẫu lưu
+        trong trình duyệt — chưa nối API thật.
+      </p>
+    </aside>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { reactive, ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.js'
+import { useNotify } from '@/composables/useNotify.js'
+import FormRow from '@/components/ui/FormRow.vue'
 
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
+const notify = useNotify()
 
 const email = ref('')
 const password = ref('')
@@ -106,68 +141,44 @@ const loading = ref(false)
 const errorMessage = ref('')
 const errors = reactive({ email: '', password: '' })
 
-const fillDemoCredentials = () => {
+const areas = [
+  { icon: 'school', title: 'Học viện', detail: 'Chương trình, syllabus, lịch khai giảng, học viên, chứng nhận.' },
+  { icon: 'receipt_long', title: 'Bán hàng', detail: 'Đơn hàng, thanh toán, mã giảm giá.' },
+  { icon: 'event_available', title: 'Trị liệu', detail: 'Lịch hẹn, dịch vụ, chuyên viên, khung giờ.' },
+  { icon: 'article', title: 'Nội dung', detail: 'Bài viết, trang tĩnh, FAQ, ngôn ngữ, SEO.' },
+  { icon: 'person_search', title: 'Khách hàng', detail: 'Lead, yêu cầu doanh nghiệp, phễu chuyển đổi.' },
+]
+
+function fillDemo() {
   email.value = 'admin@stretch.vn'
-  password.value = 'Admin@stretch1'
+  password.value = authStore.DEMO_PASSWORD
   errors.email = ''
   errors.password = ''
   errorMessage.value = ''
 }
 
-const validate = () => {
-  let isValid = true
+function validate() {
   errors.email = ''
   errors.password = ''
-  if (!email.value.trim()) { errors.email = 'Trường này là bắt buộc'; isValid = false }
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { errors.email = 'Email không hợp lệ'; isValid = false }
-  if (!password.value) { errors.password = 'Trường này là bắt buộc'; isValid = false }
-  return isValid
+  if (!email.value.trim()) errors.email = 'Cần nhập email.'
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) errors.email = 'Email chưa đúng dạng.'
+  if (!password.value) errors.password = 'Cần nhập mật khẩu.'
+  return !errors.email && !errors.password
 }
 
-const handleSubmit = async () => {
+async function handleSubmit() {
   if (!validate()) return
   loading.value = true
   errorMessage.value = ''
   const result = await authStore.login(email.value.trim(), password.value)
+  loading.value = false
   if (result.success) {
-    router.push({ name: 'Dashboard' })
+    notify.success(`Đăng nhập thành công. Chào ${authStore.user?.name || 'bạn'}!`)
+    const next = typeof route.query.next === 'string' ? route.query.next : null
+    router.push(next || { name: 'Dashboard' })
   } else {
     errorMessage.value = result.message
+    notify.error(result.message)
   }
-  loading.value = false
 }
 </script>
-
-<style scoped>
-:deep(.p-inputtext.login-input) {
-  font-family: 'Manrope', sans-serif !important;
-  font-size: 0.875rem !important;
-  border-radius: 0.75rem !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  background-color: rgba(15, 23, 42, 0.6) !important;
-  color: #f8fafc !important;
-  padding: 0.625rem 0.875rem 0.625rem 2.75rem !important;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-:deep(.p-inputtext.login-input:hover) { border-color: rgba(16, 185, 129, 0.4) !important; }
-:deep(.p-inputtext.login-input:focus) {
-  outline: none !important;
-  border-color: #10b981 !important;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15) !important;
-  background-color: rgba(15, 23, 42, 0.9) !important;
-}
-.animate-pulse-slow { animation: pulse-slow 8s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-.animate-pulse-slow-delayed { animation: pulse-slow 8s cubic-bezier(0.4, 0, 0.6, 1) infinite; animation-delay: 4s; }
-@keyframes pulse-slow { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
-.animate-fade-in-up { animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-@keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-.animate-scale-up { animation: scale-up 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-@keyframes scale-up { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
-.animate-shake { animation: shake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
-@keyframes shake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-  40%, 60% { transform: translate3d(4px, 0, 0); }
-}
-</style>

@@ -1,5 +1,5 @@
 <template>
-  <main class="p-4 lg:p-8 max-w-4xl mx-auto w-full">
+  <main class="page-narrow">
     <!-- Top bar -->
     <div class="flex items-center justify-between gap-3 mb-6">
       <button @click="goBack" class="flex items-center gap-1.5 text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors">
@@ -7,7 +7,7 @@
         Back to posts
       </button>
       <div v-if="post" class="flex items-center gap-2">
-        <span class="text-xs font-bold px-2.5 py-1 rounded-full" :class="post.status === 'published' ? 'bg-teal-50 text-teal-700' : 'bg-amber-50 text-amber-600'">
+        <span class="text-xs font-bold px-2.5 py-1 rounded-full" :class="post.status === 'published' ? 'bg-info-soft text-info' : 'bg-amber-50 text-amber-600'">
           {{ post.status === 'published' ? 'Published' : 'Draft' }}
         </span>
         <button @click="editPost" class="btn-primary !py-2 !text-xs flex items-center gap-1.5">

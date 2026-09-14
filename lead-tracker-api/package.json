@@ -7,8 +7,15 @@
     "start": "tsx server.ts",
     "dev": "tsx watch server.ts",
     "build": "tsc",
+    "db:migrate": "tsx src/migrate.ts",
     "seed": "tsx src/seed.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "seed:console": "tsx src/seedConsole.ts",
+    "seed:generate": "node scripts/generate-console-seed.mjs",
+    "seed:check": "node scripts/check-console-seed.mjs",
+    "test:smoke": "node scripts/smoke-test.mjs",
+    "test:learner": "node scripts/learner-test.mjs",
+    "test:r2": "node scripts/r2-test.mjs"
   },
   "engines": {
     "node": ">=20.0.0"

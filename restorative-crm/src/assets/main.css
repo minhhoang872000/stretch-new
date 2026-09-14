@@ -2,167 +2,392 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ═══════════════════════════════════════
-   Global Design System
-   ═══════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════
+   Stretch Admin — base layer
+   Tokens live in tailwind.config.js; this file holds what cannot be
+   expressed as a utility: fonts, focus, density, the shared
+   component classes, and the PrimeVue skin.
+   ═══════════════════════════════════════════════════════════════ */
 
-/* --- Icon font --- */
+/* ── Icon font ─────────────────────────────────────────────────
+   Hide the raw ligature text (e.g. "filter_alt_off") until the icon
+   font is loaded — see the ms-ready toggle in index.html.
+   visibility (not display) keeps the box, so nothing shifts. */
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  /* Hide the raw ligature text (e.g. "filter_alt_off") until the icon font
-     is loaded — see the ms-ready toggle in index.html. visibility (not
-     display) keeps the icon's box so there's no layout shift on reveal. */
   visibility: hidden;
+  user-select: none;
 }
 .ms-ready .material-symbols-outlined {
   visibility: visible;
 }
-
-/* --- Base Typography --- */
-/* Root font-size drives every rem-based Tailwind utility (text, spacing,
-   radius). Dropping it from the 16px default scales the whole UI down a notch. */
-html {
-  font-size: 14px;
+/* Filled variant for active nav and status glyphs */
+.ms-fill {
+  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
 }
 
-body {
-  font-family: 'Manrope', sans-serif;
-  font-size: 0.9rem; /* ~13.5px */
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-h1, h2, h3, h4 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-}
-
-/* --- Scrollbar Utility --- */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* --- Form Reset --- */
-input, select, textarea {
-  font-family: 'Manrope', sans-serif;
-  font-size: 0.875rem; /* 14px */
-}
-
-/* --- Card/Panel shared pattern --- */
-@layer components {
-  .card {
-    @apply bg-white rounded-2xl border border-outline-variant/10 shadow-sm;
+@layer base {
+  /* Root font-size drives every rem-based utility. 15px keeps the
+     console dense without pushing body copy under the 12px floor. */
+  html {
+    font-size: 15px;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
+
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 0.9333rem; /* 14px */
+    line-height: 1.55;
+    color: theme('colors.ink.DEFAULT');
+    background: theme('colors.canvas');
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Every number here sits in a column that has to line up: tables,
+     KPI tiles, money, counts. Tabular figures everywhere. */
+  table, .num, input[type='number'], time, td, th {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Visible keyboard focus is not optional. */
+  :focus-visible {
+    outline: 2px solid theme('colors.accent.DEFAULT');
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::selection {
+    background: theme('colors.accent.soft');
+    color: theme('colors.accent.ink');
+  }
+
+  /* Scrollbars in the console's own hue instead of the OS slab. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.line.strong') transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: theme('colors.line.strong');
+    border: 3px solid transparent;
+    background-clip: content-box;
+    border-radius: 9999px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.ink.4');
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  /* ── Page frame ───────────────────────────────────────────── */
+  .page {
+    @apply px-4 py-5 lg:px-7 lg:py-7 max-w-[1560px] mx-auto w-full;
+  }
+  .page-narrow {
+    @apply px-4 py-5 lg:px-7 lg:py-7 max-w-4xl mx-auto w-full;
+  }
+
+  /* ── Surfaces ─────────────────────────────────────────────
+     A card exists when elevation communicates hierarchy. Panels
+     that only group content use a hairline and no shadow. */
+  .card {
+    @apply bg-panel rounded-xl border border-line shadow-xs;
+  }
+  .panel {
+    @apply bg-panel rounded-xl border border-line;
+  }
+  .panel-quiet {
+    @apply bg-panel-2 rounded-lg border border-line-soft;
+  }
+
+  /* ── Type helpers ─────────────────────────────────────────── */
   .label-xs {
-    @apply text-[11px] font-bold tracking-widest text-outline-variant uppercase;
+    @apply text-2xs font-bold tracking-[0.12em] text-ink-3 uppercase;
+  }
+  .meta {
+    @apply text-xs text-ink-3;
+  }
+  .h-page {
+    @apply text-xl lg:text-2xl font-headline font-extrabold text-ink tracking-tight;
+  }
+  .h-section {
+    @apply text-sm font-headline font-bold text-ink;
+  }
+
+  /* ── Buttons: 8px radius, not pills. Press feedback on all. ── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 h-9 px-3.5 rounded-md
+           text-[0.8125rem] font-bold whitespace-nowrap
+           transition-[background-color,color,border-color,transform,box-shadow] duration-150
+           active:translate-y-px disabled:opacity-45 disabled:pointer-events-none;
+  }
+  .btn-sm {
+    @apply h-8 px-2.5 text-xs gap-1;
+  }
+  .btn-lg {
+    @apply h-11 px-5 text-sm;
+  }
+  .btn-icon {
+    @apply w-9 h-9 px-0 shrink-0;
   }
   .btn-primary {
-    @apply bg-primary text-on-primary px-5 py-2.5 rounded-full font-bold text-sm
-           hover:opacity-90 transition-all active:scale-95 shadow-md shadow-primary/10;
+    @apply btn bg-accent text-white shadow-xs hover:bg-accent-ink;
   }
   .btn-outline {
-    @apply border border-primary text-primary px-5 py-2.5 rounded-full font-bold text-sm
-           hover:bg-primary/5 transition-all active:scale-95;
+    @apply btn border border-line-strong bg-panel text-ink hover:border-accent hover:text-accent;
+  }
+  .btn-ghost {
+    @apply btn text-ink-2 hover:bg-panel-3 hover:text-ink;
   }
   .btn-secondary {
-    @apply bg-secondary-fixed text-on-secondary-fixed-variant px-5 py-2.5 rounded-full font-bold text-sm
-           hover:opacity-90 transition-all active:scale-95;
+    @apply btn bg-accent-soft text-accent-ink hover:bg-accent-line/60;
   }
+  .btn-danger {
+    @apply btn bg-danger-soft text-danger hover:bg-danger hover:text-white;
+  }
+
+  /* ── Form controls ─────────────────────────────────────────── */
+  .input,
   .input-field {
-    @apply w-full bg-surface-container-low border-none rounded-xl text-sm px-4 py-3
-           focus:ring-2 focus:ring-primary/20 transition-shadow;
+    @apply w-full h-9 bg-panel border border-line-strong rounded-md text-sm text-ink
+           px-3 placeholder:text-ink-4
+           focus:border-accent focus:ring-2 focus:ring-accent/15 focus:outline-none
+           transition-[border-color,box-shadow] duration-150;
+  }
+  textarea.input {
+    @apply h-auto py-2 leading-relaxed;
+  }
+  .select {
+    @apply input pr-8 appearance-none bg-no-repeat cursor-pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c8b86' stroke-width='2.2' stroke-linecap='round'><path d='M6 9l6 6 6-6'/></svg>");
+    background-position: right 0.5rem center;
+    background-size: 1rem;
+  }
+  .checkbox {
+    @apply w-4 h-4 rounded border-line-strong text-accent
+           focus:ring-2 focus:ring-accent/20 cursor-pointer;
+  }
+  .field-label {
+    @apply block text-xs font-bold text-ink-2 mb-1.5;
+  }
+  .field-hint {
+    @apply mt-1.5 text-xs text-ink-3;
+  }
+  .field-error {
+    @apply mt-1.5 text-xs font-semibold text-danger flex items-center gap-1;
+  }
+
+  /* ── Chips / status ───────────────────────────────────────── */
+  .chip {
+    @apply inline-flex items-center gap-1 h-6 px-2 rounded text-2xs font-bold
+           border bg-panel-2 border-line text-ink-2 whitespace-nowrap;
+  }
+  .chip-accent  { @apply bg-accent-soft border-accent-line/70 text-accent-ink; }
+  .chip-ok      { @apply bg-ok-soft border-ok-line text-ok; }
+  .chip-warn    { @apply bg-warn-soft border-warn-line text-warn; }
+  .chip-danger  { @apply bg-danger-soft border-danger-line text-danger; }
+  .chip-info    { @apply bg-info-soft border-info-line text-info; }
+
+  /* ── Table ─────────────────────────────────────────────────── */
+  .tbl {
+    @apply w-full text-[0.8125rem] border-separate border-spacing-0;
+  }
+  .tbl thead th {
+    @apply sticky top-0 z-10 bg-panel-2 text-left text-2xs font-bold uppercase
+           tracking-[0.08em] text-ink-3 px-3 py-2.5 border-b border-line
+           first:pl-4 last:pr-4;
+  }
+  .tbl tbody td {
+    @apply px-3 py-2.5 border-b border-line-soft align-middle first:pl-4 last:pr-4;
+  }
+  .tbl tbody tr:last-child td {
+    @apply border-b-0;
+  }
+  .tbl tbody tr {
+    @apply transition-colors;
+  }
+  .tbl-rows tbody tr:hover {
+    @apply bg-accent-soft/40;
+  }
+
+  /* ── Misc ─────────────────────────────────────────────────── */
+  .kbd {
+    @apply inline-flex items-center justify-center min-w-[1.35rem] h-[1.35rem] px-1
+           rounded border border-line-strong bg-panel-2 font-mono text-[0.65rem]
+           font-semibold text-ink-3;
+  }
+  .skeleton {
+    @apply relative overflow-hidden bg-panel-3 rounded;
+  }
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0 -translate-x-full animate-shimmer;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+  }
+  .link {
+    @apply text-accent font-semibold hover:text-accent-ink hover:underline underline-offset-2;
+  }
+  .divider {
+    @apply h-px bg-line;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  /* Skip-link: visible only while focused. */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:z-palette focus:top-3 focus:left-3
+           focus:h-9 focus:px-4 focus:inline-flex focus:items-center focus:rounded-md
+           focus:bg-ink focus:text-white focus:text-xs focus:font-bold;
   }
 }
 
-/* ═══════════════════════════════════════
-   PrimeVue Global Overrides
-   ═══════════════════════════════════════ */
+/* ── Motion: staggered list entry, opt-out honoured ────────────── */
+.stagger > * {
+  animation: fade-up 240ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
-/* --- InputText --- */
+/* ═══════════════════════════════════════════════════════════════
+   PrimeVue skin — pulled onto the token ramp above. The previous
+   overrides still carried a purple fallback from the starter theme.
+   ═══════════════════════════════════════════════════════════════ */
+.p-inputtext,
+.p-dropdown,
+.p-calendar .p-inputtext {
+  font-family: 'Manrope', system-ui, sans-serif !important;
+  font-size: 0.8125rem !important;
+  border-radius: 0.5rem !important;
+  border: 1px solid #cfd8d5 !important;
+  background-color: #ffffff !important;
+  color: #101a18 !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
 .p-inputtext {
-  font-family: 'Manrope', sans-serif !important;
-  font-size: 0.875rem !important;
-  border-radius: 0.75rem !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  background-color: var(--md-sys-color-surface-container-low, #f7f6f9) !important;
-  color: var(--md-sys-color-on-surface, #1d1b20) !important;
-  padding: 0.5rem 0.875rem !important;
-  transition: all 0.2s ease !important;
+  padding: 0.4rem 0.7rem !important;
 }
-.p-inputtext:hover {
-  border-color: var(--primary, #aa3bff) !important;
-}
-.p-inputtext:focus {
-  outline: none !important;
-  border-color: var(--primary, #aa3bff) !important;
-  box-shadow: 0 0 0 3px rgba(170, 59, 255, 0.1) !important;
-  background-color: #fff !important;
-}
-
-/* --- Dropdown --- */
-.p-dropdown {
-  font-family: 'Manrope', sans-serif !important;
-  font-size: 0.875rem !important;
-  border-radius: 0.75rem !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  background-color: var(--md-sys-color-surface-container-low, #f7f6f9) !important;
-  color: var(--md-sys-color-on-surface, #1d1b20) !important;
-  box-shadow: none !important;
-  transition: all 0.2s ease !important;
-  height: auto !important;
-}
+.p-inputtext:hover,
 .p-dropdown:hover {
-  border-color: var(--primary, #aa3bff) !important;
+  border-color: #036457 !important;
 }
+.p-inputtext:focus,
 .p-dropdown:focus-within {
-  border-color: var(--primary, #aa3bff) !important;
-  box-shadow: 0 0 0 3px rgba(170, 59, 255, 0.1) !important;
-  background-color: #fff !important;
+  outline: none !important;
+  border-color: #036457 !important;
+  box-shadow: 0 0 0 3px rgba(3, 100, 87, 0.14) !important;
 }
 .p-dropdown .p-dropdown-label {
-  padding: 0.5rem 0.875rem !important;
-  font-size: 0.875rem !important;
-  color: var(--md-sys-color-on-surface, #1d1b20) !important;
+  padding: 0.4rem 0.7rem !important;
+  font-size: 0.8125rem !important;
+  color: #101a18 !important;
   background: transparent !important;
 }
 .p-dropdown .p-dropdown-trigger {
-  width: 2.5rem !important;
-  color: var(--md-sys-color-on-surface-variant, #49454f) !important;
+  width: 2rem !important;
+  color: #7c8b86 !important;
 }
-
-/* --- Dropdown Panel --- */
-.p-dropdown-panel {
+.p-dropdown-panel,
+.p-datepicker {
   background: #ffffff !important;
-  border-radius: 0.75rem !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-  border: 1px solid rgba(0, 0, 0, 0.05) !important;
-  z-index: 1000 !important;
+  border: 1px solid #e3e8e6 !important;
+  border-radius: 0.625rem !important;
+  box-shadow: 0 12px 32px -12px rgba(16, 42, 38, 0.22), 0 2px 8px rgba(16, 42, 38, 0.06) !important;
+  z-index: 60 !important;
 }
 .p-dropdown-items {
-  padding: 0.25rem 0 !important;
-  list-style: none !important;
+  padding: 0.25rem !important;
   margin: 0 !important;
+  list-style: none !important;
 }
 .p-dropdown-item {
-  font-family: 'Manrope', sans-serif !important;
-  font-size: 0.875rem !important;
-  padding: 0.5rem 1rem !important;
-  color: #1d1b20 !important;
-  transition: background-color 0.15s ease !important;
+  font-size: 0.8125rem !important;
+  padding: 0.4rem 0.6rem !important;
+  border-radius: 0.375rem !important;
+  color: #101a18 !important;
+  cursor: pointer !important;
+  transition: background-color 0.12s ease !important;
+}
+.p-dropdown-item:hover,
+.p-dropdown-item.p-highlight {
+  background-color: #e6f1ee !important;
+  color: #024a40 !important;
+}
+.p-datepicker {
+  padding: 0.6rem !important;
+  font-family: 'Manrope', system-ui, sans-serif !important;
+}
+.p-datepicker table td > span {
+  width: 1.9rem !important;
+  height: 1.9rem !important;
+  border-radius: 0.375rem !important;
+  font-size: 0.8125rem !important;
+  font-variant-numeric: tabular-nums;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background-color 0.12s ease !important;
+}
+.p-datepicker table td > span:hover {
+  background: #f1f4f3 !important;
+}
+.p-datepicker table td > span.p-highlight {
+  background: #036457 !important;
+  color: #ffffff !important;
+}
+.p-datepicker .p-datepicker-header {
+  border-bottom: 1px solid #e3e8e6 !important;
+  padding-bottom: 0.4rem !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+.p-datepicker .p-datepicker-header .p-datepicker-title {
+  font-weight: 700 !important;
+  color: #101a18 !important;
+}
+.p-datepicker .p-datepicker-header .p-link {
+  color: #46534f !important;
   cursor: pointer !important;
 }
-.p-dropdown-item:hover, .p-dropdown-item.p-highlight {
-  background-color: rgba(170, 59, 255, 0.05) !important;
-  color: var(--primary, #aa3bff) !important;
+.p-datepicker .p-datepicker-header .p-link:hover {
+  color: #036457 !important;
 }
-
-/* --- Calendar / DatePicker --- */
 .p-calendar {
-  height: auto !important;
   display: inline-flex !important;
   align-items: center !important;
 }
@@ -173,66 +398,14 @@ input, select, textarea {
 .p-calendar .p-datepicker-trigger {
   background: transparent !important;
   border: none !important;
-  color: var(--primary, #aa3bff) !important;
-  padding: 0 0.5rem !important;
+  color: #036457 !important;
+  padding: 0 0.4rem !important;
 }
-
-/* --- Datepicker Panel --- */
-.p-datepicker {
-  background: #ffffff !important;
-  border-radius: 1rem !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1) !important;
-  border: 1px solid rgba(0, 0, 0, 0.05) !important;
-  padding: 0.75rem !important;
-  font-family: 'Manrope', sans-serif !important;
-  z-index: 1000 !important;
+.p-toast {
+  font-family: 'Manrope', system-ui, sans-serif !important;
 }
-.p-datepicker table td > span {
-  width: 2rem !important;
-  height: 2rem !important;
-  border-radius: 50% !important;
-  font-size: 0.875rem !important;
-  transition: all 0.15s ease !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+.p-toast .p-toast-message {
+  border-radius: 0.625rem !important;
+  border: 1px solid #e3e8e6 !important;
+  box-shadow: 0 12px 32px -12px rgba(16, 42, 38, 0.22) !important;
 }
-.p-datepicker table td > span.p-highlight {
-  background: var(--primary, #aa3bff) !important;
-  color: #ffffff !important;
-}
-.p-datepicker .p-datepicker-header {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
-  padding-bottom: 0.5rem !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-}
-.p-datepicker .p-datepicker-header .p-datepicker-title {
-  font-weight: 700 !important;
-  color: #1d1b20 !important;
-}
-.p-datepicker .p-datepicker-header .p-link {
-  color: #49454f !important;
-  cursor: pointer !important;
-  text-decoration: none !important;
-}
-.p-datepicker .p-datepicker-header .p-link:hover {
-  color: var(--primary, #aa3bff) !important;
-}
-.p-datepicker .p-datepicker-buttonbar {
-  display: flex !important;
-  justify-content: space-between !important;
-  border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
-  padding-top: 0.5rem !important;
-  margin-top: 0.5rem !important;
-}
-.p-datepicker .p-datepicker-buttonbar .p-button {
-  background: transparent !important;
-  border: none !important;
-  color: var(--primary, #aa3bff) !important;
-  font-weight: 700 !important;
-  font-size: 0.75rem !important;
-  cursor: pointer !important;
-}
-

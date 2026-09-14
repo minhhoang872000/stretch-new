@@ -15,6 +15,17 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
   ],
 
+  /**
+   * NuxtImg refuses external URLs whose host is not whitelisted (the ipx
+   * provider proxies them server-side). Programme covers come from the API's
+   * `image` field, so every host that field may point at must be listed here —
+   * a missing host renders as a silently broken image, not an error.
+   * picsum.photos is the seed placeholder; it 302s to fastly.picsum.photos.
+   */
+  image: {
+    domains: ['picsum.photos', 'fastly.picsum.photos'],
+  },
+
   googleFonts: {
     families: {
       'Plus Jakarta Sans': [400, 500, 600, 700, 800],
@@ -192,6 +203,24 @@ export default defineNuxtConfig({
           include: [
             '/sharing-hub', '/sharing-hub/*',
             '/vi/sharing-hub', '/vi/sharing-hub/*',
+            // The course catalogue and its detail pages are rendered on demand
+            // (see the route rules below), so the Worker has to be reachable for
+            // them — anything not matched here is only ever served as a static
+            // file, and a missing file is a 404 rather than a render.
+            //
+            // Prerendering the detail pages instead would depend on crawlLinks
+            // finding every slug: the catalogue paginates at 8 and the "related"
+            // strip links only 4, so the last programme in a topic gets no
+            // inbound link and its URL would silently 404.
+            '/learning-hub/programs', '/learning-hub/programs/*',
+            '/vi/learning-hub/programs', '/vi/learning-hub/programs/*',
+            // The training calendar splits sessions into upcoming vs. past
+            // against "today", so it must not be frozen into a file at build
+            // time — it is rendered per request and cached for 5 minutes.
+            '/learning-hub/schedule', '/vi/learning-hub/schedule',
+            // The course player: one route, a page per slug, and noindex — there
+            // is nothing to prerender and nothing search should hold.
+            '/learning-hub/learn/*', '/vi/learning-hub/learn/*',
             '/api/*',
           ],
           exclude: [],
@@ -253,6 +282,22 @@ export default defineNuxtConfig({
     '/products/**': { redirect: { to: '/individual', statusCode: 301 } },
     '/vi/products': { redirect: { to: '/vi/individual', statusCode: 301 } },
     '/vi/products/**': { redirect: { to: '/vi/individual', statusCode: 301 } },
+    // The course catalogue, its ~18 detail pages, the calendar and the player:
+    // rendered per request, NOT prerendered (the crawler cannot find every slug)
+    // and NOT swr-cached.
+    //
+    // No `swr` here on purpose: every Learning Hub page renders `LearningHeader`,
+    // which puts the signed-in learner's name and initials into the HTML. A
+    // shared response cache would hand one visitor's header to the next. If
+    // these ever need caching, the session has to come out of the server render
+    // first. `/**` also covers the bare `/programs` index, which is why that
+    // path is in the `_routes.json` include list above.
+    '/learning-hub/programs/**': { prerender: false },
+    '/vi/learning-hub/programs/**': { prerender: false },
+    '/learning-hub/schedule': { prerender: false },
+    '/vi/learning-hub/schedule': { prerender: false },
+    '/learning-hub/learn/**': { prerender: false },
+    '/vi/learning-hub/learn/**': { prerender: false },
     '/sharing-hub': { prerender: false, swr: 300 },
     '/sharing-hub/**': { prerender: false, swr: 300 },
     '/vi/sharing-hub': { prerender: false, swr: 300 },
@@ -262,9 +307,28 @@ export default defineNuxtConfig({
   // Runtime config
   runtimeConfig: {
     databaseUrl: process.env.DATABASE_URL || '',
+    /**
+     * Lesson video lookup. Server-only on purpose: the service token lets this
+     * site ask the API for a signed R2 playback URL on a learner's behalf, so it
+     * must never reach the browser.
+     */
+    // NUXT_PUBLIC_TRACKING_API_URL is the host only (callers add `/api/v1`
+    // themselves — see useBlog), so the fallback has to append it or every
+    // lookup 404s.
+    lessonApiBase:
+      process.env.NUXT_LESSON_API_BASE
+      || (process.env.NUXT_PUBLIC_TRACKING_API_URL
+        ? `${process.env.NUXT_PUBLIC_TRACKING_API_URL.replace(/\/$/, '')}/api/v1`
+        : ''),
+    siteServiceToken: process.env.NUXT_SITE_SERVICE_TOKEN || '',
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://stretch.vn',
       trackingApiUrl: process.env.NUXT_PUBLIC_TRACKING_API_URL || '',
+      // Bank-transfer checkout — rendered into the VietQR code on /learning-hub/checkout.
+      // Public by nature: this is the account customers are asked to pay into.
+      bankCode: process.env.NUXT_PUBLIC_BANK_CODE || '',
+      bankAccount: process.env.NUXT_PUBLIC_BANK_ACCOUNT || '',
+      bankAccountName: process.env.NUXT_PUBLIC_BANK_ACCOUNT_NAME || '',
       emailjsServiceId: process.env.NUXT_PUBLIC_EMAILJS_SERVICE_ID || '',
       emailjsTemplateId: process.env.NUXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
       emailjsAdminTemplateId: process.env.NUXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID || '',

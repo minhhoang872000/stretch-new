@@ -39,6 +39,11 @@ services:
       - key: ADMIN_NAME
         sync: false
 
+      # ─── Website → API trust (learner routes) ─────────────────────
+      # Must equal NUXT_SITE_SERVICE_TOKEN on the Cloudflare Pages site.
+      - key: SITE_SERVICE_TOKEN
+        sync: false
+
       # ─── CORS — comma-separated CRM + site origins ────────────────
       - key: CORS_ORIGINS
         sync: false   # e.g. https://crm.yourdomain.com,https://stretch.vn

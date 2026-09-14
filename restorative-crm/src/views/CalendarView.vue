@@ -1,5 +1,18 @@
 <template>
-  <main class="p-4 lg:p-8 max-w-7xl mx-auto w-full">
+  <main class="page">
+    <PageHeader
+      eyebrow="Trị liệu"
+      title="Lịch tuần"
+      subtitle="Xem lịch hẹn theo tháng, tuần hoặc ngày. Bấm vào một buổi để xem chi tiết ở panel bên phải."
+    >
+      <template #actions>
+        <RouterLink to="/bookings" class="btn-outline btn-sm">
+          <span class="material-symbols-outlined text-lg">list</span>
+          Danh sách lịch hẹn
+        </RouterLink>
+      </template>
+    </PageHeader>
+
     <!-- Header Controls -->
     <CalendarHeader />
 
@@ -134,6 +147,7 @@
 </template>
 
 <script setup>
+import PageHeader from '@/components/ui/PageHeader.vue'
 import { ref, computed, reactive, onMounted, provide } from 'vue'
 import CalendarHeader from '@/components/calendar/CalendarHeader.vue'
 import CalendarGrid from '@/components/calendar/CalendarGrid.vue'

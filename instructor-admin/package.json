@@ -1,0 +1,29 @@
+{
+  "name": "instructor-admin",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Stretch Academy — instructor console (course, learner, schedule and analytics management)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit",
+    "test:contract": "tsx scripts/contract-test.ts"
+  },
+  "dependencies": {
+    "@vueuse/core": "^14.4.0",
+    "date-fns": "^4.4.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.11",
+    "@types/node": "^26.2.0",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5.8.3",
+    "vite": "^6.0.7",
+    "vue-tsc": "^2.2.0"
+  }
+}

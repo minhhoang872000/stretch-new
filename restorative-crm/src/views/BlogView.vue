@@ -1,5 +1,5 @@
 <template>
-  <main class="p-4 lg:p-8 max-w-7xl mx-auto w-full">
+  <main class="page">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
       <div>
@@ -15,19 +15,19 @@
     <!-- Stats -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       <div class="card p-4">
-        <p class="label-xs mb-1">Total Posts</p>
+        <p class="label-xs mb-1">Tổng bài viết</p>
         <p class="text-2xl font-bold text-on-surface">{{ store.stats.total }}</p>
       </div>
       <div class="card p-4">
-        <p class="label-xs mb-1">Published</p>
-        <p class="text-2xl font-bold text-teal-600">{{ store.stats.published }}</p>
+        <p class="label-xs mb-1">Đã xuất bản</p>
+        <p class="text-2xl font-bold text-ok">{{ store.stats.published }}</p>
       </div>
       <div class="card p-4">
-        <p class="label-xs mb-1">Draft</p>
-        <p class="text-2xl font-bold text-amber-500">{{ store.stats.draft }}</p>
+        <p class="label-xs mb-1">Nháp</p>
+        <p class="text-2xl font-bold text-warn">{{ store.stats.draft }}</p>
       </div>
       <div class="card p-4">
-        <p class="label-xs mb-1">Total Views</p>
+        <p class="label-xs mb-1">Tổng lượt xem</p>
         <p class="text-2xl font-bold text-on-surface">{{ store.stats.totalViews.toLocaleString() }}</p>
       </div>
     </div>
@@ -37,13 +37,13 @@
       <input v-model="store.searchQuery" type="text" placeholder="Search posts..."
         class="input-field flex-1 min-w-[180px]" />
       <select v-model="store.filterCategory" class="input-field w-auto" @change="store.applyFilters()">
-        <option value="">All Categories</option>
+        <option value="">Mọi danh mục</option>
         <option v-for="c in catStore.categories" :key="c.id" :value="c.key">{{ c.label }}</option>
       </select>
       <select v-model="store.filterStatus" class="input-field w-auto" @change="store.applyFilters()">
-        <option value="">All Status</option>
-        <option value="published">Published</option>
-        <option value="draft">Draft</option>
+        <option value="">Mọi trạng thái</option>
+        <option value="published">Đã xuất bản</option>
+        <option value="draft">Nháp</option>
       </select>
     </div>
 
@@ -57,12 +57,12 @@
         <table class="w-full text-left border-collapse min-w-[750px]">
           <thead>
             <tr class="bg-surface-container-low">
-              <th class="px-4 lg:px-6 py-3.5 label-xs">Article</th>
-              <th class="px-4 lg:px-6 py-3.5 label-xs">Category</th>
-              <th class="px-4 lg:px-6 py-3.5 label-xs">Author</th>
-              <th class="px-4 lg:px-6 py-3.5 label-xs">Date</th>
-              <th class="px-4 lg:px-6 py-3.5 label-xs">Status</th>
-              <th class="px-4 lg:px-6 py-3.5 text-right label-xs">Actions</th>
+              <th class="px-4 lg:px-6 py-3.5 label-xs">Bài viết</th>
+              <th class="px-4 lg:px-6 py-3.5 label-xs">Danh mục</th>
+              <th class="px-4 lg:px-6 py-3.5 label-xs">Tác giả</th>
+              <th class="px-4 lg:px-6 py-3.5 label-xs">Ngày</th>
+              <th class="px-4 lg:px-6 py-3.5 label-xs">Trạng thái</th>
+              <th class="px-4 lg:px-6 py-3.5 text-right label-xs">Thao tác</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-surface-container">
@@ -110,9 +110,9 @@
       <div v-if="store.total > store.limit" class="flex items-center justify-between px-4 lg:px-6 py-3 bg-surface-container-low border-t border-outline-variant/10">
         <span class="text-xs text-on-surface-variant">{{ store.total }} post{{ store.total !== 1 ? 's' : '' }} total</span>
         <div class="flex items-center gap-2">
-          <button :disabled="store.page <= 1" @click="store.setPage(store.page - 1)" class="btn-outline text-xs px-3 py-1.5 disabled:opacity-40">Prev</button>
+          <button :disabled="store.page <= 1" @click="store.setPage(store.page - 1)" class="btn-outline text-xs px-3 py-1.5 disabled:opacity-40">Trước</button>
           <span class="px-2 py-1.5 text-xs font-semibold text-on-surface">{{ store.page }} / {{ Math.max(1, Math.ceil(store.total / store.limit)) }}</span>
-          <button :disabled="store.page >= Math.ceil(store.total / store.limit)" @click="store.setPage(store.page + 1)" class="btn-outline text-xs px-3 py-1.5 disabled:opacity-40">Next</button>
+          <button :disabled="store.page >= Math.ceil(store.total / store.limit)" @click="store.setPage(store.page + 1)" class="btn-outline text-xs px-3 py-1.5 disabled:opacity-40">Sau</button>
         </div>
       </div>
       <div v-else class="px-4 lg:px-6 py-3 bg-surface-container-low">
@@ -135,14 +135,14 @@
               <span class="material-symbols-outlined text-xl">close</span>
             </button>
             <span class="text-sm font-bold text-on-surface">{{ editingPost ? 'Edit Post' : 'New Post' }}</span>
-            <span v-if="autoSaved" class="text-xs text-teal-600 flex items-center gap-1">
+            <span v-if="autoSaved" class="text-xs text-ok flex items-center gap-1">
               <span class="material-symbols-outlined text-sm">check_circle</span> Saved
             </span>
           </div>
           <div class="flex items-center gap-2">
             <select v-model="form.status" class="text-xs bg-surface-container border border-outline-variant/30 rounded-full px-3 py-1.5 font-semibold text-on-surface">
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
+              <option value="draft">Nháp</option>
+              <option value="published">Đã xuất bản</option>
             </select>
             <button @click="handleSubmit" :disabled="saving"
               class="btn-primary flex items-center gap-1.5 !py-1.5 !text-xs">
@@ -203,7 +203,7 @@
               </p>
             </div>
             <div>
-              <label class="label-xs mb-1.5 block">Cover Image</label>
+              <label class="label-xs mb-1.5 block">Ảnh bìa</label>
               <div class="flex gap-2">
                 <input v-model="form.image" type="text" class="input-field text-xs flex-1" placeholder="/image.webp or https://… (or upload)" />
                 <button
@@ -249,16 +249,16 @@
                 </p>
               </div>
               <div>
-                <label class="label-xs mb-1.5 block">Read Time</label>
+                <label class="label-xs mb-1.5 block">Thời gian đọc</label>
                 <input v-model="form.readTime" type="text" class="input-field" placeholder="5 min read" />
               </div>
             </div>
             <div>
-              <label class="label-xs mb-1.5 block">Date</label>
+              <label class="label-xs mb-1.5 block">Ngày</label>
               <input v-model="dateInput" type="date" class="input-field" />
             </div>
             <div>
-              <label class="label-xs mb-1.5 block">Tags <span class="font-normal text-outline normal-case">(comma separated)</span></label>
+              <label class="label-xs mb-1.5 block">Thẻ <span class="font-normal text-outline normal-case">(comma separated)</span></label>
               <input v-model="tagsInput" type="text" class="input-field" placeholder="Recovery, Movement, Performance" />
             </div>
             <p v-if="formError" class="text-red-600 text-xs p-2 bg-red-50 border border-red-200 rounded-lg flex items-start gap-1.5">

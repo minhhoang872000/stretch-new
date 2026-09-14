@@ -5,6 +5,7 @@
 const { t } = useI18n()
 const localePath = useLocalePath()
 const { user, logout } = useHubSession()
+const { notify } = useNotification()
 
 const isOpen = ref(false)
 const root = ref<HTMLElement | null>(null)
@@ -34,6 +35,7 @@ onBeforeUnmount(() => {
 async function signOut() {
   close()
   await logout()
+  notify(t('learning.auth.logout_done'), 'info')
 }
 </script>
 

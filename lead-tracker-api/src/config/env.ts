@@ -30,7 +30,14 @@ export const env = {
 
   rateLimit: {
     windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000', 10),
+    /** Anonymous callers: the public site, and anyone who finds the URL. */
     max: parseInt(process.env.RATE_LIMIT_MAX || '60', 10),
+    /**
+     * Callers presenting a token. Much higher because an admin console screen
+     * legitimately loads several collections, and a person clicking through it
+     * is not abuse — at 60/min the ninth screen rendered a rate-limit error.
+     */
+    authenticatedMax: parseInt(process.env.RATE_LIMIT_AUTH_MAX || '1200', 10),
   },
 
   jwtSecret: process.env.JWT_SECRET || 'change-me-in-production-stretch-crm',
@@ -59,6 +66,44 @@ export const env = {
     privateKey: (process.env.GSC_PRIVATE_KEY || process.env.GA_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
   },
 
+  /**
+   * Google Calendar — where an accepted 1-to-1 mentorship session lands.
+   *
+   * Same service account as GA4/GSC by default. Two things must be done once in
+   * Google Cloud / Calendar for this to work:
+   *   1. Enable the Google Calendar API in the GCP project.
+   *   2. Share the calendar (`calendarId`) with the service-account email,
+   *      granting "Make changes to events".
+   *
+   * `impersonateSubject` turns on domain-wide delegation: the service account
+   * then acts AS that user. It is the only way to get an auto-generated Google
+   * Meet link and to have Google email the invitation, and it requires Google
+   * Workspace. Left empty, events are still created — just without a Meet link,
+   * which the console lets an admin paste in by hand instead.
+   */
+  gcal: {
+    calendarId: process.env.GCAL_CALENDAR_ID || 'admin@stretch.vn',
+    clientEmail: process.env.GCAL_CLIENT_EMAIL || process.env.GA_CLIENT_EMAIL || '',
+    privateKey: (process.env.GCAL_PRIVATE_KEY || process.env.GA_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+    /** Workspace user to act as. Empty = no delegation, no Meet link. */
+    impersonateSubject: process.env.GCAL_IMPERSONATE_SUBJECT || '',
+    /** Vietnam has no DST, so a fixed offset is correct year-round. */
+    timezone: process.env.GCAL_TIMEZONE || 'Asia/Ho_Chi_Minh',
+    utcOffset: process.env.GCAL_UTC_OFFSET || '+07:00',
+  },
+
+  /** 1-to-1 mentorship booking rules. */
+  mentorship: {
+    /** Length of one session, minutes. Must divide the opening hours evenly. */
+    slotMinutes: parseInt(process.env.MENTORSHIP_SLOT_MINUTES || '30', 10),
+    /** How far ahead a learner may book. */
+    bookAheadDays: parseInt(process.env.MENTORSHIP_BOOK_AHEAD_DAYS || '14', 10),
+    /** Reject slots starting sooner than this from now. */
+    leadTimeHours: parseInt(process.env.MENTORSHIP_LEAD_TIME_HOURS || '12', 10),
+    /** Cap on open requests one learner may have at once. */
+    maxPendingPerLearner: parseInt(process.env.MENTORSHIP_MAX_PENDING || '2', 10),
+  },
+
   /** Cloudflare R2 (S3-compatible object storage) — image uploads */
   r2: {
     /** Cloudflare account id (the 32-char hex in the dashboard URL) */
@@ -81,6 +126,46 @@ export const env = {
     /** WebP re-encode quality (1–100) */
     imageQuality: parseInt(process.env.R2_IMAGE_QUALITY || '82', 10),
   },
+
+  /**
+   * Lesson videos in R2.
+   *
+   * Uploads never pass through this API: the browser PUTs parts straight to R2
+   * with presigned URLs, so a 1.5 GB lecture does not touch Render's request
+   * limits. Playback is a short-lived presigned GET — the video bucket must NOT
+   * be public, or the signing is pointless.
+   */
+  video: {
+    /**
+     * Bucket for lecture videos. Defaults to the image bucket for convenience,
+     * but they should NOT be the same one in production: the image bucket is
+     * served publicly through R2_PUBLIC_BASE_URL, and a public bucket makes the
+     * signed playback URLs pointless — anyone with the key reads the file.
+     */
+    bucket: process.env.R2_VIDEO_BUCKET || process.env.R2_BUCKET || '',
+    /** Key prefix for lesson videos (default: lessons) */
+    prefix: (process.env.R2_VIDEO_PREFIX || 'lessons').replace(/\/$/, ''),
+    /** Reject uploads bigger than this (default 3 GB) */
+    maxUploadBytes: parseInt(process.env.R2_VIDEO_MAX_BYTES || String(3 * 1024 * 1024 * 1024), 10),
+    /** Multipart part size (default 16 MB; R2 requires >= 5 MB except the last part) */
+    partSizeBytes: parseInt(process.env.R2_VIDEO_PART_SIZE || String(16 * 1024 * 1024), 10),
+    /** How many presigned part URLs one upload may hand out */
+    maxParts: parseInt(process.env.R2_VIDEO_MAX_PARTS || '400', 10),
+    /** Lifetime of a presigned part URL, seconds (default 2h — big files are slow) */
+    uploadUrlTtl: parseInt(process.env.R2_VIDEO_UPLOAD_TTL || '7200', 10),
+    /** Lifetime of a playback URL, seconds (default 30 min) */
+    playbackUrlTtl: parseInt(process.env.R2_VIDEO_PLAYBACK_TTL || '1800', 10),
+  },
+
+  /**
+   * Shared secret the website's server routes send as `x-service-token` when
+   * they ask for a playback URL on a learner's behalf. The learner session lives
+   * on the site, not here, so this is what lets the site vouch for it.
+   */
+  siteServiceToken: process.env.SITE_SERVICE_TOKEN || '',
+
+  /** Public base URL of the website — used to link back from a calendar event. */
+  siteBaseUrl: (process.env.SITE_BASE_URL || 'https://stretch.vn').replace(/\/$/, ''),
 } as const
 
 // Default fallbacks that MUST NOT be used in production.

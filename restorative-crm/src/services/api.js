@@ -1,9 +1,12 @@
 import { formatDate } from '@/utils/date.js'
 import { useLoadingStore } from '@/stores/loading.js'
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://stretch-new.onrender.com/api/v1'
+// Default to localhost, not production: an unset variable during development
+// should fail against a machine you control, never write to the live database.
+// Deploys set VITE_API_BASE_URL explicitly (see .env.production).
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api/v1'
 
-async function request(path, options = {}) {
+export async function request(path, options = {}) {
   let loading
   try { loading = useLoadingStore(); loading.apiStart() } catch { /* outside pinia context */ }
   const { headers: optHeaders, ...rest } = options
@@ -369,5 +372,74 @@ export async function updatePost(idOrSlug, data) {
 
 export function deletePost(idOrSlug) {
   return request(`/blog/${idOrSlug}`, { method: 'DELETE' })
+}
+
+// ─── Mentorship 1-1 (lead-tracker-api + Google Calendar) ──────────
+//
+// Requests come from the Learning Hub player; accepting one writes the session
+// to the academy's Google Calendar. The calendar tab reads Google directly
+// rather than this DB, so an event added by hand shows up here too.
+
+/** @param {{ status?: string, from?: string, to?: string, email?: string }} filters */
+export function fetchMentorshipSessions(filters = {}) {
+  const params = new URLSearchParams()
+  if (filters.status && filters.status !== 'all') params.append('status', filters.status)
+  if (filters.from) params.append('from', filters.from)
+  if (filters.to) params.append('to', filters.to)
+  if (filters.email) params.append('email', filters.email)
+  return request(`/mentorship?${params}`)
+}
+
+/**
+ * Accept a request and put it on the calendar.
+ * `meetUrl` is the manual fallback for accounts that cannot mint a Meet link.
+ * Resolves to `{ session, warning }` — a warning means it was scheduled but
+ * something (usually the Meet link) needs a human.
+ */
+export function acceptMentorship(id, meetUrl = '') {
+  return request(`/mentorship/${id}/accept`, {
+    method: 'PATCH',
+    body: JSON.stringify(meetUrl ? { meet_url: meetUrl } : {}),
+  })
+}
+
+export function declineMentorship(id, reason = '') {
+  return request(`/mentorship/${id}/decline`, {
+    method: 'PATCH',
+    body: JSON.stringify(reason ? { reason } : {}),
+  })
+}
+
+export function completeMentorship(id) {
+  return request(`/mentorship/${id}/complete`, { method: 'PATCH' })
+}
+
+/** Cancels an accepted session and removes its calendar event. */
+export function cancelMentorship(id) {
+  return request(`/mentorship/${id}/cancel`, { method: 'PATCH' })
+}
+
+export function deleteMentorship(id) {
+  return request(`/mentorship/${id}`, { method: 'DELETE' })
+}
+
+export function fetchMentorshipHours() {
+  return request('/mentorship/hours')
+}
+
+/** @param {{weekday:number,start_time:string,end_time:string,active:boolean}[]} hours */
+export function saveMentorshipHours(hours) {
+  return request('/mentorship/hours', {
+    method: 'PUT',
+    body: JSON.stringify({ hours }),
+  })
+}
+
+/** Events straight from Google Calendar. `{ events, connected }`. */
+export function fetchMentorshipCalendar(from, to) {
+  const params = new URLSearchParams()
+  if (from) params.append('from', from)
+  if (to) params.append('to', to)
+  return request(`/mentorship/calendar?${params}`)
 }
 

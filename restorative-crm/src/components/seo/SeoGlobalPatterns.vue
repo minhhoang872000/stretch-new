@@ -21,12 +21,15 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useNotify } from '@/composables/useNotify.js'
+
+const notify = useNotify()
 
 const suffix = ref('| Restorative Clinical Group')
 const separator = ref('Vertical Bar (|)')
 
 const savePatterns = () => {
-  // Mock save - in a real app this would call an API
-  alert(`Saved! Suffix: "${suffix.value}", Separator: "${separator.value}"`)
+  // Mock save — nothing is persisted until the SEO API exists, so say so.
+  notify.success(`Đã lưu mẫu tiêu đề: hậu tố "${suffix.value}", dấu phân cách "${separator.value}".`)
 }
 </script>

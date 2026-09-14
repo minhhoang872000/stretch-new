@@ -1,5 +1,5 @@
 <template>
-  <main class="p-6 lg:p-8 bg-surface min-h-screen">
+  <main class="page">
     <!-- Header -->
     <div class="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
       <div class="flex items-center gap-4">
@@ -104,7 +104,7 @@
             <div class="mt-6 overflow-x-auto">
               <table class="w-full text-xs">
                 <thead><tr class="border-b border-outline-variant/30">
-                  <th class="text-left py-2 text-on-surface-variant font-semibold">Date</th>
+                  <th class="text-left py-2 text-on-surface-variant font-semibold">Ngày</th>
                   <th class="text-right py-2 text-on-surface-variant font-semibold">Sessions</th>
                   <th class="text-right py-2 text-on-surface-variant font-semibold">Users</th>
                   <th class="text-right py-2 text-on-surface-variant font-semibold">Engaged</th>

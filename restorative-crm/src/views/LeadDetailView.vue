@@ -1,5 +1,5 @@
 <template>
-  <main class="p-4 lg:p-8 max-w-7xl mx-auto w-full">
+  <main class="page">
     <!-- Back -->
     <router-link to="/leads" class="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-primary mb-6 font-semibold">
       <span class="material-symbols-outlined text-lg">arrow_back</span>
@@ -12,7 +12,7 @@
 
     <template v-else-if="store.leadDetail">
       <!-- Lead Header -->
-      <div class="bg-surface-container-low rounded-2xl p-6 mb-6">
+      <div class="panel p-6 mb-6">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <span class="text-xs font-bold text-primary tracking-[0.2em] uppercase mb-2 block">Lead Detail</span>
@@ -49,7 +49,7 @@
       </div>
 
       <!-- Booking Info (if exists) -->
-      <div v-if="store.leadDetail.booking" class="bg-surface-container-low rounded-2xl p-6 mb-6 border-l-4 border-primary">
+      <div v-if="store.leadDetail.booking" class="panel p-6 mb-6 border-l-4 border-primary">
         <h3 class="font-headline font-bold text-on-surface mb-4 flex items-center gap-2">
           <span class="material-symbols-outlined text-primary">event_available</span>
           Linked Booking
@@ -63,7 +63,7 @@
       </div>
 
       <!-- Event Timeline -->
-      <div class="bg-surface-container-low rounded-2xl p-6">
+      <div class="panel p-6">
         <h3 class="font-headline font-bold text-on-surface mb-6 flex items-center gap-2">
           <span class="material-symbols-outlined text-primary">timeline</span>
           Event Timeline

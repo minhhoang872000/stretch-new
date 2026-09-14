@@ -21,7 +21,7 @@ export const corsMiddleware = corsLib({
     return callback(new Error(`CORS: Origin ${origin} not allowed`))
   },
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'X-Request-ID', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'X-Request-ID', 'Authorization', 'X-Service-Token'],
   credentials: false,
   maxAge: 86400,
 })
