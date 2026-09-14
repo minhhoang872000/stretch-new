@@ -93,14 +93,49 @@ async function insertRows(table: string, rows: Record<string, unknown>[]): Promi
   return inserted
 }
 
+/**
+ * Named subsets for `--only`, so a shared database can take just the tables a
+ * demo needs without the fake bookings, practitioners and pages that a live
+ * public site also reads.
+ *
+ *   npm run seed:console -- --only academy
+ *   npm run seed:console -- --only instructors,programs
+ */
+const PRESETS: Record<string, string[]> = {
+  // Everything the Learning Hub catalogue, course pages and instructor console
+  // read. No learners, orders or enrolments: those come from real sign-ins.
+  academy: ['instructors', 'programs', 'program_sessions', 'lesson_video_index', 'coupons'],
+}
+
+function tablesToSeed(): string[] {
+  const flag = process.argv.indexOf('--only')
+  if (flag === -1) return ORDER
+  const wanted = String(process.argv[flag + 1] || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .flatMap((name) => PRESETS[name] || [name])
+  const unknown = wanted.filter((t) => !ORDER.includes(t))
+  if (unknown.length) {
+    throw new Error(`--only: unknown table(s) ${unknown.join(', ')}`)
+  }
+  // Keep foreign-key order regardless of how the flag was written.
+  return ORDER.filter((t) => wanted.includes(t))
+}
+
 async function seedConsole(): Promise<void> {
   const file = join(__dirname, 'data', 'seed', 'console-seed.json')
   const snapshot: Snapshot = JSON.parse(readFileSync(file, 'utf8'))
 
-  console.log('[SeedConsole] Starting...')
+  const tables = tablesToSeed()
+  console.log(
+    tables === ORDER
+      ? '[SeedConsole] Starting (all tables)...'
+      : `[SeedConsole] Starting (only: ${tables.join(', ')})...`,
+  )
 
   let total = 0
-  for (const table of ORDER) {
+  for (const table of tables) {
     const rows = snapshot[table]
     if (!rows) {
       console.warn(`[SeedConsole] ! no rows for ${table} in the snapshot — skipped`)
