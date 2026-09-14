@@ -86,10 +86,11 @@ export async function apiFetch<T>(path: string, options: FetchOptions = {}): Pro
       body: body === undefined ? undefined : JSON.stringify(body),
     })
   } catch {
-    // A dead API and a CORS rejection look identical from here; say so plainly
-    // rather than surfacing "Failed to fetch".
+    // A dead API and a CORS rejection look identical from here (both surface
+    // as "Failed to fetch"); the details are in the browser console for whoever
+    // operates the server, not in the message shown to the person signing in.
     throw new ApiError(
-      `Không gọi được API (${API_BASE}). Kiểm tra API đang chạy và origin này nằm trong CORS_ORIGINS.`,
+      'Không kết nối được máy chủ. Vui lòng thử lại sau.',
       0,
       'NETWORK_ERROR',
     )

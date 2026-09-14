@@ -76,21 +76,6 @@ async function submit() {
         </div>
 
         <AppButton type="submit" variant="primary" class="mt-4 w-full" :loading="pending">Đăng nhập</AppButton>
-
-        <!-- Where the credentials come from, since there is no signup here: a
-             login screen with no way in is a dead end. -->
-        <div class="mt-4 rounded-lg border border-line bg-shell p-2.5">
-          <p class="flex items-center gap-1.5 text-[11px] font-semibold text-ink-soft">
-            <AppIcon name="info" :size="12" />
-            Đăng nhập bằng tài khoản quản trị của API
-          </p>
-          <p class="mt-1 text-[10.5px] leading-relaxed text-ink-muted">
-            Dùng <span class="figure">ADMIN_EMAIL</span> /
-            <span class="figure">ADMIN_PASSWORD</span> trong
-            <span class="figure">lead-tracker-api/.env</span>. Mọi màn hình ở đây đều đọc và ghi
-            trực tiếp vào API, nên phải có API đang chạy thì mới đăng nhập được.
-          </p>
-        </div>
       </form>
     </div>
   </div>

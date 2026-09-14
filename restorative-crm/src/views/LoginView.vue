@@ -21,7 +21,7 @@
         <h1 class="text-2xl font-headline font-extrabold text-ink tracking-tight">Đăng nhập</h1>
         <p class="mt-1.5 text-[0.8125rem] text-ink-2">
           Dành cho nhân sự Stretch. Học viên đăng nhập ở
-          <a href="https://stretch.vn/learning-hub" class="link">trang học viện</a>.
+          <a :href="`${siteUrl}/learning-hub`" class="link">trang học viện</a>.
         </p>
 
         <form class="mt-6 space-y-4" @submit.prevent="handleSubmit">
@@ -78,22 +78,6 @@
             {{ loading ? 'Đang kiểm tra…' : 'Đăng nhập' }}
           </button>
         </form>
-
-        <div class="mt-6 pt-5 border-t border-line">
-          <p class="label-xs mb-2">Tài khoản mẫu</p>
-          <button
-            type="button"
-            class="w-full panel-quiet px-3 py-2.5 flex items-center gap-3 text-left hover:border-accent-line transition-colors"
-            @click="fillDemo"
-          >
-            <span class="material-symbols-outlined text-lg text-ink-3">science</span>
-            <span class="min-w-0 flex-1">
-              <span class="block text-xs font-bold text-ink">admin@stretch.vn</span>
-              <span class="block text-2xs text-ink-3">Bấm để điền — dùng khi chưa bật API</span>
-            </span>
-            <span class="kbd">↵</span>
-          </button>
-        </div>
       </div>
     </div>
 
@@ -114,10 +98,6 @@
           </span>
         </li>
       </ul>
-      <p class="mt-8 text-2xs text-ink-3 max-w-md">
-        Các module học viện, bán hàng, chuyên viên và nội dung đang chạy trên dữ liệu mẫu lưu
-        trong trình duyệt — chưa nối API thật.
-      </p>
     </aside>
   </div>
 </template>
@@ -149,13 +129,8 @@ const areas = [
   { icon: 'person_search', title: 'Khách hàng', detail: 'Lead, yêu cầu doanh nghiệp, phễu chuyển đổi.' },
 ]
 
-function fillDemo() {
-  email.value = 'admin@stretch.vn'
-  password.value = authStore.DEMO_PASSWORD
-  errors.email = ''
-  errors.password = ''
-  errorMessage.value = ''
-}
+/** Where learners sign in — the public site this console manages. */
+const siteUrl = (import.meta.env.VITE_SITE_URL || 'https://stretch.vn').replace(/\/$/, '')
 
 function validate() {
   errors.email = ''

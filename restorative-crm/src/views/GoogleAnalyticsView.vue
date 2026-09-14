@@ -36,8 +36,8 @@
     <!-- Not configured -->
     <div v-if="store.notConfigured" class="py-20 text-center">
       <span class="material-symbols-outlined text-4xl text-on-surface-variant">key_off</span>
-      <p class="font-semibold text-on-surface mt-4">Google Analytics not configured</p>
-      <p class="text-sm text-on-surface-variant mt-1">Set GA_PROPERTY_ID, GA_CLIENT_EMAIL, GA_PRIVATE_KEY in backend .env</p>
+      <p class="font-semibold text-on-surface mt-4">Chưa kết nối Google Analytics</p>
+      <p class="text-sm text-on-surface-variant mt-1">Liên hệ quản trị hệ thống để kết nối tài khoản Google Analytics.</p>
     </div>
 
     <template v-else>

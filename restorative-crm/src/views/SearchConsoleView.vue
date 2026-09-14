@@ -33,10 +33,9 @@
     <!-- Not configured -->
     <div v-if="store.notConfigured" class="py-20 text-center">
       <span class="material-symbols-outlined text-4xl text-on-surface-variant">key_off</span>
-      <p class="font-semibold text-on-surface mt-4">Search Console not configured</p>
+      <p class="font-semibold text-on-surface mt-4">Chưa kết nối Google Search Console</p>
       <p class="text-sm text-on-surface-variant mt-1">
-        Set GSC_SITE_URL (and reuse the GA service account) in the backend .env, then add that
-        service-account email as a user on the GSC property.
+        Liên hệ quản trị hệ thống để kết nối tài khoản Google Search Console.
       </p>
     </div>
 

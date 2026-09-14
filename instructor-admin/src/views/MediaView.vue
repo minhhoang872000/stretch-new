@@ -356,28 +356,11 @@ const columns: Column[] = [
       </template>
     </PageHeader>
 
-    <!-- ══ No API token: say why, and what to do about it ══ -->
-    <AppCard v-if="!hasApi" title="Chưa kết nối API">
+    <!-- ══ No API token (a stale session from before sign-in was required) ══ -->
+    <AppCard v-if="!hasApi" title="Phiên đăng nhập đã hết hạn">
       <p class="text-[13px] leading-relaxed text-ink-soft">
-        Màn hình này đọc và ghi trực tiếp lên Cloudflare R2 qua
-        <span class="figure">lead-tracker-api</span>, nên nó cần một phiên đăng nhập thật — phiên demo
-        không có token.
+        Vui lòng đăng xuất rồi đăng nhập lại để tải thư viện video.
       </p>
-      <ol class="mt-3 list-decimal space-y-1.5 pl-5 text-[12.5px] leading-relaxed text-ink-soft">
-        <li>
-          Chạy API (<span class="figure">npm run dev</span> trong
-          <span class="figure">lead-tracker-api</span>) và điền các biến
-          <span class="figure">R2_*</span> trong <span class="figure">.env</span>.
-        </li>
-        <li>
-          Đặt <span class="figure">VITE_API_BASE_URL</span> trong
-          <span class="figure">instructor-admin/.env</span> trỏ tới API.
-        </li>
-        <li>
-          Đăng xuất rồi đăng nhập lại bằng <span class="figure">ADMIN_EMAIL</span> /
-          <span class="figure">ADMIN_PASSWORD</span> của API.
-        </li>
-      </ol>
     </AppCard>
 
     <template v-else>
