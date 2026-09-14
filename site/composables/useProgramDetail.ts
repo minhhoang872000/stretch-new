@@ -589,7 +589,22 @@ export async function useProgramDetailFor(slugRef: Ref<string> | string) {
     { watch: [slug], default: () => null },
   )
 
+  // Once this has produced a course, it never goes back to null for the same
+  // slug. The catalogue behind `detailFor` loads asynchronously: a slug that is
+  // only in the fallback list resolves to a template first and to null once the
+  // live catalogue arrives without it — mid-render, after the page has already
+  // passed its 404 guard, which crashed SSR with "cannot read 'program' of
+  // null". A stale outline is the documented trade-off above; a 500 is not.
+  let last: ProgramDetail | null = null
+  let lastSlug = ""
   return computed<ProgramDetail | null>(() => {
+    if (lastSlug !== slug.value) { last = null; lastSlug = slug.value }
+    const resolved = resolve()
+    if (resolved) last = resolved
+    return resolved ?? last
+  })
+
+  function resolve(): ProgramDetail | null {
     const template = detailFor(slug.value)
     const live = data.value
     if (!live) return template
@@ -613,7 +628,7 @@ export async function useProgramDetailFor(slugRef: Ref<string> | string) {
       // Related courses are a property of the catalogue, not of this course.
       related: relatedTo(slug.value, live.program?.topic ?? template.program.topic),
     } as ProgramDetail
-  })
+  }
 
   /** Same topic first — that is what someone reading this page is shopping for. */
   function relatedTo(currentSlug?: string, topic?: string) {

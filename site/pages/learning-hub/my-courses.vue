@@ -46,7 +46,7 @@ useSeo({
 // Nothing here makes sense signed out — send them to the hub and pop the login.
 onMounted(() => {
   if (!loggedIn.value) {
-    navigateTo(localePath('/learning-hub'))
+    navigateTo(localePath('/learning-hub'), { replace: true })
     openAuth('login')
     return
   }

@@ -130,7 +130,7 @@ onMounted(() => {
   // Signed out there is no progress to keep — send them back to the course page
   // with the login open, exactly like /learning-hub/my-courses does.
   if (!loggedIn.value) {
-    navigateTo(localePath(`/learning-hub/programs/${slug.value}`))
+    navigateTo(localePath(`/learning-hub/programs/${slug.value}`), { replace: true })
     openAuth('login')
     return
   }
