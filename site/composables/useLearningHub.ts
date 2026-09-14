@@ -39,31 +39,30 @@ export function useLearningHub() {
     return `${value.toLocaleString('vi-VN')}đ`
   }
 
-  const courses = computed<LearningCourse[]>(() => [
-    {
-      slug: 'hieu-ve-dau-khi-van-dong',
-      kind: 'mini',
-      title: pick('Hiểu về đau khi vận động', 'Understanding Pain in Movement'),
-      lessons: pick('5 bài học', '5 lessons'),
-      duration: pick('35 phút', '35 min'),
-      price: 0,
-      image: '/experiencing-pain-absolute.png',
-      dark: true,
-    },
-    {
-      slug: 'giai-phau-van-dong-hoc-ung-dung',
-      kind: 'course',
-      title: pick(
-        'Giải phẫu & Vận động học ứng dụng',
-        'Applied Anatomy & Kinesiology',
-      ),
-      lessons: pick('45 bài học', '45 lessons'),
-      duration: pick('~6 giờ', '~6 hours'),
-      price: 1990000,
-      image: '/images/man-neck-pain.png',
-      dark: false,
-    },
-  ])
+  /**
+   * The hub's featured self-paced courses — the first few from the same
+   * catalogue the /programs page lists (API first, seed list when the API is
+   * unreachable). They used to be a hand-written pair here, which meant the
+   * hub could advertise a course the catalogue no longer had: the card linked
+   * to a detail page that 404'd or, worse, crashed on a half-loaded record.
+   */
+  const { programs } = useLearningCatalog()
+  const courses = computed<LearningCourse[]>(() =>
+    programs.value
+      .filter((p) => p.kind === 'mini' || p.kind === 'course')
+      .slice(0, 4)
+      .map((p, i) => ({
+        slug: p.slug,
+        kind: p.kind === 'mini' ? 'mini' : 'course',
+        title: p.title,
+        lessons: p.lessons ? pick(`${p.lessons} bài học`, `${p.lessons} lessons`) : '',
+        duration: p.duration || '',
+        price: p.price,
+        image: p.image || '/images/man-neck-pain.png',
+        // Alternate dark covers so the row keeps its rhythm whatever the images are.
+        dark: i % 2 === 0,
+      })),
+  )
 
   return { courses, formatPrice }
 }

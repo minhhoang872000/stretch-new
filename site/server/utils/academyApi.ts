@@ -55,6 +55,40 @@ function base(event: any): string {
 }
 
 /**
+ * The site's service token, when configured. These are all public, read-only
+ * endpoints, so it is not an authorisation credential here — it is what moves
+ * this server out of the API's per-IP *anonymous* rate bucket (120/min). Every
+ * page render on the edge leaves from a handful of shared Cloudflare IPs, and
+ * the prerenderer fires dozens of renders in a minute: without the token both
+ * were being answered 429 and the catalogue silently fell back to the seed list.
+ */
+function serviceHeaders(event: any): Record<string, string> {
+  const token = String(useRuntimeConfig(event).siteServiceToken || '')
+  return token ? { 'x-service-token': token } : {}
+}
+
+/**
+ * One GET, memoised for a minute (served stale for five while refreshing).
+ *
+ * The catalogue and the session list are the same for everyone and change a
+ * few times a week, yet every course page, the schedule and the hub asked the
+ * API for them again — sequentially, on the edge, on each request. Caching
+ * here takes the API round-trips out of the render path (less wall time, fewer
+ * 429s) and turns the prerender's ~60 identical calls into two. Failures are
+ * not cached: a thrown fetch propagates to the caller's fallback.
+ */
+const cachedGet = defineCachedFunction(
+  async (url: string, headers: Record<string, string>) =>
+    // The prerenderer renders ~60 pages back to back and the free-tier API
+    // slows down under that burst; a build can wait, a visitor should not.
+    $fetch<{ success?: boolean; data?: unknown }>(url, {
+      headers,
+      timeout: import.meta.prerender ? 20000 : 6000,
+    }),
+  { name: 'academyApi', maxAge: 60, staleMaxAge: 300, swr: true, getKey: (url: string) => url },
+)
+
+/**
  * One place that swallows API failures.
  *
  * The Learning Hub is a marketing surface: an API that is down should cost the
@@ -65,7 +99,7 @@ async function read<T>(event: any, path: string, fallback: T): Promise<T> {
   const apiBase = base(event)
   if (!apiBase) return fallback
   try {
-    const res = await $fetch<{ success: boolean; data?: T }>(`${apiBase}${path}`, { timeout: 6000 })
+    const res = await cachedGet(`${apiBase}${path}`, serviceHeaders(event))
     return (res?.data as T) ?? fallback
   } catch (err: any) {
     console.error(`[academyApi] ${path} failed:`, err?.message || err)
@@ -83,11 +117,11 @@ export async function fetchProgramBySlug(event: any, slug: string): Promise<ApiP
   const apiBase = base(event)
   if (!apiBase) return null
   try {
-    const res = await $fetch<{ data?: ApiProgram }>(
+    const res = await cachedGet(
       `${apiBase}/programs/slug/${encodeURIComponent(slug)}`,
-      { timeout: 6000 },
+      serviceHeaders(event),
     )
-    return res?.data ?? null
+    return (res?.data as ApiProgram | undefined) ?? null
   } catch {
     // A 404 here is an ordinary "no such course", not an incident.
     return null
@@ -111,8 +145,8 @@ export async function fetchInstructor(event: any, id: string | null) {
   const apiBase = base(event)
   if (!apiBase) return null
   try {
-    const res = await $fetch<{ data?: any }>(`${apiBase}/instructors/${id}`, { timeout: 6000 })
-    return res?.data ?? null
+    const res = await cachedGet(`${apiBase}/instructors/${id}`, serviceHeaders(event))
+    return (res?.data as any) ?? null
   } catch {
     return null
   }
