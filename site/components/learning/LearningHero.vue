@@ -1,78 +1,219 @@
 <script setup lang="ts">
+/**
+ * Learning Hub home banner — a horizontal slider.
+ *
+ * Slide 1 carries the hub's message and the main CTA; the rest feature the
+ * first courses of the live catalogue (API first, seed list as fallback), so a
+ * banner can never advertise a course the catalogue does not have. No photos:
+ * each slide is a solid brand panel, which keeps the banner light and legible.
+ *
+ * Autoplays every 6s, pauses on hover / keyboard focus / hidden tab, and stays
+ * still for people who ask for reduced motion. Swipe, arrows and dots all work.
+ */
 const { t } = useI18n()
+const localePath = useLocalePath()
 const { open } = useAuthModal()
+const { loggedIn } = useHubSession()
+const { programs, formatPrice } = useLearningCatalog()
 
-const features = [
-  { key: 'f1', icon: 'cap' },
-  { key: 'f2', icon: 'play' },
-  { key: 'f3', icon: 'chart' },
-]
+interface CourseSlide {
+  slug: string
+  kindLabel: string
+  title: string
+  meta: string
+  price: string
+}
+
+const courseSlides = computed<CourseSlide[]>(() =>
+  programs.value.slice(0, 3).map((p) => ({
+    slug: p.slug,
+    kindLabel:
+      p.kind === 'mini'
+        ? t('learning.catalog.kind_mini')
+        : p.kind === 'workshop'
+          ? t('learning.catalog.kind_workshop')
+          : t('learning.catalog.kind_course'),
+    title: p.title,
+    meta: p.date
+      ? [p.date, p.location].filter(Boolean).join(' · ')
+      : [p.lessons ? `${p.lessons} bài học` : '', p.duration || ''].filter(Boolean).join(' · '),
+    price: p.price > 0 ? formatPrice(p.price) : t('learning.hero.free'),
+  })),
+)
+
+const total = computed(() => 1 + courseSlides.value.length)
+const index = ref(0)
+
+function go(i: number) {
+  const n = total.value
+  index.value = ((i % n) + n) % n
+}
+const next = () => go(index.value + 1)
+const prev = () => go(index.value - 1)
+
+// ── Autoplay ──
+const INTERVAL = 6000
+let timer: ReturnType<typeof setInterval> | null = null
+const paused = ref(false)
+const reducedMotion = ref(false)
+
+function stop() {
+  if (timer) clearInterval(timer)
+  timer = null
+}
+function start() {
+  stop()
+  if (reducedMotion.value || total.value < 2) return
+  timer = setInterval(() => {
+    if (!paused.value && document.visibilityState === 'visible') next()
+  }, INTERVAL)
+}
+/** A manual move restarts the countdown, so the slide just chosen gets its full time. */
+function manual(action: () => void) {
+  action()
+  start()
+}
+
+// ── Swipe ──
+let touchX = 0
+function onTouchStart(e: TouchEvent) {
+  touchX = e.touches[0]?.clientX ?? 0
+  paused.value = true
+}
+function onTouchEnd(e: TouchEvent) {
+  const dx = (e.changedTouches[0]?.clientX ?? 0) - touchX
+  paused.value = false
+  if (Math.abs(dx) > 40) manual(dx < 0 ? next : prev)
+}
+
+onMounted(() => {
+  reducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  start()
+})
+onBeforeUnmount(stop)
+// The catalogue can arrive after mount and change the slide count.
+watch(total, () => {
+  if (index.value >= total.value) index.value = 0
+  start()
+})
 </script>
 
 <template>
-  <section class="hub-hero">
-    <!-- Photo bleeds off the right edge of the viewport on desktop -->
-    <div class="hub-hero__photo">
-      <NuxtImg
-        src="/education-class.png"
-        :alt="t('learning.hero.image_alt')"
-        class="w-full h-full object-cover"
-        format="webp"
-        sizes="55vw"
-      />
-    </div>
-
-    <div class="section-container hub-hero__inner">
-      <!-- Copy -->
-      <div class="hub-hero__copy">
-        <h1 class="hub-hero__title">
-          {{ t('learning.hero.title1') }}<br />
-          <span class="text-accent">{{ t('learning.hero.title2') }}</span>
-        </h1>
-        <p class="hub-hero__sub">{{ t('learning.hero.subtitle') }}</p>
-
-        <div class="hub-hero__actions">
-          <a href="#programs" class="hub-hero__cta">
-            {{ t('learning.hero.cta_primary') }}
-            <svg class="hub-hero__cta-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
-          </a>
-          <span class="hub-hero__account">
-            {{ t('learning.hero.have_account') }}
-            <button type="button" class="hub-hero__login" @click="open('login')">
-              {{ t('learning.login') }} →
-            </button>
-          </span>
-        </div>
-      </div>
-
-      <!-- Feature panel floating over the photo -->
-      <div class="hub-hero__panel">
-        <div v-for="f in features" :key="f.key" class="hub-feature">
-          <span class="hub-feature__icon">
-            <svg v-if="f.icon === 'cap'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 10L12 5 2 10l10 5 10-5z" />
-              <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" />
-            </svg>
-            <svg v-else-if="f.icon === 'play'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="4" width="20" height="14" rx="2" />
-              <path d="M10 9l4 2-4 2V9z" />
-              <line x1="8" y1="21" x2="16" y2="21" />
-            </svg>
-            <svg v-else width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 3h4v4" />
-              <path d="M10 14L22 2" />
-              <rect x="3" y="13" width="3" height="7" rx="0.5" />
-              <rect x="9" y="9" width="3" height="11" rx="0.5" />
-              <rect x="15" y="5" width="3" height="15" rx="0.5" />
-            </svg>
-          </span>
-          <div class="min-w-0">
-            <p class="hub-feature__title">{{ t(`learning.hero.${f.key}_title`) }}</p>
-            <p class="hub-feature__desc">{{ t(`learning.hero.${f.key}_desc`) }}</p>
+  <section
+    class="hub-banner"
+    :aria-label="t('learning.hero.slides_label')"
+    aria-roledescription="carousel"
+    @mouseenter="paused = true"
+    @mouseleave="paused = false"
+    @focusin="paused = true"
+    @focusout="paused = false"
+  >
+    <div class="section-container hub-banner__frame">
+      <div
+        class="hub-banner__viewport"
+        @touchstart.passive="onTouchStart"
+        @touchend.passive="onTouchEnd"
+      >
+        <div class="hub-banner__track" :style="{ transform: `translateX(-${index * 100}%)` }">
+          <!-- ══ Slide 1: the hub's message ══ -->
+          <div
+            class="hub-slide hub-slide--0"
+            role="group"
+            aria-roledescription="slide"
+            :aria-label="`1 / ${total}`"
+            :aria-hidden="index !== 0"
+          >
+            <div class="hub-slide__body">
+              <h1 class="hub-slide__title">
+                {{ t('learning.hero.title1') }}<br />
+                <span class="hub-slide__accent">{{ t('learning.hero.title2') }}</span>
+              </h1>
+              <p class="hub-slide__sub">{{ t('learning.hero.subtitle') }}</p>
+              <div class="hub-slide__actions">
+                <a href="#programs" class="hub-slide__cta" :tabindex="index === 0 ? 0 : -1">
+                  {{ t('learning.hero.cta_primary') }}
+                  <span aria-hidden="true">→</span>
+                </a>
+                <!-- ClientOnly: /learning-hub is prerendered signed-out. -->
+                <ClientOnly>
+                  <span v-if="!loggedIn" class="hub-slide__account">
+                    {{ t('learning.hero.have_account') }}
+                    <button
+                      type="button"
+                      class="hub-slide__login"
+                      :tabindex="index === 0 ? 0 : -1"
+                      @click="open('login')"
+                    >
+                      {{ t('learning.login') }} →
+                    </button>
+                  </span>
+                </ClientOnly>
+              </div>
+            </div>
           </div>
+
+          <!-- ══ Featured courses ══ -->
+          <div
+            v-for="(slide, i) in courseSlides"
+            :key="slide.slug"
+            class="hub-slide"
+            :class="`hub-slide--${(i % 3) + 1}`"
+            role="group"
+            aria-roledescription="slide"
+            :aria-label="`${i + 2} / ${total}`"
+            :aria-hidden="index !== i + 1"
+          >
+            <div class="hub-slide__body">
+              <p class="hub-slide__eyebrow">{{ t('learning.hero.featured') }} · {{ slide.kindLabel }}</p>
+              <h2 class="hub-slide__title hub-slide__title--course">{{ slide.title }}</h2>
+              <p v-if="slide.meta" class="hub-slide__sub">{{ slide.meta }}</p>
+              <div class="hub-slide__actions">
+                <NuxtLink
+                  :to="localePath(`/learning-hub/programs/${slide.slug}`)"
+                  class="hub-slide__cta"
+                  :tabindex="index === i + 1 ? 0 : -1"
+                >
+                  {{ t('learning.programs.view_course') }}
+                  <span aria-hidden="true">→</span>
+                </NuxtLink>
+                <span class="hub-slide__price">{{ slide.price }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arrows -->
+        <button
+          v-if="total > 1"
+          type="button"
+          class="hub-banner__arrow hub-banner__arrow--prev"
+          :aria-label="t('learning.hero.prev')"
+          @click="manual(prev)"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+        </button>
+        <button
+          v-if="total > 1"
+          type="button"
+          class="hub-banner__arrow hub-banner__arrow--next"
+          :aria-label="t('learning.hero.next')"
+          @click="manual(next)"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+        </button>
+
+        <!-- Dots -->
+        <div v-if="total > 1" class="hub-banner__dots">
+          <button
+            v-for="n in total"
+            :key="n"
+            type="button"
+            class="hub-banner__dot"
+            :class="{ 'hub-banner__dot--on': index === n - 1 }"
+            :aria-label="t('learning.hero.goto', { n })"
+            :aria-current="index === n - 1"
+            @click="manual(() => go(n - 1))"
+          />
         </div>
       </div>
     </div>
@@ -80,217 +221,200 @@ const features = [
 </template>
 
 <style scoped>
-.hub-hero {
-  position: relative;
+.hub-banner {
   background: #fbfcfd;
   border-bottom: 1px solid var(--color-border);
+}
+.hub-banner__frame {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+.hub-banner__viewport {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+}
+.hub-banner__track {
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hub-banner__track {
+    transition: none;
+  }
+}
+
+/* ── Slide ── */
+.hub-slide {
+  flex: 0 0 100%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  padding: 2.25rem 1.5rem 3.25rem;
+  color: white;
+  position: relative;
   overflow: hidden;
 }
+/* Solid brand panels with one soft light, instead of photos. */
+.hub-slide::after {
+  content: '';
+  position: absolute;
+  right: -80px;
+  top: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+}
+.hub-slide--0 { background: var(--color-navy); }
+.hub-slide--1 { background: #0f4c5c; }
+.hub-slide--2 { background: #7a3e14; }
+.hub-slide--3 { background: #1f3a5f; }
 
-.hub-hero__inner {
+.hub-slide__body {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  padding-top: 2.25rem;
-  padding-bottom: 2rem;
+  max-width: 620px;
 }
-
-.hub-hero__title {
+.hub-slide__eyebrow {
   font-family: var(--font-heading);
-  font-size: 31px;
-  line-height: 1.2;
-  font-weight: 800;
-  color: var(--color-navy);
-  letter-spacing: -0.02em;
-}
-
-.hub-hero__sub {
-  margin-top: 0.9rem;
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--color-text-secondary);
-  max-width: 340px;
-}
-
-.hub-hero__actions {
-  margin-top: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.9rem;
-}
-
-.hub-hero__account {
-  font-size: 13px;
-  color: var(--color-text-secondary);
-  text-align: center;
-}
-
-.hub-hero__login {
-  font-family: var(--font-heading);
+  font-size: 12px;
   font-weight: 700;
-  color: var(--color-navy-light);
-  transition: color 0.2s ease;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 0.6rem;
 }
-.hub-hero__login:hover {
+.hub-slide__title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  line-height: 1.18;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  /* Global h1/h2 styles paint headings navy — invisible on these panels. */
+  color: white;
+}
+.hub-slide__title--course {
+  font-size: 26px;
+}
+.hub-slide__accent {
   color: var(--color-accent);
 }
-
-.hub-hero__cta {
+.hub-slide__sub {
+  margin-top: 0.8rem;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 440px;
+}
+.hub-slide__actions {
+  margin-top: 1.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem 1.2rem;
+}
+.hub-slide__cta {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 0.45rem;
-  padding: 0.95rem 1.2rem;
+  padding: 0.8rem 1.25rem;
   border-radius: 12px;
   background: var(--color-accent);
   color: white;
   font-family: var(--font-heading);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.1s ease;
 }
-
-/* The mobile CTA is a full-width block button — the arrow would read as
-   decoration next to centred text, so it only shows once the button shrinks
-   back to its inline size on desktop. */
-.hub-hero__cta-arrow {
-  display: none;
-}
-.hub-hero__cta:hover {
+.hub-slide__cta:hover {
   background: var(--color-accent-dark);
 }
-.hub-hero__cta:active {
+.hub-slide__cta:active {
   transform: scale(0.97);
 }
+.hub-slide__price {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 800;
+}
+.hub-slide__account {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+}
+.hub-slide__login {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: white;
+  transition: color 0.2s ease;
+}
+.hub-slide__login:hover {
+  color: var(--color-accent);
+}
 
-/* ── Photo ──
-   Mobile leads with the headline and a full-width CTA, so the photo and the
-   feature panel are desktop-only. */
-.hub-hero__photo {
+/* ── Controls ── */
+.hub-banner__arrow {
   display: none;
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  order: -1;
-}
-
-/* ── Feature panel ── */
-.hub-hero__panel {
-  display: none;
-  background: white;
-  border: 1px solid var(--color-border);
-  border-radius: 14px;
-  box-shadow: 0 10px 30px -12px rgba(11, 42, 74, 0.18);
-  overflow: hidden;
-}
-
-.hub-feature {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  padding: 0.7rem 0.8rem;
-}
-.hub-feature + .hub-feature {
-  border-top: 1px solid var(--color-border);
-}
-
-.hub-feature__icon {
-  flex-shrink: 0;
-  width: 27px;
-  height: 27px;
-  border-radius: 8px;
-  display: flex;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   align-items: center;
   justify-content: center;
-  background: #eef2f7;
-  color: var(--color-navy);
+  background: rgba(255, 255, 255, 0.14);
+  color: white;
+  transition: background 0.2s ease;
+}
+.hub-banner__arrow:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+.hub-banner__arrow--prev { left: 14px; }
+.hub-banner__arrow--next { right: 14px; }
+
+.hub-banner__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.hub-banner__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.4);
+  transition: width 0.3s ease, background 0.3s ease;
+}
+.hub-banner__dot--on {
+  width: 22px;
+  background: white;
 }
 
-.hub-feature__title {
-  font-family: var(--font-heading);
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--color-navy);
-  line-height: 1.3;
-}
-
-.hub-feature__desc {
-  font-size: 10.5px;
-  line-height: 1.45;
-  color: var(--color-text-secondary);
-  margin-top: 2px;
-}
-
-/* ── Desktop: photo on the right half, copy + panel on top of it ── */
 @media (min-width: 1024px) {
-  .hub-hero__actions {
-    margin-top: 1.25rem;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem 1.25rem;
+  .hub-banner__frame {
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
   }
-
-  .hub-hero__cta {
-    padding: 0.6rem 1.2rem;
-    border-radius: 9px;
-    font-size: 13px;
+  .hub-slide {
+    min-height: 360px;
+    padding: 3rem 5rem 3.5rem;
   }
-  .hub-hero__cta-arrow {
-    display: block;
+  .hub-slide__title {
+    font-size: 42px;
   }
-
-  .hub-hero__account {
-    font-size: 12.5px;
-    text-align: left;
+  .hub-slide__title--course {
+    font-size: 36px;
   }
-  .hub-hero__login {
-    color: var(--color-navy);
+  .hub-slide__sub {
+    font-size: 15px;
   }
-
-  .hub-hero__photo {
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: auto;
-    width: 53%;
-    height: auto;
-    aspect-ratio: auto;
-    order: 0;
-  }
-
-  .hub-hero__inner {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: center;
-    gap: 2rem;
-    min-height: 296px;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-
-  /* Keep the copy clear of the photo's left edge on very wide viewports —
-     the photo is anchored to the viewport edge, the container is centred. */
-  .hub-hero__copy {
-    max-width: 430px;
-    padding-right: 1rem;
-  }
-
-  .hub-hero__title {
-    font-size: 30px;
-  }
-
-  .hub-hero__panel {
-    display: block;
-    justify-self: end;
-    width: 340px;
-    background: rgba(255, 255, 255, 0.97);
-    backdrop-filter: blur(6px);
+  .hub-banner__arrow {
+    display: flex;
   }
 }
 </style>

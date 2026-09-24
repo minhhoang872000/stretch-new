@@ -48,13 +48,12 @@
       "subtitle": "Kiến thức ứng dụng vận động và phục hồi dành cho HLV & người yêu vận động.",
       "cta_primary": "Khám phá chương trình",
       "have_account": "Đã có tài khoản?",
-      "image_alt": "Chuyên viên Stretch.vn hướng dẫn đánh giá vận động",
-      "f1_title": "Kiến thức chuẩn chuyên môn",
-      "f1_desc": "Nội dung được xây dựng bởi chuyên gia và giảng viên uy tín trong ngành",
-      "f2_title": "Học linh hoạt mọi lúc, mọi nơi",
-      "f2_desc": "Học online hoặc tham gia trực tiếp theo lịch phù hợp",
-      "f3_title": "Ứng dụng thực tế",
-      "f3_desc": "Bài học bám sát thực tiễn, giúp bạn áp dụng ngay trong công việc"
+      "featured": "Nổi bật",
+      "free": "Miễn phí",
+      "slides_label": "Banner Learning Hub",
+      "prev": "Banner trước",
+      "next": "Banner tiếp theo",
+      "goto": "Chuyển tới banner {n}"
     },
     "programs": {
       "title": "Chương trình nổi bật",
@@ -124,6 +123,7 @@
     "auth": {
       "login_success": "Signed in successfully. Welcome back!",
       "login_failed": "Google sign-in failed. Please try again.",
+      "register_success": "Account created. Welcome to Stretch Learning Hub!",
       "logout_done": "Signed out.",
       "login_title": "Đăng nhập",
       "login_sub": "Tiếp tục hành trình học tập của bạn",
@@ -334,6 +334,7 @@
       "share": "Chia sẻ",
       "done_on": "Hoàn thành {date}",
       "enroll_pending": "Cổng thanh toán đang được hoàn thiện. Bạn để lại liên hệ ở phần hỗ trợ, Stretch sẽ mở lớp và nhắc bạn ngay khi sẵn sàng.",
+      "enroll_free_success": "Đăng ký khoá học thành công. Bắt đầu học thôi!",
       "share_copied": "Course link copied.",
       "share_title": "Share this course",
       "share_hint": "Send this course to someone who needs it.",
@@ -612,6 +613,8 @@
       "back_home": "Back to Home"
     },
     "common": {
+      "toast_success": "Booking received! Stretch will contact you shortly.",
+      "toast_error": "Your booking did not go through. Please try again.",
       "step": "Step",
       "next": "Continue",
       "back": "Back"

@@ -5,6 +5,7 @@
  * matching the hub design.
  */
 const { t } = useI18n()
+const { notify } = useNotification()
 const localePath = useLocalePath()
 const { loggedIn, user, logout: endSession } = useHubSession()
 
@@ -18,13 +19,29 @@ function openAuth(view: 'login' | 'register') {
   openAuthModal(view)
 }
 
-const navLinks = computed(() => [
+const navLinks = computed<{ label: string; to?: string; hash?: string; exact?: boolean }[]>(() => [
   { label: t('learning.nav.home'), to: localePath('/learning-hub'), exact: true },
   { label: t('learning.nav.programs'), to: localePath('/learning-hub/programs') },
   { label: t('learning.nav.schedule'), to: localePath('/learning-hub/schedule') },
-  { label: t('learning.nav.hub'), to: localePath('/sharing-hub') },
-  { label: t('learning.nav.support'), hash: '#support' },
 ])
+
+/**
+ * Header search. The catalogue already filters on `?q=` (diacritic-insensitive),
+ * so this box only hands the term over — one search, one results page. It
+ * mirrors `q` while you are on the catalogue so the two never disagree.
+ */
+const route = useRoute()
+const searchTerm = ref(typeof route.query.q === 'string' ? route.query.q : '')
+watch(
+  () => route.query.q,
+  (q) => { searchTerm.value = typeof q === 'string' ? q : '' },
+)
+
+function submitSearch() {
+  const q = searchTerm.value.trim()
+  closeMobileMenu()
+  navigateTo({ path: localePath('/learning-hub/programs'), query: q ? { q } : {} })
+}
 
 onUnmounted(() => {
   document.body.style.overflow = ''
@@ -43,6 +60,7 @@ function closeMobileMenu() {
 async function logout() {
   await endSession()
   closeMobileMenu()
+  notify(t('learning.auth.logout_done'), 'info')
 }
 </script>
 
@@ -77,6 +95,22 @@ async function logout() {
             <a v-else :href="link.hash" class="hub-link">{{ link.label }}</a>
           </template>
         </nav>
+
+        <!-- Desktop search -->
+        <form class="hub-search hidden lg:flex" role="search" @submit.prevent="submitSearch">
+          <svg class="hub-search__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input
+            v-model="searchTerm"
+            type="search"
+            class="hub-search__input"
+            :placeholder="t('learning.catalog.search_ph')"
+            :aria-label="t('learning.catalog.search_ph')"
+            enterkeyhint="search"
+          />
+        </form>
 
         <!-- Desktop actions -->
         <div class="hidden lg:flex items-center gap-2.5">
@@ -124,6 +158,21 @@ async function logout() {
         v-if="isMobileMenuOpen"
         class="fixed top-0 right-0 bottom-0 w-[290px] bg-white shadow-elevated z-[999] lg:hidden flex flex-col pt-20 px-6 overflow-y-auto"
       >
+        <form class="hub-search hub-search--drawer" role="search" @submit.prevent="submitSearch">
+          <svg class="hub-search__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input
+            v-model="searchTerm"
+            type="search"
+            class="hub-search__input"
+            :placeholder="t('learning.catalog.search_ph')"
+            :aria-label="t('learning.catalog.search_ph')"
+            enterkeyhint="search"
+          />
+        </form>
+
         <template v-for="link in navLinks" :key="link.label">
           <NuxtLink
             v-if="link.to"
@@ -275,6 +324,55 @@ async function logout() {
 .hub-btn--accent:hover {
   background: var(--color-accent-dark);
   border-color: var(--color-accent-dark);
+}
+
+/* ── Search ── */
+.hub-search {
+  position: relative;
+  align-items: center;
+  flex: 1;
+  max-width: 320px;
+  margin: 0 1.5rem;
+}
+.hub-search--drawer {
+  display: flex;
+  max-width: none;
+  margin: 0 0 0.5rem;
+}
+.hub-search__icon {
+  position: absolute;
+  left: 0.85rem;
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+  pointer-events: none;
+}
+.hub-search__input {
+  width: 100%;
+  height: 38px;
+  padding: 0 0.9rem 0 2.3rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-off-white);
+  font-size: 13px;
+  color: var(--color-navy);
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.hub-search--drawer .hub-search__input {
+  height: 44px;
+  font-size: 15px;
+}
+.hub-search__input::placeholder {
+  color: #9aa8b6;
+}
+.hub-search__input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(244, 122, 31, 0.14);
+}
+/* Native clear "×" in WebKit sits on top of our padding; keep it tidy. */
+.hub-search__input::-webkit-search-cancel-button {
+  cursor: pointer;
 }
 
 .fade-enter-active,

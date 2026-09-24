@@ -10,6 +10,7 @@ const emit = defineEmits<{
 }>()
 
 const { t, locale } = useI18n()
+const { notify } = useNotification()
 const { trackFormSource } = useTracking()
 const { submit, loading: apiLoading, success: apiSuccess, error: apiError } = useBooking()
 const localePath = useLocalePath()
@@ -221,9 +222,11 @@ async function submitBooking() {
   isSubmitting.value = false
 
   if (apiError.value) {
+    notify(t('booking_v2.common.toast_error'), 'error', 6000)
     return
   }
 
+  notify(t('booking_v2.common.toast_success'), 'success', 5000)
   showSuccess.value = true
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }

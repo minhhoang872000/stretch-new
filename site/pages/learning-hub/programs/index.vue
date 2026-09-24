@@ -40,6 +40,15 @@ function readList<T extends string>(raw: unknown, allowed: T[]): T[] {
 }
 
 const query = ref((route.query.q as string) ?? '')
+// The header search navigates here with `?q=`; when this page is already open
+// the component is reused, so pick the new term up from the URL.
+watch(
+  () => route.query.q,
+  (q) => {
+    const next = typeof q === 'string' ? q : ''
+    if (next.trim() !== query.value.trim()) query.value = next
+  },
+)
 const kind = ref<ProgramKind | 'all'>(
   KINDS.includes(route.query.kind as ProgramKind) ? (route.query.kind as ProgramKind) : 'all',
 )

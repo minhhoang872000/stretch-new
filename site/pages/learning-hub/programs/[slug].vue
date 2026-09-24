@@ -57,6 +57,7 @@ function enroll() {
     return
   }
   if (!d.value.scheduled) {
+    notify(t('learning.course.enroll_free_success'), 'success')
     navigateTo(learnPath.value)
     return
   }

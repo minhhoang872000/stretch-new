@@ -14,6 +14,14 @@
 const { t } = useI18n()
 const route = useRoute()
 const { isOpen, view, close, go, openFromQuery } = useAuthModal()
+const { loggedIn } = useHubSession()
+
+// Nothing to sign in to once signed in: a stale `?auth=register` link or a
+// session that lands while the dialog is up must not leave it showing
+// "Đã có tài khoản? Đăng nhập →" to someone who already is.
+watch(loggedIn, (now) => {
+  if (now && isOpen.value) close()
+})
 
 const benefits = ['benefit_1', 'benefit_2', 'benefit_3', 'benefit_4', 'benefit_5']
 
@@ -36,7 +44,7 @@ watch(isOpen, (open) => {
 })
 
 onMounted(() => {
-  openFromQuery(route.query.auth)
+  if (!loggedIn.value) openFromQuery(route.query.auth)
   window.addEventListener('keydown', onKeydown)
 })
 

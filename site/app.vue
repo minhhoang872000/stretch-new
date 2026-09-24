@@ -21,8 +21,9 @@ const { t } = useI18n()
 
 onMounted(() => {
   const flag = route.query.auth
-  if (flag !== 'ok' && flag !== 'failed') return
-  if (flag === 'ok') notify(t('learning.auth.login_success'), 'success')
+  if (flag !== 'ok' && flag !== 'registered' && flag !== 'failed') return
+  if (flag === 'registered') notify(t('learning.auth.register_success'), 'success', 5000)
+  else if (flag === 'ok') notify(t('learning.auth.login_success'), 'success')
   else notify(t('learning.auth.login_failed'), 'error', 6000)
   const { auth: _auth, ...rest } = route.query
   router.replace({ query: rest })

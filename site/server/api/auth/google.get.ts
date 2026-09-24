@@ -28,9 +28,13 @@ export default defineOAuthGoogleEventHandler({
     }
 
     let learner = null
+    // True only on the very first sign-in, when the API had to create the
+    // learner — the UI says "account created" instead of "welcome back".
+    let created = false
     try {
       const result = await identifyLearner(event, profile)
       learner = result.learner
+      created = !!result.created
     } catch (err: any) {
       console.error('[auth/google] identify failed:', err?.data?.statusMessage || err?.message || err)
     }
@@ -46,12 +50,13 @@ export default defineOAuthGoogleEventHandler({
 
     // Back where they started, not the home page: signing in from a course page
     // and landing on the front page means finding that course again by hand.
-    // `auth=ok` is the success flag app.vue turns into a toast — a full-page
-    // OAuth redirect has no other channel back to the UI.
+    // `auth=ok|registered` is the success flag app.vue turns into a toast — a
+    // full-page OAuth redirect has no other channel back to the UI.
     const next = getCookie(event, 'stretch-auth-next')
     if (next) deleteCookie(event, 'stretch-auth-next')
     const target = next && next.startsWith('/') ? next : '/'
-    return sendRedirect(event, `${target}${target.includes('?') ? '&' : '?'}auth=ok`)
+    const flag = created ? 'registered' : 'ok'
+    return sendRedirect(event, `${target}${target.includes('?') ? '&' : '?'}auth=${flag}`)
   },
 
   onError(event: any, error: unknown) {
