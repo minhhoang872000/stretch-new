@@ -8,7 +8,7 @@
 const { t } = useI18n()
 const localePath = useLocalePath()
 const { trackPageView } = useTracking()
-const { loggedIn } = useHubSession()
+const { loggedIn, whenReady } = useHubSession()
 const { open: openAuth } = useAuthModal()
 const { active, completed } = useMyLearning()
 const { programs } = useLearningCatalog()
@@ -44,7 +44,8 @@ useSeo({
 })
 
 // Nothing here makes sense signed out — send them to the hub and pop the login.
-onMounted(() => {
+onMounted(async () => {
+  await whenReady()
   if (!loggedIn.value) {
     navigateTo(localePath('/learning-hub'), { replace: true })
     openAuth('login')

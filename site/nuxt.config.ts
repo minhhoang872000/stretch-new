@@ -178,6 +178,27 @@ export default defineNuxtConfig({
     // are server-rendered on the edge — Googlebot gets full HTML, and the
     // `swr: 60` route rules below actually take effect. Build output dir: dist/
     preset: 'cloudflare-pages',
+    // Where swr route rules and defineCachedFunction keep their entries. The
+    // Worker is on the Free plan (~10 ms CPU per request) and an SSR render of a
+    // Learning Hub page costs 400-900 ms, so an uncached render is a coin toss
+    // against "Error 1102". With the cache in KV each page is rendered about
+    // once per swr window instead of once per visitor. Binding: wrangler.jsonc.
+    storage: {
+      cache: { driver: 'cloudflare-kv-binding', binding: 'CACHE' },
+    },
+    // `nuxt dev` has no KV binding; keep the cache in memory there.
+    devStorage: {
+      cache: { driver: 'memory' },
+    },
+    hooks: {
+      // Neither does the prerenderer, which runs on the build machine. Pointed
+      // at the missing KV it lost the in-memory dedup that folds its ~60
+      // identical catalogue reads into two, the free-tier API timed out under
+      // the burst, and the hub was baked with the fallback catalogue.
+      'prerender:config'(config) {
+        config.storage = { ...config.storage, cache: { driver: 'memory' } }
+      },
+    },
     cloudflare: {
       pages: {
         // Nitro's AUTO-generated `_routes.json` lists every prerendered static
@@ -282,22 +303,33 @@ export default defineNuxtConfig({
     '/products/**': { redirect: { to: '/individual', statusCode: 301 } },
     '/vi/products': { redirect: { to: '/vi/individual', statusCode: 301 } },
     '/vi/products/**': { redirect: { to: '/vi/individual', statusCode: 301 } },
-    // The course catalogue, its ~18 detail pages, the calendar and the player:
-    // rendered per request, NOT prerendered (the crawler cannot find every slug)
-    // and NOT swr-cached.
+    // The course catalogue, its detail pages and the calendar: NOT prerendered
+    // (the crawler cannot find every slug), rendered on demand and swr-cached in
+    // KV for 5 minutes — the only way the Free plan's CPU cap stays out of the
+    // visitor's way (see nitro.storage above).
     //
-    // No `swr` here on purpose: every Learning Hub page renders `LearningHeader`,
-    // which puts the signed-in learner's name and initials into the HTML. A
-    // shared response cache would hand one visitor's header to the next. If
-    // these ever need caching, the session has to come out of the server render
-    // first. `/**` also covers the bare `/programs` index, which is why that
-    // path is in the `_routes.json` include list above.
-    '/learning-hub/programs/**': { prerender: false },
-    '/vi/learning-hub/programs/**': { prerender: false },
-    '/learning-hub/schedule': { prerender: false },
-    '/vi/learning-hub/schedule': { prerender: false },
-    '/learning-hub/learn/**': { prerender: false },
-    '/vi/learning-hub/learn/**': { prerender: false },
+    // Sharing one cached render between visitors is safe because nothing
+    // personal is in it:
+    //  - Nitro re-issues a cached render WITHOUT the visitor's cookies (only
+    //    `varies` headers pass through), so the render is always signed out and
+    //    `/api/me/*` is never called during it.
+    //  - nuxt-auth-utils sees `event.context.cache` and skips the server-side
+    //    session fetch, then loads the session in the browser after hydration.
+    //    The header therefore shows "Đăng nhập" for a moment before the avatar,
+    //    and guards that need the session wait for `useHubSession().whenReady()`.
+    // `/**` does NOT match the bare `/programs` index (verified: no cache headers
+    // on it), so the index has its own rules.
+    '/learning-hub/programs': { prerender: false, swr: 300 },
+    '/vi/learning-hub/programs': { prerender: false, swr: 300 },
+    '/learning-hub/programs/**': { prerender: false, swr: 300 },
+    '/vi/learning-hub/programs/**': { prerender: false, swr: 300 },
+    '/learning-hub/schedule': { prerender: false, swr: 300 },
+    '/vi/learning-hub/schedule': { prerender: false, swr: 300 },
+    // The player is per learner, noindex and sign-in only: nothing to gain from
+    // rendering it on the edge, so it ships as a client-rendered shell (a few ms
+    // of Worker CPU) and loads everything in the browser.
+    '/learning-hub/learn/**': { prerender: false, ssr: false },
+    '/vi/learning-hub/learn/**': { prerender: false, ssr: false },
     '/sharing-hub': { prerender: false, swr: 300 },
     '/sharing-hub/**': { prerender: false, swr: 300 },
     '/vi/sharing-hub': { prerender: false, swr: 300 },

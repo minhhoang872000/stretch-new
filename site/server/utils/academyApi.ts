@@ -85,7 +85,13 @@ const cachedGet = defineCachedFunction(
       headers,
       timeout: import.meta.prerender ? 20000 : 6000,
     }),
-  { name: 'academyApi', maxAge: 60, staleMaxAge: 300, swr: true, getKey: (url: string) => url },
+  {
+    name: 'academyApi',
+    maxAge: 60,
+    staleMaxAge: 300,
+    swr: true,
+    getKey: (url: string) => url,
+  },
 )
 
 /**

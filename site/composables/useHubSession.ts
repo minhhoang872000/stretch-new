@@ -23,7 +23,29 @@ function toInitials(name: string): string {
 }
 
 export function useHubSession() {
-  const { loggedIn, user: sessionUser, clear } = useUserSession()
+  const { loggedIn, user: sessionUser, clear, ready } = useUserSession()
+
+  /**
+   * Resolves once the session is known.
+   *
+   * Prerendered and swr-cached pages are rendered signed out, and the real
+   * session is fetched in the browser only after hydration — so at `onMounted`
+   * a signed-in learner can still read as a guest. Anything that REDIRECTS a
+   * guest must await this first, or it throws signed-in people off the page.
+   * Capped at 5 s so a dead session endpoint cannot hang a page forever.
+   */
+  function whenReady(): Promise<void> {
+    if (ready.value || import.meta.server) return Promise.resolve()
+    return new Promise((resolve) => {
+      const timer = setTimeout(() => { stop(); resolve() }, 5000)
+      const stop = watch(ready, (now) => {
+        if (!now) return
+        clearTimeout(timer)
+        stop()
+        resolve()
+      })
+    })
+  }
 
   /**
    * The learner row behind the session, or null.
@@ -52,5 +74,5 @@ export function useHubSession() {
     await clear()
   }
 
-  return { loggedIn, user, learner, logout }
+  return { loggedIn, ready, whenReady, user, learner, logout }
 }

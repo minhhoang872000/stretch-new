@@ -17,7 +17,7 @@ const router = useRouter()
 const localePath = useLocalePath()
 const { trackPageView } = useTracking()
 const detailFromApi = await useProgramDetailFor(computed(() => String(route.params.slug)))
-const { loggedIn } = useHubSession()
+const { loggedIn, whenReady } = useHubSession()
 const { open: openAuth } = useAuthModal()
 const { notify } = useNotification()
 
@@ -126,7 +126,8 @@ useSeo({
   noIndex: true,
 })
 
-onMounted(() => {
+onMounted(async () => {
+  await whenReady()
   // Signed out there is no progress to keep — send them back to the course page
   // with the login open, exactly like /learning-hub/my-courses does.
   if (!loggedIn.value) {

@@ -14,7 +14,7 @@
 const { t } = useI18n()
 const route = useRoute()
 const { isOpen, view, close, go, openFromQuery } = useAuthModal()
-const { loggedIn } = useHubSession()
+const { loggedIn, whenReady } = useHubSession()
 
 // Nothing to sign in to once signed in: a stale `?auth=register` link or a
 // session that lands while the dialog is up must not leave it showing
@@ -43,7 +43,8 @@ watch(isOpen, (open) => {
   document.body.style.overflow = open ? 'hidden' : ''
 })
 
-onMounted(() => {
+onMounted(async () => {
+  await whenReady()
   if (!loggedIn.value) openFromQuery(route.query.auth)
   window.addEventListener('keydown', onKeydown)
 })

@@ -17,7 +17,7 @@ const route = useRoute()
 const localePath = useLocalePath()
 const config = useRuntimeConfig()
 const { trackPageView } = useTracking()
-const { loggedIn } = useHubSession()
+const { loggedIn, whenReady } = useHubSession()
 const { open: openAuth } = useAuthModal()
 const { notify } = useNotification()
 const { active, completed } = useMyLearning()
@@ -149,6 +149,7 @@ useSeo({
 })
 
 onMounted(async () => {
+  await whenReady()
   // Signed out, or a free course: this page has nothing to sell.
   if (!loggedIn.value) {
     navigateTo(programPath.value)

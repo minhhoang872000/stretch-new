@@ -3,5 +3,12 @@
   "name": "stretch",
   "pages_build_output_dir": "dist",
   "compatibility_date": "2025-04-27",
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  // Nitro's cache storage (swr route rules + cached API reads). Without a
+  // durable store the cache lived in each short-lived isolate's memory, so
+  // every request re-rendered the page and the Free plan's CPU cap turned a
+  // share of them into "Error 1102". See nuxt.config.ts → nitro.storage.
+  "kv_namespaces": [
+    { "binding": "CACHE", "id": "e9a50943920349a1bf5479ba3bfbdab4" }
+  ]
 }
