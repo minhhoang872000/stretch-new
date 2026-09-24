@@ -79,11 +79,16 @@ function serviceHeaders(event: any): Record<string, string> {
  */
 const cachedGet = defineCachedFunction(
   async (url: string, headers: Record<string, string>) =>
-    // The prerenderer renders ~60 pages back to back and the free-tier API
-    // slows down under that burst; a build can wait, a visitor should not.
+    // Build time: the prerenderer's first wave renders 16 pages at once while
+    // the server bundle is still warming up, and the process is busy for
+    // 16-22 s before any response is read (measured on the good and the bad
+    // builds alike). A 20 s timeout sat right on that edge, so builds failed
+    // at random and baked the fallback catalogue. A build can afford to wait;
+    // a visitor gets the short timeout.
     $fetch<{ success?: boolean; data?: unknown }>(url, {
       headers,
-      timeout: import.meta.prerender ? 20000 : 6000,
+      timeout: import.meta.prerender ? 60000 : 6000,
+      retry: import.meta.prerender ? 1 : 0,
     }),
   {
     name: 'academyApi',
