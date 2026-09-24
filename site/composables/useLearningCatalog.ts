@@ -29,6 +29,8 @@ export interface CatalogProgram {
   /** Self-paced items: lesson count + total length. */
   lessons?: number
   duration?: string
+  /** Learners enrolled so far (API only; the fallback list has none). */
+  enrolled?: number
   /** Scheduled items: start date, hours and place. */
   date?: string
   time?: string

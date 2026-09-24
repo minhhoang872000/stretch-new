@@ -1,52 +1,82 @@
 <script setup lang="ts">
 /**
- * Learning Hub home banner — a horizontal slider.
+ * Learning Hub home banner — a horizontal slider with three slides:
  *
- * Slide 1 carries the hub's message and the main CTA; the rest feature the
- * first courses of the live catalogue (API first, seed list as fallback), so a
- * banner can never advertise a course the catalogue does not have. No photos:
- * each slide is a solid brand panel, which keeps the banner light and legible.
+ *  1. Khóa học thịnh hành — the self-paced course with the most learners.
+ *  2. Workshop — the next scheduled workshop; when none is published it
+ *     points at the training calendar instead of showing an empty slide.
+ *  3. Đội ngũ — the teaching team (public fields from /api/instructors).
+ *
+ * All from live data (catalogue falls back to its seed list), no photos: each
+ * slide is a solid brand panel. The hub headline stays as a visually hidden
+ * <h1> so the page keeps its heading for search and screen readers.
  *
  * Autoplays every 6s, pauses on hover / keyboard focus / hidden tab, and stays
  * still for people who ask for reduced motion. Swipe, arrows and dots all work.
  */
+import type { CatalogProgram } from '~/composables/useLearningCatalog'
+
 const { t } = useI18n()
 const localePath = useLocalePath()
-const { open } = useAuthModal()
-const { loggedIn } = useHubSession()
 const { programs, formatPrice } = useLearningCatalog()
 
-interface CourseSlide {
-  slug: string
-  kindLabel: string
-  title: string
-  meta: string
-  price: string
-}
-
-const courseSlides = computed<CourseSlide[]>(() =>
-  programs.value.slice(0, 3).map((p) => ({
-    slug: p.slug,
-    kindLabel:
-      p.kind === 'mini'
-        ? t('learning.catalog.kind_mini')
-        : p.kind === 'workshop'
-          ? t('learning.catalog.kind_workshop')
-          : t('learning.catalog.kind_course'),
-    title: p.title,
-    meta: p.date
-      ? [p.date, p.location].filter(Boolean).join(' · ')
-      : [p.lessons ? `${p.lessons} bài học` : '', p.duration || ''].filter(Boolean).join(' · '),
-    price: p.price > 0 ? formatPrice(p.price) : t('learning.hero.free'),
-  })),
+interface TeamMember { id: string; name: string; role: string; programs: number; learners: number }
+const { data: team } = useAsyncData(
+  'hub-instructors',
+  () => $fetch<{ instructors: TeamMember[] }>('/api/instructors'),
+  { default: () => ({ instructors: [] as TeamMember[] }) },
 )
 
-const total = computed(() => 1 + courseSlides.value.length)
+function kindLabel(kind: string) {
+  if (kind === 'mini') return t('learning.catalog.kind_mini')
+  if (kind === 'workshop') return t('learning.catalog.kind_workshop')
+  return t('learning.catalog.kind_course')
+}
+
+function metaOf(p: CatalogProgram) {
+  return p.date
+    ? [p.date, p.time, p.location].filter(Boolean).join(' · ')
+    : [p.lessons ? `${p.lessons} bài học` : '', p.duration || ''].filter(Boolean).join(' · ')
+}
+
+/** Most-enrolled self-paced course; the first one when there are no counts. */
+const trending = computed<CatalogProgram | null>(() => {
+  const selfPaced = programs.value.filter((p) => p.kind !== 'workshop')
+  const pool = selfPaced.length ? selfPaced : programs.value
+  return [...pool].sort((a, b) => (b.enrolled ?? 0) - (a.enrolled ?? 0))[0] ?? null
+})
+
+/** Next workshop, dated ones first. */
+const workshop = computed<CatalogProgram | null>(() => {
+  const all = programs.value.filter((p) => p.kind === 'workshop')
+  return all.find((p) => p.date) ?? all[0] ?? null
+})
+
+/** The same person can be listed twice in the console; show each name once. */
+const instructors = computed(() => {
+  const seen = new Set<string>()
+  return (team.value?.instructors ?? []).filter((i) => {
+    const key = i.name.trim().toLowerCase()
+    if (!key || seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+})
+const teamLearners = computed(() =>
+  (team.value?.instructors ?? []).reduce((s, i) => s + (i.learners || 0), 0).toLocaleString('vi-VN'),
+)
+
+function initialsOf(name: string) {
+  const w = name.trim().split(/\s+/).filter(Boolean)
+  if (!w.length) return '?'
+  return ((w[0]?.[0] || '') + (w.length > 1 ? w[w.length - 1]?.[0] || '' : '')).toUpperCase()
+}
+
+const total = 3
 const index = ref(0)
 
 function go(i: number) {
-  const n = total.value
-  index.value = ((i % n) + n) % n
+  index.value = ((i % total) + total) % total
 }
 const next = () => go(index.value + 1)
 const prev = () => go(index.value - 1)
@@ -63,7 +93,7 @@ function stop() {
 }
 function start() {
   stop()
-  if (reducedMotion.value || total.value < 2) return
+  if (reducedMotion.value) return
   timer = setInterval(() => {
     if (!paused.value && document.visibilityState === 'visible') next()
   }, INTERVAL)
@@ -91,11 +121,9 @@ onMounted(() => {
   start()
 })
 onBeforeUnmount(stop)
-// The catalogue can arrive after mount and change the slide count.
-watch(total, () => {
-  if (index.value >= total.value) index.value = 0
-  start()
-})
+
+/** Links on hidden slides must not be reachable with Tab. */
+const tab = (i: number) => (index.value === i ? 0 : -1)
 </script>
 
 <template>
@@ -108,6 +136,8 @@ watch(total, () => {
     @focusin="paused = true"
     @focusout="paused = false"
   >
+    <h1 class="sr-only">{{ t('learning.hero.title1') }} {{ t('learning.hero.title2') }}</h1>
+
     <div class="section-container hub-banner__frame">
       <div
         class="hub-banner__viewport"
@@ -115,95 +145,98 @@ watch(total, () => {
         @touchend.passive="onTouchEnd"
       >
         <div class="hub-banner__track" :style="{ transform: `translateX(-${index * 100}%)` }">
-          <!-- ══ Slide 1: the hub's message ══ -->
-          <div
-            class="hub-slide hub-slide--0"
-            role="group"
-            aria-roledescription="slide"
-            :aria-label="`1 / ${total}`"
-            :aria-hidden="index !== 0"
-          >
+          <!-- ══ 1. Khóa học thịnh hành ══ -->
+          <div class="hub-slide hub-slide--0" role="group" aria-roledescription="slide" :aria-label="`1 / ${total}`" :aria-hidden="index !== 0">
             <div class="hub-slide__body">
-              <h1 class="hub-slide__title">
-                {{ t('learning.hero.title1') }}<br />
-                <span class="hub-slide__accent">{{ t('learning.hero.title2') }}</span>
-              </h1>
-              <p class="hub-slide__sub">{{ t('learning.hero.subtitle') }}</p>
-              <div class="hub-slide__actions">
-                <a href="#programs" class="hub-slide__cta" :tabindex="index === 0 ? 0 : -1">
-                  {{ t('learning.hero.cta_primary') }}
-                  <span aria-hidden="true">→</span>
-                </a>
-                <!-- ClientOnly: /learning-hub is prerendered signed-out. -->
-                <ClientOnly>
-                  <span v-if="!loggedIn" class="hub-slide__account">
-                    {{ t('learning.hero.have_account') }}
-                    <button
-                      type="button"
-                      class="hub-slide__login"
-                      :tabindex="index === 0 ? 0 : -1"
-                      @click="open('login')"
-                    >
-                      {{ t('learning.login') }} →
-                    </button>
-                  </span>
-                </ClientOnly>
-              </div>
+              <p class="hub-slide__eyebrow">
+                {{ t('learning.hero.trending_label') }}<template v-if="trending"> · {{ kindLabel(trending.kind) }}</template>
+              </p>
+              <template v-if="trending">
+                <h2 class="hub-slide__title">{{ trending.title }}</h2>
+                <p class="hub-slide__sub">
+                  {{ metaOf(trending) }}<template v-if="trending.enrolled"> · {{ t('learning.hero.enrolled', { n: trending.enrolled.toLocaleString('vi-VN') }) }}</template>
+                </p>
+                <div class="hub-slide__actions">
+                  <NuxtLink :to="localePath(`/learning-hub/programs/${trending.slug}`)" class="hub-slide__cta" :tabindex="tab(0)">
+                    {{ t('learning.programs.view_course') }} <span aria-hidden="true">→</span>
+                  </NuxtLink>
+                  <span class="hub-slide__price">{{ trending.price > 0 ? formatPrice(trending.price) : t('learning.hero.free') }}</span>
+                </div>
+              </template>
+              <template v-else>
+                <h2 class="hub-slide__title">{{ t('learning.hero.title1') }} <span class="hub-slide__accent">{{ t('learning.hero.title2') }}</span></h2>
+                <p class="hub-slide__sub">{{ t('learning.hero.subtitle') }}</p>
+                <div class="hub-slide__actions">
+                  <NuxtLink :to="localePath('/learning-hub/programs')" class="hub-slide__cta" :tabindex="tab(0)">
+                    {{ t('learning.hero.cta_primary') }} <span aria-hidden="true">→</span>
+                  </NuxtLink>
+                </div>
+              </template>
             </div>
           </div>
 
-          <!-- ══ Featured courses ══ -->
-          <div
-            v-for="(slide, i) in courseSlides"
-            :key="slide.slug"
-            class="hub-slide"
-            :class="`hub-slide--${(i % 3) + 1}`"
-            role="group"
-            aria-roledescription="slide"
-            :aria-label="`${i + 2} / ${total}`"
-            :aria-hidden="index !== i + 1"
-          >
+          <!-- ══ 2. Workshop ══ -->
+          <div class="hub-slide hub-slide--2" role="group" aria-roledescription="slide" :aria-label="`2 / ${total}`" :aria-hidden="index !== 1">
             <div class="hub-slide__body">
-              <p class="hub-slide__eyebrow">{{ t('learning.hero.featured') }} · {{ slide.kindLabel }}</p>
-              <h2 class="hub-slide__title hub-slide__title--course">{{ slide.title }}</h2>
-              <p v-if="slide.meta" class="hub-slide__sub">{{ slide.meta }}</p>
+              <p class="hub-slide__eyebrow">{{ t('learning.hero.workshop_label') }}</p>
+              <template v-if="workshop">
+                <h2 class="hub-slide__title">{{ workshop.title }}</h2>
+                <p v-if="metaOf(workshop)" class="hub-slide__sub">{{ metaOf(workshop) }}</p>
+                <div class="hub-slide__actions">
+                  <NuxtLink :to="localePath(`/learning-hub/programs/${workshop.slug}`)" class="hub-slide__cta" :tabindex="tab(1)">
+                    {{ t('learning.programs.view_course') }} <span aria-hidden="true">→</span>
+                  </NuxtLink>
+                  <span class="hub-slide__price">{{ workshop.price > 0 ? formatPrice(workshop.price) : t('learning.hero.free') }}</span>
+                </div>
+              </template>
+              <template v-else>
+                <h2 class="hub-slide__title">{{ t('learning.hero.workshop_fallback_title') }}</h2>
+                <p class="hub-slide__sub">{{ t('learning.hero.workshop_fallback_sub') }}</p>
+                <div class="hub-slide__actions">
+                  <NuxtLink :to="localePath('/learning-hub/schedule')" class="hub-slide__cta" :tabindex="tab(1)">
+                    {{ t('learning.hero.workshop_cta') }} <span aria-hidden="true">→</span>
+                  </NuxtLink>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- ══ 3. Đội ngũ ══ -->
+          <div class="hub-slide hub-slide--1" role="group" aria-roledescription="slide" :aria-label="`3 / ${total}`" :aria-hidden="index !== 2">
+            <div class="hub-slide__body hub-slide__body--wide">
+              <p class="hub-slide__eyebrow">{{ t('learning.hero.team_label') }}</p>
+              <h2 class="hub-slide__title">{{ t('learning.hero.team_title') }}</h2>
+              <p v-if="instructors.length" class="hub-slide__sub">
+                {{ t('learning.hero.team_sub', { n: instructors.length, learners: teamLearners }) }}
+              </p>
+              <ul v-if="instructors.length" class="hub-team">
+                <li v-for="person in instructors.slice(0, 4)" :key="person.id" class="hub-team__item">
+                  <span class="hub-team__avatar" aria-hidden="true">{{ initialsOf(person.name) }}</span>
+                  <span class="hub-team__text">
+                    <span class="hub-team__name">{{ person.name }}</span>
+                    <span class="hub-team__role">{{ person.role }}</span>
+                  </span>
+                </li>
+              </ul>
               <div class="hub-slide__actions">
-                <NuxtLink
-                  :to="localePath(`/learning-hub/programs/${slide.slug}`)"
-                  class="hub-slide__cta"
-                  :tabindex="index === i + 1 ? 0 : -1"
-                >
-                  {{ t('learning.programs.view_course') }}
-                  <span aria-hidden="true">→</span>
+                <NuxtLink :to="localePath('/learning-hub/programs')" class="hub-slide__cta" :tabindex="tab(2)">
+                  {{ t('learning.hero.team_cta') }} <span aria-hidden="true">→</span>
                 </NuxtLink>
-                <span class="hub-slide__price">{{ slide.price }}</span>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Arrows -->
-        <button
-          v-if="total > 1"
-          type="button"
-          class="hub-banner__arrow hub-banner__arrow--prev"
-          :aria-label="t('learning.hero.prev')"
-          @click="manual(prev)"
-        >
+        <button type="button" class="hub-banner__arrow hub-banner__arrow--prev" :aria-label="t('learning.hero.prev')" @click="manual(prev)">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
         </button>
-        <button
-          v-if="total > 1"
-          type="button"
-          class="hub-banner__arrow hub-banner__arrow--next"
-          :aria-label="t('learning.hero.next')"
-          @click="manual(next)"
-        >
+        <button type="button" class="hub-banner__arrow hub-banner__arrow--next" :aria-label="t('learning.hero.next')" @click="manual(next)">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
         </button>
 
         <!-- Dots -->
-        <div v-if="total > 1" class="hub-banner__dots">
+        <div class="hub-banner__dots">
           <button
             v-for="n in total"
             :key="n"
@@ -351,6 +384,62 @@ watch(total, () => {
 }
 .hub-slide__login:hover {
   color: var(--color-accent);
+}
+
+/* ── Team slide ── */
+.hub-slide__body--wide {
+  max-width: 820px;
+}
+.hub-team {
+  margin-top: 1.1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem 1rem;
+}
+.hub-team__item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+.hub-team__avatar {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 800;
+}
+.hub-team__text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.hub-team__name {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hub-team__role {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (min-width: 1024px) {
+  .hub-team {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 /* ── Controls ── */

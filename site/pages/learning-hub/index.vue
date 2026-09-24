@@ -29,7 +29,6 @@ onMounted(() => {
       <LearningHero />
       <LearningPrograms />
       <LearningArticles />
-      <LearningValueBar />
     </main>
 
     <LearningFooter />

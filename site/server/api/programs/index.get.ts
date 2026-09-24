@@ -35,6 +35,8 @@ export default defineEventHandler(async (event) => {
         title: program.title,
         image: program.image || '/images/man-neck-pain.png',
         price: program.price,
+        // Drives "Khoá học thịnh hành" on the hub banner.
+        enrolled: Number(program.enrolled) || 0,
         // A scheduled item shows its date; a self-paced one shows how much of it
         // there is. An item with both shows both, which is correct: a workshop
         // can also ship recorded material.

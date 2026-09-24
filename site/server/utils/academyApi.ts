@@ -146,6 +146,12 @@ export async function fetchApprovedReviews(event: any, programId: string) {
   return data.reviews || []
 }
 
+/** Active instructors, for the hub's "đội ngũ" banner. */
+export async function fetchInstructors(event: any) {
+  const data = await read<{ instructors: any[] }>(event, '/instructors?limit=50', { instructors: [] })
+  return (data.instructors || []).filter((i: any) => i.status !== 'inactive' && i.status !== 'archived')
+}
+
 export async function fetchInstructor(event: any, id: string | null) {
   if (!id) return null
   const apiBase = base(event)

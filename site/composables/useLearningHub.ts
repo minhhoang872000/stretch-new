@@ -50,7 +50,8 @@ export function useLearningHub() {
   const courses = computed<LearningCourse[]>(() =>
     programs.value
       .filter((p) => p.kind === 'mini' || p.kind === 'course')
-      .slice(0, 4)
+      // Two featured cards, one row — the hub shows a taste, "Xem tất cả" the rest.
+      .slice(0, 2)
       .map((p, i) => ({
         slug: p.slug,
         kind: p.kind === 'mini' ? 'mini' : 'course',

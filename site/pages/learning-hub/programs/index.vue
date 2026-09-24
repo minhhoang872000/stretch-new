@@ -22,16 +22,7 @@ const MODES: ProgramMode[] = ['online', 'offline']
 const TOPICS: ProgramTopic[] = ['anatomy', 'assessment', 'sports', 'functional']
 const SORTS: ProgramSort[] = ['newest', 'price_asc', 'price_desc']
 
-/** Vietnamese search has to ignore diacritics — nobody types "Phục hồi" with
-    tone marks into a search box when they are in a hurry. */
-function fold(value: string): string {
-  return value
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/đ/g, 'd')
-    .replace(/Đ/g, 'D')
-    .toLowerCase()
-}
+// Diacritic-insensitive matching lives in utils/fold.ts (shared with the header search).
 
 function readList<T extends string>(raw: unknown, allowed: T[]): T[] {
   return String(raw ?? '')

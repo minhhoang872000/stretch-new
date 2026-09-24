@@ -53,7 +53,17 @@
       "slides_label": "Banner Learning Hub",
       "prev": "Banner trước",
       "next": "Banner tiếp theo",
-      "goto": "Chuyển tới banner {n}"
+      "goto": "Chuyển tới banner {n}",
+      "trending_label": "Khóa học thịnh hành",
+      "enrolled": "{n} học viên đã tham gia",
+      "workshop_label": "Workshop",
+      "workshop_fallback_title": "Workshop thực hành trực tiếp",
+      "workshop_fallback_sub": "Học cùng giảng viên, thực hành trên người thật, lịch khai giảng cập nhật hàng tháng.",
+      "workshop_cta": "Xem lịch workshop",
+      "team_label": "Đội ngũ",
+      "team_title": "Học cùng chuyên gia vận động và phục hồi",
+      "team_sub": "{n} giảng viên · {learners} lượt học viên",
+      "team_cta": "Xem các khóa học"
     },
     "programs": {
       "title": "Chương trình nổi bật",
@@ -251,6 +261,9 @@
       "title": "Tất cả chương trình học",
       "subtitle": "Khám phá các khóa học, mini-course và workshop về vận động và phục hồi.",
       "search_ph": "Tìm khóa học, workshop...",
+      "search_empty": "Không tìm thấy khóa học hay workshop phù hợp.",
+      "search_all": "Xem tất cả kết quả cho “{q}”",
+      "search_results": "Gợi ý tìm kiếm",
       "filters": "Bộ lọc",
       "active_filters": "Bộ lọc đang chọn:",
       "clear_all": "Xóa tất cả",
