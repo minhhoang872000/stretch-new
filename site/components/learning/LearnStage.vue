@@ -5,7 +5,7 @@
  * The three lesson types share this frame instead of having three layouts — a
  * learner moving from a video to a quiz should only see the middle change.
  */
-import type { ProgramDetail, SyllabusItem } from '~/composables/useProgramDetail'
+import type { LessonAttachment, ProgramDetail, SyllabusItem } from '~/composables/useProgramDetail'
 
 const props = defineProps<{
   detail: ProgramDetail
@@ -18,6 +18,8 @@ const props = defineProps<{
   hasNext: boolean
   /** Seconds to start a video lesson at, from the saved playhead. */
   resumeAt?: number
+  /** Real files of this lesson (from /api/me/materials). Empty → the checklist shows. */
+  attachments?: LessonAttachment[]
 }>()
 
 const emit = defineEmits<{
@@ -240,6 +242,18 @@ const tab = ref<Tab>('lesson')
 const mod = computed(() => props.detail.modules[props.moduleIndex])
 const paragraphs = computed(() => reading(props.detail, props.moduleIndex, props.item))
 const files = computed(() => checklist(props.detail, props.moduleIndex))
+const attachmentList = computed<LessonAttachment[]>(() =>
+  props.attachments?.length ? props.attachments : props.item.attachments ?? [],
+)
+function fileExt(name: string) {
+  const ext = name.split('.').pop() || ''
+  return ext.length <= 4 ? ext.toUpperCase() : 'FILE'
+}
+function fileSize(bytes?: number) {
+  if (!bytes) return ''
+  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`
+  return `${(bytes / 1024 / 1024).toFixed(1).replace('.', ',')} MB`
+}
 const questions = computed(() => quiz(props.detail, props.moduleIndex))
 
 /** Moving to another lesson should land you on its content, not on the notes
@@ -397,7 +411,20 @@ watch(() => [props.moduleIndex, props.itemIndex], () => {
 
     <!-- ── Tab: files ── -->
     <div v-else class="body">
-      <p class="files__title">{{ t('learning.learn.files_title') }}</p>
+      <template v-if="attachmentList.length">
+        <p class="files__title">{{ t('learning.learn.attachments_title') }}</p>
+        <ul class="files files--real">
+          <li v-for="file in attachmentList" :key="file.url">
+            <a :href="file.url" target="_blank" rel="noopener" class="file">
+              <span class="file__ext">{{ fileExt(file.name) }}</span>
+              <span class="file__name">{{ file.name }}</span>
+              <span v-if="fileSize(file.size)" class="file__size">{{ fileSize(file.size) }}</span>
+              <span class="file__dl">{{ t('learning.materials.download') }}</span>
+            </a>
+          </li>
+        </ul>
+      </template>
+      <p class="files__title" :class="{ 'files__title--sub': attachmentList.length }">{{ t('learning.learn.files_title') }}</p>
       <ul class="files">
         <li v-for="line in files" :key="line">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -407,7 +434,7 @@ watch(() => [props.moduleIndex, props.itemIndex], () => {
           {{ line }}
         </li>
       </ul>
-      <p class="notes__hint">{{ t('learning.learn.files_hint') }}</p>
+      <p v-if="!attachmentList.length" class="notes__hint">{{ t('learning.learn.files_hint') }}</p>
     </div>
 
     <!-- ══ Ask a person ══ -->
@@ -787,6 +814,62 @@ video.video__frame {
   flex-shrink: 0;
   margin-top: 2px;
   color: var(--color-navy-light);
+}
+
+.files__title--sub {
+  margin-top: 1.1rem;
+}
+.files--real li {
+  display: block;
+}
+.file {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: white;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.file:hover {
+  border-color: var(--color-accent);
+  background: var(--color-off-white);
+}
+.file__ext {
+  flex-shrink: 0;
+  min-width: 38px;
+  padding: 0.3rem 0.35rem;
+  border-radius: 6px;
+  background: var(--color-navy);
+  color: white;
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 800;
+  text-align: center;
+}
+.file__name {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-navy);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.file__size {
+  flex-shrink: 0;
+  font-size: 11.5px;
+  color: var(--color-text-secondary);
+}
+.file__dl {
+  flex-shrink: 0;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-accent);
 }
 
 /* ══ Footer nav ══ */

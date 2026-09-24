@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { LessonAttachment } from '~/composables/useProgramDetail'
 /**
  * The course player — what "Học" opens.
  *
@@ -63,6 +64,17 @@ const fallbackKey = computed(() => {
 const currentKey = computed(() => queryKey.value || fallbackKey.value)
 const currentIndex = computed(() => lessons.value.findIndex((l) => l.key === currentKey.value))
 const current = computed(() => lessons.value[currentIndex.value] ?? lessons.value[0])
+
+/**
+ * Lesson files the visitor may take, keyed like `lessons` ("mi-ii"). The
+ * public course data only carries free lessons' files; this adds the rest for
+ * an enrolled learner. Refetched when the session changes (sign in/out).
+ */
+const { data: materials } = useAsyncData(
+  () => `learn-materials-${slug.value}`,
+  () => $fetch<{ items: Record<string, LessonAttachment[]> }>(`/api/me/materials/${encodeURIComponent(slug.value)}`).catch(() => ({ items: {} })),
+  { watch: [slug, loggedIn], default: () => ({ items: {} as Record<string, LessonAttachment[]> }) },
+)
 
 const doneCount = computed(() => lessons.value.filter((l) => isDone(l.key)).length)
 const progress = computed(() => percent(lessons.value.length))
@@ -214,6 +226,7 @@ onMounted(async () => {
               :done="isDone(current.key)"
               :note="noteFor(current.key)"
               :resume-at="resumeSeconds(current.key)"
+              :attachments="materials?.items?.[current.key] ?? []"
               :has-prev="currentIndex > 0"
               :has-next="currentIndex < lessons.length - 1"
               @toggle-done="completeAndAdvance"

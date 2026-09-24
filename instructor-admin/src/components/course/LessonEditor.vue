@@ -4,6 +4,7 @@ import AppButton from '~/components/ui/AppButton.vue'
 import AppIcon from '~/components/ui/AppIcon.vue'
 import AppInput from '~/components/ui/AppInput.vue'
 import FormField from '~/components/ui/FormField.vue'
+import LessonAttachments from '~/components/course/LessonAttachments.vue'
 import { bitrateMbps, clock, mb } from '~/utils/format'
 import type { Lesson, MediaAsset, QuizQuestion } from '~/types'
 
@@ -250,5 +251,12 @@ const readingLength = () => (props.lesson.body ?? '').trim().length
 
       <div><AppButton size="sm" icon="plus" @click="addQuestion">Thêm câu hỏi</AppButton></div>
     </div>
+
+    <!-- Files for every lesson type: handouts, slides, worksheets. -->
+    <LessonAttachments
+      :attachments="props.lesson.attachments"
+      :free="props.lesson.free"
+      @update="emit('update', { attachments: $event })"
+    />
   </div>
 </template>

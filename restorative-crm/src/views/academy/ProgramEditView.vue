@@ -265,12 +265,24 @@
             </span>
             <button
               type="button"
+              class="chip shrink-0 transition-colors"
+              :class="(item.attachments || []).length ? 'chip-ok hover:bg-ok/15' : 'hover:bg-panel-2'"
+              :aria-expanded="isFilesOpen(mi, ii)"
+              :title="'Tài liệu đính kèm của bài'"
+              @click="toggleFiles(mi, ii)"
+            >
+              <span class="material-symbols-outlined text-[0.9rem]">attach_file</span>
+              {{ (item.attachments || []).length ? `${item.attachments.length} tài liệu` : 'Tài liệu' }}
+            </button>
+            <button
+              type="button"
               class="btn-ghost btn-sm btn-icon shrink-0"
               aria-label="Xoá bài"
               @click="module.items.splice(ii, 1); recount()"
             >
               <span class="material-symbols-outlined text-lg">close</span>
             </button>
+            <ItemAttachments v-if="isFilesOpen(mi, ii)" :item="item" :program-free="draft.price === 0" />
           </li>
           <li v-if="!module.items.length" class="px-3.5 py-4">
             <p class="text-xs text-ink-3">Chương này chưa có bài nào.</p>
@@ -467,6 +479,7 @@ import FormRow from '@/components/ui/FormRow.vue'
 import ToggleSwitch from '@/components/ui/ToggleSwitch.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import VideoGalleryPicker from '@/components/videos/VideoGalleryPicker.vue'
+import ItemAttachments from '@/components/academy/ItemAttachments.vue'
 import { patchVideo } from '@/services/videoUpload.js'
 import { vnd, duration } from '@/utils/format.js'
 import {
@@ -483,6 +496,17 @@ import {
 const route = useRoute()
 const db = useMockDb()
 const notify = useNotify()
+
+/** Which lesson rows have their attachments panel open, keyed "module-item". */
+const openFiles = ref(new Set())
+const filesKey = (mi, ii) => `${mi}-${ii}`
+const isFilesOpen = (mi, ii) => openFiles.value.has(filesKey(mi, ii))
+function toggleFiles(mi, ii) {
+  const next = new Set(openFiles.value)
+  const key = filesKey(mi, ii)
+  next.has(key) ? next.delete(key) : next.add(key)
+  openFiles.value = next
+}
 
 const tab = ref('basics')
 

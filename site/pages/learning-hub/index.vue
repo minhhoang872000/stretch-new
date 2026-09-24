@@ -28,7 +28,7 @@ onMounted(() => {
     <main>
       <LearningHero />
       <LearningPrograms />
-      <LearningArticles />
+      <LearningFreeMaterials />
     </main>
 
     <LearningFooter />

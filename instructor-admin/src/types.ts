@@ -36,6 +36,18 @@ export interface Lesson {
   /** Reading lessons only. */
   body?: string
   quiz?: QuizQuestion[]
+  /** Files handed out with the lesson (PDF, slides, worksheets). On a free
+      lesson, or any lesson of a free course, they are listed publicly as
+      "Tài liệu miễn phí" on the Learning Hub. */
+  attachments?: Attachment[]
+}
+
+export interface Attachment {
+  name: string
+  url: string
+  key: string
+  size: number
+  mime: string
 }
 
 export interface CourseModule {

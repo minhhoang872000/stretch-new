@@ -109,6 +109,12 @@
       "status_full": "Hết chỗ",
       "see_all_sessions": "Xem tất cả lịch đào tạo"
     },
+    "materials": {
+      "title": "Tài liệu miễn phí",
+      "subtitle": "Tài liệu từ các bài học thử và khóa học miễn phí, tải về dùng ngay.",
+      "download": "Tải về",
+      "empty": "Tài liệu miễn phí sẽ xuất hiện ở đây khi giảng viên đăng tải."
+    },
     "articles": {
       "title": "Bài viết nổi bật từ Sharing Hub",
       "read": "Đọc bài viết",
@@ -207,6 +213,7 @@
       "notes_ph": "Ví dụ: thử bài này với khách hàng đau vai bên phải, nhớ kiểm tra tầm vận động trước…",
       "notes_hint": "Ghi chú được lưu tự động, theo từng bài học, trên thiết bị này.",
       "files_title": "Việc cần làm trong phần này",
+      "attachments_title": "Tài liệu của bài học",
       "files_hint": "Tài liệu PDF sẽ tải về được khi nội dung khóa học lên hệ thống.",
       "prev": "Bài trước",
       "next": "Bài sau",

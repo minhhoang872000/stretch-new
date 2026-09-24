@@ -146,6 +146,12 @@ export async function fetchApprovedReviews(event: any, programId: string) {
   return data.reviews || []
 }
 
+/** Files of free lessons and free programmes, for the hub's "Tài liệu miễn phí". */
+export async function fetchFreeMaterials(event: any) {
+  const data = await read<{ materials: any[] }>(event, '/materials/free', { materials: [] })
+  return data.materials || []
+}
+
 /** Active instructors, for the hub's "đội ngũ" banner. */
 export async function fetchInstructors(event: any) {
   const data = await read<{ instructors: any[] }>(event, '/instructors?limit=50', { instructors: [] })

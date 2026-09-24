@@ -8,6 +8,7 @@ import trackingRouter from './modules/tracking/tracking.router'
 import bookingRouter from './modules/booking/booking.router'
 import analyticsRouter from './modules/analytics/analytics.router'
 import blogRouter from './modules/blog/blog.router'
+import materialsRouter from './modules/materials/materials.router'
 import categoryRouter from './modules/category/category.router'
 import imagesRouter from './modules/images/images.router'
 import videosRouter from './modules/videos/videos.router'
@@ -63,6 +64,7 @@ app.use('/api/v1/bookings', bookingRouter)           // mixed: POST/availability
 app.use('/api/v1/blog', blogRouter)                  // mixed: GET public, write admin
 app.use('/api/v1/categories', categoryRouter)        // mixed: GET public, write admin
 app.use('/api/v1/images', requireAuth, imagesRouter)         // admin only (uploads)
+app.use('/api/v1/materials', materialsRouter)       // mixed: upload admin, free list public
 app.use('/api/v1/videos', videosRouter)              // mixed: uploads admin, playback admin or site
 app.use('/api/v1/mentorship', mentorshipRouter)      // mixed: availability public, booking via site, rest admin
 app.use('/api/v1/analytics', requireAuth, analyticsRouter)

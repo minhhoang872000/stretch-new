@@ -75,7 +75,9 @@ export async function apiFetch<T>(path: string, options: FetchOptions = {}): Pro
   const { body, auth = true, headers, ...rest } = options
 
   const requestHeaders: Record<string, string> = { ...(headers as Record<string, string>) }
-  if (body !== undefined) requestHeaders['Content-Type'] = 'application/json'
+  // FormData (file uploads) sets its own multipart boundary; everything else is JSON.
+  const isForm = typeof FormData !== 'undefined' && body instanceof FormData
+  if (body !== undefined && !isForm) requestHeaders['Content-Type'] = 'application/json'
   if (auth && token.value) requestHeaders.Authorization = `Bearer ${token.value}`
 
   let response: Response
@@ -83,7 +85,7 @@ export async function apiFetch<T>(path: string, options: FetchOptions = {}): Pro
     response = await fetch(`${API_BASE}${path}`, {
       ...rest,
       headers: requestHeaders,
-      body: body === undefined ? undefined : JSON.stringify(body),
+      body: body === undefined ? undefined : isForm ? (body as FormData) : JSON.stringify(body),
     })
   } catch {
     // A dead API and a CORS rejection look identical from here (both surface

@@ -66,6 +66,34 @@ export async function uploadImage(file) {
 }
 
 /**
+ * Upload a lesson material (PDF, Office file, ZIP, image…) byte-for-byte.
+ * Not uploadImage: that one accepts images only and re-encodes them to WebP.
+ * @param {File} file
+ * @returns {Promise<{ name: string, url: string, key: string, size: number, mime: string }>}
+ */
+export async function uploadMaterial(file) {
+  const form = new FormData()
+  form.append('file', file)
+  const token = localStorage.getItem('auth_token')
+  const res = await fetch(`${API_BASE}/materials/upload`, {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: form,
+  })
+  if (res.status === 401) {
+    localStorage.removeItem('auth_token')
+    localStorage.removeItem('auth_user')
+    window.location.href = '/login'
+    throw new Error('Phiên đăng nhập đã hết hạn')
+  }
+  const json = await res.json().catch(() => ({}))
+  if (!res.ok || !json.success) {
+    throw new Error(json.error?.message || `Tải lên thất bại (HTTP ${res.status})`)
+  }
+  return json.data
+}
+
+/**
  * List uploaded images (media library), paginated via an opaque cursor.
  * @param {{ cursor?: string, limit?: number }} opts
  * @returns {Promise<{ images: {key,url,size,uploadedAt}[], cursor: string|null }>}

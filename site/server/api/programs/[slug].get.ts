@@ -84,7 +84,14 @@ export default defineEventHandler(async (event) => {
     modules: (program.modules || []).map((module: ApiProgram["modules"][number]) => ({
       title: module.title || '',
       summary: module.summary || '',
-      items: Array.isArray(module.items) ? module.items : [],
+      // Attachments of paid lessons stay out of this public, cached payload —
+      // the URLs are unguessable but not secret once published here. Enrolled
+      // learners get them from /api/me/materials/:slug.
+      items: (Array.isArray(module.items) ? module.items : []).map((item: any) => {
+        if (!item?.attachments || program.price <= 0 || item.free) return item
+        const { attachments: _hidden, ...rest } = item
+        return rest
+      }),
       minutes:
         module.minutes ??
         (Array.isArray(module.items)

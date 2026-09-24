@@ -77,6 +77,17 @@ export function toCourse(program: any): Course {
           if (item?.youtube) lesson.youtube = item.youtube
           if (item?.videoKey) lesson.videoKey = item.videoKey
           if (item?.body) lesson.body = item.body
+          if (Array.isArray(item?.attachments) && item.attachments.length) {
+            lesson.attachments = item.attachments
+              .filter((a: any) => a && a.url)
+              .map((a: any) => ({
+                name: String(a.name || 'Tài liệu'),
+                url: String(a.url),
+                key: String(a.key || ''),
+                size: Number(a.size) || 0,
+                mime: String(a.mime || ''),
+              }))
+          }
           if (type === 'quiz') {
             const quiz = toQuiz(item?.questions, lessonId(mi, li))
             if (quiz) lesson.quiz = quiz
@@ -150,6 +161,9 @@ export function toProgramBody(course: Course): Record<string, unknown> {
         if (lesson.youtube) item.youtube = lesson.youtube
         if (lesson.videoKey) item.videoKey = lesson.videoKey
         if (lesson.body) item.body = lesson.body
+        // Whitelisted like every other field: without this line a save would
+        // silently drop every file uploaded to the lesson.
+        if (lesson.attachments?.length) item.attachments = lesson.attachments
         if (lesson.type === 'quiz' && lesson.quiz?.length) {
           item.questions = lesson.quiz.map((q) => ({
             question: q.question,

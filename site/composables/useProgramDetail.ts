@@ -35,6 +35,20 @@ export interface SyllabusItem {
   youtube?: string
   /** True when the link came from the demo pool, not from Stretch's own uploads. */
   youtubeDemo?: boolean
+  /**
+   * Files handed out with the lesson. Only present in public data for free
+   * lessons / free courses; enrolled learners get the rest from
+   * /api/me/materials/:slug.
+   */
+  attachments?: LessonAttachment[]
+}
+
+export interface LessonAttachment {
+  name: string
+  url: string
+  key?: string
+  size?: number
+  mime?: string
 }
 
 export interface SyllabusModule {
