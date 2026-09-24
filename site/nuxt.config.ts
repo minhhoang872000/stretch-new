@@ -1,4 +1,20 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+/**
+ * Route rule for SSR pages cached in KV (see nitro.storage): rendered at most
+ * once per 5 minutes, served stale while re-rendering.
+ *
+ * `varies: ['host']` puts the hostname in the cache key. Every Pages project
+ * built from this folder (stretch.vn, the demo, preview URLs) shares the one
+ * KV namespace in wrangler.jsonc; keyed on the path alone, stretch.vn served
+ * pages the demo had rendered — canonical URLs pointing at demo.stretch.vn
+ * included — until they expired.
+ */
+const SSR_CACHE = {
+  prerender: false,
+  cache: { swr: true, maxAge: 300, varies: ['host', 'x-forwarded-host'] },
+}
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-04-27',
 
@@ -319,21 +335,21 @@ export default defineNuxtConfig({
     //    and guards that need the session wait for `useHubSession().whenReady()`.
     // `/**` does NOT match the bare `/programs` index (verified: no cache headers
     // on it), so the index has its own rules.
-    '/learning-hub/programs': { prerender: false, swr: 300 },
-    '/vi/learning-hub/programs': { prerender: false, swr: 300 },
-    '/learning-hub/programs/**': { prerender: false, swr: 300 },
-    '/vi/learning-hub/programs/**': { prerender: false, swr: 300 },
-    '/learning-hub/schedule': { prerender: false, swr: 300 },
-    '/vi/learning-hub/schedule': { prerender: false, swr: 300 },
+    '/learning-hub/programs': SSR_CACHE,
+    '/vi/learning-hub/programs': SSR_CACHE,
+    '/learning-hub/programs/**': SSR_CACHE,
+    '/vi/learning-hub/programs/**': SSR_CACHE,
+    '/learning-hub/schedule': SSR_CACHE,
+    '/vi/learning-hub/schedule': SSR_CACHE,
     // The player is per learner, noindex and sign-in only: nothing to gain from
     // rendering it on the edge, so it ships as a client-rendered shell (a few ms
     // of Worker CPU) and loads everything in the browser.
     '/learning-hub/learn/**': { prerender: false, ssr: false },
     '/vi/learning-hub/learn/**': { prerender: false, ssr: false },
-    '/sharing-hub': { prerender: false, swr: 300 },
-    '/sharing-hub/**': { prerender: false, swr: 300 },
-    '/vi/sharing-hub': { prerender: false, swr: 300 },
-    '/vi/sharing-hub/**': { prerender: false, swr: 300 },
+    '/sharing-hub': SSR_CACHE,
+    '/sharing-hub/**': SSR_CACHE,
+    '/vi/sharing-hub': SSR_CACHE,
+    '/vi/sharing-hub/**': SSR_CACHE,
   },
 
   // Runtime config
