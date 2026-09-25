@@ -241,6 +241,8 @@ const tab = ref<Tab>('lesson')
 
 const mod = computed(() => props.detail.modules[props.moduleIndex])
 const paragraphs = computed(() => reading(props.detail, props.moduleIndex, props.item))
+/** Free previews and free courses do not come with 1-1 instructor sessions. */
+const offersMentorship = computed(() => !props.item.free && Number(props.detail.program.price) > 0)
 const files = computed(() => checklist(props.detail, props.moduleIndex))
 const attachmentList = computed<LessonAttachment[]>(() =>
   props.attachments?.length ? props.attachments : props.item.attachments ?? [],
@@ -439,8 +441,11 @@ watch(() => [props.moduleIndex, props.itemIndex], () => {
 
     <!-- ══ Ask a person ══ -->
     <!-- Outside the tabs on purpose: being stuck is not a tab you go looking
-         for, so the way to a human stays visible whichever one is open. -->
+         for, so the way to a human stays visible whichever one is open.
+         Paid lessons only: 1-1 time with an instructor is part of what a
+         learner pays for, not of a free preview or a free course. -->
     <LearnMentorship
+      v-if="offersMentorship"
       :program-slug="detail.program.slug"
       :lesson-key="`${moduleIndex}-${itemIndex}`"
       :lesson-title="item.title"
