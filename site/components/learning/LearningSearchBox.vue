@@ -204,6 +204,26 @@ onClickOutside(root, close)
 .hsb--drawer {
   margin-bottom: 0.5rem;
 }
+/* Phones: the bar sits between the logo and the menu button, so it takes the
+   room that is left, and the dropdown spans the screen instead of the input. */
+@media (max-width: 1023px) {
+  .hsb--bar {
+    min-width: 0;
+    max-width: none;
+    margin: 0 0.6rem;
+  }
+  .hsb--bar .hsb__input {
+    height: 40px;
+    font-size: 14px;
+  }
+  .hsb--bar .hsb__panel {
+    position: fixed;
+    top: 64px;
+    left: 12px;
+    right: 12px;
+    min-width: 0;
+  }
+}
 
 .hsb__form {
   position: relative;

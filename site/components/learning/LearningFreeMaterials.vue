@@ -21,7 +21,7 @@ interface FreeMaterial {
   lessonKey: string
 }
 
-const MAX = 6
+const MAX = 12
 
 const { t } = useI18n()
 const localePath = useLocalePath()
@@ -54,6 +54,25 @@ function size(bytes: number) {
   if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`
   return `${(bytes / 1024 / 1024).toFixed(1).replace('.', ',')} MB`
 }
+/** Slider: one card-width per arrow press; arrows fade out at either end. */
+const track = ref<HTMLElement | null>(null)
+const atStart = ref(true)
+const atEnd = ref(false)
+function updateEdges() {
+  const el = track.value
+  if (!el) return
+  atStart.value = el.scrollLeft <= 4
+  atEnd.value = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4
+}
+function slide(dir: 1 | -1) {
+  const el = track.value
+  if (!el) return
+  const card = el.querySelector('li') as HTMLElement | null
+  el.scrollBy({ left: dir * ((card?.offsetWidth ?? 280) + 12), behavior: 'smooth' })
+}
+watch(items, () => nextTick(updateEdges))
+onMounted(() => nextTick(updateEdges))
+
 function lessonLink(m: FreeMaterial) {
   return localePath(`/learning-hub/learn/${m.programSlug}?lesson=${m.lessonKey}`)
 }
@@ -64,6 +83,14 @@ function lessonLink(m: FreeMaterial) {
     <div class="section-container">
       <div class="hub-section-head">
         <h2 class="hub-section-title">{{ t('learning.materials.title') }}</h2>
+        <div v-if="items.length > 1" class="mat-arrows">
+          <button type="button" class="mat-arrow" :disabled="atStart" :aria-label="t('learning.hero.prev')" @click="slide(-1)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+          </button>
+          <button type="button" class="mat-arrow" :disabled="atEnd" :aria-label="t('learning.hero.next')" @click="slide(1)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+          </button>
+        </div>
       </div>
       <p class="mat-sub">{{ t('learning.materials.subtitle') }}</p>
 
@@ -77,7 +104,7 @@ function lessonLink(m: FreeMaterial) {
         </div>
       </div>
 
-      <ul v-else-if="items.length" class="mat-grid">
+      <ul v-else-if="items.length" ref="track" class="mat-track" @scroll.passive="updateEdges">
         <li v-for="m in items" :key="m.url" class="mat-card">
           <span class="mat-card__ext">{{ ext(m.name) }}</span>
           <div class="mat-card__body">
@@ -128,18 +155,61 @@ function lessonLink(m: FreeMaterial) {
 }
 .mat-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 0.75rem;
 }
+/* Horizontal slider: native scroll + snap, so touch swipe just works. */
+.mat-track {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+}
+.mat-track::-webkit-scrollbar {
+  display: none;
+}
+.mat-track > li {
+  flex: 0 0 82%;
+  /* Without this the nowrap caption inside widens the card past the screen
+     and the next card never peeks in — the cue that the row scrolls. */
+  min-width: 0;
+  scroll-snap-align: start;
+}
 @media (min-width: 768px) {
-  .mat-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .mat-track > li {
+    flex-basis: calc((100% - 0.75rem) / 2);
   }
 }
 @media (min-width: 1100px) {
-  .mat-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .mat-track > li {
+    flex-basis: calc((100% - 1.5rem) / 3);
   }
+}
+.mat-arrows {
+  display: flex;
+  gap: 0.4rem;
+}
+.mat-arrow {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  color: var(--color-navy);
+  background: white;
+  transition: border-color 0.2s ease, opacity 0.2s ease;
+}
+.mat-arrow:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.mat-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
 .mat-card {
   display: flex;

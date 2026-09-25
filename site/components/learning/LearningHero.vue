@@ -162,6 +162,9 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
                   </NuxtLink>
                   <span class="hub-slide__price">{{ trending.price > 0 ? formatPrice(trending.price) : t('learning.hero.free') }}</span>
                 </div>
+                <NuxtLink :to="localePath('/learning-hub/programs')" class="hub-slide__explore" :tabindex="tab(0)">
+                  {{ t('learning.hero.cta_primary') }} <span aria-hidden="true">→</span>
+                </NuxtLink>
               </template>
               <template v-else>
                 <h2 class="hub-slide__title">{{ t('learning.hero.title1') }} <span class="hub-slide__accent">{{ t('learning.hero.title2') }}</span></h2>
@@ -383,6 +386,23 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
   transition: color 0.2s ease;
 }
 .hub-slide__login:hover {
+  color: var(--color-accent);
+}
+
+/* Secondary link to the whole catalogue, under the slide CTA. */
+.hub-slide__explore {
+  display: inline-block;
+  margin-top: 0.9rem;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+  transition: color 0.2s ease;
+}
+.hub-slide__explore:hover {
   color: var(--color-accent);
 }
 

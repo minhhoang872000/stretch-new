@@ -95,6 +95,9 @@ const sessions = computed(() => upcoming.value.slice(0, 3))
         </div>
 
         <div class="session-panel">
+          <p v-if="!sessions.length" class="px-4 py-5 text-center text-[13px] text-text-secondary">
+            {{ t('learning.schedule.empty_title') }}
+          </p>
           <NuxtLink
             v-for="s in sessions"
             :key="s.slug"
@@ -131,16 +134,7 @@ const sessions = computed(() => upcoming.value.slice(0, 3))
             </svg>
           </NuxtLink>
         </div>
-
-        <div class="mt-2.5 text-right">
-          <NuxtLink :to="localePath('/learning-hub/schedule')" class="hub-more">
-            {{ t('learning.schedule.see_all_sessions') }}
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
-          </NuxtLink>
-        </div>
+        <!-- The one "see all" link is in the section head above. -->
       </div>
     </div>
   </section>

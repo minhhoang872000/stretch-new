@@ -79,8 +79,8 @@ async function logout() {
           </template>
         </nav>
 
-        <!-- Desktop search with live suggestions -->
-        <LearningSearchBox class="hidden lg:block" variant="bar" />
+        <!-- Search with live suggestions — in the bar on every screen size. -->
+        <LearningSearchBox variant="bar" />
 
         <!-- Desktop actions -->
         <div class="hidden lg:flex items-center gap-2.5">
@@ -128,7 +128,6 @@ async function logout() {
         v-if="isMobileMenuOpen"
         class="fixed top-0 right-0 bottom-0 w-[290px] bg-white shadow-elevated z-[999] lg:hidden flex flex-col pt-20 px-6 overflow-y-auto"
       >
-        <LearningSearchBox variant="drawer" @navigate="closeMobileMenu" />
 
         <template v-for="link in navLinks" :key="link.label">
           <NuxtLink
