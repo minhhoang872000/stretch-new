@@ -15,7 +15,14 @@ import { spawnSync } from 'node:child_process'
 
 const API = process.env.NUXT_LESSON_API_BASE || 'https://stretch-new.onrender.com/api/v1'
 const SITE = process.env.NUXT_PUBLIC_SITE_URL || 'https://stretch.vn'
-const env = { ...process.env, NUXT_LESSON_API_BASE: API, NUXT_PUBLIC_SITE_URL: SITE }
+// A Nuxt + prerender build peaks at several GB; on a busy machine Node was
+// aborted mid-build (exit 134). Give it room.
+const env = {
+  ...process.env,
+  NUXT_LESSON_API_BASE: API,
+  NUXT_PUBLIC_SITE_URL: SITE,
+  NODE_OPTIONS: `${process.env.NODE_OPTIONS || ''} --max-old-space-size=6144`.trim(),
+}
 
 function run(label, cmd, args) {
   console.log(`\n▶ ${label}`)
