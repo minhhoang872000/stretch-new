@@ -9,10 +9,19 @@
  * KV namespace in wrangler.jsonc; keyed on the path alone, stretch.vn served
  * pages the demo had rendered — canonical URLs pointing at demo.stretch.vn
  * included — until they expired.
+ *
+ * `name` carries a per-build id. A cached page embeds the <script> URLs of the
+ * build that rendered it; the KV cache outlives a deploy, and the new deploy
+ * no longer serves those files. Without this, for up to 5 minutes after every
+ * deploy, cached pages loaded dead chunks ("Failed to fetch dynamically
+ * imported module") and never hydrated — nothing clickable, no toasts. A new
+ * name means a new build never reads an old build's HTML (integrity alone is
+ * not enough: swr would still serve the stale entry once while re-rendering).
  */
+const BUILD_ID = process.env.CF_PAGES_COMMIT_SHA?.slice(0, 8) || Date.now().toString(36)
 const SSR_CACHE = {
   prerender: false,
-  cache: { swr: true, maxAge: 300, varies: ['host', 'x-forwarded-host'] },
+  cache: { swr: true, maxAge: 300, varies: ['host', 'x-forwarded-host'], name: `ssr-${BUILD_ID}` },
 }
 
 export default defineNuxtConfig({

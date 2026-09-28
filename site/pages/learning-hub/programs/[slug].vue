@@ -24,6 +24,9 @@ const { active, completed } = useMyLearning()
 const config = useRuntimeConfig()
 
 const slug = computed(() => String(route.params.slug))
+
+/** "0đ", "490.000đ" — the bar CTA states the price as a number, free included. */
+const barPrice = computed(() => `${(Number(detailFromApi.value?.program.price) || 0).toLocaleString('vi-VN')}đ`)
 const detail = detailFromApi
 
 if (!detail.value) {
@@ -277,8 +280,8 @@ onMounted(() => {
       </button>
       <button v-else type="button" class="bar__cta" @click="enroll">
         {{ d.scheduled
-          ? t('learning.course.cta_book')
-          : d.program.price === 0 ? t('learning.course.cta_free') : t('learning.course.cta_enroll') }}
+          ? t('learning.course.cta_book_price', { price: barPrice })
+          : t('learning.course.cta_learn_price', { price: barPrice }) }}
       </button>
     </div>
   </div>
@@ -576,7 +579,9 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   gap: 0.8rem;
-  padding: 0.6rem 1rem;
+  /* Right padding keeps the CTA clear of the floating chat buttons, which
+     sit over the bottom-right corner of every page. */
+  padding: 0.6rem 5.25rem calc(0.6rem + env(safe-area-inset-bottom)) 1rem;
   border-top: 1px solid var(--color-border);
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(8px);
@@ -586,6 +591,7 @@ onMounted(() => {
 .bar__price {
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   min-width: 0;
 }
 
@@ -608,12 +614,19 @@ onMounted(() => {
 }
 
 .bar__cta {
-  flex-shrink: 0;
-  padding: 0.55rem 1.1rem;
-  border-radius: 9px;
+  /* The one action on the bar: it takes the width that is left. */
+  flex: 1;
+  min-width: 0;
+  max-width: 420px;
+  margin-left: auto;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   background: var(--color-accent);
   font-family: var(--font-heading);
-  font-size: 12.5px;
+  font-size: 14px;
   font-weight: 800;
   color: white;
   transition: background 0.2s ease;

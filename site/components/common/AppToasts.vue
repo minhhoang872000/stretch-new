@@ -15,6 +15,10 @@ const ICONS: Record<string, string> = {
 </script>
 
 <template>
+  <!-- ClientOnly: a toast is never part of the server HTML, and hydrating a
+       <Teleport to="body"> on a PRERENDERED page mismatched and left this
+       component unreactive — notify() ran, nothing ever appeared. -->
+  <ClientOnly>
   <Teleport to="body">
     <div class="toasts" aria-live="polite">
       <TransitionGroup name="toast">
@@ -39,6 +43,7 @@ const ICONS: Record<string, string> = {
       </TransitionGroup>
     </div>
   </Teleport>
+  </ClientOnly>
 </template>
 
 <style scoped>

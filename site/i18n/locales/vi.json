@@ -348,6 +348,8 @@
       "cta_enroll": "Đăng ký học",
       "cta_free": "Học miễn phí",
       "cta_book": "Đặt chỗ",
+      "cta_learn_price": "Học ngay với giá {price}",
+      "cta_book_price": "Đặt chỗ với giá {price}",
       "note_refund": "Hoàn tiền 100% trong 7 ngày đầu.",
       "note_book": "Chỗ của bạn được xác nhận qua email trong 24 giờ.",
       "saved": "Đã lưu",

@@ -14,19 +14,48 @@ useHead({ htmlAttrs: { lang: htmlLang } })
  * anyone can await. Read it once on mount, toast it, and strip it from the URL
  * so a bookmark or reload does not repeat the announcement.
  */
-const route = useRoute()
-const router = useRouter()
 const { notify } = useNotification()
 const { t } = useI18n()
 
-onMounted(() => {
-  const flag = route.query.auth
-  if (flag !== 'ok' && flag !== 'registered' && flag !== 'failed') return
+// Captured by plugins/00.auth-flag.client.ts before the router runs: on a
+// prerendered page the router has already rewritten the URL (dropping the
+// query) by the time anything mounts, so reading it here found nothing.
+onMounted(async () => {
+  const flag = takeAuthFlag()
+  if (!flag) return
+
+  const stripFlag = () => {
+    const now = new URLSearchParams(window.location.search)
+    if (!now.has('auth')) return
+    now.delete('auth')
+    const qs = now.toString()
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`)
+  }
+  // The SmaxAI chat plugin briefly rewrites the URL on load and then restores
+  // the one it saw first — with ?auth= still on it. Strip again once it is done.
+  setTimeout(stripFlag, 3000)
+
+  // Announce once: if that restored flag survives into a reload, stay quiet.
+  const KEY = 'stretch-auth-toast'
+  try {
+    const last = Number(sessionStorage.getItem(KEY) || 0)
+    if (Date.now() - last < 30 * 1000) { stripFlag(); return }
+    sessionStorage.setItem(KEY, String(Date.now()))
+  } catch {
+    // Blocked storage: announce anyway.
+  }
+
+  // No `await router.isReady()` here: on a prerendered page that promise never
+  // settled, so nothing after it ran. The toast and the URL clean-up need
+  // neither the router nor the route.
+  await nextTick()
   if (flag === 'registered') notify(t('learning.auth.register_success'), 'success', 5000)
   else if (flag === 'ok') notify(t('learning.auth.login_success'), 'success')
   else notify(t('learning.auth.login_failed'), 'error', 6000)
-  const { auth: _auth, ...rest } = route.query
-  router.replace({ query: rest })
+
+  // Strip the flag so a reload or a bookmark does not announce it again. The
+  // history state is kept as-is so Vue Router still recognises the entry.
+  stripFlag()
 })
 
 // Global Schema.org for the entire site — HealthClub type
