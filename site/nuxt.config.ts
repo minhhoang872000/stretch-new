@@ -75,6 +75,15 @@ export default defineNuxtConfig({
     },
   },
 
+  // Link the stylesheet instead of inlining it into every page. Inlined, the
+  // ~380 KB entry CSS was ~90% of each HTML response: re-sent (uncacheable) on
+  // every page view and re-assembled by the Worker on every SSR render, which
+  // counts against Cloudflare's per-request CPU budget. As a file it is fetched
+  // once and cached by the browser.
+  features: {
+    inlineStyles: false,
+  },
+
   // Components auto-import without directory prefix
   components: [
     {
@@ -140,6 +149,17 @@ export default defineNuxtConfig({
     name: 'Stretch',
     description: 'Redefining physical recovery through high-intensity science and modern spiritual clarity. Book your session online.',
     defaultLocale: 'en',
+  },
+
+  // nuxt-seo-utils (via @nuxtjs/seo) re-minifies every inline <style>/<script>
+  // on EVERY request, twice (a head plugin + a Nitro HTML hook), with a
+  // char-by-char JS minifier. Our inline CSS is the ~375 KB entry stylesheet,
+  // already minified by Vite — so this bought ~0 bytes and cost 5.5 s of the
+  // 10.7 s CPU in a profile of 20 renders: the single reason a Learning Hub
+  // render ran 400–1100 ms and hit Cloudflare's CPU limit ("Error 1102").
+  // Production-only (skipped in `nuxt dev`), which is why dev never showed it.
+  seo: {
+    minify: false,
   },
 
   // Robots.txt

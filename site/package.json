@@ -8,7 +8,9 @@
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "deploy:prod": "node scripts/deploy-prod.mjs",
+    "warm:prod": "node scripts/warm-cache.mjs https://stretch.vn"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
