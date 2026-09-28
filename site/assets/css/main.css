@@ -587,3 +587,14 @@
 }
 
 
+
+/* Course page mobile action bar: lift the SmaxAI chat bubble (#sm-chatbox,
+   fixed at bottom: 20px by its SDK) above the bar so it no longer covers the
+   CTA. The page sets body.has-action-bar while it is mounted; the bar itself
+   is hidden from lg up, so is the lift. */
+@media (max-width: 1023px) {
+  body.has-action-bar #sm-chatbox {
+    bottom: calc(84px + env(safe-area-inset-bottom)) !important;
+    transition: bottom 0.2s ease;
+  }
+}

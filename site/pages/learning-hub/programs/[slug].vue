@@ -130,6 +130,12 @@ useSchemaOrg([
 
 onMounted(() => {
   trackPageView()
+  // Lets global CSS lift the third-party chat bubble above the mobile action
+  // bar (see .has-action-bar in assets/css/main.css).
+  document.body.classList.add('has-action-bar')
+})
+onBeforeUnmount(() => {
+  document.body.classList.remove('has-action-bar')
 })
 </script>
 
@@ -579,9 +585,7 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   gap: 0.8rem;
-  /* Right padding keeps the CTA clear of the floating chat buttons, which
-     sit over the bottom-right corner of every page. */
-  padding: 0.6rem 5.25rem calc(0.6rem + env(safe-area-inset-bottom)) 1rem;
+  padding: 0.6rem 1rem calc(0.6rem + env(safe-area-inset-bottom));
   border-top: 1px solid var(--color-border);
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(8px);
@@ -617,7 +621,6 @@ onMounted(() => {
   /* The one action on the bar: it takes the width that is left. */
   flex: 1;
   min-width: 0;
-  max-width: 420px;
   margin-left: auto;
   padding: 0.75rem 1rem;
   border-radius: 10px;

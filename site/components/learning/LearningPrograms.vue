@@ -313,6 +313,12 @@ const sessions = computed(() => upcoming.value.slice(0, 3))
   margin-top: 0.6rem;
 }
 
+/* Breathing room between the price / "MIỄN PHÍ" badge and the button —
+   margin-top: auto alone gave none once the card had no spare height. */
+.free-pill,
+.course-card__price {
+  margin-bottom: 0.9rem;
+}
 .course-card__cta {
   display: inline-flex;
   align-items: center;
