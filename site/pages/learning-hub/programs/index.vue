@@ -15,7 +15,9 @@ const route = useRoute()
 const router = useRouter()
 const localePath = useLocalePath()
 const { trackPageView } = useTracking()
-const { programs, counts, PROGRAMS_PER_PAGE } = useLearningCatalog()
+const { programs, counts, PROGRAMS_PER_PAGE, ready: catalogReady } = useLearningCatalog()
+// Server-rendered: wait for the catalogue so it lands in the SSR payload.
+await catalogReady
 
 const KINDS: ProgramKind[] = ['course', 'mini', 'workshop']
 const MODES: ProgramMode[] = ['online', 'offline']

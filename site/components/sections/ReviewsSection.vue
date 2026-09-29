@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import reviewsData from '~/data/reviews.json'
+import { A11y, Autoplay, Keyboard } from 'swiper/modules'
+import 'swiper/css'
 
 interface Review {
   author: string
@@ -43,76 +45,22 @@ function onImgError(i: number) {
   failed.value = new Set(failed.value).add(i)
 }
 
-// ----- Carousel -----
-const perView = ref(3)
-const index = ref(0)
-const isHovered = ref(false)
-let timer: ReturnType<typeof setInterval> | null = null
-
-const maxIndex = computed(() => Math.max(0, reviews.length - perView.value))
-const trackStyle = computed(() => ({
-  width: `${(reviews.length / perView.value) * 100}%`,
-  transform: `translateX(-${index.value * (100 / reviews.length)}%)`,
+// ----- Carousel: Swiper -----
+const reviewsEl = ref<HTMLElement | null>(null)
+const { swiper, activeIndex: index } = useSwiper(reviewsEl, () => ({
+  modules: [Autoplay, A11y, Keyboard],
+  loop: reviews.length > 3,
+  speed: 800,
+  grabCursor: true,
+  spaceBetween: 20,
+  slidesPerView: 1.08,
+  autoplay: { delay: 5000, pauseOnMouseEnter: true, disableOnInteraction: false },
+  keyboard: { enabled: true, onlyInViewport: true },
+  breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3, spaceBetween: 24 } },
 }))
-const slideStyle = computed(() => ({ width: `${100 / reviews.length}%` }))
-
-function updatePerView() {
-  if (typeof window === 'undefined') return
-  const w = window.innerWidth
-  perView.value = w < 640 ? 1 : w < 1024 ? 2 : 3
-  if (index.value > maxIndex.value) index.value = maxIndex.value
-}
-
-function go(i: number) {
-  if (i < 0) i = maxIndex.value
-  else if (i > maxIndex.value) i = 0
-  index.value = i
-}
-const next = () => go(index.value + 1)
-const prev = () => go(index.value - 1)
-
-// ----- Touch / swipe (mobile) -----
-const touchStartX = ref(0)
-const touchDeltaX = ref(0)
-function onTouchStart(e: TouchEvent) {
-  stopAuto()
-  touchStartX.value = e.touches[0].clientX
-  touchDeltaX.value = 0
-}
-function onTouchMove(e: TouchEvent) {
-  touchDeltaX.value = e.touches[0].clientX - touchStartX.value
-}
-function onTouchEnd() {
-  if (Math.abs(touchDeltaX.value) > 40) {
-    if (touchDeltaX.value < 0) next()
-    else prev()
-  }
-  touchDeltaX.value = 0
-  if (reviews.length > perView.value) startAuto()
-}
-
-function startAuto() {
-  stopAuto()
-  timer = setInterval(() => {
-    if (!isHovered.value) next()
-  }, 5000)
-}
-function stopAuto() {
-  if (timer) {
-    clearInterval(timer)
-    timer = null
-  }
-}
-
-onMounted(() => {
-  updatePerView()
-  window.addEventListener('resize', updatePerView)
-  if (reviews.length > perView.value) startAuto()
-})
-onUnmounted(() => {
-  stopAuto()
-  if (typeof window !== 'undefined') window.removeEventListener('resize', updatePerView)
-})
+const prev = () => swiper.value?.slidePrev()
+const next = () => swiper.value?.slideNext()
+const go = (i: number) => swiper.value?.slideToLoop(i)
 </script>
 
 <template>
@@ -151,26 +99,13 @@ onUnmounted(() => {
       </div>
 
       <!-- Carousel -->
-      <div
-        class="relative"
-        @mouseenter="isHovered = true"
-        @mouseleave="isHovered = false"
-      >
-        <div
-          class="overflow-hidden"
-          @touchstart.passive="onTouchStart"
-          @touchmove.passive="onTouchMove"
-          @touchend.passive="onTouchEnd"
-        >
-          <div
-            class="flex transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-            :style="trackStyle"
-          >
+      <div class="relative">
+        <div ref="reviewsEl" class="swiper reviews-swiper">
+          <div class="swiper-wrapper">
             <div
               v-for="(r, i) in reviews"
               :key="i"
-              class="px-2.5 md:px-3 flex-shrink-0"
-              :style="slideStyle"
+              class="swiper-slide"
             >
               <div class="h-full bg-white border border-slate-200/60 rounded-2xl p-6 shadow-[0_4px_15px_rgba(0,0,0,0.005)] flex flex-col">
                 <!-- stars -->
@@ -224,7 +159,7 @@ onUnmounted(() => {
         </div>
 
         <!-- Arrows -->
-        <template v-if="reviews.length > perView">
+        <template v-if="reviews.length > 1">
           <button
             type="button"
             :aria-label="$t('reviews.prev')"
@@ -245,9 +180,9 @@ onUnmounted(() => {
       </div>
 
       <!-- Dots -->
-      <div v-if="maxIndex > 0" class="flex justify-center gap-2 mt-8">
+      <div v-if="reviews.length > 1" class="flex justify-center gap-2 mt-8">
         <button
-          v-for="d in maxIndex + 1"
+          v-for="d in reviews.length"
           :key="d"
           type="button"
           :aria-label="`${d}`"
@@ -259,6 +194,13 @@ onUnmounted(() => {
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Cards in a row share the tallest card's height. */
+.reviews-swiper .swiper-slide {
+  height: auto;
+}
+</style>
 
 
 // みます（見ます）: kiểm tra, khám bệnh

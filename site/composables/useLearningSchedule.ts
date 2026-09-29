@@ -61,7 +61,6 @@ function toIso(d: Date): string {
 
 export function useLearningSchedule() {
   const { programs } = useLearningCatalog()
-  const { detailFor } = useProgramDetail()
 
   /**
    * "Today" is read once per call rather than per computed: a schedule that
@@ -80,10 +79,10 @@ export function useLearningSchedule() {
       const when = parseDate(program.date)
       if (!when) continue
 
-      // Seats and the instructor come from the same detail builder the course
-      // page uses, so both pages quote the same numbers.
-      const detail = detailFor(program.slug)
-      const seatsLeft = detail?.seatsLeft ?? 0
+      // Seats and the instructor come from the API (next session, programme
+      // instructor). They used to come from the course-page template, which
+      // invents both for courses it does not know.
+      const seatsLeft = program.seatsLeft ?? 0
 
       rows.push({
         slug: program.slug,
@@ -102,7 +101,7 @@ export function useLearningSchedule() {
         location: program.location ?? '',
         seatsLeft,
         status: seatsLeft === 0 ? 'full' : seatsLeft <= 3 ? 'few' : 'open',
-        instructor: detail?.instructor.name ?? '',
+        instructor: program.instructor ?? '',
         program,
       })
     }

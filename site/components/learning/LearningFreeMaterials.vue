@@ -23,6 +23,9 @@ interface FreeMaterial {
 
 const MAX = 12
 
+import { A11y, Keyboard, Mousewheel } from 'swiper/modules'
+import 'swiper/css'
+
 const { t } = useI18n()
 const localePath = useLocalePath()
 
@@ -54,24 +57,23 @@ function size(bytes: number) {
   if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`
   return `${(bytes / 1024 / 1024).toFixed(1).replace('.', ',')} MB`
 }
-/** Slider: one card-width per arrow press; arrows fade out at either end. */
+/** Slider: Swiper, one card per arrow press, drag / swipe with momentum. */
 const track = ref<HTMLElement | null>(null)
-const atStart = ref(true)
-const atEnd = ref(false)
-function updateEdges() {
-  const el = track.value
-  if (!el) return
-  atStart.value = el.scrollLeft <= 4
-  atEnd.value = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4
-}
-function slide(dir: 1 | -1) {
-  const el = track.value
-  if (!el) return
-  const card = el.querySelector('li') as HTMLElement | null
-  el.scrollBy({ left: dir * ((card?.offsetWidth ?? 280) + 12), behavior: 'smooth' })
-}
-watch(items, () => nextTick(updateEdges))
-onMounted(() => nextTick(updateEdges))
+const { swiper, isBeginning: atStart, isEnd: atEnd } = useSwiper(
+  track,
+  () => ({
+    modules: [A11y, Keyboard, Mousewheel],
+    speed: 650,
+    grabCursor: true,
+    spaceBetween: 12,
+    slidesPerView: 1.18,
+    keyboard: { enabled: true, onlyInViewport: true },
+    mousewheel: { forceToAxis: true },
+    breakpoints: { 768: { slidesPerView: 2 }, 1100: { slidesPerView: 3 } },
+  }),
+  items,
+)
+const slide = (dir: 1 | -1) => (dir > 0 ? swiper.value?.slideNext() : swiper.value?.slidePrev())
 
 function lessonLink(m: FreeMaterial) {
   return localePath(`/learning-hub/learn/${m.programSlug}?lesson=${m.lessonKey}`)
@@ -104,8 +106,9 @@ function lessonLink(m: FreeMaterial) {
         </div>
       </div>
 
-      <ul v-else-if="items.length" ref="track" class="mat-track" @scroll.passive="updateEdges">
-        <li v-for="m in items" :key="m.url" class="mat-card">
+      <div v-else-if="items.length" ref="track" class="swiper mat-swiper">
+        <ul class="swiper-wrapper">
+        <li v-for="m in items" :key="m.url" class="swiper-slide mat-card">
           <span class="mat-card__ext">{{ ext(m.name) }}</span>
           <div class="mat-card__body">
             <p class="mat-card__name">{{ m.name }}</p>
@@ -123,7 +126,8 @@ function lessonLink(m: FreeMaterial) {
             <span v-if="size(m.size)" class="mat-card__size">{{ size(m.size) }}</span>
           </a>
         </li>
-      </ul>
+        </ul>
+      </div>
 
       <p v-else class="mat-empty">{{ t('learning.materials.empty') }}</p>
     </div>
@@ -158,34 +162,13 @@ function lessonLink(m: FreeMaterial) {
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 0.75rem;
 }
-/* Horizontal slider: native scroll + snap, so touch swipe just works. */
-.mat-track {
-  display: flex;
-  gap: 0.75rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 0.5rem;
-  scrollbar-width: none;
+/* Swiper sets each card's width from slidesPerView; the cards only need to
+   fill their slide height so a row stays even. */
+.mat-swiper {
+  padding-bottom: 0.25rem;
 }
-.mat-track::-webkit-scrollbar {
-  display: none;
-}
-.mat-track > li {
-  flex: 0 0 82%;
-  /* Without this the nowrap caption inside widens the card past the screen
-     and the next card never peeks in — the cue that the row scrolls. */
-  min-width: 0;
-  scroll-snap-align: start;
-}
-@media (min-width: 768px) {
-  .mat-track > li {
-    flex-basis: calc((100% - 0.75rem) / 2);
-  }
-}
-@media (min-width: 1100px) {
-  .mat-track > li {
-    flex-basis: calc((100% - 1.5rem) / 3);
-  }
+.mat-swiper .swiper-slide {
+  height: auto;
 }
 .mat-arrows {
   display: flex;

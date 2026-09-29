@@ -31,6 +31,10 @@ export interface CatalogProgram {
   duration?: string
   /** Learners enrolled so far (API only; the fallback list has none). */
   enrolled?: number
+  /** Seats still open in the next session (scheduled items). */
+  seatsLeft?: number
+  /** The instructor's name, from the API. */
+  instructor?: string
   /** Scheduled items: start date, hours and place. */
   date?: string
   time?: string
@@ -58,150 +62,25 @@ export function useLearningCatalog() {
    * shares one request and one SSR payload — the card, the panel and the filter
    * bar all call it, and three fetches for one list would be three.
    *
-   * FALLBACK is what renders when the API is unreachable. A hub with no courses
-   * is a broken page; a hub with the seeded list is a stale one, which is the
-   * better of the two failures on a marketing surface. Remove it the day the
-   * catalogue is business-critical and an outage should be visible.
+   * No placeholder catalogue. There used to be a hand-written FALLBACK list
+   * shown whenever this came back empty — which on production meant invented
+   * courses, dates, seats and instructors ("Phục hồi vai toàn diện", "Lê Thanh
+   * Duy") whenever the payload was missing or the API blinked. The catalogue is
+   * real data now: an empty answer renders as empty.
+   *
+   * Pages that server-render the list must `await ready` so the data is in the
+   * SSR payload; otherwise the client hydrates with nothing to show.
    */
-  const { data } = useAsyncData(
+  const catalog = useAsyncData(
     'learning-catalog',
     () => $fetch<{ programs: CatalogProgram[] }>('/api/programs'),
     { default: () => ({ programs: [] as CatalogProgram[] }) },
   )
+  const { data } = catalog
+  /** Await in a page's setup to render with the catalogue in the SSR payload. */
+  const ready = catalog.then(() => undefined)
 
-  /** Newest first — `sort: 'newest'` keeps this order. */
-  const FALLBACK: CatalogProgram[] = ([
-    {
-      slug: 'giai-phau-van-dong-hoc-ung-dung',
-      kind: 'course', mode: 'online', topic: 'anatomy',
-      title: pick('Giải phẫu & Vận động học ứng dụng', 'Applied Anatomy & Kinesiology'),
-      image: '/images/man-neck-pain.png',
-      price: 1990000, lessons: 45, duration: pick('~8 giờ', '~8 hours'),
-    },
-    {
-      slug: 'danh-gia-van-dong-co-ban',
-      kind: 'workshop', mode: 'offline', topic: 'assessment',
-      title: pick('Đánh giá vận động cơ bản', 'Movement Assessment Basics'),
-      image: '/education-workshop.png',
-      price: 490000, date: '24/09/2026', time: '08:30 – 16:30', location: pick('TP.HCM', 'Ho Chi Minh City'),
-    },
-    {
-      slug: 'phuc-hoi-vai-toan-dien',
-      kind: 'course', mode: 'online', topic: 'sports',
-      title: pick('Phục hồi vai toàn diện', 'Complete Shoulder Rehab'),
-      image: '/experiencing-pain-absolute.png',
-      price: 590000, date: '30/09/2026', time: '19:30 – 21:30', location: pick('Trực tuyến', 'Online'),
-    },
-    {
-      slug: 'lower-body-case-lab',
-      kind: 'workshop', mode: 'offline', topic: 'sports',
-      title: 'Lower Body Case Lab',
-      image: '/marathon.png',
-      price: 750000, date: '28/09/2026', time: '08:30 – 16:30', location: pick('TP.HCM', 'Ho Chi Minh City'),
-    },
-    {
-      slug: 'hieu-ve-dau-khi-van-dong',
-      kind: 'mini', mode: 'online', topic: 'anatomy',
-      title: pick('Hiểu về đau khi vận động', 'Understanding Pain in Movement'),
-      image: '/education-class.png',
-      price: 0, lessons: 5, duration: pick('35 phút', '35 min'),
-    },
-    {
-      slug: 'nguyen-ly-lap-chuong-trinh-phuc-hoi',
-      kind: 'course', mode: 'online', topic: 'functional',
-      title: pick('Nguyên lý lập chương trình phục hồi', 'Rehab Programming Principles'),
-      image: '/education-gallery-1.png',
-      price: 1590000, lessons: 32, duration: pick('~6 giờ', '~6 hours'),
-    },
-    {
-      slug: 'ky-thuat-mo-mem-nang-cao',
-      kind: 'workshop', mode: 'offline', topic: 'assessment',
-      title: pick('Kỹ thuật mô mềm nâng cao', 'Advanced Soft Tissue Techniques'),
-      image: '/education-gallery-2.png',
-      price: 690000, date: '18/10/2026', time: '08:30 – 16:30', location: pick('Hà Nội', 'Hanoi'),
-    },
-    {
-      slug: 'phan-tich-toi-uu-hieu-suat',
-      kind: 'course', mode: 'online', topic: 'sports',
-      title: pick('Phân tích & Tối ưu hiệu suất', 'Performance Analysis & Optimisation'),
-      image: '/runner-who.png',
-      price: 1790000, lessons: 28, duration: pick('~5 giờ', '~5 hours'),
-    },
-    {
-      slug: 'road2rehab-foundation',
-      kind: 'course', mode: 'offline', topic: 'anatomy',
-      title: 'Road2Rehab Foundation',
-      image: '/education-gallery-3.png',
-      price: 4500000, date: '18/09/2026', time: '08:30 – 16:30', location: pick('TP.HCM', 'Ho Chi Minh City'),
-    },
-    {
-      slug: 'shoulder-assessment-lab',
-      kind: 'workshop', mode: 'online', topic: 'assessment',
-      title: 'Shoulder Assessment Lab',
-      image: '/athlete-who.png',
-      price: 490000, date: '24/09/2026', time: '19:30 – 21:30', location: pick('Trực tuyến', 'Online'),
-    },
-    {
-      slug: 'cot-song-kiem-soat-trung-tam',
-      kind: 'course', mode: 'offline', topic: 'anatomy',
-      title: pick('Cột sống & Kiểm soát trung tâm', 'Spine & Core Control'),
-      image: '/education-gallery-4.png',
-      price: 1290000, date: '05/12/2026', time: '08:30 – 16:30', location: pick('TP.HCM', 'Ho Chi Minh City'),
-    },
-    {
-      slug: 'khoi-dong-phong-ngua-chan-thuong',
-      kind: 'mini', mode: 'online', topic: 'sports',
-      title: pick('Khởi động & Phòng ngừa chấn thương', 'Warm-up & Injury Prevention'),
-      image: '/pickleball.png',
-      price: 0, lessons: 6, duration: pick('40 phút', '40 min'),
-    },
-    {
-      slug: 'van-dong-chuc-nang-cho-nguoi-van-phong',
-      kind: 'course', mode: 'online', topic: 'functional',
-      title: pick('Vận động chức năng cho người văn phòng', 'Functional Movement for Desk Workers'),
-      image: '/office-who.png',
-      price: 890000, lessons: 20, duration: pick('~3 giờ', '~3 hours'),
-    },
-    {
-      slug: 'danh-gia-dang-di-ban-chan',
-      kind: 'workshop', mode: 'offline', topic: 'assessment',
-      title: pick('Đánh giá dáng đi & Bàn chân', 'Gait & Foot Assessment'),
-      image: '/tennis.png',
-      price: 850000, date: '09/11/2026', time: '08:30 – 16:30', location: pick('TP.HCM', 'Ho Chi Minh City'),
-    },
-    {
-      slug: 'giai-phau-chi-tren-ung-dung',
-      kind: 'course', mode: 'offline', topic: 'anatomy',
-      title: pick('Giải phẫu chi trên ứng dụng', 'Applied Upper Limb Anatomy'),
-      image: '/education-gallery-5.png',
-      price: 2290000, date: '12/10/2026', time: '08:30 – 16:30', location: pick('TP.HCM', 'Ho Chi Minh City'),
-    },
-    {
-      slug: 'tho-kiem-soat-van-dong',
-      kind: 'mini', mode: 'online', topic: 'functional',
-      title: pick('Thở & Kiểm soát vận động', 'Breathing & Motor Control'),
-      image: '/recovery-who.png',
-      price: 0, lessons: 4, duration: pick('25 phút', '25 min'),
-    },
-    {
-      slug: 'phuc-hoi-sau-chan-thuong-goi',
-      kind: 'course', mode: 'offline', topic: 'sports',
-      title: pick('Phục hồi sau chấn thương gối', 'Knee Injury Rehabilitation'),
-      image: '/active-who.png',
-      price: 2590000, date: '22/11/2026', time: '08:30 – 16:30', location: pick('Hà Nội', 'Hanoi'),
-    },
-    {
-      slug: 'giai-phau-chi-duoi-ung-dung',
-      kind: 'mini', mode: 'online', topic: 'anatomy',
-      title: pick('Giải phẫu chi dưới ứng dụng', 'Applied Lower Limb Anatomy'),
-      image: '/corporate-sports.png',
-      price: 0, lessons: 7, duration: pick('50 phút', '50 min'),
-    },
-  ] as CatalogProgram[])
-
-  const programs = computed<CatalogProgram[]>(() =>
-    data.value?.programs?.length ? data.value.programs : FALLBACK,
-  )
+  const programs = computed<CatalogProgram[]>(() => data.value?.programs ?? [])
 
   /** Facet counts come from the whole catalogue, not the filtered slice —
       otherwise every option would read 0 as soon as a filter narrowed things. */
@@ -228,7 +107,7 @@ export function useLearningCatalog() {
     },
   }))
 
-  return { programs, counts, formatPrice, PROGRAMS_PER_PAGE }
+  return { programs, counts, formatPrice, PROGRAMS_PER_PAGE, ready }
 }
 
 /**

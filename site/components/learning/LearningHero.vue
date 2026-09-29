@@ -16,6 +16,10 @@
  */
 import type { CatalogProgram } from '~/composables/useLearningCatalog'
 
+import { A11y, Autoplay, EffectCreative, Keyboard, Parallax } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/effect-creative'
+
 const { t } = useI18n()
 const localePath = useLocalePath()
 const { programs, formatPrice } = useLearningCatalog()
@@ -73,54 +77,29 @@ function initialsOf(name: string) {
 }
 
 const total = 3
-const index = ref(0)
 
-function go(i: number) {
-  index.value = ((i % total) + total) % total
-}
-const next = () => go(index.value + 1)
-const prev = () => go(index.value - 1)
+// ── Slider: Swiper (creative effect + parallax text) ──
+const viewport = ref<HTMLElement | null>(null)
+const { swiper, activeIndex: index } = useSwiper(viewport, () => ({
+  modules: [Autoplay, EffectCreative, Parallax, A11y, Keyboard],
+  loop: true,
+  speed: 900,
+  grabCursor: true,
+  parallax: true,
+  effect: 'creative',
+  creativeEffect: {
+    // The outgoing slide sinks back and fades; the next one sweeps in over it.
+    prev: { translate: ['-20%', 0, -1], scale: 0.9, opacity: 0 },
+    next: { translate: ['100%', 0, 0] },
+  },
+  autoplay: { delay: 6000, pauseOnMouseEnter: true, disableOnInteraction: false },
+  keyboard: { enabled: true, onlyInViewport: true },
+  a11y: { enabled: true, prevSlideMessage: t('learning.hero.prev'), nextSlideMessage: t('learning.hero.next') },
+}))
 
-// ── Autoplay ──
-const INTERVAL = 6000
-let timer: ReturnType<typeof setInterval> | null = null
-const paused = ref(false)
-const reducedMotion = ref(false)
-
-function stop() {
-  if (timer) clearInterval(timer)
-  timer = null
-}
-function start() {
-  stop()
-  if (reducedMotion.value) return
-  timer = setInterval(() => {
-    if (!paused.value && document.visibilityState === 'visible') next()
-  }, INTERVAL)
-}
-/** A manual move restarts the countdown, so the slide just chosen gets its full time. */
-function manual(action: () => void) {
-  action()
-  start()
-}
-
-// ── Swipe ──
-let touchX = 0
-function onTouchStart(e: TouchEvent) {
-  touchX = e.touches[0]?.clientX ?? 0
-  paused.value = true
-}
-function onTouchEnd(e: TouchEvent) {
-  const dx = (e.changedTouches[0]?.clientX ?? 0) - touchX
-  paused.value = false
-  if (Math.abs(dx) > 40) manual(dx < 0 ? next : prev)
-}
-
-onMounted(() => {
-  reducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  start()
-})
-onBeforeUnmount(stop)
+const prev = () => swiper.value?.slidePrev()
+const next = () => swiper.value?.slideNext()
+const go = (i: number) => swiper.value?.slideToLoop(i)
 
 /** Links on hidden slides must not be reachable with Tab. */
 const tab = (i: number) => (index.value === i ? 0 : -1)
@@ -131,32 +110,33 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
     class="hub-banner"
     :aria-label="t('learning.hero.slides_label')"
     aria-roledescription="carousel"
-    @mouseenter="paused = true"
-    @mouseleave="paused = false"
-    @focusin="paused = true"
-    @focusout="paused = false"
   >
     <h1 class="sr-only">{{ t('learning.hero.title1') }} {{ t('learning.hero.title2') }}</h1>
 
     <div class="section-container hub-banner__frame">
-      <div
-        class="hub-banner__viewport"
-        @touchstart.passive="onTouchStart"
-        @touchend.passive="onTouchEnd"
-      >
-        <div class="hub-banner__track" :style="{ transform: `translateX(-${index * 100}%)` }">
+      <div ref="viewport" class="hub-banner__viewport swiper">
+        <div class="swiper-wrapper">
           <!-- ══ 1. Khóa học thịnh hành ══ -->
-          <div class="hub-slide hub-slide--0" role="group" aria-roledescription="slide" :aria-label="`1 / ${total}`" :aria-hidden="index !== 0">
+          <div class="swiper-slide hub-slide hub-slide--0" role="group" aria-roledescription="slide" :aria-label="`1 / ${total}`" :aria-hidden="index !== 0">
+            <NuxtImg
+              src="/education-gallery-2.png"
+              alt=""
+              class="hub-slide__img"
+              format="webp"
+              sizes="100vw lg:1200px"
+              loading="eager"
+              data-swiper-parallax="25%"
+            />
             <div class="hub-slide__body">
-              <p class="hub-slide__eyebrow">
+              <p class="hub-slide__eyebrow" data-swiper-parallax="-120" data-swiper-parallax-opacity="0">
                 {{ t('learning.hero.trending_label') }}<template v-if="trending"> · {{ kindLabel(trending.kind) }}</template>
               </p>
               <template v-if="trending">
-                <h2 class="hub-slide__title">{{ trending.title }}</h2>
-                <p class="hub-slide__sub">
+                <h2 class="hub-slide__title" data-swiper-parallax="-260" data-swiper-parallax-opacity="0">{{ trending.title }}</h2>
+                <p class="hub-slide__sub" data-swiper-parallax="-340" data-swiper-parallax-opacity="0">
                   {{ metaOf(trending) }}<template v-if="trending.enrolled"> · {{ t('learning.hero.enrolled', { n: trending.enrolled.toLocaleString('vi-VN') }) }}</template>
                 </p>
-                <div class="hub-slide__actions">
+                <div class="hub-slide__actions" data-swiper-parallax="-420" data-swiper-parallax-opacity="0">
                   <NuxtLink :to="localePath(`/learning-hub/programs/${trending.slug}`)" class="hub-slide__cta" :tabindex="tab(0)">
                     {{ t('learning.programs.view_course') }} <span aria-hidden="true">→</span>
                   </NuxtLink>
@@ -167,9 +147,9 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
                 </NuxtLink>
               </template>
               <template v-else>
-                <h2 class="hub-slide__title">{{ t('learning.hero.title1') }} <span class="hub-slide__accent">{{ t('learning.hero.title2') }}</span></h2>
-                <p class="hub-slide__sub">{{ t('learning.hero.subtitle') }}</p>
-                <div class="hub-slide__actions">
+                <h2 class="hub-slide__title" data-swiper-parallax="-260" data-swiper-parallax-opacity="0">{{ t('learning.hero.title1') }} <span class="hub-slide__accent">{{ t('learning.hero.title2') }}</span></h2>
+                <p class="hub-slide__sub" data-swiper-parallax="-340" data-swiper-parallax-opacity="0">{{ t('learning.hero.subtitle') }}</p>
+                <div class="hub-slide__actions" data-swiper-parallax="-420" data-swiper-parallax-opacity="0">
                   <NuxtLink :to="localePath('/learning-hub/programs')" class="hub-slide__cta" :tabindex="tab(0)">
                     {{ t('learning.hero.cta_primary') }} <span aria-hidden="true">→</span>
                   </NuxtLink>
@@ -179,13 +159,22 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
           </div>
 
           <!-- ══ 2. Workshop ══ -->
-          <div class="hub-slide hub-slide--2" role="group" aria-roledescription="slide" :aria-label="`2 / ${total}`" :aria-hidden="index !== 1">
+          <div class="swiper-slide hub-slide hub-slide--2" role="group" aria-roledescription="slide" :aria-label="`2 / ${total}`" :aria-hidden="index !== 1">
+            <NuxtImg
+              src="/education-workshop.png"
+              alt=""
+              class="hub-slide__img"
+              format="webp"
+              sizes="100vw lg:1200px"
+              loading="lazy"
+              data-swiper-parallax="25%"
+            />
             <div class="hub-slide__body">
-              <p class="hub-slide__eyebrow">{{ t('learning.hero.workshop_label') }}</p>
+              <p class="hub-slide__eyebrow" data-swiper-parallax="-120" data-swiper-parallax-opacity="0">{{ t('learning.hero.workshop_label') }}</p>
               <template v-if="workshop">
-                <h2 class="hub-slide__title">{{ workshop.title }}</h2>
-                <p v-if="metaOf(workshop)" class="hub-slide__sub">{{ metaOf(workshop) }}</p>
-                <div class="hub-slide__actions">
+                <h2 class="hub-slide__title" data-swiper-parallax="-260" data-swiper-parallax-opacity="0">{{ workshop.title }}</h2>
+                <p v-if="metaOf(workshop)" class="hub-slide__sub" data-swiper-parallax="-340" data-swiper-parallax-opacity="0">{{ metaOf(workshop) }}</p>
+                <div class="hub-slide__actions" data-swiper-parallax="-420" data-swiper-parallax-opacity="0">
                   <NuxtLink :to="localePath(`/learning-hub/programs/${workshop.slug}`)" class="hub-slide__cta" :tabindex="tab(1)">
                     {{ t('learning.programs.view_course') }} <span aria-hidden="true">→</span>
                   </NuxtLink>
@@ -193,9 +182,9 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
                 </div>
               </template>
               <template v-else>
-                <h2 class="hub-slide__title">{{ t('learning.hero.workshop_fallback_title') }}</h2>
-                <p class="hub-slide__sub">{{ t('learning.hero.workshop_fallback_sub') }}</p>
-                <div class="hub-slide__actions">
+                <h2 class="hub-slide__title" data-swiper-parallax="-260" data-swiper-parallax-opacity="0">{{ t('learning.hero.workshop_fallback_title') }}</h2>
+                <p class="hub-slide__sub" data-swiper-parallax="-340" data-swiper-parallax-opacity="0">{{ t('learning.hero.workshop_fallback_sub') }}</p>
+                <div class="hub-slide__actions" data-swiper-parallax="-420" data-swiper-parallax-opacity="0">
                   <NuxtLink :to="localePath('/learning-hub/schedule')" class="hub-slide__cta" :tabindex="tab(1)">
                     {{ t('learning.hero.workshop_cta') }} <span aria-hidden="true">→</span>
                   </NuxtLink>
@@ -205,11 +194,20 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
           </div>
 
           <!-- ══ 3. Đội ngũ ══ -->
-          <div class="hub-slide hub-slide--1" role="group" aria-roledescription="slide" :aria-label="`3 / ${total}`" :aria-hidden="index !== 2">
+          <div class="swiper-slide hub-slide hub-slide--1" role="group" aria-roledescription="slide" :aria-label="`3 / ${total}`" :aria-hidden="index !== 2">
+            <NuxtImg
+              src="/education.webp"
+              alt=""
+              class="hub-slide__img"
+              format="webp"
+              sizes="100vw lg:1200px"
+              loading="lazy"
+              data-swiper-parallax="25%"
+            />
             <div class="hub-slide__body hub-slide__body--wide">
-              <p class="hub-slide__eyebrow">{{ t('learning.hero.team_label') }}</p>
-              <h2 class="hub-slide__title">{{ t('learning.hero.team_title') }}</h2>
-              <p v-if="instructors.length" class="hub-slide__sub">
+              <p class="hub-slide__eyebrow" data-swiper-parallax="-120" data-swiper-parallax-opacity="0">{{ t('learning.hero.team_label') }}</p>
+              <h2 class="hub-slide__title" data-swiper-parallax="-260" data-swiper-parallax-opacity="0">{{ t('learning.hero.team_title') }}</h2>
+              <p v-if="instructors.length" class="hub-slide__sub" data-swiper-parallax="-340" data-swiper-parallax-opacity="0">
                 {{ t('learning.hero.team_sub', { n: instructors.length, learners: teamLearners }) }}
               </p>
               <ul v-if="instructors.length" class="hub-team">
@@ -221,7 +219,7 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
                   </span>
                 </li>
               </ul>
-              <div class="hub-slide__actions">
+              <div class="hub-slide__actions" data-swiper-parallax="-420" data-swiper-parallax-opacity="0">
                 <NuxtLink :to="localePath('/learning-hub/programs')" class="hub-slide__cta" :tabindex="tab(2)">
                   {{ t('learning.hero.team_cta') }} <span aria-hidden="true">→</span>
                 </NuxtLink>
@@ -231,10 +229,10 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
         </div>
 
         <!-- Arrows -->
-        <button type="button" class="hub-banner__arrow hub-banner__arrow--prev" :aria-label="t('learning.hero.prev')" @click="manual(prev)">
+        <button type="button" class="hub-banner__arrow hub-banner__arrow--prev" :aria-label="t('learning.hero.prev')" @click="prev">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
         </button>
-        <button type="button" class="hub-banner__arrow hub-banner__arrow--next" :aria-label="t('learning.hero.next')" @click="manual(next)">
+        <button type="button" class="hub-banner__arrow hub-banner__arrow--next" :aria-label="t('learning.hero.next')" @click="next">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
         </button>
 
@@ -248,7 +246,7 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
             :class="{ 'hub-banner__dot--on': index === n - 1 }"
             :aria-label="t('learning.hero.goto', { n })"
             :aria-current="index === n - 1"
-            @click="manual(() => go(n - 1))"
+            @click="go(n - 1)"
           />
         </div>
       </div>
@@ -270,20 +268,15 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
   overflow: hidden;
   border-radius: 18px;
 }
-.hub-banner__track {
-  display: flex;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform;
-}
-@media (prefers-reduced-motion: reduce) {
-  .hub-banner__track {
-    transition: none;
-  }
+/* Arrows and dots sit above Swiper's layers. */
+.hub-banner__arrow,
+.hub-banner__dots {
+  z-index: 5;
 }
 
 /* ── Slide ── */
 .hub-slide {
-  flex: 0 0 100%;
+  height: auto;
   min-height: 300px;
   display: flex;
   align-items: center;
@@ -292,22 +285,35 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
   position: relative;
   overflow: hidden;
 }
-/* Solid brand panels with one soft light, instead of photos. */
+/* Photo background: the image fills the slide (drifting with parallax as it
+   slides), under a navy gradient that keeps the text on the left readable. */
+.hub-slide {
+  background: var(--color-navy);
+}
+.hub-slide__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% center;
+  z-index: 0;
+  /* Room for the parallax drift, so no edge shows while sliding. */
+  transform: scale(1.15);
+}
 .hub-slide::after {
   content: '';
   position: absolute;
-  right: -80px;
-  top: -80px;
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.07);
+  inset: 0;
+  z-index: 0;
   pointer-events: none;
+  background: linear-gradient(180deg, rgba(11, 42, 74, 0.55) 0%, rgba(11, 42, 74, 0.92) 70%);
 }
-.hub-slide--0 { background: var(--color-navy); }
-.hub-slide--1 { background: #0f4c5c; }
-.hub-slide--2 { background: #7a3e14; }
-.hub-slide--3 { background: #1f3a5f; }
+@media (min-width: 1024px) {
+  .hub-slide::after {
+    background: linear-gradient(90deg, rgba(11, 42, 74, 0.96) 0%, rgba(11, 42, 74, 0.82) 42%, rgba(11, 42, 74, 0.2) 100%);
+  }
+}
 
 .hub-slide__body {
   position: relative;

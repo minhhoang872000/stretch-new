@@ -13,6 +13,9 @@
 const { t } = useI18n()
 const localePath = useLocalePath()
 const { trackPageView } = useTracking()
+// Server-rendered and swr-cached: the catalogue has to be in the payload, or
+// the page hydrates with an empty schedule.
+await useLearningCatalog().ready
 const { all, upcoming, past, groupByMonth } = useLearningSchedule()
 
 type KindFilter = 'all' | 'workshop' | 'course'

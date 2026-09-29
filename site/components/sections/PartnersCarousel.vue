@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { Autoplay } from "swiper/modules";
+import "swiper/css";
+
 const { t } = useI18n();
 
 interface Partner {
@@ -19,94 +22,20 @@ const partners: Partner[] = [
   { name: "Partner 13", logo: "/logos/partner-13.png" },
 ];
 
+// Continuous logo ticker (Swiper, linear, never stops unless hovered).
+// Doubled so loop mode always has more slides than fit on the widest screen.
 const allPartners = [...partners, ...partners];
-
-const trackRef = ref<HTMLElement | null>(null);
-const currentIndex = ref(0);
-const isHovered = ref(false);
-let scrollInterval: ReturnType<typeof setInterval> | null = null;
-
-// Responsive visible count
-const visibleCount = ref(5);
-
-function updateVisibleCount() {
-  if (typeof window === "undefined") return;
-  const w = window.innerWidth;
-  if (w < 480) visibleCount.value = 2;
-  else if (w < 768) visibleCount.value = 3;
-  else if (w < 1024) visibleCount.value = 4;
-  else visibleCount.value = 6;
-}
-
-const totalSlides = computed(() => partners.length);
-const dotCount = computed(() =>
-  Math.ceil(totalSlides.value / visibleCount.value),
-);
-const activeDot = computed(
-  () => Math.floor(currentIndex.value / visibleCount.value) % dotCount.value,
-);
-
-function scrollTo(index: number) {
-  currentIndex.value = index % totalSlides.value;
-  if (trackRef.value) {
-    const itemWidth = trackRef.value.scrollWidth / allPartners.length;
-    trackRef.value.style.transition =
-      "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)";
-    trackRef.value.style.transform = `translateX(-${currentIndex.value * itemWidth}px)`;
-  }
-}
-
-function next() {
-  scrollTo(currentIndex.value + 1);
-}
-
-function prev() {
-  scrollTo(
-    currentIndex.value <= 0 ? totalSlides.value - 1 : currentIndex.value - 1,
-  );
-}
-
-function goToDot(dotIndex: number) {
-  scrollTo(dotIndex * visibleCount.value);
-}
-
-function startAutoScroll() {
-  stopAutoScroll();
-  scrollInterval = setInterval(() => {
-    if (!isHovered.value) {
-      next();
-    }
-  }, 3500);
-}
-
-function stopAutoScroll() {
-  if (scrollInterval) {
-    clearInterval(scrollInterval);
-    scrollInterval = null;
-  }
-}
-
-function handleTransitionEnd() {
-  if (currentIndex.value >= totalSlides.value && trackRef.value) {
-    currentIndex.value = currentIndex.value % totalSlides.value;
-    trackRef.value.style.transition = "none";
-    const itemWidth = trackRef.value.scrollWidth / allPartners.length;
-    trackRef.value.style.transform = `translateX(-${currentIndex.value * itemWidth}px)`;
-  }
-}
-
-onMounted(() => {
-  updateVisibleCount();
-  window.addEventListener("resize", updateVisibleCount);
-  startAutoScroll();
-});
-
-onUnmounted(() => {
-  stopAutoScroll();
-  if (typeof window !== "undefined") {
-    window.removeEventListener("resize", updateVisibleCount);
-  }
-});
+const tickerEl = ref<HTMLElement | null>(null);
+const { swiper } = useSwiper(tickerEl, () => ({
+  modules: [Autoplay],
+  loop: true,
+  speed: 4000,
+  slidesPerView: 2,
+  spaceBetween: 0,
+  allowTouchMove: true,
+  autoplay: { delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true },
+  breakpoints: { 480: { slidesPerView: 3 }, 768: { slidesPerView: 4 }, 1024: { slidesPerView: 6 } },
+}));
 </script>
 
 <template>
@@ -131,100 +60,36 @@ onUnmounted(() => {
         </p>
       </div>
 
-      <!-- Carousel Container -->
-      <div
-        class="relative group"
-        @mouseenter="isHovered = true"
-        @mouseleave="isHovered = false"
-      >
-        <!-- Left Arrow -->
-        <button
-          @click="prev"
-          class="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border border-border-default shadow-card flex items-center justify-center text-text-secondary hover:text-navy hover:shadow-card-hover transition-all"
-          aria-label="Previous partners"
-        >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 18 18"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M11 14l-5-5 5-5" />
-          </svg>
-        </button>
-
-        <!-- Track -->
-        <div class="overflow-hidden mx-9 md:mx-14">
+      <!-- Logo ticker -->
+      <div ref="tickerEl" class="swiper partners-ticker">
+        <div class="swiper-wrapper">
           <div
-            ref="trackRef"
-            class="flex items-center"
-            @transitionend="handleTransitionEnd"
+            v-for="(partner, index) in allPartners"
+            :key="`${partner.name}-${index}`"
+            class="swiper-slide flex items-center justify-center py-6"
           >
-            <div
-              v-for="(partner, index) in allPartners"
-              :key="`${partner.name}-${index}`"
-              class="flex-shrink-0 flex items-center justify-center py-6"
-              :style="{ width: `${100 / visibleCount}%` }"
-            >
-              <div
-                class="flex items-center justify-center px-2 md:px-6 select-none cursor-default group/logo"
-              >
-                <NuxtImg
-                  :src="partner.logo"
-                  :alt="partner.name"
-                  class="h-14 md:h-16 lg:h-20 w-auto object-contain grayscale opacity-60 group-hover/logo:grayscale-0 group-hover/logo:opacity-100 transition-all duration-300"
-                  format="webp"
-                  :style="
-                    partner.name === 'Lululemon'
-                      ? 'mix-blend-mode: multiply;'
-                      : ''
-                  "
-                />
-              </div>
+            <div class="flex items-center justify-center px-2 md:px-6 select-none group/logo">
+              <NuxtImg
+                :src="partner.logo"
+                :alt="partner.name"
+                class="h-14 md:h-16 lg:h-20 w-auto object-contain grayscale opacity-60 group-hover/logo:grayscale-0 group-hover/logo:opacity-100 transition-all duration-300"
+                format="webp"
+                :style="partner.name === 'Lululemon' ? 'mix-blend-mode: multiply;' : ''"
+              />
             </div>
           </div>
         </div>
-
-        <!-- Right Arrow -->
-        <button
-          @click="next"
-          class="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border border-border-default shadow-card flex items-center justify-center text-text-secondary hover:text-navy hover:shadow-card-hover transition-all"
-          aria-label="Next partners"
-        >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 18 18"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M7 14l5-5-5-5" />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Dots -->
-      <div class="flex items-center justify-center gap-2 mt-6">
-        <button
-          v-for="(_, dotIndex) in dotCount"
-          :key="dotIndex"
-          @click="goToDot(dotIndex)"
-          class="w-2 h-2 rounded-full transition-all duration-300"
-          :class="
-            activeDot === dotIndex
-              ? 'bg-navy w-6'
-              : 'bg-navy/15 hover:bg-navy/30'
-          "
-          :aria-label="`Go to partner group ${dotIndex + 1}`"
-        />
       </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Constant-speed ticker: no easing between slides, soft fade at both edges. */
+.partners-ticker :deep(.swiper-wrapper) {
+  transition-timing-function: linear !important;
+}
+.partners-ticker {
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+</style>

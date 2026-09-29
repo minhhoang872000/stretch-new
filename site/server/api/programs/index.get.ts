@@ -2,6 +2,7 @@ import type { ApiProgram } from '~~/server/utils/academyApi'
 import {
   durationLabel,
   displayDate,
+  fetchInstructors,
   fetchPrograms,
   fetchSessions,
   nextSessionByProgram,
@@ -19,8 +20,13 @@ import {
  * is a few times a month, and every visitor to the hub asks for it.
  */
 export default defineEventHandler(async (event) => {
-  const [programs, sessions] = await Promise.all([fetchPrograms(event), fetchSessions(event)])
+  const [programs, sessions, instructors] = await Promise.all([
+    fetchPrograms(event),
+    fetchSessions(event),
+    fetchInstructors(event),
+  ])
   const nextSession = nextSessionByProgram(sessions)
+  const instructorName = new Map(instructors.map((i: any) => [String(i.id), String(i.name || '')]))
 
   setHeader(event, 'cache-control', 'public, max-age=60, stale-while-revalidate=300')
 
@@ -44,8 +50,16 @@ export default defineEventHandler(async (event) => {
           ? { lessons: program.lessons, duration: durationLabel(program.minutes) }
           : {}),
         ...(session
-          ? { date: displayDate(session.date), time: session.time, location: session.location }
+          ? {
+              date: displayDate(session.date),
+              time: session.time,
+              location: session.location,
+              // Real numbers for the schedule — it used to take seats and the
+              // instructor from the placeholder course template.
+              seatsLeft: Number(session.seatsLeft) || 0,
+            }
           : {}),
+        instructor: (program.instructorId && instructorName.get(String(program.instructorId))) || '',
       }
     }),
   }
