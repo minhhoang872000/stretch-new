@@ -645,7 +645,7 @@ onMounted(() => {
 
 @media (min-width: 1024px) {
   .layout {
-    grid-template-columns: 208px minmax(0, 1fr);
+    grid-template-columns: 248px minmax(0, 1fr);
     gap: 1.25rem;
   }
   .results-grid {
