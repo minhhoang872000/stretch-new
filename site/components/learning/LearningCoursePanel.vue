@@ -85,7 +85,7 @@ const showSeats = computed(() => props.detail.scheduled && props.detail.seatsLef
 
     <!-- ── Secondary actions ── -->
     <div class="panel__acts">
-      <button type="button" class="act" :class="{ 'act--on': isSaved(slug) }" @click="toggle(slug)">
+      <button type="button" class="act" :class="{ 'act--on': isSaved(slug) }" @click="toggle(slug, detail.program.title)">
         <svg width="14" height="14" viewBox="0 0 24 24" :fill="isSaved(slug) ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
           <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4.5L5 21V4a1 1 0 0 1 1-1z" />
         </svg>

@@ -8,6 +8,11 @@ const { t } = useI18n()
 const { notify } = useNotification()
 const localePath = useLocalePath()
 const { loggedIn, user, logout: endSession } = useHubSession()
+// Saved programmes live in this browser; the count only exists after mount.
+const { saved } = useSavedPrograms()
+const savedCount = ref(0)
+onMounted(() => { savedCount.value = saved.value.length })
+watch(() => saved.value.length, (n) => { savedCount.value = n })
 
 const { open: openAuthModal } = useAuthModal()
 
@@ -84,6 +89,17 @@ async function logout() {
 
         <!-- Desktop actions -->
         <div class="hidden lg:flex items-center gap-2.5">
+          <NuxtLink
+            :to="localePath('/learning-hub/saved')"
+            class="hub-saved"
+            :aria-label="`${t('learning.nav.saved')} (${savedCount})`"
+            :title="t('learning.nav.saved')"
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" :fill="savedCount ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+            </svg>
+            <span v-if="savedCount" class="hub-saved__count">{{ savedCount }}</span>
+          </NuxtLink>
           <LearningAccountMenu v-if="loggedIn" />
           <template v-else>
             <button class="hub-btn hub-btn--ghost" @click="openAuth('login')">{{ t('learning.login') }}</button>
@@ -147,6 +163,15 @@ async function logout() {
             {{ link.label }}
           </a>
         </template>
+
+        <NuxtLink
+          :to="localePath('/learning-hub/saved')"
+          class="py-3.5 text-[15px] font-heading font-medium text-navy border-b border-border hover:text-accent transition-colors flex items-center justify-between"
+          @click="closeMobileMenu"
+        >
+          {{ t('learning.nav.saved') }}
+          <span v-if="savedCount" class="hub-saved__count hub-saved__count--inline">{{ savedCount }}</span>
+        </NuxtLink>
 
         <!-- The drawer stands in for the desktop avatar dropdown on mobile. -->
         <NuxtLink
@@ -280,6 +305,44 @@ async function logout() {
 .hub-btn--accent:hover {
   background: var(--color-accent-dark);
   border-color: var(--color-accent-dark);
+}
+
+/* ── Saved ── */
+.hub-saved {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-navy);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.hub-saved:hover,
+.hub-saved.router-link-active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.hub-saved__count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: white;
+  font-family: var(--font-heading);
+  font-size: 10.5px;
+  font-weight: 800;
+  line-height: 18px;
+  text-align: center;
+}
+.hub-saved__count--inline {
+  position: static;
 }
 
 .fade-enter-active,

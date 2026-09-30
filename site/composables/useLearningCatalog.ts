@@ -119,6 +119,8 @@ const SAVED_KEY = 'stretch:saved-programs'
 
 export function useSavedPrograms() {
   const saved = useState<string[]>('saved-programs', () => [])
+  const { t } = useI18n()
+  const { notify } = useNotification()
 
   onMounted(() => {
     try {
@@ -129,10 +131,15 @@ export function useSavedPrograms() {
     }
   })
 
-  function toggle(slug: string) {
-    saved.value = saved.value.includes(slug)
-      ? saved.value.filter((s) => s !== slug)
-      : [...saved.value, slug]
+  /**
+   * Save or un-save, and say so: a bookmark that silently flips an icon left
+   * people unsure it worked. Pass the title for a more specific toast.
+   */
+  function toggle(slug: string, title?: string) {
+    const wasSaved = saved.value.includes(slug)
+    saved.value = wasSaved ? saved.value.filter((s) => s !== slug) : [...saved.value, slug]
+    if (wasSaved) notify(title ? t('learning.saved.toast_removed', { title }) : t('learning.saved.toast_removed_generic'), 'info')
+    else notify(title ? t('learning.saved.toast_saved', { title }) : t('learning.saved.toast_saved_generic'), 'success')
     try {
       localStorage.setItem(SAVED_KEY, JSON.stringify(saved.value))
     } catch {

@@ -40,7 +40,8 @@
       "hub": "Sharing Hub",
       "support": "Hỗ trợ",
       "my_courses": "Khóa học của tôi",
-      "account": "Tài khoản"
+      "account": "Tài khoản",
+      "saved": "Đã lưu"
     },
     "hero": {
       "title1": "Học đúng kiến thức.",
@@ -419,6 +420,20 @@
       "empty_done": "Chưa có khóa học nào hoàn thành.",
       "browse": "Khám phá chương trình",
       "options": "Tùy chọn khóa học"
+    },
+    "saved": {
+      "title": "Khóa học đã lưu",
+      "subtitle": "Những khóa học, mini-course và workshop bạn đánh dấu để xem lại sau.",
+      "breadcrumb": "Đã lưu",
+      "count": "{count} chương trình",
+      "empty_title": "Bạn chưa lưu khóa học nào",
+      "empty_sub": "Bấm biểu tượng dấu trang trên thẻ khóa học để lưu lại và xem nhanh ở đây.",
+      "cta": "Khám phá chương trình",
+      "toast_saved": "Đã lưu “{title}” vào mục Đã lưu.",
+      "toast_saved_generic": "Đã lưu khóa học vào mục Đã lưu.",
+      "toast_removed": "Đã bỏ lưu “{title}”.",
+      "toast_removed_generic": "Đã bỏ lưu khóa học.",
+      "device_note": "Danh sách được lưu trên trình duyệt này."
     }
   },
   "hero": {

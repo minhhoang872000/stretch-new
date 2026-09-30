@@ -90,7 +90,7 @@ const scheduled = computed(() => Boolean(props.program.date))
           :class="{ 'pcard__save--on': isSaved(program.slug) }"
           :aria-label="isSaved(program.slug) ? t('learning.catalog.unsave') : t('learning.catalog.save')"
           :aria-pressed="isSaved(program.slug)"
-          @click="toggle(program.slug)"
+          @click="toggle(program.slug, program.title)"
         >
           <svg width="15" height="15" viewBox="0 0 24 24" :fill="isSaved(program.slug) ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4.5L5 21V4a1 1 0 0 1 1-1z" />

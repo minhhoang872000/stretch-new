@@ -313,6 +313,7 @@ export default defineNuxtConfig({
         '/business/recovery-event', '/vi/business/recovery-event',
         '/booking', '/vi/booking',
         '/learning-hub', '/vi/learning-hub',
+        '/learning-hub/saved', '/vi/learning-hub/saved',
       ],
       crawlLinks: true,
       // Emit `/individual.html` instead of `/individual/index.html`. On

@@ -49,7 +49,10 @@ const ICONS: Record<string, string> = {
 <style scoped>
 .toasts {
   position: fixed;
-  top: 14px;
+  /* Below the sticky header (58–80 px), not on it: at top: 14px a toast sat
+     over the header actions — "Đã lưu", "Đăng nhập" — for its whole life,
+     so the button you would press next was the one it covered. */
+  top: 84px;
   right: 14px;
   z-index: 1200;
   display: flex;
