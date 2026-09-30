@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { referralFromStorage } from '~/utils/referral'
 /**
  * Checkout — bank transfer with a VietQR code.
  *
@@ -181,6 +182,14 @@ onMounted(async () => {
     // summary state shows, which is always safe.
   } finally {
     loadingExisting.value = false
+  }
+
+  // Arrived through a friend's referral link: their code is the discount.
+  // Applied quietly — an own-code or expired one just shows its reason.
+  const referral = referralFromStorage()
+  if (!order.value && referral && !coupon.value) {
+    couponInput.value = referral
+    applyCoupon()
   }
 })
 </script>

@@ -35,6 +35,9 @@ export interface CompletedEnrolment {
 
 export function useMyLearning() {
   const { loggedIn } = useUserSession()
+  // Carries the visitor's cookie when this runs during SSR; plain $fetch would
+  // call /api/me/courses signed out, 401, and hydrate an empty list.
+  const requestFetch = useRequestFetch()
 
   /**
    * Keyed on the session, so signing in or out refetches rather than showing
@@ -43,7 +46,7 @@ export function useMyLearning() {
    */
   const { data, refresh } = useAsyncData(
     'my-learning',
-    () => $fetch<{ active: ActiveEnrolment[]; completed: CompletedEnrolment[] }>('/api/me/courses'),
+    () => requestFetch<{ active: ActiveEnrolment[]; completed: CompletedEnrolment[] }>('/api/me/courses'),
     {
       immediate: loggedIn.value,
       watch: [loggedIn],

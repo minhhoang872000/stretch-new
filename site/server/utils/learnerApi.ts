@@ -98,7 +98,7 @@ export async function requireLearner(event: any): Promise<SessionLearner> {
  */
 export function identifyLearner(
   event: any,
-  profile: { email: string; name?: string; avatar?: string; googleSub?: string },
+  profile: { email: string; name?: string; avatar?: string; googleSub?: string; referralCode?: string },
 ) {
   return learnerFetch<{ learner: SessionLearner & { status: string }; created: boolean }>(
     event,

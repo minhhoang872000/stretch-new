@@ -111,24 +111,77 @@ export function useLearningCatalog() {
 }
 
 /**
- * Saved programs. localStorage only — a real "my saved list" has to live on the
- * account so it follows the learner across devices; this keeps the bookmark
- * button honest in the meantime rather than leaving it inert.
+ * Saved programmes ("Đã lưu").
+ *
+ * Signed in, the list lives on the account (`/api/me/saved`) and follows the
+ * learner across devices; signed out, it lives in this browser. localStorage
+ * stays underneath either way as the instant-render cache.
+ *
+ * The first sign-in on a browser merges that browser's list up into the
+ * account, so bookmarks made before signing in are kept. After that the
+ * account is authoritative — otherwise a programme un-saved on the phone would
+ * be put back by the laptop's stale copy. The marker remembers which account
+ * the merge was for; another account signing in on the same browser takes its
+ * own list rather than inheriting the previous person's.
  */
 const SAVED_KEY = 'stretch:saved-programs'
+const SAVED_MERGED_KEY = 'stretch:saved-merged'
 
 export function useSavedPrograms() {
   const saved = useState<string[]>('saved-programs', () => [])
+  /** idle → loading → done, once per page load across every card that asks. */
+  const syncState = useState<'idle' | 'loading' | 'done'>('saved-sync', () => 'idle')
   const { t } = useI18n()
   const { notify } = useNotification()
+  const { loggedIn, learner, whenReady } = useHubSession()
+
+  function writeLocal() {
+    try {
+      localStorage.setItem(SAVED_KEY, JSON.stringify(saved.value))
+    } catch {
+      // storage full or blocked — the in-memory list still works this session
+    }
+  }
+
+  async function syncAccount() {
+    if (syncState.value !== 'idle') return
+    syncState.value = 'loading'
+    await whenReady()
+    if (!loggedIn.value) {
+      syncState.value = 'done'
+      return
+    }
+    const who = String(learner.value?.email || '')
+    let mergedFor = ''
+    try {
+      mergedFor = localStorage.getItem(SAVED_MERGED_KEY) || ''
+    } catch {}
+    try {
+      const res =
+        !mergedFor && saved.value.length
+          ? await $fetch<{ slugs: string[] }>('/api/me/saved', { method: 'PUT', body: { slugs: saved.value } })
+          : await $fetch<{ slugs: string[] }>('/api/me/saved')
+      saved.value = Array.isArray(res?.slugs) ? res.slugs : []
+      writeLocal()
+      try {
+        localStorage.setItem(SAVED_MERGED_KEY, who || '1')
+      } catch {}
+    } catch {
+      // API unreachable: carry on with the local list this visit.
+    }
+    syncState.value = 'done'
+  }
 
   onMounted(() => {
-    try {
-      const raw = localStorage.getItem(SAVED_KEY)
-      if (raw) saved.value = JSON.parse(raw)
-    } catch {
-      // corrupted or unavailable storage — start from an empty list
+    if (syncState.value !== 'done') {
+      try {
+        const raw = localStorage.getItem(SAVED_KEY)
+        if (raw) saved.value = JSON.parse(raw)
+      } catch {
+        // corrupted or unavailable storage — start from an empty list
+      }
     }
+    void syncAccount()
   })
 
   /**
@@ -140,14 +193,17 @@ export function useSavedPrograms() {
     saved.value = wasSaved ? saved.value.filter((s) => s !== slug) : [...saved.value, slug]
     if (wasSaved) notify(title ? t('learning.saved.toast_removed', { title }) : t('learning.saved.toast_removed_generic'), 'info')
     else notify(title ? t('learning.saved.toast_saved', { title }) : t('learning.saved.toast_saved_generic'), 'success')
-    try {
-      localStorage.setItem(SAVED_KEY, JSON.stringify(saved.value))
-    } catch {
-      // storage full or blocked — the in-memory list still works this session
+    writeLocal()
+    if (loggedIn.value) {
+      const request = wasSaved
+        ? $fetch(`/api/me/saved/${encodeURIComponent(slug)}`, { method: 'DELETE' })
+        : $fetch('/api/me/saved', { method: 'PUT', body: { slugs: [slug] } })
+      // The local list already changed; the account catches up on the next load.
+      request.catch(() => {})
     }
   }
 
   const isSaved = (slug: string) => saved.value.includes(slug)
 
-  return { saved, toggle, isSaved }
+  return { saved, toggle, isSaved, synced: computed(() => syncState.value === 'done' && loggedIn.value) }
 }

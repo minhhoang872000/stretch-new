@@ -78,6 +78,28 @@ const slide = (dir: 1 | -1) => (dir > 0 ? swiper.value?.slideNext() : swiper.val
 function lessonLink(m: FreeMaterial) {
   return localePath(`/learning-hub/learn/${m.programSlug}?lesson=${m.lessonKey}`)
 }
+
+/**
+ * The first free download asks for an email (LearningLeadModal → CRM lead);
+ * after that, and for anyone signed in, the link just opens. The href stays a
+ * real link, so without JavaScript the file still downloads.
+ */
+const { loggedIn } = useHubSession()
+const gated = ref<FreeMaterial | null>(null)
+
+function download(event: MouseEvent, m: FreeMaterial) {
+  if (loggedIn.value || hasLead()) return
+  event.preventDefault()
+  gated.value = m
+}
+
+function unlocked(url: string) {
+  gated.value = null
+  // Opened after an await, so a popup blocker may refuse the new tab — then
+  // open it here instead; the link is in their inbox either way.
+  const tab = window.open(url, '_blank')
+  if (!tab) window.location.href = url
+}
 </script>
 
 <template>
@@ -116,7 +138,7 @@ function lessonLink(m: FreeMaterial) {
               {{ m.lessonTitle || m.programTitle }}<template v-if="m.lessonTitle"> · {{ m.programTitle }}</template>
             </NuxtLink>
           </div>
-          <a :href="m.url" target="_blank" rel="noopener" class="mat-card__dl" :aria-label="`${t('learning.materials.download')} ${m.name}`">
+          <a :href="m.url" target="_blank" rel="noopener" class="mat-card__dl" @click="download($event, m)" :aria-label="`${t('learning.materials.download')} ${m.name}`">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M12 3v12" />
               <polyline points="7 10 12 15 17 10" />
@@ -131,6 +153,9 @@ function lessonLink(m: FreeMaterial) {
 
       <p v-else class="mat-empty">{{ t('learning.materials.empty') }}</p>
     </div>
+    <ClientOnly>
+      <LearningLeadModal :material="gated" @close="gated = null" @done="unlocked" />
+    </ClientOnly>
   </section>
 </template>
 

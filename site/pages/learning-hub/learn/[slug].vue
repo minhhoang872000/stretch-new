@@ -9,8 +9,8 @@ import type { LessonAttachment } from '~/composables/useProgramDetail'
  *
  * The current lesson lives in `?lesson=<module>-<item>` so a lesson can be
  * linked, reloaded and walked back through with the browser's own Back button.
- * Progress lives in localStorage (see `useCourseProgress`), so it survives a
- * reload but stays on this device until the enrolment API exists.
+ * Progress lives on the account (see `useCourseProgress`), cached in
+ * localStorage, so it follows the learner across devices.
  */
 const { t } = useI18n()
 const route = useRoute()
@@ -31,12 +31,19 @@ if (!detail.value) {
 
 const d = computed(() => detail.value!)
 
+/** The lesson's title, stored with its progress — what the "học tiếp" email names. */
+function lessonTitleFor(key: string) {
+  const [mi, ii] = key.split('-').map(Number)
+  return d.value.modules[mi!]?.items[ii!]?.title ?? ''
+}
+
 const {
+  synced, enrolment,
   isDone, markDone, toggleDone,
   setNote, noteFor,
   setPosition, resumeSeconds, flush,
-  percent, reset,
-} = useCourseProgress(slug.value)
+  percent, reset, sync,
+} = useCourseProgress(slug.value, { titleFor: lessonTitleFor })
 
 /** The syllabus flattened once — the player walks this, not the nested tree. */
 const lessons = computed(() => d.value.modules.flatMap((mod, mi) =>
@@ -79,6 +86,18 @@ const { data: materials } = useAsyncData(
 const doneCount = computed(() => lessons.value.filter((l) => isDone(l.key)).length)
 const progress = computed(() => percent(lessons.value.length))
 const finished = computed(() => playable.value && doneCount.value === lessons.value.length)
+
+// The last tick: push it now rather than in a few seconds, so the account
+// flips to completed (and issues the certificate) before the review box asks.
+watch(finished, (now, before) => {
+  if (now && !before) void sync()
+})
+
+const certificate = computed(() => enrolment.value?.certificate ?? null)
+const courseCompleted = computed(() => enrolment.value?.status === 'completed')
+
+/** "Học gì tiếp theo?" — the catalogue's related programmes, same topic first. */
+const related = computed(() => d.value.related ?? [])
 
 const outlineOpen = ref(false)
 
@@ -211,12 +230,17 @@ onMounted(async () => {
               </span>
               <div class="min-w-0">
                 <p class="award__title">{{ t('learning.learn.finished_title') }}</p>
-                <p class="award__sub">{{ t('learning.learn.finished_sub') }}</p>
+                <p class="award__sub">{{ certificate ? t('learning.learn.finished_sub_cert') : t('learning.learn.finished_sub') }}</p>
               </div>
-              <NuxtLink :to="localePath('/learning-hub/my-courses')" class="award__cta">
-                {{ t('learning.learn.finished_cta') }}
+              <NuxtLink
+                :to="certificate ? localePath(`/verify/${certificate}`) : localePath('/learning-hub/my-courses')"
+                class="award__cta"
+              >
+                {{ certificate ? t('learning.learn.finished_cert') : t('learning.learn.finished_cta') }}
               </NuxtLink>
             </div>
+
+            <LearningReviewBox v-if="finished" :slug="slug" :ready="courseCompleted" />
 
             <LearnStage
               :detail="d"
@@ -239,12 +263,20 @@ onMounted(async () => {
             />
 
             <p class="reset">
-              {{ t('learning.learn.local_note') }}
+              {{ synced ? t('learning.learn.synced_note') : t('learning.learn.local_note') }}
               <button type="button" class="reset__btn" @click="resetProgress">
                 {{ t('learning.learn.reset') }}
               </button>
             </p>
           </template>
+
+          <LearningProgramStrip
+            v-if="playable"
+            class="next"
+            :title="t('learning.related.next_title')"
+            :sub="t('learning.related.next_sub')"
+            :items="related.slice(0, 3)"
+          />
         </div>
       </main>
     </div>
@@ -431,6 +463,21 @@ onMounted(async () => {
 }
 .award__cta:hover {
   background: #f0fdf4;
+}
+
+/* ══ What next ══ */
+.next {
+  margin-top: 2.2rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--color-border);
+}
+.next :deep(.strip__grid) {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+@media (min-width: 640px) {
+  .next :deep(.strip__grid) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 /* ══ Reset ══ */

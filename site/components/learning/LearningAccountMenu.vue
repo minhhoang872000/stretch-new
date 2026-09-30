@@ -83,6 +83,14 @@ async function signOut() {
           </svg>
           {{ t('learning.nav.saved') }}
         </NuxtLink>
+        <NuxtLink :to="{ path: localePath('/learning-hub/my-courses'), hash: '#referral' }" class="acct__item" role="menuitem" @click="close">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="8" width="18" height="13" rx="2" />
+            <path d="M12 8v13M3 12h18" />
+            <path d="M12 8S10.5 3 7.5 3a2.5 2.5 0 0 0 0 5H12zM12 8s1.5-5 4.5-5a2.5 2.5 0 0 1 0 5H12z" />
+          </svg>
+          {{ t('learning.nav.referral') }}
+        </NuxtLink>
 
         <div class="acct__sep" />
 

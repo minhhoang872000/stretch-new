@@ -178,7 +178,7 @@ export default defineNuxtConfig({
     // Drop the auto-discovered dynamic-route placeholder (e.g. `/sharing-hub/:slug`,
     // `/vi/sharing-hub/:slug`) — those are not real URLs. The real per-post URLs
     // are supplied explicitly by the API source above.
-    exclude: [/:slug/],
+    exclude: [/:slug/, /:code/, /\/verify/, /\/learning-hub\/saved/],
   },
 
   ogImage: {
@@ -287,6 +287,8 @@ export default defineNuxtConfig({
             // The course player: one route, a page per slug, and noindex — there
             // is nothing to prerender and nothing search should hold.
             '/learning-hub/learn/*', '/vi/learning-hub/learn/*',
+            // Public certificate pages — one per code, so rendered on demand.
+            '/verify/*', '/vi/verify/*',
             '/api/*',
           ],
           exclude: [],
@@ -314,6 +316,7 @@ export default defineNuxtConfig({
         '/booking', '/vi/booking',
         '/learning-hub', '/vi/learning-hub',
         '/learning-hub/saved', '/vi/learning-hub/saved',
+        '/verify', '/vi/verify',
       ],
       crawlLinks: true,
       // Emit `/individual.html` instead of `/individual/index.html`. On
@@ -376,6 +379,9 @@ export default defineNuxtConfig({
     // of Worker CPU) and loads everything in the browser.
     '/learning-hub/learn/**': { prerender: false, ssr: false },
     '/vi/learning-hub/learn/**': { prerender: false, ssr: false },
+    // A certificate changes only when it is revoked; 5 minutes is fine.
+    '/verify/**': SSR_CACHE,
+    '/vi/verify/**': SSR_CACHE,
     '/sharing-hub': SSR_CACHE,
     '/sharing-hub/**': SSR_CACHE,
     '/vi/sharing-hub': SSR_CACHE,

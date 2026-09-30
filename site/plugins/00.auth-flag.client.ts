@@ -1,4 +1,5 @@
 import { setAuthFlag } from '~/utils/authFlag'
+import { rememberReferral } from '~/utils/referral'
 
 /**
  * Captures the Google sign-in outcome (`?auth=ok|registered|failed`, appended by
@@ -15,7 +16,10 @@ export default defineNuxtPlugin({
   name: 'auth-flag',
   enforce: 'pre',
   setup() {
-    const flag = new URLSearchParams(window.location.search).get('auth')
+    const params = new URLSearchParams(window.location.search)
+    const flag = params.get('auth')
     if (flag === 'ok' || flag === 'registered' || flag === 'failed') setAuthFlag(flag)
+    // A friend's referral link — same reason: read it before the query is gone.
+    if (params.get('ref')) rememberReferral(params.get('ref'))
   },
 })

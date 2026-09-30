@@ -2,15 +2,16 @@
 /**
  * "Đã lưu" — the programmes a visitor bookmarked from a course card or page.
  *
- * Open to everyone, signed in or not: the list lives in this browser
- * (useSavedPrograms → localStorage), so it is read after mount. Slugs that are
+ * Open to everyone, signed in or not: the list lives on the account when signed
+ * in and in this browser otherwise
+ * (useSavedPrograms), so it is read after mount. Slugs that are
  * no longer in the catalogue (unpublished since) are left out quietly.
  */
 const { t } = useI18n()
 const localePath = useLocalePath()
 const { trackPageView } = useTracking()
 const { programs } = useLearningCatalog()
-const { saved } = useSavedPrograms()
+const { saved, synced } = useSavedPrograms()
 
 // The list comes from localStorage, which only exists in the browser.
 const mounted = ref(false)
@@ -76,7 +77,7 @@ useSeo({
           <NuxtLink :to="localePath('/learning-hub/programs')" class="blank__btn">{{ t('learning.saved.cta') }} →</NuxtLink>
         </div>
 
-        <p v-if="mounted && items.length" class="note">{{ t('learning.saved.device_note') }}</p>
+        <p v-if="mounted && items.length" class="note">{{ synced ? t('learning.saved.account_note') : t('learning.saved.device_note') }}</p>
       </div>
     </main>
 

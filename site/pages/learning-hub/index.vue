@@ -28,6 +28,9 @@ onMounted(() => {
     <main>
       <LearningHero />
       <LearningPrograms />
+      <ClientOnly>
+        <LearningRecentlyViewed />
+      </ClientOnly>
       <LearningFreeMaterials />
     </main>
 

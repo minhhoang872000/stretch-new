@@ -12,7 +12,6 @@ const { loggedIn, whenReady } = useHubSession()
 const { open: openAuth } = useAuthModal()
 const { active, completed } = useMyLearning()
 const { programs } = useLearningCatalog()
-const { notify } = useNotification()
 
 /**
  * "Keep studying" opens the player, at the lesson they stopped on — but only
@@ -24,14 +23,6 @@ function courseLink(slug: string) {
   return programs.value.some((p) => p.slug === slug)
     ? localePath(`/learning-hub/learn/${slug}`)
     : localePath('/learning-hub/programs')
-}
-
-/**
- * There is no certificate viewer route yet. Naming the code is more use than a
- * link into a 404 — and a dead `NuxtLink` also fails the prerender crawl.
- */
-function openCertificate(code: string) {
-  notify(t('learning.my.certificate_pending', { code }), 'info', 6000)
 }
 
 const tab = ref<'learning' | 'done'>('learning')
@@ -205,9 +196,13 @@ onMounted(async () => {
                     <NuxtLink :to="courseLink(item.slug)" class="drow__btn">
                       {{ t('learning.my.relearn') }}
                     </NuxtLink>
-                    <button type="button" class="drow__link" @click="openCertificate(item.certificateCode)">
+                    <NuxtLink
+                      v-if="item.certificateCode"
+                      :to="localePath(`/verify/${item.certificateCode}`)"
+                      class="drow__link"
+                    >
                       {{ t('learning.my.certificate') }} →
-                    </button>
+                    </NuxtLink>
                   </div>
                 </div>
 
@@ -236,6 +231,8 @@ onMounted(async () => {
             </div>
           </section>
         </div>
+
+        <LearningReferralCard class="mt-6" />
       </div>
     </main>
 

@@ -41,7 +41,8 @@
       "support": "Hỗ trợ",
       "my_courses": "Khóa học của tôi",
       "account": "Tài khoản",
-      "saved": "Đã lưu"
+      "saved": "Đã lưu",
+      "referral": "Refer a friend"
     },
     "hero": {
       "title1": "Học đúng kiến thức.",
@@ -212,7 +213,7 @@
       "tab_files": "Tài liệu",
       "notes_label": "Ghi chú của bạn cho bài này",
       "notes_ph": "Ví dụ: thử bài này với khách hàng đau vai bên phải, nhớ kiểm tra tầm vận động trước…",
-      "notes_hint": "Ghi chú được lưu tự động, theo từng bài học, trên thiết bị này.",
+      "notes_hint": "Notes save automatically, per lesson, to your account.",
       "files_title": "Việc cần làm trong phần này",
       "attachments_title": "Tài liệu của bài học",
       "files_hint": "Tài liệu PDF sẽ tải về được khi nội dung khóa học lên hệ thống.",
@@ -228,12 +229,15 @@
       "scheduled_title": "Chương trình này học trực tiếp theo lịch",
       "scheduled_sub": "Đây là buổi học có ngày và địa điểm cụ thể nên không có bài học online để mở. Lịch trình chi tiết nằm ở trang khóa học.",
       "finished_title": "Bạn đã hoàn thành khóa học này",
-      "finished_sub": "Chứng nhận sẽ xuất hiện trong mục Khóa học của tôi.",
+      "finished_sub": "Revisit the course any time from My courses.",
       "finished_cta": "Khóa học của tôi",
-      "local_note": "Tiến độ học đang được lưu trên thiết bị này.",
+      "local_note": "Your progress is saved on this device.",
       "reset": "Đặt lại tiến độ",
       "reset_done": "Đã đặt lại tiến độ khóa học này.",
-      "start": "Bắt đầu học"
+      "start": "Bắt đầu học",
+      "synced_note": "Progress, video position and notes are saved to your account — continue on any device.",
+      "finished_sub_cert": "Your certificate has been issued — print it, save a PDF or add it to LinkedIn.",
+      "finished_cert": "View certificate"
     },
     "mentor": {
       "title": "Cần giảng viên giảng lại chỗ này?",
@@ -433,7 +437,103 @@
       "toast_saved_generic": "Đã lưu khóa học vào mục Đã lưu.",
       "toast_removed": "Đã bỏ lưu “{title}”.",
       "toast_removed_generic": "Đã bỏ lưu khóa học.",
-      "device_note": "Danh sách được lưu trên trình duyệt này."
+      "device_note": "Saved in this browser — sign in to keep the list on every device.",
+      "account_note": "Your list is saved to your account."
+    },
+    "review": {
+      "title": "How was the course?",
+      "sub": "Your review helps other learners choose, and helps Stretch make the next course better.",
+      "placeholder": "What you liked most, and what Stretch should improve…",
+      "submit": "Submit review",
+      "update": "Update review",
+      "sending": "Sending…",
+      "pending": "Thank you! Your review is awaiting approval and will appear on the course page once approved.",
+      "approved": "Your review is live on the course page.",
+      "hidden": "Your review is not shown. You can edit and resubmit it.",
+      "thanks": "Review sent — thank you!",
+      "need_rating": "Pick a star rating first.",
+      "error": "Could not send your review, please try again.",
+      "edit": "Edit review",
+      "reply": "Reply from Stretch",
+      "labels": [
+        "Poor",
+        "Fair",
+        "Good",
+        "Very good",
+        "Excellent"
+      ],
+      "star_aria": "{n} stars"
+    },
+    "related": {
+      "title": "Related courses",
+      "next_title": "What to learn next?",
+      "next_sub": "Programmes on the same topic to go deeper."
+    },
+    "recent": {
+      "title": "Recently viewed",
+      "sub": "Programmes you viewed in this browser.",
+      "clear": "Clear history"
+    },
+    "cert": {
+      "page_title": "Certificate of completion",
+      "verify_title": "Verify a certificate",
+      "verify_sub": "Enter the code printed on a certificate to check it was issued by Stretch Academy.",
+      "valid": "Valid certificate — issued by Stretch Academy",
+      "revoked": "This certificate has been revoked",
+      "revoked_on": "Revoked on {date}",
+      "not_found": "Certificate not found",
+      "not_found_sub": "The code {code} does not match any certificate issued by Stretch. Please check it.",
+      "heading": "Certificate of completion",
+      "awarded": "This certificate is awarded to",
+      "for": "for completing the programme",
+      "issued": "Issued",
+      "code": "Certificate ID",
+      "instructor": "Instructor",
+      "signed": "Issued by",
+      "duration": "Duration",
+      "hours": "{n} hours",
+      "lessons": "{n} lessons",
+      "print": "Print / Save PDF",
+      "linkedin_add": "Add to LinkedIn profile",
+      "linkedin_share": "Share on LinkedIn",
+      "copy": "Copy link",
+      "copied": "Certificate link copied.",
+      "verify_at": "Verify at",
+      "lookup_ph": "e.g. STR-2026-7KQ2MX",
+      "lookup_btn": "Verify",
+      "view_course": "View course",
+      "loading": "Looking up the certificate…"
+    },
+    "referral": {
+      "title": "Refer a friend",
+      "sub": "Friends get {referee}% off when they sign up through your link. Each one who pays for a first course earns you a {reward}% code.",
+      "link": "Your referral link",
+      "code": "Code",
+      "copy": "Copy",
+      "copied": "Referral link copied.",
+      "share": "Share",
+      "joined": "{n} people joined through your link",
+      "rewards": "Your reward codes",
+      "reward_item": "{percent}% off · until {date}",
+      "used": "Used",
+      "share_text": "I am learning at Stretch Learning Hub — sign up through this link for {percent}% off:",
+      "loading": "Creating your referral link…"
+    },
+    "lead": {
+      "title": "Get the free material",
+      "sub": "Leave your email — Stretch sends the “{title}” download link to your inbox and opens it right here.",
+      "name": "Name",
+      "email": "Email",
+      "job": "Profession (optional)",
+      "job_ph": "e.g. Physiotherapist, personal trainer…",
+      "submit": "Get the material",
+      "sending": "Sending…",
+      "done": "Sent! Opening your material.",
+      "error": "Could not send, please try again.",
+      "invalid_email": "That email does not look right.",
+      "consent": "Stretch may email you about relevant courses. Unsubscribe any time.",
+      "close": "Close",
+      "get": "Get by email"
     }
   },
   "hero": {

@@ -41,7 +41,8 @@
       "support": "Hỗ trợ",
       "my_courses": "Khóa học của tôi",
       "account": "Tài khoản",
-      "saved": "Đã lưu"
+      "saved": "Đã lưu",
+      "referral": "Giới thiệu bạn bè"
     },
     "hero": {
       "title1": "Học đúng kiến thức.",
@@ -212,7 +213,7 @@
       "tab_files": "Tài liệu",
       "notes_label": "Ghi chú của bạn cho bài này",
       "notes_ph": "Ví dụ: thử bài này với khách hàng đau vai bên phải, nhớ kiểm tra tầm vận động trước…",
-      "notes_hint": "Ghi chú được lưu tự động, theo từng bài học, trên thiết bị này.",
+      "notes_hint": "Ghi chú được lưu tự động theo từng bài học, vào tài khoản của bạn.",
       "files_title": "Việc cần làm trong phần này",
       "attachments_title": "Tài liệu của bài học",
       "files_hint": "Tài liệu PDF sẽ tải về được khi nội dung khóa học lên hệ thống.",
@@ -228,12 +229,15 @@
       "scheduled_title": "Chương trình này học trực tiếp theo lịch",
       "scheduled_sub": "Đây là buổi học có ngày và địa điểm cụ thể nên không có bài học online để mở. Lịch trình chi tiết nằm ở trang khóa học.",
       "finished_title": "Bạn đã hoàn thành khóa học này",
-      "finished_sub": "Chứng nhận sẽ xuất hiện trong mục Khóa học của tôi.",
+      "finished_sub": "Xem lại khoá học bất cứ lúc nào trong mục Khoá học của tôi.",
       "finished_cta": "Khóa học của tôi",
       "local_note": "Tiến độ học đang được lưu trên thiết bị này.",
       "reset": "Đặt lại tiến độ",
       "reset_done": "Đã đặt lại tiến độ khóa học này.",
-      "start": "Bắt đầu học"
+      "start": "Bắt đầu học",
+      "synced_note": "Tiến độ, vị trí video và ghi chú được lưu vào tài khoản — học tiếp trên mọi thiết bị.",
+      "finished_sub_cert": "Chứng nhận của bạn đã được cấp — in, lưu PDF hoặc thêm vào LinkedIn.",
+      "finished_cert": "Xem chứng nhận"
     },
     "mentor": {
       "title": "Cần giảng viên giảng lại chỗ này?",
@@ -433,7 +437,103 @@
       "toast_saved_generic": "Đã lưu khóa học vào mục Đã lưu.",
       "toast_removed": "Đã bỏ lưu “{title}”.",
       "toast_removed_generic": "Đã bỏ lưu khóa học.",
-      "device_note": "Danh sách được lưu trên trình duyệt này."
+      "device_note": "Danh sách đang lưu trên trình duyệt này — đăng nhập để mang theo trên mọi thiết bị.",
+      "account_note": "Danh sách được lưu vào tài khoản của bạn."
+    },
+    "review": {
+      "title": "Bạn thấy khoá học thế nào?",
+      "sub": "Đánh giá của bạn giúp học viên khác chọn đúng khoá, và giúp Stretch làm khoá sau tốt hơn.",
+      "placeholder": "Điều bạn thích nhất, và điều Stretch nên cải thiện…",
+      "submit": "Gửi đánh giá",
+      "update": "Cập nhật đánh giá",
+      "sending": "Đang gửi…",
+      "pending": "Cảm ơn bạn! Đánh giá đang chờ duyệt và sẽ hiện trên trang khoá học sau khi được duyệt.",
+      "approved": "Đánh giá của bạn đang hiển thị trên trang khoá học.",
+      "hidden": "Đánh giá của bạn chưa được hiển thị. Bạn có thể chỉnh sửa và gửi lại.",
+      "thanks": "Đã gửi đánh giá — cảm ơn bạn!",
+      "need_rating": "Chọn số sao trước nhé.",
+      "error": "Chưa gửi được đánh giá, bạn thử lại nhé.",
+      "edit": "Sửa đánh giá",
+      "reply": "Phản hồi từ Stretch",
+      "labels": [
+        "Chưa tốt",
+        "Tạm được",
+        "Ổn",
+        "Tốt",
+        "Tuyệt vời"
+      ],
+      "star_aria": "{n} sao"
+    },
+    "related": {
+      "title": "Khoá học liên quan",
+      "next_title": "Học gì tiếp theo?",
+      "next_sub": "Các chương trình cùng chủ đề để bạn đi sâu hơn."
+    },
+    "recent": {
+      "title": "Xem gần đây",
+      "sub": "Các chương trình bạn vừa xem trên trình duyệt này.",
+      "clear": "Xoá lịch sử"
+    },
+    "cert": {
+      "page_title": "Chứng nhận hoàn thành",
+      "verify_title": "Tra cứu chứng nhận",
+      "verify_sub": "Nhập mã in trên chứng nhận để kiểm tra chứng nhận do Stretch Academy cấp.",
+      "valid": "Chứng nhận hợp lệ — do Stretch Academy cấp",
+      "revoked": "Chứng nhận này đã bị thu hồi",
+      "revoked_on": "Thu hồi ngày {date}",
+      "not_found": "Không tìm thấy chứng nhận",
+      "not_found_sub": "Mã {code} không khớp với chứng nhận nào do Stretch cấp. Kiểm tra lại mã giúp mình nhé.",
+      "heading": "Chứng nhận hoàn thành",
+      "awarded": "Chứng nhận này được trao cho",
+      "for": "vì đã hoàn thành chương trình",
+      "issued": "Ngày cấp",
+      "code": "Mã chứng nhận",
+      "instructor": "Giảng viên",
+      "signed": "Đơn vị cấp",
+      "duration": "Thời lượng",
+      "hours": "{n} giờ học",
+      "lessons": "{n} bài học",
+      "print": "In / Lưu PDF",
+      "linkedin_add": "Thêm vào hồ sơ LinkedIn",
+      "linkedin_share": "Chia sẻ lên LinkedIn",
+      "copy": "Sao chép link",
+      "copied": "Đã sao chép link chứng nhận.",
+      "verify_at": "Xác thực tại",
+      "lookup_ph": "Ví dụ: STR-2026-7KQ2MX",
+      "lookup_btn": "Tra cứu",
+      "view_course": "Xem khoá học",
+      "loading": "Đang tra cứu chứng nhận…"
+    },
+    "referral": {
+      "title": "Giới thiệu bạn bè",
+      "sub": "Bạn bè được giảm {referee}% khi đăng ký qua link của bạn. Mỗi người thanh toán khoá đầu tiên, bạn nhận mã giảm {reward}%.",
+      "link": "Link giới thiệu của bạn",
+      "code": "Mã",
+      "copy": "Sao chép",
+      "copied": "Đã sao chép link giới thiệu.",
+      "share": "Chia sẻ",
+      "joined": "{n} người đã tham gia qua link của bạn",
+      "rewards": "Mã thưởng của bạn",
+      "reward_item": "Giảm {percent}% · hạn {date}",
+      "used": "Đã dùng",
+      "share_text": "Mình đang học ở Stretch Learning Hub — đăng ký qua link này để được giảm {percent}% nhé:",
+      "loading": "Đang tạo link giới thiệu…"
+    },
+    "lead": {
+      "title": "Nhận tài liệu miễn phí",
+      "sub": "Để lại email — Stretch gửi link tải “{title}” vào hộp thư và mở tải ngay tại đây.",
+      "name": "Họ tên",
+      "email": "Email",
+      "job": "Nghề nghiệp (không bắt buộc)",
+      "job_ph": "VD: Vật lý trị liệu, HLV cá nhân…",
+      "submit": "Nhận tài liệu",
+      "sending": "Đang gửi…",
+      "done": "Đã gửi! Tài liệu đang được mở.",
+      "error": "Chưa gửi được, bạn thử lại nhé.",
+      "invalid_email": "Email chưa đúng định dạng.",
+      "consent": "Stretch có thể gửi thêm email về khoá học phù hợp. Bạn huỷ nhận bất cứ lúc nào.",
+      "close": "Đóng",
+      "get": "Nhận qua email"
     }
   },
   "hero": {

@@ -25,6 +25,8 @@ export default defineOAuthGoogleEventHandler({
       // Google's stable subject id, so a later email change does not orphan
       // everything this learner has paid for.
       googleSub: user.sub ? String(user.sub) : undefined,
+      // Set by a ?ref= link (plugins/00.auth-flag.client.ts); only counts on sign-up.
+      referralCode: getCookie(event, 'stretch-ref') || undefined,
     }
 
     let learner = null

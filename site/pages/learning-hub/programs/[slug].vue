@@ -105,31 +105,108 @@ useSeo({
   type: 'product',
 })
 
-// JSON-LD so the course can win a rich result (rating + price) on search.
-useSchemaOrg([
+/**
+ * JSON-LD for rich results: `Course` for every programme (Google's course
+ * info / course list), plus an `Event` for a dated workshop or class so the
+ * session can show with its date and place.
+ *
+ * A rating is only claimed when there are approved reviews behind it — an
+ * AggregateRating with reviewCount 0 is invalid markup, and Google treats
+ * invented ratings as spam.
+ */
+const siteUrl = String(config.public.siteUrl || 'https://stretch.vn').replace(/\/$/, '')
+const pageUrl = `${siteUrl}${route.path}`
+const absImage = (src: string) => (/^https?:/.test(src) ? src : `${siteUrl}${src.startsWith('/') ? '' : '/'}${src}`)
+const provider = { '@type': 'Organization', name: 'Stretch Academy', sameAs: siteUrl, url: siteUrl }
+
+/** "12/10/2026" + "08:30 – 16:30" → ISO start/end in Vietnam time. */
+function sessionTimes(date?: string, time?: string) {
+  const [dd, mm, yyyy] = String(date || '').split('/')
+  if (!dd || !mm || !yyyy) return null
+  const hours = String(time || '').match(/\d{1,2}[:h]\d{2}/g) || []
+  const hhmm = (v?: string) => (v ? v.replace('h', ':').padStart(5, '0') : '')
+  const day = `${yyyy}-${mm.padStart(2, '0')}-${dd.padStart(2, '0')}`
+  return {
+    start: hours[0] ? `${day}T${hhmm(hours[0])}:00+07:00` : day,
+    end: hours[1] ? `${day}T${hhmm(hours[1])}:00+07:00` : undefined,
+  }
+}
+
+const program = d.value.program
+const isOnline = program.mode === 'online'
+const offer = {
+  '@type': 'Offer',
+  category: program.price > 0 ? 'Paid' : 'Free',
+  price: program.price,
+  priceCurrency: 'VND',
+  availability: d.value.scheduled && d.value.seatsLeft <= 0 ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock',
+  url: pageUrl,
+}
+const rating =
+  d.value.rating.count > 0
+    ? { '@type': 'AggregateRating', ratingValue: d.value.rating.avg, ratingCount: d.value.rating.count, bestRating: 5 }
+    : undefined
+const times = d.value.scheduled ? sessionTimes(program.date, program.time) : null
+const workloadMinutes = d.value.totalMinutes || 0
+
+const nodes: Record<string, unknown>[] = [
   {
     '@type': 'Course',
-    name: d.value.program.title,
-    description: d.value.subtitle,
-    inLanguage: 'vi-VN',
-    provider: { '@type': 'Organization', name: 'Stretch Academy' },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: d.value.rating.avg,
-      reviewCount: d.value.rating.count,
-      bestRating: 5,
-    },
-    offers: {
-      '@type': 'Offer',
-      price: d.value.program.price,
-      priceCurrency: 'VND',
-      availability: 'https://schema.org/InStock',
-    },
+    '@id': `${pageUrl}#course`,
+    name: program.title,
+    description: d.value.subtitle || d.value.description[0] || program.title,
+    url: pageUrl,
+    image: absImage(program.image),
+    inLanguage: 'vi',
+    provider,
+    offers: [offer],
+    ...(d.value.skills.length ? { teaches: d.value.skills } : {}),
+    ...(d.value.level ? { educationalLevel: d.value.level } : {}),
+    ...(rating ? { aggregateRating: rating } : {}),
+    hasCourseInstance: [
+      {
+        '@type': 'CourseInstance',
+        courseMode: isOnline ? 'Online' : 'Onsite',
+        ...(d.value.instructor?.name ? { instructor: { '@type': 'Person', name: d.value.instructor.name } } : {}),
+        ...(times
+          ? { courseSchedule: { '@type': 'Schedule', startDate: times.start, ...(times.end ? { endDate: times.end } : {}), repeatCount: 1 } }
+          : workloadMinutes
+            ? { courseWorkload: `PT${Math.max(1, Math.round(workloadMinutes / 60))}H` }
+            : {}),
+        ...(!isOnline && program.location ? { location: { '@type': 'Place', name: program.location, address: program.location } } : {}),
+      },
+    ],
   },
-])
+]
+
+if (times) {
+  nodes.push({
+    '@type': 'Event',
+    '@id': `${pageUrl}#event`,
+    name: program.title,
+    description: d.value.subtitle || program.title,
+    image: absImage(program.image),
+    url: pageUrl,
+    startDate: times.start,
+    ...(times.end ? { endDate: times.end } : {}),
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: isOnline ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
+    location: isOnline
+      ? { '@type': 'VirtualLocation', url: pageUrl }
+      : { '@type': 'Place', name: program.location || 'Stretch', address: { '@type': 'PostalAddress', streetAddress: program.location || '', addressCountry: 'VN' } },
+    organizer: provider,
+    ...(d.value.instructor?.name ? { performer: { '@type': 'Person', name: d.value.instructor.name } } : {}),
+    offers: { ...offer, validFrom: new Date().toISOString().slice(0, 10) },
+  })
+}
+
+useSchemaOrg(nodes)
+
+const { track: trackRecent } = useRecentlyViewed()
 
 onMounted(() => {
   trackPageView()
+  trackRecent(slug.value)
   // Lets global CSS lift the third-party chat bubble above the mobile action
   // bar (see .has-action-bar in assets/css/main.css).
   document.body.classList.add('has-action-bar')
@@ -266,6 +343,11 @@ onBeforeUnmount(() => {
             <LearningCatalogCard v-for="item in d.related" :key="item.slug" :program="item" />
           </div>
         </section>
+
+        <!-- This browser's history, minus this page and what "related" already shows. -->
+        <ClientOnly>
+          <LearningRecentlyViewed bare class="recent" :exclude="[slug, ...d.related.map((r) => r.slug)]" />
+        </ClientOnly>
       </div>
     </main>
 
@@ -546,6 +628,9 @@ onBeforeUnmount(() => {
 /* ── Related ── */
 .related {
   padding: 1.4rem 0 1.6rem;
+}
+.recent {
+  padding: 0 0 1.6rem;
 }
 
 .related__head {
