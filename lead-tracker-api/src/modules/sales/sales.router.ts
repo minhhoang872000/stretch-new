@@ -41,6 +41,9 @@ const couponsResource: Resource = {
     endsAt: { type: 'date' },
     status: { fallback: 'active' },
     note: { fallback: '' },
+    /** manual | referral (a learner's personal code) | reward (earned by referring). */
+    kind: { fallback: 'manual' },
+    ownerLearnerId: {},
     ...timestamps,
   },
 }

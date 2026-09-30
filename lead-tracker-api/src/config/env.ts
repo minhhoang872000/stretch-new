@@ -166,6 +166,26 @@ export const env = {
 
   /** Public base URL of the website — used to link back from a calendar event. */
   siteBaseUrl: (process.env.SITE_BASE_URL || 'https://stretch.vn').replace(/\/$/, ''),
+
+  /**
+   * Cloudflare Email Sending (REST API). Unset token = email is off: every send
+   * is logged as `skipped` and nothing else changes, so the API runs the same
+   * locally and before the sending domain is onboarded.
+   */
+  email: {
+    accountId: process.env.EMAIL_ACCOUNT_ID || process.env.R2_ACCOUNT_ID || '',
+    apiToken: process.env.EMAIL_API_TOKEN || '',
+    from: process.env.EMAIL_FROM || 'hoc@stretch.vn',
+    fromName: process.env.EMAIL_FROM_NAME || 'Stretch Learning Hub',
+    replyTo: process.env.EMAIL_REPLY_TO || 'admin@stretch.vn',
+  },
+
+  /** Referral programme: what the new learner gets, and what the referrer earns. */
+  referral: {
+    refereePercent: parseInt(process.env.REFERRAL_REFEREE_PERCENT || '10', 10),
+    rewardPercent: parseInt(process.env.REFERRAL_REWARD_PERCENT || '15', 10),
+    rewardValidDays: parseInt(process.env.REFERRAL_REWARD_DAYS || '90', 10),
+  },
 } as const
 
 // Default fallbacks that MUST NOT be used in production.

@@ -44,6 +44,19 @@ services:
       - key: SITE_SERVICE_TOKEN
         sync: false
 
+      # ─── Automated email (Cloudflare Email Sending REST API) ──────
+      # Unset EMAIL_API_TOKEN = email off (sends are logged as skipped).
+      # Token needs the "Email Sending: Send" permission; the from-domain
+      # (stretch.vn) must be onboarded in Cloudflare → Email Service.
+      - key: EMAIL_API_TOKEN
+        sync: false
+      - key: EMAIL_ACCOUNT_ID
+        sync: false   # Cloudflare account id (falls back to R2_ACCOUNT_ID)
+      - key: EMAIL_FROM
+        value: "hoc@stretch.vn"
+      - key: EMAIL_REPLY_TO
+        value: "admin@stretch.vn"
+
       # ─── CORS — comma-separated CRM + site origins ────────────────
       - key: CORS_ORIGINS
         sync: false   # e.g. https://crm.yourdomain.com,https://stretch.vn

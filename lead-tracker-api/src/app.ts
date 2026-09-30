@@ -23,6 +23,7 @@ import contentRouter from './modules/content/content.router'
 import crmRouter from './modules/crm/enquiries.router'
 import systemRouter from './modules/system/system.router'
 import learnerRouter from './modules/learner/learner.router'
+import automationRouter from './modules/email/automation.router'
 import { requireAuth } from './middleware/requireAuth'
 import { success } from './utils/response'
 
@@ -84,6 +85,7 @@ app.use('/api/v1', systemRouter)    // users, audit-log, settings
 // Learner-facing. Called by stretch.vn's server after it has checked the
 // Google session — never by a browser. See middleware/requireSite.ts.
 app.use('/api/v1/learner', learnerRouter)
+app.use('/api/v1/automation', automationRouter)   // hourly jobs + lead capture (site token)
 
 // ─── 404 Handler ─────────────────────────────────────────────────────
 app.use((req, res) => {

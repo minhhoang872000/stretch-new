@@ -886,3 +886,63 @@ ALTER TABLE learners ADD COLUMN IF NOT EXISTS last_login_at TIMESTAMPTZ  DEFAULT
 CREATE UNIQUE INDEX IF NOT EXISTS uniq_learners_email ON learners (LOWER(email));
 CREATE UNIQUE INDEX IF NOT EXISTS uniq_learners_google_sub ON learners (google_sub)
   WHERE google_sub IS NOT NULL;
+
+-- ════════════════════════════════════════════════════════════════════
+-- Learning Hub v2 — progress on the account, certificates issued on
+-- completion, reviews, saved programmes, referrals, automated email.
+-- ════════════════════════════════════════════════════════════════════
+
+-- The player's resume point and the learner's own notes travel with the
+-- account, so a lesson started on a phone picks up on a laptop.
+-- `watched_seconds` is the furthest point ever reached (it only grows);
+-- `position_seconds` is where they last stopped, which can be earlier.
+ALTER TABLE lesson_progress ADD COLUMN IF NOT EXISTS position_seconds INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE lesson_progress ADD COLUMN IF NOT EXISTS note             TEXT    NOT NULL DEFAULT '';
+
+-- Bookmarked programmes. Keyed by slug, not id: the site addresses programmes
+-- by slug everywhere, and a bookmark to a programme since unpublished is
+-- dropped when read rather than cascading from the programmes table.
+CREATE TABLE IF NOT EXISTS learner_saved_programs (
+  learner_id   VARCHAR(30)  NOT NULL REFERENCES learners(id) ON DELETE CASCADE,
+  program_slug VARCHAR(200) NOT NULL,
+  saved_at     TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (learner_id, program_slug)
+);
+
+-- Referrals. Every learner gets one personal code; it is an ordinary coupon
+-- row (so checkout prices it with the rules it already has) that remembers
+-- whose it is. The person who signs up through a link is stamped with the
+-- referrer, and the referrer's reward is its own single-use coupon.
+ALTER TABLE learners ADD COLUMN IF NOT EXISTS referral_code VARCHAR(40) DEFAULT NULL;
+ALTER TABLE learners ADD COLUMN IF NOT EXISTS referred_by   VARCHAR(30) DEFAULT NULL;
+ALTER TABLE coupons  ADD COLUMN IF NOT EXISTS owner_learner_id VARCHAR(30) DEFAULT NULL;
+ALTER TABLE coupons  ADD COLUMN IF NOT EXISTS kind VARCHAR(20) NOT NULL DEFAULT 'manual';  -- manual | referral | reward
+CREATE UNIQUE INDEX IF NOT EXISTS uniq_learners_referral_code ON learners (referral_code)
+  WHERE referral_code IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_cpn_owner ON coupons (owner_learner_id);
+
+-- One reward per paid order that carried a referral code. The primary key is
+-- what makes the hourly job safe to re-run.
+CREATE TABLE IF NOT EXISTS referral_rewards (
+  order_id     VARCHAR(30)  PRIMARY KEY REFERENCES orders(id) ON DELETE CASCADE,
+  referrer_id  VARCHAR(30)  NOT NULL REFERENCES learners(id) ON DELETE CASCADE,
+  referee_id   VARCHAR(30)  DEFAULT NULL REFERENCES learners(id) ON DELETE SET NULL,
+  coupon_code  VARCHAR(40)  NOT NULL,
+  created_at   TIMESTAMPTZ  NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_rr_referrer ON referral_rewards (referrer_id);
+
+-- Every automated email, once. `ref` names the thing it is about (a learner,
+-- an order, a session + learner…), and the unique pair is what stops a retry
+-- or an overlapping job run from mailing someone twice.
+CREATE TABLE IF NOT EXISTS email_log (
+  id         VARCHAR(40)  PRIMARY KEY,
+  kind       VARCHAR(40)  NOT NULL,   -- welcome | order | paid | reminder | nudge | reward | certificate
+  ref        VARCHAR(200) NOT NULL,
+  recipient  VARCHAR(200) NOT NULL,
+  status     VARCHAR(20)  NOT NULL DEFAULT 'sent',  -- sent | failed | skipped
+  error      TEXT         DEFAULT '',
+  created_at TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
+  UNIQUE (kind, ref)
+);
+CREATE INDEX IF NOT EXISTS idx_email_created ON email_log (created_at DESC);

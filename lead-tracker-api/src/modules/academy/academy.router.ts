@@ -16,6 +16,7 @@ import {
   sessionsResource,
   videoIndexResource,
 } from './academy.resources'
+import { newCertificateCode, verifyUrlFor } from '../learner/learning'
 
 /**
  * The Academy API.
@@ -75,6 +76,24 @@ async function lookup(table: string, id: unknown): Promise<any | null> {
 const instructors = createCrudRouter(instructorsResource, { publicRead: true })
 const learners = createCrudRouter(learnersResource)
 const certificates = createCrudRouter(certificatesResource, {
+  /**
+   * The code and its verify link are the API's to mint. The console used to
+   * compute a serial client-side, which two people issuing at once could
+   * collide on; a code it sends is kept only if nobody holds it yet.
+   */
+  async beforeWrite(body, req) {
+    if (req.method === 'POST') {
+      const wanted = String(body.code || '').trim().toUpperCase()
+      const taken = wanted
+        ? (await pool.query('SELECT 1 FROM certificates WHERE code = $1', [wanted])).rows.length > 0
+        : true
+      body.code = taken ? await newCertificateCode() : wanted
+      body.verifyUrl = verifyUrlFor(String(body.code))
+      body.issuedAt ??= new Date().toISOString().slice(0, 10)
+    }
+    if (body.status === 'revoked' && !body.revokedAt) body.revokedAt = new Date().toISOString().slice(0, 10)
+    return body
+  },
   extend(sub, repo) {
     /**
      * Revoking keeps the record. A certificate that was issued and later
@@ -93,9 +112,16 @@ const certificates = createCrudRouter(certificatesResource, {
     /** Public: what a QR code on a printed certificate resolves to. */
     sub.get('/verify/:code', async (req, res, next) => {
       try {
-        const result = await pool.query('SELECT * FROM certificates WHERE code = $1', [
-          String(req.params.code),
-        ])
+        const result = await pool.query(
+          `SELECT c.*, c.issued_at::text AS issued_on, c.revoked_at::text AS revoked_on,
+                  p.slug AS program_slug, p.minutes AS program_minutes, p.lessons AS program_lessons,
+                  i.name AS instructor_name
+             FROM certificates c
+             LEFT JOIN programs p ON p.id = c.program_id
+             LEFT JOIN instructors i ON i.id = p.instructor_id
+            WHERE UPPER(c.code) = UPPER($1)`,
+          [String(req.params.code).trim()],
+        )
         const row = result.rows[0]
         if (!row) {
           success(res, { valid: false, certificate: null })
@@ -107,7 +133,15 @@ const certificates = createCrudRouter(certificatesResource, {
             code: row.code,
             learnerName: row.learner_name,
             programTitle: row.program_title,
-            issuedAt: row.issued_at,
+            programSlug: row.program_slug || null,
+            minutes: Number(row.program_minutes) || 0,
+            lessons: Number(row.program_lessons) || 0,
+            instructor: row.instructor_name || '',
+            signedBy: row.signed_by || '',
+            score: row.score,
+            // DATE as text: a Date object would shift a day in any timezone east of UTC.
+            issuedAt: row.issued_on,
+            revokedAt: row.revoked_on,
             status: row.status,
           },
         })

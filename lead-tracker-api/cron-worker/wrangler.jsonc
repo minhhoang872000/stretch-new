@@ -1,0 +1,17 @@
+{
+  // Hourly trigger for the API's automated emails — see index.js.
+  "name": "stretch-cron",
+  "main": "index.js",
+  "compatibility_date": "2026-09-01",
+  "triggers": {
+    // Every hour, on the hour (UTC). Reminders go out for anything starting in
+    // the next 24 hours, so the hour it runs does not matter.
+    "crons": ["0 * * * *"]
+  },
+  "vars": {
+    "API_BASE": "https://stretch-new.onrender.com/api/v1"
+  },
+  "observability": { "enabled": true }
+  // Secret (not in this file): SITE_SERVICE_TOKEN — same value as the API's
+  // SITE_SERVICE_TOKEN and the site's NUXT_SITE_SERVICE_TOKEN.
+}
