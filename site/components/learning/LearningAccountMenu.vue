@@ -83,6 +83,7 @@ async function signOut() {
           </svg>
           {{ t('learning.nav.saved') }}
         </NuxtLink>
+        <!-- Referral programme hidden for now (2026-09-30) — uncomment to bring it back.
         <NuxtLink :to="{ path: localePath('/learning-hub/my-courses'), hash: '#referral' }" class="acct__item" role="menuitem" @click="close">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="8" width="18" height="13" rx="2" />
@@ -91,6 +92,7 @@ async function signOut() {
           </svg>
           {{ t('learning.nav.referral') }}
         </NuxtLink>
+        -->
 
         <div class="acct__sep" />
 

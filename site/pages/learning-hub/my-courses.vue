@@ -232,7 +232,9 @@ onMounted(async () => {
           </section>
         </div>
 
+        <!-- Referral programme hidden for now (2026-09-30) — uncomment to bring it back.
         <LearningReferralCard class="mt-6" />
+        -->
       </div>
     </main>
 
