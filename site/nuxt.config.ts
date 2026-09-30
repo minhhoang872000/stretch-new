@@ -288,7 +288,7 @@ export default defineNuxtConfig({
             // is nothing to prerender and nothing search should hold.
             '/learning-hub/learn/*', '/vi/learning-hub/learn/*',
             // Public certificate pages — one per code, so rendered on demand.
-            '/verify/*', '/vi/verify/*',
+            '/verify', '/verify/*', '/vi/verify', '/vi/verify/*',
             '/api/*',
           ],
           exclude: [],
@@ -316,7 +316,6 @@ export default defineNuxtConfig({
         '/booking', '/vi/booking',
         '/learning-hub', '/vi/learning-hub',
         '/learning-hub/saved', '/vi/learning-hub/saved',
-        '/verify', '/vi/verify',
       ],
       crawlLinks: true,
       // Emit `/individual.html` instead of `/individual/index.html`. On
@@ -380,6 +379,8 @@ export default defineNuxtConfig({
     '/learning-hub/learn/**': { prerender: false, ssr: false },
     '/vi/learning-hub/learn/**': { prerender: false, ssr: false },
     // A certificate changes only when it is revoked; 5 minutes is fine.
+    '/verify': SSR_CACHE,
+    '/vi/verify': SSR_CACHE,
     '/verify/**': SSR_CACHE,
     '/vi/verify/**': SSR_CACHE,
     '/sharing-hub': SSR_CACHE,
