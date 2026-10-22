@@ -74,6 +74,7 @@ function closeMobileMenu() {
 }
 
 function switchLanguage(code: string) {
+  rememberLocale(code);
   setLocale(code);
 }
 </script>
