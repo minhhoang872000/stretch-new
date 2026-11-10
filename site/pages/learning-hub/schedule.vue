@@ -64,6 +64,7 @@ watch(filtered, (rows) => {
 const programLink = (slug: string) => localePath(`/learning-hub/programs/${slug}`)
 
 useSeo({
+  viOnly: true,
   title: `${t('learning.schedule.page_title')} — ${t('learning.brand')}`,
   description: t('learning.schedule.page_sub'),
   image: '/education-workshop.png',

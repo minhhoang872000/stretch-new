@@ -26,7 +26,7 @@ export function apiBase(event: H3Event): string {
 }
 
 export function serviceToken(event: H3Event): string {
-  return String(useRuntimeConfig(event).siteServiceToken || '')
+  return String(useRuntimeConfig(event).academyServiceToken || '')
 }
 
 /**

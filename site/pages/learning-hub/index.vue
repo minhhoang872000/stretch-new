@@ -10,6 +10,7 @@ const { t } = useI18n()
 const { trackPageView } = useTracking()
 
 useSeo({
+  viOnly: true,
   title: t('seo.learning_hub_title'),
   description: t('seo.learning_hub_desc'),
   image: '/education-workshop.png',

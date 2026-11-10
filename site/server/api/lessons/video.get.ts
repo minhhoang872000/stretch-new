@@ -52,7 +52,7 @@ export default defineEventHandler(async (event): Promise<LessonVideoResponse> =>
 
   const config = useRuntimeConfig(event)
   const apiBase = String(config.lessonApiBase || '').replace(/\/$/, '')
-  const serviceToken = String(config.siteServiceToken || '')
+  const serviceToken = String(config.academyServiceToken || '')
 
   // ── 1. An uploaded file in R2 wins over the YouTube fallback ──
   if (apiBase && serviceToken) {

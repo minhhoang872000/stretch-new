@@ -4,11 +4,11 @@
  * Reuses the same live blog source as /sharing-hub — a separate useAsyncData key
  * so it can fail independently without taking the rest of the hub down.
  */
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const { getHubIndex } = useBlogClient()
 
-const { data: hub, status } = await useAsyncData('learning-hub-posts', () => getHubIndex(), {
+const { data: hub, status } = await useAsyncData(() => `learning-hub-posts-${locale.value}`, () => getHubIndex(), {
   default: () => ({ categories: [], posts: [] }),
   lazy: import.meta.client,
 })

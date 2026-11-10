@@ -22,7 +22,7 @@ function config(event: any) {
   const runtime = useRuntimeConfig(event)
   return {
     base: String(runtime.lessonApiBase || '').replace(/\/$/, ''),
-    token: String(runtime.siteServiceToken || ''),
+    token: String(runtime.academyServiceToken || ''),
   }
 }
 
@@ -36,7 +36,7 @@ export async function learnerFetch<T>(
   if (!base || !token) {
     throw createError({
       statusCode: 503,
-      message: 'Learner API chưa được cấu hình (NUXT_LESSON_API_BASE / NUXT_SITE_SERVICE_TOKEN)',
+      message: 'Learner API chưa được cấu hình (NUXT_LESSON_API_BASE / NUXT_ACADEMY_SERVICE_TOKEN)',
     })
   }
 

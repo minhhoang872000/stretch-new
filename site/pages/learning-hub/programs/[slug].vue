@@ -99,6 +99,7 @@ async function share() {
 }
 
 useSeo({
+  viOnly: true,
   title: `${d.value.program.title} — ${t('learning.brand')}`,
   description: d.value.subtitle,
   image: d.value.program.image,

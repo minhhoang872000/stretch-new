@@ -5,8 +5,12 @@
  * single `html` field for v-html rendering.
  */
 
+import { postHasEnglish } from '~/utils/blogLocale'
+
 export interface SitePost {
   slug: string
+  /** The CMS holds a real English translation; see utils/blogLocale. */
+  hasEn: boolean
   title: string
   excerpt: string
   category: string
@@ -55,6 +59,7 @@ export function mapApiPost(p: any, catMap: Record<string, string> = {}): SitePos
   const sections = (Array.isArray(p.contentVi) && p.contentVi.length ? p.contentVi : p.contentEn) || []
   return {
     slug: p.slug,
+    hasEn: postHasEnglish(p),
     title: p.titleVi || p.titleEn || '',
     excerpt: p.excerptVi || p.excerptEn || '',
     category: catMap[p.category] || p.category,

@@ -28,6 +28,7 @@ function courseLink(slug: string) {
 const tab = ref<'learning' | 'done'>('learning')
 
 useSeo({
+  noIndex: true,
   title: t('learning.my.title'),
   description: t('learning.my.subtitle'),
   image: '/education-class.png',

@@ -6,7 +6,18 @@ const htmlLang = computed(() => {
   const current = (locales.value as any[]).find((l) => l.code === locale.value)
   return current?.language || locale.value
 })
-useHead({ htmlAttrs: { lang: htmlLang } })
+useHead({
+  htmlAttrs: { lang: htmlLang },
+  // nuxt-seo-utils' default template appended " | Stretch" to every title,
+  // most of which already end in "— Stretch.vn" ("Book Session — Stretch.vn |
+  // Stretch"), and it pushed long article titles further past what Google
+  // shows. Add the brand only when the title does not carry it and the result
+  // still fits the ~60 characters Google displays.
+  titleTemplate: (title?: string) =>
+    !title ? 'Stretch.vn'
+    : /stretch/i.test(title) || title.length > 47 ? title
+    : `${title} | Stretch.vn`,
+})
 
 /**
  * Google OAuth is a full-page redirect, so the sign-in outcome arrives as a

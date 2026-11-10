@@ -24,6 +24,8 @@
     "sharing_hub_title": "Stretch.vn — Góc Chia Sẻ",
     "sharing_hub_desc": "Kiến thức vận động, giáo dục phục hồi, câu chuyện đội ngũ, tin tức công ty và điểm nhấn sự kiện — tất cả tại một nơi.",
     "booking_desc": "Chăm sóc đúng cách. Phục hồi hiệu quả. Đặt lịch buổi trị liệu cá nhân hóa của bạn online.",
+    "business_title": "Giải Pháp Phục Hồi & Wellness Cho Doanh Nghiệp — Stretch.vn",
+    "business_desc": "Wellness doanh nghiệp, phục hồi tại sự kiện và đào tạo thực hành cho đội ngũ. Chương trình thiết kế theo cách nhân sự của bạn làm việc và vận động.",
     "learning_hub_title": "Stretch.vn — Learning Hub",
     "learning_hub_desc": "Kiến thức ứng dụng về vận động và phục hồi dành cho HLV, kỹ thuật viên và người yêu vận động. Khóa học online, workshop trực tiếp và lớp thực hành tình huống."
   },
@@ -863,7 +865,7 @@
   },
   "individual_page": {
     "seo_title": "Dịch Vụ Cá Nhân — Stretch.vn",
-    "seo_desc": "Hỗ trợ phục hồi & vận động cá nhân hóa cho bạn.",
+    "seo_desc": "Phục hồi và vận động cá nhân hóa tại TP.HCM: đánh giá, trị liệu trực tiếp và bài tập cho đau mỏi, cứng khớp và phục hồi sau thể thao.",
     "hero": {
       "heading": "Di chuyển tốt hơn. Phục hồi thông minh hơn.",
       "subtext": "Hỗ trợ phù hợp với chính cơ thể bạn.",
@@ -1028,7 +1030,7 @@
   },
   "wellness_page": {
     "seo_title": "Chăm Sóc Doanh Nghiệp — Stretch.vn",
-    "seo_desc": "Chương trình wellness phù hợp với cách nhân sự thật sự làm việc và vận động.",
+    "seo_desc": "Chương trình wellness cho doanh nghiệp: phục hồi tại chỗ, chăm sóc tư thế, giảm đau mỏi và workshop vận động, phù hợp cách nhân sự làm việc.",
     "hero": {
       "label": "CHĂM SÓC DOANH NGHIỆP",
       "heading": "Chương trình wellness mà nhân sự thật sự sử dụng.",
@@ -1075,7 +1077,7 @@
   },
   "event_page": {
     "seo_title": "Giải Pháp Phục Hồi Sự Kiện — Stretch.vn",
-    "seo_desc": "Hạ tầng phục hồi cho các sự kiện luôn vận động.",
+    "seo_desc": "Phục hồi tại sự kiện cho giải chạy, giải đấu và sự kiện doanh nghiệp: khởi động, giãn cơ và trạm phục hồi do đội ngũ Stretch.vn vận hành.",
     "hero": {
       "label": "GIẢI PHÁP PHỤC HỒI SỰ KIỆN",
       "heading": "Hạ tầng phục hồi cho các sự kiện luôn vận động.",

@@ -24,6 +24,8 @@
     "sharing_hub_title": "Stretch.vn — Sharing Hub",
     "sharing_hub_desc": "Movement insights, recovery education, team stories, company updates, and event highlights — all in one place.",
     "booking_desc": "Proper care. Effective recovery. Book your personalized session online.",
+    "business_title": "Recovery & Wellness for Businesses — Stretch.vn",
+    "business_desc": "Corporate wellness, on-site event recovery and hands-on training for teams in Vietnam. Programs built around how your people work and move.",
     "learning_hub_title": "Stretch.vn — Learning Hub",
     "learning_hub_desc": "Applied movement and recovery education for coaches, therapists and anyone who moves. Online courses, live workshops and practical case labs."
   },
@@ -862,7 +864,7 @@
   },
   "individual_page": {
     "seo_title": "Individual Recovery Services — Stretch.vn",
-    "seo_desc": "Personalized recovery & movement support for individuals.",
+    "seo_desc": "Personalized recovery and movement care in Ho Chi Minh City: assessment, hands-on treatment and exercises for pain, stiffness and sports recovery.",
     "hero": {
       "heading": "Move better. Recover smarter.",
       "subtext": "Support that meets you where you are.",
@@ -1027,7 +1029,7 @@
   },
   "wellness_page": {
     "seo_title": "Corporate Wellness — Stretch.vn",
-    "seo_desc": "Wellness programs that fit how your team actually works and moves.",
+    "seo_desc": "Corporate wellness programs that fit how your team actually works and moves: on-site recovery, posture and pain care, and movement workshops.",
     "hero": {
       "label": "CORPORATE WELLNESS",
       "heading": "Wellness programs people actually use.",
@@ -1074,7 +1076,7 @@
   },
   "event_page": {
     "seo_title": "Recovery Event Solutions — Stretch.vn",
-    "seo_desc": "Recovery infrastructure for events that move.",
+    "seo_desc": "On-site recovery for races, tournaments and corporate events: warm-up, stretching and recovery stations run by Stretch.vn's trained team.",
     "hero": {
       "label": "RECOVERY EVENT SOLUTIONS",
       "heading": "Recovery infrastructure for events that move.",

@@ -29,7 +29,8 @@ const activeSection = ref('');
 const { getArticleData } = useBlogClient()
 
 const { data: articleData, error, status } = await useAsyncData(
-  () => `hub-article-${slug.value}`,
+  // Locale in the key: the English and Vietnamese pages hold different text.
+  () => `hub-article-${locale.value}-${slug.value}`,
   () => getArticleData(slug.value),
   {
     default: () => ({ article: null, related: [] }),
@@ -79,12 +80,20 @@ if (import.meta.client) {
 // Built from getters so the <title>/description/OG tags update when the article
 // arrives during a lazy client navigation — not only on the blocking SSR pass.
 const siteUrl = config.public.siteUrl as string
-const canonicalUrl = computed(() => `${siteUrl}${route.path}`)
-const seoTitle = computed(() => (activeArticle.value ? `${activeArticle.value.title} — Stretch.vn` : 'Stretch.vn'))
+// A post the CMS holds only in Vietnamese is ONE page, not two: the English URL
+// still works (it shows the Vietnamese text) but points its canonical at /vi
+// and claims no hreflang pair. Otherwise both URLs carried the same text and
+// the en-US alternate pointed Google at Vietnamese content.
+const viOnly = computed(() => !!activeArticle.value && !activeArticle.value.hasEn)
+const canonicalUrl = computed(() =>
+  viOnly.value ? `${siteUrl}${switchLocalePath('vi') || route.path}` : `${siteUrl}${route.path}`)
+// The title template (app.vue) adds the brand; long post titles are long enough.
+const seoTitle = computed(() => activeArticle.value?.title || 'Stretch.vn')
 const seoDesc = computed(() => activeArticle.value?.excerpt || '')
 const seoImage = computed(() => activeArticle.value?.image || '/og-default.jpg')
 
 const alternateLinks = computed(() => {
+  if (viOnly.value) return []
   const links = (locales.value as any[])
     .map((l: any) => {
       const path = switchLocalePath(l.code)
@@ -145,7 +154,11 @@ const processed = computed(() => {
   const raw = (activeArticle.value as any)?.html || ''
   const toc: { id: string; title: string }[] = []
   let i = 0
-  const html = raw.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (_m: string, attrs: string, inner: string) => {
+  // The page heading is the only <h1>. Editors paste headings from Word/Docs as
+  // <h1> inside the body (up to 15 in one post), which leaves Google guessing
+  // which one names the page — demote them before building the TOC.
+  const demoted = raw.replace(/<(\/?)h1(\s[^>]*)?>/gi, (_m: string, close: string, attrs = '') => `<${close}h2${close ? '' : attrs}>`)
+  const html = demoted.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (_m: string, attrs: string, inner: string) => {
     const text = String(inner).replace(/<[^>]+>/g, '').trim()
     i += 1
     const id = `sec-${i}-${text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40)}`

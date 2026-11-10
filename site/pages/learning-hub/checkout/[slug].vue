@@ -143,6 +143,7 @@ async function copy(value: string) {
 }
 
 useSeo({
+  noIndex: true,
   title: `${t('learning.checkout.title')} — ${d.value.program.title}`,
   description: d.value.subtitle,
   image: d.value.program.image,

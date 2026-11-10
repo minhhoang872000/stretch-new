@@ -40,7 +40,9 @@ const collageImages = [
 // (single /categories call + one summary /blog call, no waterfall).
 const { getHubIndex } = useBlogClient()
 
-const { data: hub, status } = await useAsyncData('hub-index', () => getHubIndex(), {
+const { locale: hubLocale } = useI18n()
+// Locale in the key: card titles/excerpts are per language.
+const { data: hub, status } = await useAsyncData(() => `hub-index-${hubLocale.value}`, () => getHubIndex(), {
   default: () => ({ categories: [], posts: [] }),
   // Block on the SERVER (SEO + direct loads get full HTML). On CLIENT navigation
   // fetch lazily so the page appears instantly and shows skeleton cards while

@@ -178,7 +178,14 @@ export default defineNuxtConfig({
     // Drop the auto-discovered dynamic-route placeholder (e.g. `/sharing-hub/:slug`,
     // `/vi/sharing-hub/:slug`) — those are not real URLs. The real per-post URLs
     // are supplied explicitly by the API source above.
-    exclude: [/:slug/, /:code/, /\/verify/, /\/learning-hub\/saved/],
+    exclude: [
+      /:slug/, /:code/, /\/verify/,
+      // Signed-in pages: noindex, nothing for search.
+      /\/learning-hub\/(saved|my-courses|checkout|learn)/,
+      // The Learning Hub is Vietnamese-only (useSeo `viOnly`): its English URLs
+      // canonicalise to /vi, so only the /vi ones belong in the sitemap.
+      /^\/learning-hub/,
+    ],
   },
 
   ogImage: {
@@ -316,6 +323,16 @@ export default defineNuxtConfig({
         '/booking', '/vi/booking',
         '/learning-hub', '/vi/learning-hub',
         '/learning-hub/saved', '/vi/learning-hub/saved',
+        // Not pages, but they must be files. `_routes.json` only sends the paths
+        // listed above to the Worker, so anything else that is not a file falls
+        // to Cloudflare Pages' SPA fallback — which answers with index.html and
+        // a 200. robots.txt was exactly that: Cloudflare's managed AI-bot block
+        // followed by our homepage's HTML, with no `Sitemap:` line and no
+        // `Disallow: /api/`. And every mistyped URL was a 200 copy of the
+        // homepage (a soft 404). A 404.html at the root makes Pages answer
+        // unknown paths with it and a real 404 status.
+        '/robots.txt',
+        '/404.html',
       ],
       crawlLinks: true,
       // Emit `/individual.html` instead of `/individual/index.html`. On
@@ -405,7 +422,11 @@ export default defineNuxtConfig({
       || (process.env.NUXT_PUBLIC_TRACKING_API_URL
         ? `${process.env.NUXT_PUBLIC_TRACKING_API_URL.replace(/\/$/, '')}/api/v1`
         : ''),
-    siteServiceToken: process.env.NUXT_SITE_SERVICE_TOKEN || '',
+    // NOT `NUXT_SITE_*`: nuxt-site-config (part of @nuxtjs/seo) copies every
+    // NUXT_SITE_* variable into the PUBLIC site config, which is serialised into
+    // every page's payload. Under its old name, NUXT_SITE_SERVICE_TOKEN was
+    // published on every page as `serviceToken`.
+    academyServiceToken: process.env.NUXT_ACADEMY_SERVICE_TOKEN || '',
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://stretch.vn',
       trackingApiUrl: process.env.NUXT_PUBLIC_TRACKING_API_URL || '',

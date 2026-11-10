@@ -2,8 +2,8 @@
 const { t } = useI18n()
 
 useSeo({
-  title: `${t('business_page.hero.label')} — Stretch.vn`,
-  description: t('business_page.hero.subtext'),
+  title: t('seo.business_title'),
+  description: t('seo.business_desc'),
   type: 'website',
 })
 </script>

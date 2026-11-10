@@ -153,6 +153,7 @@ watch([query, kind, modes, topics, sort, page], () => {
 })
 
 useSeo({
+  viOnly: true,
   title: t('learning.catalog.title'),
   description: t('learning.catalog.subtitle'),
   image: '/education-workshop.png',

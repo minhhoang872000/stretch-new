@@ -63,7 +63,7 @@ function base(event: any): string {
  * were being answered 429 and the catalogue silently fell back to the seed list.
  */
 function serviceHeaders(event: any): Record<string, string> {
-  const token = String(useRuntimeConfig(event).siteServiceToken || '')
+  const token = String(useRuntimeConfig(event).academyServiceToken || '')
   return token ? { 'x-service-token': token } : {}
 }
 

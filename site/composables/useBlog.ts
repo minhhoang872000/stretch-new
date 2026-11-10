@@ -11,6 +11,8 @@
 
 interface SitePost {
   slug: string
+  /** The CMS holds a real English translation (see utils/blogLocale). */
+  hasEn: boolean
   title: string
   excerpt: string
   category: string
@@ -38,12 +40,14 @@ function contentToHtml(sections: any[]): string {
   return sections.map((s) => s?.text || '').filter(Boolean).join('\n')
 }
 
-function mapApiPost(p: any, catMap: Record<string, string>): SitePost {
-  const sections = (Array.isArray(p.contentVi) && p.contentVi.length ? p.contentVi : p.contentEn) || []
+function mapApiPost(p: any, catMap: Record<string, string>, locale: string): SitePost {
+  const en = locale === 'en' && postHasEnglish(p)
+  const sections = (en ? p.contentEn : (Array.isArray(p.contentVi) && p.contentVi.length ? p.contentVi : p.contentEn)) || []
   return {
     slug: p.slug,
-    title: p.titleVi || p.titleEn || '',
-    excerpt: p.excerptVi || p.excerptEn || '',
+    hasEn: postHasEnglish(p),
+    title: (en ? p.titleEn : p.titleVi || p.titleEn) || '',
+    excerpt: (en ? p.excerptEn || p.excerptVi : p.excerptVi || p.excerptEn) || '',
     category: catMap[p.category] || p.category,
     categoryKey: p.category,
     image: p.coverImage || '',
@@ -76,10 +80,16 @@ interface PostQuery {
 // AND to Googlebot re-crawling an already-indexed page — showing "0 posts"
 // where yesterday there were 20 is exactly the kind of unreliable-content
 // signal that gets a page quietly dropped from the index.
-let hubIndexCache: { categories: { key: string; label: string }[]; posts: SitePost[] } | null = null
+// Kept raw (unmapped) so one cache serves both locales.
+let hubIndexCache: { cats: any[]; posts: any[] } | null = null
 
 export function useBlogClient() {
   const base = (useRuntimeConfig().public.trackingApiUrl as string) || ''
+  // Read the locale when a fetch runs, not when the composable is created: the
+  // same client is reused across a language switch.
+  const i18n = useNuxtApp().$i18n as any
+  const currentLocale = () => String(i18n?.locale?.value || 'en')
+  const map = (p: any, catMap: Record<string, string>) => mapApiPost(p, catMap, currentLocale())
 
   // ── Low-level fetchers (no category-label resolution) ───────────────
   async function fetchCategoriesRaw(): Promise<any[]> {
@@ -133,7 +143,7 @@ export function useBlogClient() {
   async function getPosts(filters: PostQuery = {}): Promise<SitePost[]> {
     const [posts, cats] = await Promise.all([fetchPostsRaw(filters), fetchCategoriesRaw()])
     const catMap = buildCatMap(cats)
-    return posts.map((p) => mapApiPost(p, catMap))
+    return posts.map((p) => map(p, catMap))
   }
 
   async function getPostBySlug(slug: string): Promise<SitePost | null> {
@@ -143,7 +153,7 @@ export function useBlogClient() {
       fetchCategoriesRaw(),
     ])
     if (!res?.data?.post) return null
-    return mapApiPost(res.data.post, buildCatMap(cats))
+    return map(res.data.post, buildCatMap(cats))
   }
 
   async function getCategories(): Promise<{ key: string; label: string }[]> {
@@ -161,20 +171,22 @@ export function useBlogClient() {
    * request after a cold start, before anything has ever succeeded.
    */
   async function getHubIndex(): Promise<{ categories: { key: string; label: string }[]; posts: SitePost[] }> {
+    let raw: { cats: any[]; posts: any[] }
     try {
       const [cats, posts] = await Promise.all([
         fetchCategoriesOrThrow(),
         fetchPostsOrThrow({ status: 'published', summary: true }),
       ])
-      const catMap = buildCatMap(cats)
-      const result = {
-        categories: cats.map((c) => ({ key: c.key, label: c.label })),
-        posts: posts.map((p) => mapApiPost(p, catMap)),
-      }
-      hubIndexCache = result
-      return result
+      raw = { cats, posts }
+      hubIndexCache = raw
     } catch {
-      return hubIndexCache ?? { categories: [], posts: [] }
+      if (!hubIndexCache) return { categories: [], posts: [] }
+      raw = hubIndexCache
+    }
+    const catMap = buildCatMap(raw.cats)
+    return {
+      categories: raw.cats.map((c) => ({ key: c.key, label: c.label })),
+      posts: raw.posts.map((p) => map(p, catMap)),
     }
   }
 
@@ -205,8 +217,8 @@ export function useBlogClient() {
     }
     const catMap = buildCatMap(cats)
     return {
-      article: postRes?.data?.post ? mapApiPost(postRes.data.post, catMap) : null,
-      related: related.map((p) => mapApiPost(p, catMap)),
+      article: postRes?.data?.post ? map(postRes.data.post, catMap) : null,
+      related: related.map((p) => map(p, catMap)),
     }
   }
 
