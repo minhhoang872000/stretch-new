@@ -1,5 +1,37 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
+// List every static route explicitly (both locales) instead of relying
+// solely on crawlLinks to discover them. crawlLinks is non-deterministic
+// build-to-build — it depends on successfully parsing links out of
+// already-rendered HTML during the build, and a miss silently drops that
+// route from `dist/_routes.json`'s exclude list. That's what happened to
+// `/vi/individual`: the static file WAS emitted, but a previous deploy's
+// `_routes.json` didn't list it as prerendered, so every request fell
+// through to the SSR Worker instead of the static file — intermittent
+// 500/503/1102 depending on Worker load. Explicit routes make this
+// deterministic regardless of crawl order/timing.
+const PRERENDER_ROUTES = [
+  '/', '/vi',
+  '/individual', '/vi/individual',
+  '/business', '/vi/business',
+  '/business/corporate-wellness', '/vi/business/corporate-wellness',
+  '/business/education-training', '/vi/business/education-training',
+  '/business/recovery-event', '/vi/business/recovery-event',
+  '/booking', '/vi/booking',
+  '/learning-hub', '/vi/learning-hub',
+  '/learning-hub/saved', '/vi/learning-hub/saved',
+  // Not pages, but they must be files. `_routes.json` only sends the paths
+  // listed above to the Worker, so anything else that is not a file falls
+  // to Cloudflare Pages' SPA fallback — which answers with index.html and
+  // a 200. robots.txt was exactly that: Cloudflare's managed AI-bot block
+  // followed by our homepage's HTML, with no `Sitemap:` line and no
+  // `Disallow: /api/`. And every mistyped URL was a 200 copy of the
+  // homepage (a soft 404). A 404.html at the root makes Pages answer
+  // unknown paths with it and a real 404 status.
+  '/robots.txt',
+  '/404.html',
+]
+
 /**
  * Route rule for SSR pages cached in KV (see nitro.storage): rendered at most
  * once per 5 minutes, served stale while re-rendering.
@@ -26,6 +58,24 @@ const SSR_CACHE = {
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-04-27',
+
+  hooks: {
+    // PRERENDER_ROUTES go in here, not in nitro.prerender.routes. When
+    // @nuxtjs/sitemap sets up and sees prerender routes plus crawlLinks, it
+    // prerenders the sitemap into dist/ — and a static file wins over the
+    // Worker, so the sitemap was frozen at deploy time and a post published
+    // afterwards was not in it until the next deploy. This hook runs after the
+    // module has looked, so the sitemap stays a Worker route: rendered from the
+    // CMS per request and cached 10 minutes in KV by the module (`include` in
+    // nitro.cloudflare.pages.routes sends /sitemap_index.xml and /__sitemap__/*
+    // to the Worker). Deleting the files after the build does not work: Nitro's
+    // public-asset manifest still lists them and the Worker hands the request
+    // to the (now missing) asset — a 404.
+    'nitro:config'(nitroConfig) {
+      nitroConfig.prerender ||= {}
+      nitroConfig.prerender.routes = [...(nitroConfig.prerender.routes || []), ...PRERENDER_ROUTES]
+    },
+  },
 
   modules: [
     '@nuxtjs/seo',
@@ -296,6 +346,10 @@ export default defineNuxtConfig({
             '/learning-hub/learn/*', '/vi/learning-hub/learn/*',
             // Public certificate pages — one per code, so rendered on demand.
             '/verify', '/verify/*', '/vi/verify', '/vi/verify/*',
+            // The sitemap is built per request from the CMS (cached 10 min by
+            // @nuxtjs/sitemap), so a newly published post is listed without a
+            // redeploy — see the prerender:generate hook below.
+            '/sitemap_index.xml', '/sitemap.xml', '/__sitemap__/*',
             '/api/*',
           ],
           exclude: [],
@@ -303,37 +357,8 @@ export default defineNuxtConfig({
       },
     },
     prerender: {
-      // List every static route explicitly (both locales) instead of relying
-      // solely on crawlLinks to discover them. crawlLinks is non-deterministic
-      // build-to-build — it depends on successfully parsing links out of
-      // already-rendered HTML during the build, and a miss silently drops that
-      // route from `dist/_routes.json`'s exclude list. That's what happened to
-      // `/vi/individual`: the static file WAS emitted, but a previous deploy's
-      // `_routes.json` didn't list it as prerendered, so every request fell
-      // through to the SSR Worker instead of the static file — intermittent
-      // 500/503/1102 depending on Worker load. Explicit routes make this
-      // deterministic regardless of crawl order/timing.
-      routes: [
-        '/', '/vi',
-        '/individual', '/vi/individual',
-        '/business', '/vi/business',
-        '/business/corporate-wellness', '/vi/business/corporate-wellness',
-        '/business/education-training', '/vi/business/education-training',
-        '/business/recovery-event', '/vi/business/recovery-event',
-        '/booking', '/vi/booking',
-        '/learning-hub', '/vi/learning-hub',
-        '/learning-hub/saved', '/vi/learning-hub/saved',
-        // Not pages, but they must be files. `_routes.json` only sends the paths
-        // listed above to the Worker, so anything else that is not a file falls
-        // to Cloudflare Pages' SPA fallback — which answers with index.html and
-        // a 200. robots.txt was exactly that: Cloudflare's managed AI-bot block
-        // followed by our homepage's HTML, with no `Sitemap:` line and no
-        // `Disallow: /api/`. And every mistyped URL was a 200 copy of the
-        // homepage (a soft 404). A 404.html at the root makes Pages answer
-        // unknown paths with it and a real 404 status.
-        '/robots.txt',
-        '/404.html',
-      ],
+      // The explicit route list is PRERENDER_ROUTES (top of file), added in the
+      // nitro:config hook — see there for why it is not listed here.
       crawlLinks: true,
       // Emit `/individual.html` instead of `/individual/index.html`. On
       // Cloudflare Pages the subfolder form makes `/individual` 308-redirect
