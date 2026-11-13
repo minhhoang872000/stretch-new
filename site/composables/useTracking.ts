@@ -13,6 +13,16 @@ import { useTrackingStore } from '~/stores/tracking'
  *   trackPageView()  // auto tracks current page
  *   trackEvent({ cta_clicked: 'custom', service_interest: 'cryo' })
  */
+/**
+ * Mirror an event to Google Analytics. No-op when GA is not set up for this
+ * host (see plugins/google-analytics.client.ts) or during SSR.
+ */
+function ga(event: string, params: Record<string, string | undefined>): void {
+  if (typeof window === 'undefined') return
+  const gtag = (window as any).gtag
+  if (typeof gtag === 'function') gtag('event', event, params)
+}
+
 export function useTracking() {
   const config = useRuntimeConfig()
   const trackingApiUrl = config.public.trackingApiUrl as string
@@ -49,6 +59,7 @@ export function useTracking() {
    * Track a CTA button click.
    */
   function trackCTA(ctaName: string, serviceInterest?: string): void {
+    ga('cta_click', { cta_name: ctaName, service_interest: serviceInterest })
     trackEvent({
       cta_clicked: ctaName,
       service_interest: serviceInterest || null,
@@ -59,6 +70,8 @@ export function useTracking() {
    * Track a form submission source.
    */
   function trackFormSource(formSource: string, serviceInterest?: string): void {
+    // GA4's recommended lead event — mark it as a key event (conversion) in GA.
+    ga('generate_lead', { form_source: formSource, service_interest: serviceInterest })
     trackEvent({
       form_source: formSource,
       service_interest: serviceInterest || null,

@@ -455,6 +455,9 @@ export default defineNuxtConfig({
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://stretch.vn',
       trackingApiUrl: process.env.NUXT_PUBLIC_TRACKING_API_URL || '',
+      // Google Analytics 4 — loaded by plugins/google-analytics.client.ts on the
+      // production hostnames only. Public by nature (it is in every page).
+      gaMeasurementId: process.env.NUXT_PUBLIC_GA_MEASUREMENT_ID || 'G-FGVDZ4GZXR',
       // Bank-transfer checkout — rendered into the VietQR code on /learning-hub/checkout.
       // Public by nature: this is the account customers are asked to pay into.
       bankCode: process.env.NUXT_PUBLIC_BANK_CODE || '',
