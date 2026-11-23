@@ -138,17 +138,8 @@
       </div>
     </nav>
 
-    <!-- Footer: who is signed in + the mock-data reminder --------------- -->
+    <!-- Footer: who is signed in --------------------------------------- -->
     <div class="shrink-0 border-t border-line p-2.5">
-      <div v-if="!layout.isRail" class="panel-quiet px-2.5 py-2 mb-2">
-        <p class="text-2xs font-bold text-warn flex items-center gap-1">
-          <span class="material-symbols-outlined text-sm">science</span>
-          Dữ liệu mẫu
-        </p>
-        <p class="text-2xs text-ink-3 mt-0.5 leading-snug">
-          Các module mới đang chạy trên mock, chưa nối API.
-        </p>
-      </div>
       <RouterLink
         to="/users"
         class="flex items-center gap-2.5 h-9 rounded-md px-1.5 hover:bg-panel-3 transition-colors"

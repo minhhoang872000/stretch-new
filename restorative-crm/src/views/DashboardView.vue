@@ -3,7 +3,7 @@
     <PageHeader
       eyebrow="Tổng quan"
       title="Hôm nay ở Stretch"
-      :subtitle="`Số liệu tính đến ${dateLabel}. Các module học viện, bán hàng và nội dung đang chạy trên dữ liệu mẫu.`"
+      :subtitle="`Số liệu tính đến ${dateLabel}.`"
     >
       <template #actions>
         <RouterLink to="/google-analytics" class="btn-outline btn-sm">

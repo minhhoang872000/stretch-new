@@ -2,7 +2,7 @@
   <main v-if="!program" class="page-narrow">
     <div class="panel px-6 py-12 text-center">
       <p class="text-sm font-bold text-ink">Không tìm thấy chương trình</p>
-      <p class="mt-1 text-xs text-ink-3">Có thể nó đã bị xoá khỏi dữ liệu mẫu.</p>
+      <p class="mt-1 text-xs text-ink-3">Có thể nó đã bị xoá.</p>
       <RouterLink to="/academy/programs" class="btn-primary mt-4">Về danh sách</RouterLink>
     </div>
   </main>

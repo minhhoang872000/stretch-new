@@ -22,12 +22,11 @@
     </PageHeader>
 
     <p
-      v-if="usingMock"
+      v-if="loadFailed"
       class="panel-quiet px-3 py-2.5 mb-3 flex items-start gap-2 text-xs text-ink-2"
     >
-      <span class="material-symbols-outlined text-base text-warn shrink-0">science</span>
-      API lịch hẹn không phản hồi nên trang đang hiển thị dữ liệu mẫu. Thao tác xác nhận hoặc xoá
-      sẽ không gửi được lên server.
+      <span class="material-symbols-outlined text-base text-warn shrink-0">cloud_off</span>
+      Chưa tải được lịch hẹn từ máy chủ (máy chủ có thể đang khởi động). Bấm "Làm mới" sau khoảng 30 giây.
     </p>
 
     <!-- Stats Row -->
@@ -235,7 +234,6 @@ import { formatDate } from '@/utils/date.js'
 import { useNotify } from '@/composables/useNotify.js'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
-import { useMockDb } from '@/stores/db.js'
 import { useBookingSources } from '@/composables/useBookingSources.js'
 import {
   SERVICE_LABELS, LOCATION_LABELS, CONTACT_LABELS, STATUS_LABELS, SETTING_LABELS, TYPE_LABELS,
@@ -243,7 +241,6 @@ import {
 } from '@/constants/booking.js'
 
 const router = useRouter()
-const db = useMockDb()
 const notify = useNotify()
 const { sources, load: loadSources, sourceLabel, emptyLabel } = useBookingSources()
 
@@ -298,23 +295,11 @@ function bizExtras(note) {
 }
 
 /**
- * The API stays the source of truth. When it cannot be reached the screen falls
- * back to the mock dataset instead of showing an empty table — otherwise the
- * dashboard counts lịch hẹn the list claims do not exist.
+ * The API is the only source. When it cannot be reached (the free Render API
+ * sleeps and takes ~30 s to wake) the list stays empty with a notice, rather
+ * than showing sample rows someone could mistake for real bookings.
  */
-const usingMock = ref(false)
-
-function loadFromMock() {
-  const rows = db.list('bookings').filter((b) => {
-    if (filterStatus.value && b.status !== filterStatus.value) return false
-    if (filterService.value && b.service !== filterService.value) return false
-    if (filterDate.value && b.date !== filterDate.value) return false
-    return true
-  })
-  bookings.value = rows
-  total.value = rows.length
-  usingMock.value = true
-}
+const loadFailed = ref(false)
 
 async function loadBookings() {
   loading.value = true
@@ -326,10 +311,12 @@ async function loadBookings() {
     })
     bookings.value = data.bookings || []
     total.value = data.total || 0
-    usingMock.value = false
+    loadFailed.value = false
   } catch (e) {
     console.error(e)
-    loadFromMock()
+    bookings.value = []
+    total.value = 0
+    loadFailed.value = true
   } finally {
     loading.value = false
   }
@@ -337,14 +324,6 @@ async function loadBookings() {
 
 async function updateStatus(id, status) {
   if (!status) return
-  // On mock data the write goes to the mock DB, so the demo stays coherent
-  // instead of showing an error for every action.
-  if (usingMock.value) {
-    db.patch('bookings', id, { status })
-    loadFromMock()
-    notify.success('toast.bookingUpdated')
-    return
-  }
   try {
     await updateBookingStatus(id, status)
     notify.success('toast.bookingUpdated')
@@ -374,12 +353,6 @@ function askRemove(booking) {
 }
 
 async function removeBooking(id) {
-  if (usingMock.value) {
-    db.remove('bookings', id)
-    loadFromMock()
-    notify.success('toast.bookingDeleted')
-    return
-  }
   try {
     await deleteBooking(id)
     notify.success('toast.bookingDeleted')

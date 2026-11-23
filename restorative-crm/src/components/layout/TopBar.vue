@@ -170,7 +170,7 @@
       <div class="relative panel shadow-pop w-full max-w-sm p-4">
         <h2 class="text-base font-headline font-bold text-ink">Đăng xuất khỏi bảng điều khiển?</h2>
         <p class="mt-1.5 text-[0.8125rem] text-ink-2">
-          Phiên làm việc sẽ kết thúc trên thiết bị này. Dữ liệu mẫu vẫn được giữ.
+          Phiên làm việc sẽ kết thúc trên thiết bị này.
         </p>
         <div class="mt-4 flex justify-end gap-2">
           <button type="button" class="btn-ghost" @click="askLogout = false">Ở lại</button>
