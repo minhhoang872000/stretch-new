@@ -217,20 +217,168 @@ export const gaService = {
       limit: 100,
     })
 
-    return (res.rows || []).map(row => ({
-      source: dv(row, 0) || '(direct)',
-      medium: dv(row, 1) || '(none)',
-      campaign: dv(row, 2) || '(not set)',
-      content: dv(row, 3) || '(not set)',
-      term: dv(row, 4) || '(not set)',
-      sessions: mv(row, 0),
-      users: mv(row, 1),
-      newUsers: mv(row, 2),
-      bounceRate: Math.round(mv(row, 3) * 1000) / 10,
-      engagementRate: Math.round(mv(row, 4) * 1000) / 10,
-      conversions: mv(row, 5),
-      avgDuration: Math.round(mv(row, 6)),
-    }))
+    // GA reports the same traffic under two rows when a dimension is "" in some
+    // sessions (data GA has not finished processing) and "(not set)" in others,
+    // e.g. two identical "(direct) / (none)" rows. Normalise the labels and merge
+    // those rows: counts add up, rates and durations are session-weighted.
+    const merged = new Map<string, any>()
+    for (const row of res.rows || []) {
+      const source = dv(row, 0) || '(direct)'
+      const medium = dv(row, 1) || '(none)'
+      const campaign = dv(row, 2) || '(not set)'
+      const content = dv(row, 3) || '(not set)'
+      const term = dv(row, 4) || '(not set)'
+      const key = [source, medium, campaign, content, term].join('\u0000')
+      const s = mv(row, 0)
+      const acc = merged.get(key) || {
+        source, medium, campaign, content, term,
+        sessions: 0, users: 0, newUsers: 0, conversions: 0,
+        bounceSum: 0, engagementSum: 0, durationSum: 0,
+      }
+      acc.sessions += s
+      acc.users += mv(row, 1)
+      acc.newUsers += mv(row, 2)
+      acc.bounceSum += mv(row, 3) * s
+      acc.engagementSum += mv(row, 4) * s
+      acc.conversions += mv(row, 5)
+      acc.durationSum += mv(row, 6) * s
+      merged.set(key, acc)
+    }
+
+    return [...merged.values()]
+      .sort((a, b) => b.sessions - a.sessions)
+      .map(({ bounceSum, engagementSum, durationSum, ...r }) => ({
+        ...r,
+        bounceRate: Math.round((bounceSum / (r.sessions || 1)) * 1000) / 10,
+        engagementRate: Math.round((engagementSum / (r.sessions || 1)) * 1000) / 10,
+        avgDuration: Math.round(durationSum / (r.sessions || 1)),
+      }))
+  },
+
+  // ─── Booking sources ─────────────────────────────────────────────────────────
+  /**
+   * Which traffic source each booking came from, read from the `booking_submit`
+   * events the site sends with a `booking_id` parameter.
+   *
+   * Needs `booking_id` registered in GA as an event-scoped custom dimension
+   * (Admin → Custom definitions). Until it is, GA rejects the dimension and this
+   * returns `{ configured: false }` instead of failing. GA data lags by a few
+   * hours, and visitors who block GA never appear, so a booking missing from the
+   * map means "source unknown", not "direct".
+   */
+  async getBookingSources(period: Period = '90d') {
+    const client = getClient()
+    // An unregistered custom dimension fails the report with an empty
+    // INVALID_ARGUMENT, so check the property's metadata first.
+    const [meta] = await client.getMetadata({ name: `properties/${env.ga.propertyId}/metadata` })
+    if (!(meta.dimensions || []).some(d => d.apiName === 'customEvent:booking_id')) {
+      return { configured: false, sources: {} }
+    }
+
+    const [res] = await client.runReport({
+      property: `properties/${env.ga.propertyId}`,
+      dateRanges: [{ startDate: periodToDaysAgo(period), endDate: 'today' }],
+      dimensions: [
+        { name: 'customEvent:booking_id' },
+        { name: 'sessionSource' },
+        { name: 'sessionMedium' },
+        { name: 'sessionCampaignName' },
+        { name: 'sessionDefaultChannelGroup' },
+      ],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { matchType: 'EXACT', value: 'booking_submit' } } },
+      limit: 10000,
+    })
+
+    const sources: Record<string, { source: string; medium: string; campaign: string; channel: string }> = {}
+    for (const row of res.rows || []) {
+      const id = dv(row, 0)
+      if (!id || id === '(not set)') continue
+      sources[id] = {
+        source: dv(row, 1) || '(direct)',
+        medium: dv(row, 2) || '(none)',
+        campaign: dv(row, 3) || '(not set)',
+        channel: dv(row, 4) || 'Unassigned',
+      }
+    }
+    return { configured: true, sources }
+  },
+
+  // ─── Conversion funnel ───────────────────────────────────────────────────────
+  /**
+   * The CRM's "Phễu chuyển đổi", from GA4 events the site sends:
+   *   visit (sessions) → booking page viewed → booking_submit
+   * plus contact clicks by channel, booking sources by channel, and CTA clicks.
+   *
+   * Every count is in sessions (a session counts once however many times it
+   * fired the event), so steps are comparable. Breakdowns that need a custom
+   * dimension (cta_name, contact_method) come back null until it is registered
+   * in GA; the flags tell the CRM which ones to explain.
+   */
+  async getFunnel(period: Period = '30d') {
+    const client = getClient()
+    const property = `properties/${env.ga.propertyId}`
+    const dateRanges = [{ startDate: periodToDaysAgo(period), endDate: 'today' }]
+    const event = (name: string) => ({ filter: { fieldName: 'eventName', stringFilter: { matchType: 'EXACT' as const, value: name } } })
+    const sessionsWhere = async (dimensionFilter: any) => {
+      const [res] = await client.runReport({ property, dateRanges, metrics: [{ name: 'sessions' }], dimensionFilter })
+      return res.rows?.[0] ? mv(res.rows[0], 0) : 0
+    }
+
+    const [meta] = await client.getMetadata({ name: `${property}/metadata` })
+    const custom = new Set((meta.dimensions || []).map(d => d.apiName))
+    const hasCta = custom.has('customEvent:cta_name')
+    const hasContact = custom.has('customEvent:contact_method')
+
+    const [visits, bookingPage, booked, contacted, sourcesRes, contactRes, ctaRes] = await Promise.all([
+      sessionsWhere(undefined),
+      sessionsWhere({ andGroup: { expressions: [
+        event('page_view'),
+        // /booking (EN) and /vi/booking (VI), with or without a trailing path
+        { filter: { fieldName: 'pagePath', stringFilter: { matchType: 'FULL_REGEXP' as const, value: '^/(vi/)?booking(/.*)?$' } } },
+      ] } }),
+      sessionsWhere(event('booking_submit')),
+      sessionsWhere(event('contact_click')),
+      client.runReport({
+        property, dateRanges,
+        dimensions: [{ name: 'sessionDefaultChannelGroup' }],
+        metrics: [{ name: 'sessions' }],
+        dimensionFilter: event('booking_submit'),
+        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
+      }),
+      hasContact
+        ? client.runReport({
+          property, dateRanges,
+          dimensions: [{ name: 'customEvent:contact_method' }],
+          metrics: [{ name: 'sessions' }],
+          dimensionFilter: event('contact_click'),
+          orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
+        })
+        : Promise.resolve(null),
+      hasCta
+        ? client.runReport({
+          property, dateRanges,
+          dimensions: [{ name: 'customEvent:cta_name' }],
+          metrics: [{ name: 'eventCount' }, { name: 'sessions' }],
+          dimensionFilter: event('cta_click'),
+          orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+        })
+        : Promise.resolve(null),
+    ])
+
+    const rows = (r: any) => (r?.[0]?.rows || []) as any[]
+
+    return {
+      steps: [
+        { step: 'Truy cập web', note: 'Số phiên truy cập', count: visits },
+        { step: 'Vào trang đặt lịch', note: 'Phiên có xem trang /booking', count: bookingPage },
+        { step: 'Đặt lịch thành công', note: 'Phiên có gửi form đặt lịch (booking_submit)', count: booked },
+      ],
+      contactSessions: contacted,
+      bookingChannels: rows(sourcesRes).map(r => ({ label: dv(r, 0) || 'Unassigned', count: mv(r, 0) })),
+      contactMethods: contactRes ? rows(contactRes).map(r => ({ label: dv(r, 0) || '(not set)', count: mv(r, 0) })) : null,
+      ctas: ctaRes ? rows(ctaRes).map(r => ({ name: dv(r, 0) || '(not set)', clicks: mv(r, 0), sessions: mv(r, 1) })) : null,
+    }
   },
 
   // ─── UTM Source/Medium/Campaign lists (for filter dropdowns) ─────────────────

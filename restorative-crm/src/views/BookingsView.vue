@@ -10,6 +10,10 @@
           <span class="material-symbols-outlined text-lg">calendar_month</span>
           Xem lịch tuần
         </RouterLink>
+        <button type="button" class="btn-outline btn-sm" :disabled="!bookings.length" @click="exportCsv">
+          <span class="material-symbols-outlined text-lg">download</span>
+          Xuất CSV
+        </button>
         <button type="button" class="btn-ghost btn-sm" @click="loadBookings">
           <span class="material-symbols-outlined text-lg">refresh</span>
           Làm mới
@@ -86,6 +90,7 @@
             <th>Thời gian</th>
             <th>Liên hệ</th>
             <th>Ghi chú</th>
+            <th>Nguồn</th>
             <th>Trạng thái</th>
             <th class="w-8"></th>
           </tr>
@@ -111,14 +116,6 @@
               </div>
               <p class="text-xs text-on-surface-variant mt-0.5">{{ bk.phone }}</p>
               <p v-if="bk.email" class="text-xs text-on-surface-variant/60">{{ bk.email }}</p>
-              <router-link
-                v-if="bk.session_id"
-                :to="`/leads/${bk.session_id}`"
-                @click.stop
-                class="inline-flex items-center gap-0.5 mt-1 text-[10px] font-semibold text-primary hover:underline"
-              >
-                <span class="material-symbols-outlined text-xs">person_search</span> Lead
-              </router-link>
             </td>
 
             <!-- Dịch vụ -->
@@ -170,6 +167,14 @@
               <span v-if="!parseNote(bk.note).text && !bizExtras(bk.note)" class="text-on-surface-variant/30 text-xs">—</span>
             </td>
 
+            <!-- Nguồn (GA) -->
+            <td class="max-w-[160px]">
+              <p v-if="sourceLabel(bk.id)" class="text-xs font-semibold text-on-surface truncate" :title="sourceLabel(bk.id)">
+                {{ sourceLabel(bk.id) }}
+              </p>
+              <span v-else class="text-on-surface-variant/40 text-xs">{{ emptyLabel() }}</span>
+            </td>
+
             <!-- Trạng thái -->
             <td>
               <span class="text-xs font-bold px-2.5 py-1 rounded-full" :class="statusClass(bk.status)">
@@ -198,7 +203,7 @@
           </tr>
 
           <tr v-if="!bookings.length">
-            <td colspan="8" class="p-16 text-center">
+            <td colspan="9" class="p-16 text-center">
               <div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center mx-auto mb-4">
                 <span class="material-symbols-outlined text-3xl text-on-surface-variant/40">event_busy</span>
               </div>
@@ -231,6 +236,7 @@ import { useNotify } from '@/composables/useNotify.js'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
 import { useMockDb } from '@/stores/db.js'
+import { useBookingSources } from '@/composables/useBookingSources.js'
 import {
   SERVICE_LABELS, LOCATION_LABELS, CONTACT_LABELS, STATUS_LABELS, SETTING_LABELS, TYPE_LABELS,
   parseNote, bookingType, statusClass, serviceClass, locationIcon, contactIcon, contactClass,
@@ -239,6 +245,29 @@ import {
 const router = useRouter()
 const db = useMockDb()
 const notify = useNotify()
+const { sources, load: loadSources, sourceLabel, emptyLabel } = useBookingSources()
+
+/** The bookings currently listed (filters applied), with their GA source. */
+function exportCsv() {
+  const header = ['Ma', 'Ngay dat', 'Khach', 'Dien thoai', 'Email', 'Dich vu', 'Ngay hen', 'Gio', 'Trang thai',
+    'Nguon', 'Medium', 'Campaign', 'Kenh']
+  const lines = bookings.value.map((bk) => {
+    const s = sources.value[bk.id] || {}
+    return [
+      bk.id, bk.createdAt || '', bk.name, bk.phone, bk.email || '',
+      SERVICE_LABELS[bk.service] || bk.service, bk.date, bk.time, STATUS_LABELS[bk.status] || bk.status,
+      s.source || '', s.medium || '', s.campaign || '', s.channel || '',
+    ].map((v) => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')
+  })
+  const blob = new Blob(['﻿' + [header.join(','), ...lines].join('\n')], { type: 'text/csv;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `lich-hen-${new Date().toISOString().slice(0, 10)}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
+  notify.success(`Đã xuất ${lines.length} lịch hẹn.`)
+}
 
 const bookings = ref([])
 const total = ref(0)
@@ -369,5 +398,8 @@ function resetFilters() {
   loadBookings()
 }
 
-onMounted(() => loadBookings())
+onMounted(() => {
+  loadBookings()
+  loadSources()
+})
 </script>

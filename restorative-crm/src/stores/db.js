@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { fetchGaFunnel } from '@/services/api.js'
 import { ref, reactive, computed } from 'vue'
 
 import {
@@ -56,7 +57,6 @@ export const insights = reactive({
   quizMisses: [],
   revenueTrend: [],
   funnel: [],
-  ctaBreakdown: [],
 })
 
 let insightsLoaded = false
@@ -67,20 +67,19 @@ const fill = (target, rows) => target.splice(0, target.length, ...rows)
 export async function loadInsights({ force = false } = {}) {
   if (insightsLoaded && !force) return insights
   insightsLoaded = true
-  const [dropOff, retention, quizMisses, revenueTrend, funnel, cta] = await Promise.all([
+  const [dropOff, retention, quizMisses, revenueTrend, funnel] = await Promise.all([
     reports.dropOff().catch(() => []),
     reports.retention().catch(() => []),
     reports.quizMisses().catch(() => []),
     reports.revenueTrend(30).catch(() => []),
-    reports.funnel(30).catch(() => []),
-    reports.ctaBreakdown(30).catch(() => []),
+    // From Google Analytics (booking_submit etc.), not the retired lead_events.
+    fetchGaFunnel('30d').then((d) => d?.steps || []).catch(() => []),
   ])
   fill(insights.dropOff, dropOff)
   fill(insights.retention, retention)
   fill(insights.quizMisses, quizMisses)
   fill(insights.revenueTrend, revenueTrend)
   fill(insights.funnel, funnel)
-  fill(insights.ctaBreakdown, cta)
   return insights
 }
 

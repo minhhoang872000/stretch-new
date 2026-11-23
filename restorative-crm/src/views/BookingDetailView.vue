@@ -72,13 +72,6 @@
                 <span class="material-symbols-outlined text-lg">mail</span>{{ bk.email }}
               </a>
             </div>
-            <router-link
-              v-if="bk.session_id"
-              :to="`/leads/${bk.session_id}`"
-              class="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-primary hover:underline"
-            >
-              <span class="material-symbols-outlined text-sm">person_search</span> Xem hành trình Lead
-            </router-link>
           </div>
         </div>
       </div>
@@ -169,9 +162,17 @@
             <dt class="label-xs mb-1">Cập nhật lần cuối</dt>
             <dd class="text-sm text-on-surface">{{ formatDateTime(bk.updatedAt) }}</dd>
           </div>
-          <div v-if="bk.session_id">
-            <dt class="label-xs mb-1">Session ID</dt>
-            <dd class="text-sm font-mono text-on-surface-variant break-all">{{ bk.session_id }}</dd>
+          <div>
+            <dt class="label-xs mb-1">Nguồn (Google Analytics)</dt>
+            <dd v-if="source" class="text-sm text-on-surface">
+              {{ source.source }} / {{ source.medium }}
+              <span v-if="source.campaign && !source.campaign.startsWith('(')" class="text-on-surface-variant">· {{ source.campaign }}</span>
+              <span class="block text-xs text-on-surface-variant">Kênh: {{ source.channel }}</span>
+            </dd>
+            <dd v-else class="text-sm text-on-surface-variant">
+              {{ emptyLabel() }}
+              <span class="block text-xs text-on-surface-variant/70">GA cập nhật chậm vài giờ; khách chặn GA sẽ không có nguồn.</span>
+            </dd>
           </div>
         </dl>
       </div>
@@ -196,6 +197,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { fetchBookingById, updateBookingStatus, deleteBooking } from '@/services/api.js'
 import { formatDate, formatDateTime } from '@/utils/date.js'
 import { useNotify } from '@/composables/useNotify.js'
+import { useBookingSources } from '@/composables/useBookingSources.js'
 import {
   SERVICE_LABELS, LOCATION_LABELS, CONTACT_LABELS, STATUS_LABELS, SETTING_LABELS, TYPE_LABELS,
   parseNote, bookingType, statusClass, serviceClass, locationIcon, contactIcon, contactClass,
@@ -212,6 +214,9 @@ const busy = ref(false)
 
 const note = computed(() => parseNote(bk.value?.note))
 const bkType = computed(() => bookingType(note.value))
+
+const { sources, load: loadSources, emptyLabel } = useBookingSources()
+const source = computed(() => (bk.value ? sources.value[bk.value.id] : null))
 
 async function load() {
   loading.value = true
@@ -261,5 +266,8 @@ function goBack() {
   router.push({ name: 'Bookings' })
 }
 
-onMounted(load)
+onMounted(() => {
+  load()
+  loadSources()
+})
 </script>

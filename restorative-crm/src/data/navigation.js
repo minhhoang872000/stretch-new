@@ -66,7 +66,6 @@ export const navGroups = [
     id: 'crm',
     label: 'Khách hàng',
     items: [
-      { path: '/leads', icon: 'person_search', label: 'Khách tiềm năng' },
       { path: '/enquiries', icon: 'contact_mail', label: 'Yêu cầu doanh nghiệp', badge: 'enquiriesNew' },
       { path: '/funnel', icon: 'filter_alt', label: 'Phễu chuyển đổi' },
     ],

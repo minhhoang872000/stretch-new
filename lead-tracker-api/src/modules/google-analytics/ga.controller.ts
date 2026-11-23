@@ -54,6 +54,19 @@ export const gaController = {
     catch (err: any) { handleGAError(err, res, next) }
   },
 
+  async getFunnel(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try { success(res, await gaService.getFunnel(period(req))) }
+    catch (err: any) { handleGAError(err, res, next) }
+  },
+
+  async getBookingSources(req: Request, res: Response, next: NextFunction): Promise<void> {
+    // Bookings are looked up over a long window by default; 30d would drop
+    // older bookings' sources from the list.
+    const p = req.query.period === '30d' || req.query.period === '7d' ? period(req) : '90d'
+    try { success(res, await gaService.getBookingSources(p)) }
+    catch (err: any) { handleGAError(err, res, next) }
+  },
+
   async getDeviceReport(req: Request, res: Response, next: NextFunction): Promise<void> {
     try { success(res, await gaService.getDeviceReport(period(req))) }
     catch (err: any) { handleGAError(err, res, next) }

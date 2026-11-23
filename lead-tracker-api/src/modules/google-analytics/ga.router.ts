@@ -27,6 +27,14 @@ router.get('/utm', gaController.getUTMReport)
 // GET /api/v1/google-analytics/utm/sources?period=30d
 router.get('/utm/sources', gaController.getUTMSources)
 
+// Source of each booking (from booking_submit events carrying booking_id)
+// GET /api/v1/google-analytics/booking-sources?period=90d
+router.get('/booking-sources', gaController.getBookingSources)
+
+// Conversion funnel (visit → booking page → booking_submit) + contact/CTA clicks
+// GET /api/v1/google-analytics/funnel?period=30d
+router.get('/funnel', gaController.getFunnel)
+
 // Device / OS / Browser breakdown
 // GET /api/v1/google-analytics/devices?period=30d
 router.get('/devices', gaController.getDeviceReport)

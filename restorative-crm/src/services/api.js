@@ -123,25 +123,24 @@ export function cropImage(key, rect) {
   })
 }
 
-// ─── Leads (internal tracking) ────────────────────────────────────
-
-export function fetchLeads(filters = {}) {
-  const params = new URLSearchParams()
-  if (filters.page) params.append('page', filters.page)
-  if (filters.limit) params.append('limit', filters.limit)
-  if (filters.utm_source) params.append('utm_source', filters.utm_source)
-  if (filters.utm_campaign) params.append('utm_campaign', filters.utm_campaign)
-  if (filters.device_type) params.append('device_type', filters.device_type)
-  if (filters.dateFrom) params.append('dateFrom', filters.dateFrom)
-  if (filters.dateTo) params.append('dateTo', filters.dateTo)
-  return request(`/analytics/leads?${params}`)
-}
-
-export function fetchLeadDetail(sessionId) {
-  return request(`/analytics/leads/${sessionId}`)
-}
-
 // ─── Google Analytics ─────────────────────────────────────────────
+
+/**
+ * Source of each booking, from GA `booking_submit` events carrying booking_id.
+ * Returns { configured, sources: { [bookingId]: { source, medium, campaign, channel } } }.
+ */
+export function fetchBookingSources(period = '90d') {
+  return request(`/google-analytics/booking-sources?period=${period}`)
+}
+
+/**
+ * Conversion funnel from GA: { steps, contactSessions, bookingChannels,
+ * contactMethods, ctas } (the last two null until their custom dimensions
+ * are registered in GA).
+ */
+export function fetchGaFunnel(period = '30d') {
+  return request(`/google-analytics/funnel?period=${period}`)
+}
 
 export function fetchGaOverview(period = '30d') {
   return request(`/google-analytics/overview?period=${period}`)

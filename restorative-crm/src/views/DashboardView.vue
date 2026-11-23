@@ -182,7 +182,7 @@
       </SectionCard>
 
       <!-- Phễu ------------------------------------------------------------ -->
-      <SectionCard title="Phễu chuyển đổi" hint="Rollup từ tracking của site">
+      <SectionCard title="Phễu chuyển đổi" hint="Từ Google Analytics, 30 ngày">
         <template #actions>
           <RouterLink to="/funnel" class="btn-ghost btn-sm">Chi tiết</RouterLink>
         </template>

@@ -47,8 +47,6 @@ const routes = [
   { path: '/seo', name: 'Seo', component: () => import('@/views/SeoSettingsView.vue'), meta: { title: 'SEO' } },
 
   // ── Khách hàng ────────────────────────────────────────────────────────
-  { path: '/leads', name: 'Leads', component: () => import('@/views/LeadsView.vue'), meta: { title: 'Khách tiềm năng' } },
-  { path: '/leads/:id', name: 'LeadDetail', component: () => import('@/views/LeadDetailView.vue'), meta: { title: 'Chi tiết khách' } },
   { path: '/enquiries', name: 'Enquiries', component: () => import('@/views/crm/EnquiriesView.vue'), meta: { title: 'Yêu cầu doanh nghiệp' } },
   { path: '/funnel', name: 'Funnel', component: () => import('@/views/crm/FunnelView.vue'), meta: { title: 'Phễu chuyển đổi' } },
 

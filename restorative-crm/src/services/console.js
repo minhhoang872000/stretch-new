@@ -123,7 +123,4 @@ export const reports = {
   revenueTrend: (days = 30) =>
     request(`/sales-insights/revenue?days=${days}`).then((d) => d?.revenueTrend || []),
   salesSummary: () => request('/sales-insights/summary'),
-  funnel: (days = 30) => request(`/funnel?days=${days}`).then((d) => d?.funnel || []),
-  ctaBreakdown: (days = 30) =>
-    request(`/funnel/cta?days=${days}`).then((d) => d?.ctaBreakdown || []),
 }
