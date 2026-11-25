@@ -59,7 +59,7 @@ export function useLearningHub() {
         lessons: p.lessons ? pick(`${p.lessons} bài học`, `${p.lessons} lessons`) : '',
         duration: p.duration || '',
         price: p.price,
-        image: p.image || '/images/man-neck-pain.png',
+        image: p.image || '/images/man-neck-pain.webp',
         // Alternate dark covers so the row keeps its rhythm whatever the images are.
         dark: i % 2 === 0,
       })),

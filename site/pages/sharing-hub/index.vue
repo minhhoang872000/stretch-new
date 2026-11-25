@@ -353,6 +353,7 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
               class="featured-card-small group cursor-pointer rounded-2xl overflow-hidden relative bg-navy block"
             >
               <NuxtImg
+                loading="lazy"
                 :src="post.image"
                 :alt="post.title"
                 class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-55 group-hover:scale-105 transition-all duration-500"
@@ -505,6 +506,7 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
                 >
                   <div class="aspect-[16/10] overflow-hidden">
                     <NuxtImg
+                      loading="lazy"
                       :src="post.image"
                       :alt="post.title"
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -862,7 +864,7 @@ function getCategoryTagDotClass(key: string, isDarkBg: boolean = false) {
                   />
                 </svg>
               </NuxtLink>
-              <a href="https://www.facebook.com/stretchvn/" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--outline">
+              <a href="https://www.facebook.com/StretchVietnam/" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--outline">
                 {{ t("sharing_hub.cta_follow") }}
                 <svg
                   width="14"

@@ -9,7 +9,6 @@ const BookingSchema = z.object({
   email: z.string().email('Email không hợp lệ').optional().or(z.literal('')),
   note: z.string().optional(),
   practitioner: z.string().nullable().optional(),
-  session_id: z.string().max(64).nullable().optional(),
 })
 
 /**
@@ -48,7 +47,6 @@ export default defineEventHandler(async (event) => {
           email: data.email || undefined,
           note: data.note || undefined,
           practitioner: data.practitioner || null,
-          session_id: data.session_id || null,
         },
         timeout: 8000,
       },

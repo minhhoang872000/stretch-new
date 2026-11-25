@@ -21,6 +21,49 @@ interface SeoOptions {
   }
 }
 
+/** Trim to the ~160 characters a search result shows, on a word boundary. */
+export function clipDescription(text: string | undefined, max = 158): string {
+  const s = String(text || '').replace(/\s+/g, ' ').trim()
+  if (s.length <= max) return s
+  const cut = s.slice(0, max)
+  return `${cut.slice(0, cut.lastIndexOf(' ') > 80 ? cut.lastIndexOf(' ') : max).replace(/[\s,;:.–—-]+$/, '')}…`
+}
+
+/**
+ * BreadcrumbList for any page below a section root (/business/corporate-wellness,
+ * /sharing-hub/<slug>, /learning-hub/programs/<slug>): Google shows the trail in
+ * place of the raw URL. Built from the route, so a new nested page gets one
+ * without asking. The leaf is the page's own title minus the brand suffix.
+ */
+export function useBreadcrumbSchema(leafTitle: string | (() => string)) {
+  const route = useRoute()
+  const { t } = useI18n()
+  const localePath = useLocalePath()
+  const siteUrl = String(useRuntimeConfig().public.siteUrl || '').replace(/\/$/, '')
+  const LABEL: Record<string, () => string> = {
+    business: () => t('nav.business'),
+    'sharing-hub': () => t('sharing_hub.nav'),
+    'learning-hub': () => t('learning.brand'),
+    programs: () => t('learning.catalog.title'),
+    booking: () => t('nav.bookSession'),
+  }
+  const segments = route.path.replace(/^\/vi(?=\/|$)/, '').split('/').filter(Boolean)
+  if (segments.length < 2) return
+  const leaf = () => (typeof leafTitle === 'function' ? leafTitle() : leafTitle).split(/\s[—–|]\s/)[0]
+  useSchemaOrg([
+    defineBreadcrumb({
+      itemListElement: [
+        { name: t('nav.home'), item: `${siteUrl}${localePath('/')}` },
+        ...segments.slice(0, -1).map((seg, i) => ({
+          name: LABEL[seg]?.() || seg,
+          item: `${siteUrl}${localePath(`/${segments.slice(0, i + 1).join('/')}`)}`,
+        })),
+        { name: leaf() },
+      ],
+    }),
+  ])
+}
+
 export function useSeo(opts: SeoOptions) {
   const config = useRuntimeConfig()
   const route = useRoute()
@@ -49,17 +92,23 @@ export function useSeo(opts: SeoOptions) {
     alternateLinks.push({ rel: 'alternate', hreflang: 'x-default', href: `${siteUrl}${defaultPath}` })
   }
 
+  // Descriptions built from CMS text (a programme's subtitle) can run long;
+  // Google cuts them near 160 characters, mid-word.
+  const description = clipDescription(opts.description)
+
+  if (!opts.noIndex) useBreadcrumbSchema(opts.title)
+
   useSeoMeta({
     title: opts.title,
-    description: opts.description,
+    description,
     ogTitle: opts.title,
-    ogDescription: opts.description,
+    ogDescription: description,
     ogImage,
     ogUrl: canonicalUrl,
     ogType: opts.type || 'website',
     twitterCard: 'summary_large_image',
     twitterTitle: opts.title,
-    twitterDescription: opts.description,
+    twitterDescription: description,
     twitterImage: ogImage,
     robots: opts.noIndex ? 'noindex, nofollow' : 'index, follow',
     // Article-specific Open Graph tags (improves link previews + Google rich results).

@@ -77,7 +77,7 @@ const uspIcons = [
               </svg>
             </NuxtLink>
             
-            <a href="http://zalo.me/4237229823551208502?src=qr&f=1" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-white backdrop-blur-sm border border-navy/10 text-navy font-heading font-bold text-[16px] rounded-2xl shadow-sm hover:border-navy/20 hover:bg-white hover:shadow-md transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]">
+            <a href="https://zalo.me/4237229823551208502?src=qr&f=1" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-white backdrop-blur-sm border border-navy/10 text-navy font-heading font-bold text-[16px] rounded-2xl shadow-sm hover:border-navy/20 hover:bg-white hover:shadow-md transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]">
               {{ $t('individual_page.hero.cta2') }}
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -98,7 +98,7 @@ const uspIcons = [
 
         <div class="w-full md:w-[50%] relative animate-fade-in-up" style="animation-delay: 200ms">
           <div class="relative w-auto -mx-6 sm:mx-0 sm:w-full aspect-[4/5] sm:aspect-[16/10] md:aspect-auto md:h-[460px] lg:h-[580px] rounded-none sm:rounded-[24px] overflow-hidden shadow-[0_20px_60px_rgba(11,42,74,0.12)]">
-            <NuxtImg
+            <NuxtImg width="1920" height="1280"
               src="/individual-hero.webp"
               alt="Stretch.vn — Professional physiotherapy treatment session"
               class="w-full h-full object-cover object-[70%_center] transition-transform duration-[2000ms] ease-out hover:scale-[1.04]"

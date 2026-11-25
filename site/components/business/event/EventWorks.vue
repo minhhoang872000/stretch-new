@@ -2,10 +2,10 @@
 const { t } = useI18n()
 
 const whereCards = computed(() => [
-  { title: t('event_page.where_works.item1'), img: '/pickleball.png' },
-  { title: t('event_page.where_works.item2'), img: '/marathon.png' },
-  { title: t('event_page.where_works.item3'), img: '/tennis.png' },
-  { title: t('event_page.where_works.item4'), img: '/corporate-sports.png' }
+  { title: t('event_page.where_works.item1'), img: '/pickleball.webp' },
+  { title: t('event_page.where_works.item2'), img: '/marathon.webp' },
+  { title: t('event_page.where_works.item3'), img: '/tennis.webp' },
+  { title: t('event_page.where_works.item4'), img: '/corporate-sports.webp' }
 ])
 
 const howSteps = computed(() => [
@@ -45,6 +45,7 @@ const howSteps = computed(() => [
               <!-- Rounded Vertical Image Container -->
               <div class="w-full aspect-[4/5] rounded-[16px] overflow-hidden mb-3 border border-[#F1F1F1] shadow-sm bg-gray-50">
                 <NuxtImg 
+                  loading="lazy"
                   :src="card.img" 
                   :alt="card.title" 
                   class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 

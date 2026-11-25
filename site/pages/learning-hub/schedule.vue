@@ -12,7 +12,6 @@
  */
 const { t } = useI18n()
 const localePath = useLocalePath()
-const { trackPageView } = useTracking()
 // Server-rendered and swr-cached: the catalogue has to be in the payload, or
 // the page hydrates with an empty schedule.
 await useLearningCatalog().ready
@@ -67,13 +66,10 @@ useSeo({
   viOnly: true,
   title: `${t('learning.schedule.page_title')} — ${t('learning.brand')}`,
   description: t('learning.schedule.page_sub'),
-  image: '/education-workshop.png',
+  image: '/education-workshop.webp',
   type: 'website',
 })
 
-onMounted(() => {
-  trackPageView()
-})
 </script>
 
 <template>

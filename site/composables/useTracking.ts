@@ -1,105 +1,43 @@
-import { sendEvent, flushQueue } from '~/services/trackingApi'
-import type { TrackingEvent } from '~/services/trackingApi'
-import { useTrackingStore } from '~/stores/tracking'
-
 /**
- * Composable for tracking lead events.
+ * Lead tracking — Google Analytics 4 only.
  *
- * Usage:
- *   const { trackCTA, trackFormSource, trackPageView, trackEvent } = useTracking()
+ * Every event goes to GA through `gtag` (see plugins/google-analytics.client.ts,
+ * which is a no-op outside the production hostnames). There is no tracking API
+ * of our own any more: lead attribution (which source a booking came from) is
+ * read back from GA by the CRM, keyed on `booking_id`.
  *
- *   trackCTA('hero-book-now')
- *   trackFormSource('contact-form', 'ems-training')
- *   trackPageView()  // auto tracks current page
- *   trackEvent({ cta_clicked: 'custom', service_interest: 'cryo' })
+ * GA property setup this relies on (Admin, needs Editor):
+ *   - Mark `booking_submit` (and optionally `contact_click`) as Key events, so
+ *     they show in the CRM's Conv. column.
+ *   - Register event-scoped custom dimensions `booking_id`, `service`,
+ *     `form_source`, `contact_method` so they can be queried.
+ *
+ * Contact-link clicks (tel:, Zalo, Messenger, WhatsApp, mailto:) are tracked
+ * site-wide by the GA plugin, not here.
  */
-/**
- * Mirror an event to Google Analytics. No-op when GA is not set up for this
- * host (see plugins/google-analytics.client.ts) or during SSR.
- */
-function ga(event: string, params: Record<string, string | undefined>): void {
+function ga(event: string, params: Record<string, string | null | undefined>): void {
   if (typeof window === 'undefined') return
   const gtag = (window as any).gtag
   if (typeof gtag === 'function') gtag('event', event, params)
 }
 
 export function useTracking() {
-  const config = useRuntimeConfig()
-  const trackingApiUrl = config.public.trackingApiUrl as string
-  const store = useTrackingStore()
-  const route = useRoute()
-
-  /**
-   * Build base payload with session + UTM + device + page context.
-   */
-  function buildPayload(partial: Partial<TrackingEvent> = {}): TrackingEvent {
-    return {
-      session_id: store.sessionId,
-      page_source: route.fullPath,
-      device_type: store.deviceType,
-      referrer: store.referrer,
-      timestamp: new Date().toISOString(),
-      ...store.utm,
-      ...partial,
-    }
-  }
-
-  /**
-   * Send a tracking event (fire-and-forget, non-blocking).
-   * Handles retry + offline queue internally.
-   */
-  function trackEvent(partial: Partial<TrackingEvent> = {}): void {
-    if (!trackingApiUrl || !store.initialized) return
-    const payload = buildPayload(partial)
-    // Fire and forget — don't await
-    sendEvent(trackingApiUrl, payload).catch(() => {})
-  }
-
-  /**
-   * Track a CTA button click.
-   */
+  /** A call-to-action button was clicked. */
   function trackCTA(ctaName: string, serviceInterest?: string): void {
     ga('cta_click', { cta_name: ctaName, service_interest: serviceInterest })
-    trackEvent({
-      cta_clicked: ctaName,
-      service_interest: serviceInterest || null,
-    })
   }
 
   /**
-   * Track a form submission source.
+   * A booking form was submitted successfully. Call only after the API has
+   * accepted it, so failed submissions are not counted.
    */
-  function trackFormSource(formSource: string, serviceInterest?: string): void {
-    // GA4's recommended lead event — mark it as a key event (conversion) in GA.
-    ga('generate_lead', { form_source: formSource, service_interest: serviceInterest })
-    trackEvent({
+  function trackBooking(formSource: string, service: string | null | undefined, bookingId: string | null | undefined): void {
+    ga('booking_submit', {
       form_source: formSource,
-      service_interest: serviceInterest || null,
+      service: service || undefined,
+      booking_id: bookingId || undefined,
     })
   }
 
-  /**
-   * Track a page view (call on route change if needed).
-   */
-  function trackPageView(): void {
-    trackEvent({
-      page_source: route.fullPath,
-    })
-  }
-
-  /**
-   * Manually flush the offline queue.
-   */
-  function flush(): void {
-    if (!trackingApiUrl) return
-    flushQueue(trackingApiUrl).catch(() => {})
-  }
-
-  return {
-    trackEvent,
-    trackCTA,
-    trackFormSource,
-    trackPageView,
-    flush,
-  }
+  return { trackCTA, trackBooking }
 }

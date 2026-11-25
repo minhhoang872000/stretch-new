@@ -61,7 +61,7 @@ export function mapApiPost(p: any, catMap: Record<string, string> = {}): SitePos
     slug: p.slug,
     hasEn: postHasEnglish(p),
     title: p.titleVi || p.titleEn || '',
-    excerpt: p.excerptVi || p.excerptEn || '',
+    excerpt: String(p.excerptVi || p.excerptEn || '').trim(),
     category: catMap[p.category] || p.category,
     categoryKey: p.category,
     image: p.coverImage || '',

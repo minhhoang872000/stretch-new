@@ -10,8 +10,9 @@ const { t } = useI18n()
         <!-- Desktop Gradient Mask (blends image's right edge into the content panel) -->
         <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white via-white/85 to-transparent z-10 pointer-events-none hidden md:block" />
 
-        <NuxtImg
-          src="/images/man-neck-pain.png"
+        <NuxtImg width="1024" height="1024"
+          loading="lazy"
+          src="/images/man-neck-pain.webp"
           alt="Workplace discomfort - Neck and shoulder pain"
           class="w-full h-full object-cover rounded-t-[24px] md:rounded-t-none md:rounded-l-[32px]"
           format="webp"

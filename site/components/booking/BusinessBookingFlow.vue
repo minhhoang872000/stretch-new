@@ -1,4 +1,9 @@
 <script setup lang="ts">
+// PrimeVue lives with the booking flows only — see plugins/primevue.ts.
+import InputText from 'primevue/inputtext'
+import Textarea from 'primevue/textarea'
+import Calendar from 'primevue/calendar'
+import '~/assets/css/primevue.css'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email, helpers } from '@vuelidate/validators'
 import BookingStepHeader from '~/components/booking/BookingStepHeader.vue'
@@ -10,8 +15,8 @@ const emit = defineEmits<{
 
 const { t, locale } = useI18n()
 const { notify } = useNotification()
-const { trackFormSource } = useTracking()
-const { submit, loading: apiLoading, success: apiSuccess, error: apiError } = useBooking()
+const { trackBooking } = useTracking()
+const { submit, loading: apiLoading, success: apiSuccess, error: apiError, bookingId } = useBooking()
 const localePath = useLocalePath()
 const currentStep = ref(1)
 const isSubmitting = ref(false)
@@ -157,9 +162,6 @@ function prevStep() {
 async function submitBooking() {
   isSubmitting.value = true
 
-  // Track form submission for lead attribution
-  trackFormSource('booking-business', form.value.planType)
-
   // Format timeline to date string
   let dateStr = new Date().toISOString().slice(0, 10)
   if (form.value.timeline) {
@@ -198,6 +200,7 @@ async function submitBooking() {
     return
   }
 
+  trackBooking('booking-business', form.value.planType, bookingId.value)
   notify(t('booking_v2.common.toast_success'), 'success', 5000)
   showSuccess.value = true
   window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -219,7 +222,7 @@ async function submitBooking() {
       
       <div class="flex flex-col gap-4">
         <a href="https://zalo.me/4237229823551208502" target="_blank" class="btn-navy justify-center gap-3">
-          <NuxtImg src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" class="w-5 h-5" format="webp" />
+          <NuxtImg loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" class="w-5 h-5" format="webp" />
           {{ t('booking_v2.success.chat_zalo') }}
         </a>
         <button class="btn-outline justify-center gap-3">

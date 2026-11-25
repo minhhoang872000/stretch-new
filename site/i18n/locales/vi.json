@@ -1,4 +1,7 @@
 {
+  "nuxtSiteConfig": {
+    "description": "Phục hồi thể thao, vật lý trị liệu và chăm sóc sức khỏe doanh nghiệp tại TP. Hồ Chí Minh. Đặt lịch buổi trị liệu cá nhân hóa online."
+  },
   "nav": {
     "home": "Trang chủ",
     "programs": "Chương trình",
@@ -19,14 +22,16 @@
     "logout": "Đăng xuất"
   },
   "seo": {
+    "programs_desc": "Tất cả khóa học online, mini-course và workshop trực tiếp về vận động và phục hồi của Stretch Academy. Lọc theo hình thức học và chủ đề.",
+    "booking_title": "Đặt Lịch Trị Liệu Phục Hồi Online — Stretch.vn",
     "home_title": "Stretch.vn — Phục Hồi Vận Động Chuyên Nghiệp",
     "home_desc": "Hỗ trợ phục hồi & vận động cá nhân hóa — tại phòng khám, tại nhà hoặc tại sự kiện của bạn. Đặt lịch online ngay hôm nay.",
-    "sharing_hub_title": "Stretch.vn — Góc Chia Sẻ",
-    "sharing_hub_desc": "Kiến thức vận động, giáo dục phục hồi, câu chuyện đội ngũ, tin tức công ty và điểm nhấn sự kiện — tất cả tại một nơi.",
-    "booking_desc": "Chăm sóc đúng cách. Phục hồi hiệu quả. Đặt lịch buổi trị liệu cá nhân hóa của bạn online.",
+    "sharing_hub_title": "Góc Chia Sẻ: Kiến Thức Vận Động & Phục Hồi — Stretch.vn",
+    "sharing_hub_desc": "Kiến thức vận động, phục hồi và y học cổ truyền, câu chuyện đội ngũ, tin tức và điểm nhấn sự kiện của Stretch.vn, tất cả tại một nơi.",
+    "booking_desc": "Đặt lịch buổi trị liệu phục hồi cá nhân hóa online: chăm sóc cá nhân tại cơ sở hoặc tại nhà, hay dịch vụ cho doanh nghiệp và sự kiện.",
     "business_title": "Giải Pháp Phục Hồi & Wellness Cho Doanh Nghiệp — Stretch.vn",
     "business_desc": "Wellness doanh nghiệp, phục hồi tại sự kiện và đào tạo thực hành cho đội ngũ. Chương trình thiết kế theo cách nhân sự của bạn làm việc và vận động.",
-    "learning_hub_title": "Stretch.vn — Learning Hub",
+    "learning_hub_title": "Learning Hub: Khóa Học Vận Động & Phục Hồi — Stretch.vn",
     "learning_hub_desc": "Kiến thức ứng dụng về vận động và phục hồi dành cho HLV, kỹ thuật viên và người yêu vận động. Khóa học online, workshop trực tiếp và lớp thực hành tình huống."
   },
   "learning": {
@@ -613,9 +618,9 @@
     "address": "493 Điện Biên Phủ, Phường Bàn Cờ, TP.HCM",
     "view_map": "Xem trên Google Maps",
     "opening_hours": "Thời gian mở cửa",
-    "hours_weekday": "Thứ 2 – Thứ 7: 8:00 – 18:00",
-    "hours_last_booking": "Last booking: 17:00",
-    "hours_sunday": "Chủ Nhật: ưu tiên khách đã đặt lịch hẹn trước"
+    "hours_weekday": "Thứ 2 – Thứ 7: 8:00 – 20:00",
+    "hours_last_booking": "Last booking: 19:00",
+    "hours_sunday": "Chủ Nhật: Dành riêng cho khách đã đặt lịch hẹn trước."
   },
   "booking": {
     "heroTitle1": "ĐẶT LỊCH",
@@ -864,7 +869,7 @@
     "phone_number": "0938 713 498"
   },
   "individual_page": {
-    "seo_title": "Dịch Vụ Cá Nhân — Stretch.vn",
+    "seo_title": "Dịch Vụ Phục Hồi Cá Nhân Tại TP.HCM — Stretch.vn",
     "seo_desc": "Phục hồi và vận động cá nhân hóa tại TP.HCM: đánh giá, trị liệu trực tiếp và bài tập cho đau mỏi, cứng khớp và phục hồi sau thể thao.",
     "hero": {
       "heading": "Di chuyển tốt hơn. Phục hồi thông minh hơn.",
@@ -1164,7 +1169,7 @@
   },
   "education_page": {
     "seo_title": "Đào Tạo & Huấn Luyện — Stretch.vn",
-    "seo_desc": "Đào tạo có cấu trúc dành cho đội ngũ muốn đạt sự đồng nhất, kỹ năng hands-on an toàn hơn và kết quả phục hồi tốt hơn.",
+    "seo_desc": "Đào tạo có cấu trúc cho HLV và đội ngũ muốn đạt sự đồng nhất, kỹ năng hands-on an toàn hơn và kết quả phục hồi tốt hơn cho khách hàng.",
     "hero": {
       "label": "ĐÀO TẠO & HUẤN LUYỆN",
       "heading": "Đào tạo đội ngũ không chỉ làm kỹ thuật mà còn hiểu vì sao.",

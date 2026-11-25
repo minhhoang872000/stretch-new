@@ -7,8 +7,8 @@
         
         <!-- Image 1 -->
         <div class="w-[220px] sm:w-[260px] lg:w-auto shrink-0 aspect-[1.5] rounded-[16px] overflow-hidden border border-navy/5 shadow-sm group">
-          <NuxtImg 
-            src="/education-gallery-1.png" 
+          <NuxtImg width="1024" height="1024" 
+            src="/education-gallery-1.webp" 
             alt="Stretch.vn Training - Instructor and student checking tablet" 
             class="w-full h-full object-cover transform duration-500 ease-out group-hover:scale-[1.04]"
             loading="lazy"
@@ -17,8 +17,8 @@
 
         <!-- Image 2 -->
         <div class="w-[220px] sm:w-[260px] lg:w-auto shrink-0 aspect-[1.5] rounded-[16px] overflow-hidden border border-navy/5 shadow-sm group">
-          <NuxtImg 
-            src="/education-gallery-2.png" 
+          <NuxtImg width="1024" height="1024" 
+            src="/education-gallery-2.webp" 
             alt="Stretch.vn Training - Manual shoulder stretching technique" 
             class="w-full h-full object-cover transform duration-500 ease-out group-hover:scale-[1.04]"
             loading="lazy"
@@ -27,8 +27,8 @@
 
         <!-- Image 3 -->
         <div class="w-[220px] sm:w-[260px] lg:w-auto shrink-0 aspect-[1.5] rounded-[16px] overflow-hidden border border-navy/5 shadow-sm group">
-          <NuxtImg 
-            src="/education-gallery-3.png" 
+          <NuxtImg width="1024" height="1024" 
+            src="/education-gallery-3.webp" 
             alt="Stretch.vn Training - Movement assessment class lecture" 
             class="w-full h-full object-cover transform duration-500 ease-out group-hover:scale-[1.04]"
             loading="lazy"
@@ -37,8 +37,8 @@
 
         <!-- Image 4 -->
         <div class="w-[220px] sm:w-[260px] lg:w-auto shrink-0 aspect-[1.5] rounded-[16px] overflow-hidden border border-navy/5 shadow-sm group">
-          <NuxtImg 
-            src="/education-gallery-4.png" 
+          <NuxtImg width="1024" height="1024" 
+            src="/education-gallery-4.webp" 
             alt="Stretch.vn Training - Practice of manual leg stretching" 
             class="w-full h-full object-cover transform duration-500 ease-out group-hover:scale-[1.04]"
             loading="lazy"
@@ -47,8 +47,8 @@
 
         <!-- Image 5 -->
         <div class="w-[220px] sm:w-[260px] lg:w-auto shrink-0 aspect-[1.5] rounded-[16px] overflow-hidden border border-navy/5 shadow-sm group">
-          <NuxtImg 
-            src="/education-gallery-5.png" 
+          <NuxtImg width="1024" height="1024" 
+            src="/education-gallery-5.webp" 
             alt="Stretch.vn Training - Outdoor manual stretching practice" 
             class="w-full h-full object-cover transform duration-500 ease-out group-hover:scale-[1.04]"
             loading="lazy"

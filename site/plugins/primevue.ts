@@ -1,28 +1,12 @@
 import { defineNuxtPlugin } from '#app'
 import PrimeVue from 'primevue/config'
-import Button from 'primevue/button'
-import InputText from 'primevue/inputtext'
-import Dropdown from 'primevue/dropdown'
-import Calendar from 'primevue/calendar'
-import Checkbox from 'primevue/checkbox'
-import RadioButton from 'primevue/radiobutton'
-import Textarea from 'primevue/textarea'
-import Ripple from 'primevue/ripple'
-import Tooltip from 'primevue/tooltip'
 
+/**
+ * Only the PrimeVue config is global. The components (InputText, Textarea,
+ * Calendar) and the theme CSS are imported by the booking flows that use them:
+ * registered here, they and their stylesheet shipped in the entry bundle of
+ * every page, including the many that render no PrimeVue control at all.
+ */
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(PrimeVue, { ripple: true })
-  
-  // Register components
-  nuxtApp.vueApp.component('Button', Button)
-  nuxtApp.vueApp.component('InputText', InputText)
-  nuxtApp.vueApp.component('Dropdown', Dropdown)
-  nuxtApp.vueApp.component('Calendar', Calendar)
-  nuxtApp.vueApp.component('Checkbox', Checkbox)
-  nuxtApp.vueApp.component('RadioButton', RadioButton)
-  nuxtApp.vueApp.component('Textarea', Textarea)
-  
-  // Directives
-  nuxtApp.vueApp.directive('ripple', Ripple)
-  nuxtApp.vueApp.directive('tooltip', Tooltip)
 })

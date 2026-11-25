@@ -61,7 +61,7 @@ const { t } = useI18n()
         <!-- Hero Image -->
         <div class="flex-1 relative max-w-xl w-full">
           <div class="aspect-[4/3] rounded-3xl overflow-hidden shadow-elevated">
-            <NuxtImg 
+            <NuxtImg width="1920" height="1280" 
               src="/booking-hero.webp" 
               alt="Physiotherapy" 
               class="w-full h-full object-cover"
@@ -69,7 +69,7 @@ const { t } = useI18n()
           </div>
           <!-- Floating Badge -->
           <div class="absolute -bottom-6 -left-6 glass-card p-3 flex items-center gap-3 animate-fade-in-up delay-300">
-            <img src="/monaco.jpeg" alt="Monaco Healthcare" class="h-10 w-auto object-contain rounded-lg" />
+            <img width="203" height="288" src="/monaco-logo.webp" alt="Monaco Healthcare" class="h-10 w-auto object-contain rounded-lg" />
             <div class="pr-2 border-l border-border-default pl-3 ml-1">
               <p class="text-[9px] text-text-secondary uppercase tracking-wider leading-none mb-1">Powered by</p>
               <p class="font-bold text-navy text-xs">Monaco Healthcare</p>
@@ -91,7 +91,7 @@ const { t } = useI18n()
                 <circle cx="12" cy="7" r="4" />
               </svg>
             </div>
-            <h3 class="text-h3 text-navy mb-2">{{ t('booking_v2.landing.individual') }}</h3>
+            <h2 class="text-h3 text-navy mb-2">{{ t('booking_v2.landing.individual') }}</h2>
             <p class="text-text-secondary text-sm mb-8">{{ t('booking_v2.landing.individual_desc') }}</p>
             <button 
               @click="emit('selectFlow', 'individual')"
@@ -116,7 +116,7 @@ const { t } = useI18n()
                 <path d="M8 6h2v2H8V6zm6 0h2v2h-2V6zm-6 5h2v2H8v-2zm6 0h2v2h-2v-2z" />
               </svg>
             </div>
-            <h3 class="text-h3 text-navy mb-2">{{ t('booking_v2.landing.business') }}</h3>
+            <h2 class="text-h3 text-navy mb-2">{{ t('booking_v2.landing.business') }}</h2>
             <p class="text-text-secondary text-sm mb-8">{{ t('booking_v2.landing.business_desc') }}</p>
             <button 
               @click="emit('selectFlow', 'business')"
@@ -137,10 +137,10 @@ const { t } = useI18n()
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
             </div>
-            <h3 class="text-h3 text-navy mb-2">{{ t('booking_v2.landing.not_sure') }}</h3>
+            <h2 class="text-h3 text-navy mb-2">{{ t('booking_v2.landing.not_sure') }}</h2>
             <p class="text-text-secondary text-sm mb-8">{{ t('booking_v2.landing.not_sure_desc') }}</p>
             <a 
-              href="http://zalo.me/4237229823551208502?src=qr&f=1" 
+              href="https://zalo.me/4237229823551208502?src=qr&f=1" 
               target="_blank"
               class="btn-outline w-full justify-center"
             >
@@ -151,7 +151,7 @@ const { t } = useI18n()
 
         <!-- Summary Bar -->
         <div class="mt-20 glass-card p-10 lg:p-12 border-navy/5">
-          <h4 class="text-navy font-bold text-lg mb-8 text-center lg:text-left">{{ t('booking_v2.landing.summary_title') }}</h4>
+          <h3 class="text-navy font-bold text-lg mb-8 text-center lg:text-left">{{ t('booking_v2.landing.summary_title') }}</h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16">
             <div class="flex items-start gap-4">
               <div class="w-10 h-10 rounded-full bg-accent/10 text-accent flex-shrink-0 flex items-center justify-center">

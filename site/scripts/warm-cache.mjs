@@ -27,17 +27,21 @@ async function json(path) {
 }
 
 async function hit(path) {
+  // What the last attempt came back with, so a FAILED line says whether it was
+  // the Worker's CPU limit (503 / "error code: 1102"), a timeout or the API.
+  let last = ''
   for (let attempt = 1; attempt <= RETRIES; attempt++) {
     try {
       const res = await fetch(BASE + path, { signal: AbortSignal.timeout(60000), headers: { 'user-agent': 'stretch-cache-warmer' } })
-      await res.arrayBuffer()
+      const body = new TextDecoder().decode(await res.arrayBuffer())
       if (res.status < 500) return { path, status: res.status, attempt }
-    } catch {
-      /* retry */
+      last = `HTTP ${res.status} ${body.match(/error code: \d+|Error \d{4}/i)?.[0] ?? ''}`.trim()
+    } catch (err) {
+      last = err?.name === 'TimeoutError' ? 'timed out after 60s' : String(err?.cause?.code || err?.message || err)
     }
     await new Promise((r) => setTimeout(r, 1500 * attempt))
   }
-  return { path, status: 'FAILED', attempt: RETRIES }
+  return { path, status: 'FAILED', attempt: RETRIES, last }
 }
 
 const programs = (await json('/api/programs'))?.programs ?? []
@@ -60,5 +64,5 @@ for (let i = 0; i < paths.length; i += CONCURRENCY) {
 const failed = results.filter((r) => r.status === 'FAILED' || r.status >= 500)
 const retried = results.filter((r) => r.attempt > 1 && r.status !== 'FAILED')
 console.log(`Done: ${results.length - failed.length}/${results.length} warm, ${retried.length} needed a retry.`)
-for (const r of failed) console.log(`  FAILED ${r.path}`)
+for (const r of failed) console.log(`  FAILED ${r.path}${r.last ? ` (${r.last})` : ''}`)
 process.exit(failed.length ? 1 : 0)

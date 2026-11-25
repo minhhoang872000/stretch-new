@@ -4,10 +4,10 @@ const scrollRef = ref<HTMLElement | null>(null)
 const activeIndicator = ref(0)
 
 const cards = computed(() => [
-  { title: t('individual_page.customer_carousel.card3'), desc: t('individual_page.customer_carousel.card3_desc'), img: '/office-who.png' },
-  { title: t('individual_page.customer_carousel.card4'), desc: t('individual_page.customer_carousel.card4_desc'), img: '/active-who.png' },
-  { title: t('individual_page.customer_carousel.card5'), desc: t('individual_page.customer_carousel.card5_desc'), img: '/recovery-who.png' },
-  { title: t('individual_page.customer_carousel.card6'), desc: t('individual_page.customer_carousel.card6_desc'), img: '/older-who.png' },
+  { title: t('individual_page.customer_carousel.card3'), desc: t('individual_page.customer_carousel.card3_desc'), img: '/office-who.webp' },
+  { title: t('individual_page.customer_carousel.card4'), desc: t('individual_page.customer_carousel.card4_desc'), img: '/active-who.webp' },
+  { title: t('individual_page.customer_carousel.card5'), desc: t('individual_page.customer_carousel.card5_desc'), img: '/recovery-who.webp' },
+  { title: t('individual_page.customer_carousel.card6'), desc: t('individual_page.customer_carousel.card6_desc'), img: '/older-who.webp' },
 ])
 
 function scrollLeft() {
@@ -99,9 +99,9 @@ function scrollToStep(stepIndex: number) {
               
               <!-- Card Text Content -->
               <div class="pt-5 pb-6 px-5 flex flex-col flex-grow text-center">
-                <h4 class="text-lg font-heading font-extrabold text-navy mb-2 group-hover:text-accent transition-colors duration-300">
+                <h3 class="text-lg font-heading font-extrabold text-navy mb-2 group-hover:text-accent transition-colors duration-300">
                   {{ card.title }}
-                </h4>
+                </h3>
                 <p class="text-sm text-text-secondary leading-relaxed font-normal">
                   {{ card.desc }}
                 </p>

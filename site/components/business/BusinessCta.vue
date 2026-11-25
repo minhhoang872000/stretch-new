@@ -39,8 +39,9 @@ const { trackCTA } = useTracking();
           <div
             class="flex items-center justify-center w-[28%] sm:w-[18%] lg:w-auto h-24 md:h-28 text-black transition-all duration-300"
           >
-            <NuxtImg
-              src="/logos/decathlon.png"
+            <NuxtImg width="240" height="240"
+              loading="lazy"
+              src="/logos/decathlon.webp"
               alt="Decathlon"
               class="h-15 md:h-20 w-auto object-contain brightness-0 opacity-85 hover:opacity-100 transition-opacity duration-300"
               style="filter: brightness(0)"
@@ -51,8 +52,9 @@ const { trackCTA } = useTracking();
           <div
             class="flex items-center justify-center w-[28%] sm:w-[18%] lg:w-auto h-24 md:h-28 text-black transition-all duration-300"
           >
-            <NuxtImg
-              src="/logos/garmin.png"
+            <NuxtImg width="890" height="240"
+              loading="lazy"
+              src="/logos/garmin.webp"
               alt="Garmin"
               class="h-7 md:h-10 w-auto object-contain brightness-0 opacity-85 hover:opacity-100 transition-opacity duration-300"
               style="filter: brightness(0)"
@@ -63,7 +65,8 @@ const { trackCTA } = useTracking();
           <div
             class="flex items-center justify-center w-[28%] sm:w-[18%] lg:w-auto h-24 md:h-28 text-black transition-all duration-300"
           >
-            <NuxtImg
+            <NuxtImg width="628" height="215"
+              loading="lazy"
               src="/logos/hyrox.webp"
               alt="Hyrox"
               class="h-8 md:h-12 w-auto object-contain brightness-0 opacity-85 hover:opacity-100 transition-opacity duration-300"
@@ -75,8 +78,9 @@ const { trackCTA } = useTracking();
           <div
             class="flex items-center justify-center w-[28%] sm:w-[18%] lg:w-auto h-24 md:h-28 text-black transition-all duration-300"
           >
-            <NuxtImg
-              src="/logos/ironman.png"
+            <NuxtImg width="240" height="240"
+              loading="lazy"
+              src="/logos/ironman.webp"
               alt="Ironman"
               class="h-18 md:h-24 w-auto object-contain brightness-0 opacity-85 hover:opacity-100 transition-opacity duration-300"
               style="filter: brightness(0)"
@@ -87,7 +91,8 @@ const { trackCTA } = useTracking();
           <div
             class="flex items-center justify-center w-[28%] sm:w-[18%] lg:w-auto h-24 md:h-28 text-black transition-all duration-300"
           >
-            <NuxtImg
+            <NuxtImg width="457" height="240"
+              loading="lazy"
               src="/logos/lululemon.webp"
               alt="Lululemon"
               class="h-15 md:h-20 w-auto object-contain opacity-85 hover:opacity-100 transition-opacity duration-300"

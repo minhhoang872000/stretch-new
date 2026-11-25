@@ -38,7 +38,7 @@ const localePath = useLocalePath()
 
           <!-- Contact Button: Slim Outline -->
           <a 
-            href="mailto:hello@stretch.vn" 
+            href="mailto:admin@stretch.vn"
             class="flex items-center gap-3 px-8 py-3.5 bg-transparent border border-white/20 text-white font-heading font-bold text-sm rounded-[12px] hover:bg-white/5 transition-all active:scale-[0.98]"
             @click="trackCTA('floating-cta-contact', 'general')"
           >

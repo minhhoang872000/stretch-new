@@ -1,4 +1,7 @@
 {
+  "nuxtSiteConfig": {
+    "description": "Sports recovery, physiotherapy and corporate wellness in Ho Chi Minh City. Book a personalized session online."
+  },
   "nav": {
     "home": "Home",
     "programs": "Programs",
@@ -19,14 +22,16 @@
     "logout": "Sign out"
   },
   "seo": {
+    "programs_desc": "Every online course, mini-course and live workshop on movement and recovery from Stretch Academy. Filter by format and topic.",
+    "booking_title": "Book a Recovery Session Online — Stretch.vn",
     "home_title": "Stretch.vn — Professional Movement Recovery",
-    "home_desc": "Personalized recovery & movement support — at our clinic, at home, or at your event. Book your session online.",
-    "sharing_hub_title": "Stretch.vn — Sharing Hub",
-    "sharing_hub_desc": "Movement insights, recovery education, team stories, company updates, and event highlights — all in one place.",
-    "booking_desc": "Proper care. Effective recovery. Book your personalized session online.",
+    "home_desc": "Personalized recovery and movement support in Ho Chi Minh City, at our clinic, at home or at your event. Book a session online.",
+    "sharing_hub_title": "Sharing Hub: Recovery & Movement Articles — Stretch.vn",
+    "sharing_hub_desc": "Movement insights, recovery education, traditional medicine guides, team stories and event highlights from Stretch.vn, all in one place.",
+    "booking_desc": "Book a personalized recovery session online: individual care at our clinic or at home, or recovery services for your team or event.",
     "business_title": "Recovery & Wellness for Businesses — Stretch.vn",
     "business_desc": "Corporate wellness, on-site event recovery and hands-on training for teams in Vietnam. Programs built around how your people work and move.",
-    "learning_hub_title": "Stretch.vn — Learning Hub",
+    "learning_hub_title": "Learning Hub: Movement & Recovery Courses — Stretch.vn",
     "learning_hub_desc": "Applied movement and recovery education for coaches, therapists and anyone who moves. Online courses, live workshops and practical case labs."
   },
   "learning": {
@@ -610,12 +615,12 @@
     "website": "Website",
     "email": "Email",
     "copyright": "© {year} Stretch.vn by Monaco Healthcare. {rights}",
-    "address": "493 Dien Bien Phu, Ban Co Ward, District 3, HCMC",
+    "address": "493 Dien Bien Phu, Ban Co Ward, Ho Chi Minh City",
     "view_map": "View on Google Maps",
     "opening_hours": "Opening Hours",
-    "hours_weekday": "Monday – Saturday: 8:00 AM – 5:00 PM",
-    "hours_last_booking": "Last booking: 5:00 PM",
-    "hours_sunday": "Sunday: priority for pre-booked appointments"
+    "hours_weekday": "Monday – Saturday: 8:00 AM – 8:00 PM",
+    "hours_last_booking": "Last booking: 7:00 PM",
+    "hours_sunday": "Sunday: reserved for clients with a prior appointment."
   },
   "booking": {
     "heroTitle1": "BOOK YOUR",
@@ -1163,7 +1168,7 @@
   },
   "education_page": {
     "seo_title": "Education & Training — Stretch.vn",
-    "seo_desc": "Structured training for teams who want consistency, safer hands-on skills, and better recovery outcomes.",
+    "seo_desc": "Structured hands-on training for coaches and teams who want consistency, safer manual skills and better recovery outcomes for clients.",
     "hero": {
       "label": "EDUCATION & TRAINING",
       "heading": "Train teams to think beyond technique.",

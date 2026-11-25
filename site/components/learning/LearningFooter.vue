@@ -55,7 +55,7 @@ const links = computed(() => [
         <div class="flex flex-wrap gap-x-4 gap-y-1 text-[12.5px] text-white/60">
           <a href="tel:+84938713498" class="hover:text-white transition-colors">+84 938 713 498</a>
           <a href="mailto:info@stretch.vn" class="hover:text-white transition-colors">info@stretch.vn</a>
-          <a href="https://www.facebook.com/stretchvn/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+          <a href="https://www.facebook.com/StretchVietnam/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
             Facebook
           </a>
         </div>

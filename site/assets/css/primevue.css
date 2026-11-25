@@ -1,0 +1,15 @@
+/*
+ * PrimeVue v3 core + theme — imported by the two booking flows, the only
+ * components that render PrimeVue controls, NOT by main.css.
+ *
+ * The theme is 276 KB of rules for every PrimeVue component. In main.css it was
+ * three quarters of the render-blocking entry stylesheet on every page; here it
+ * is bundled with the booking page only.
+ *
+ * The handful of global (non `.p-*`) rules the theme applied to the whole site
+ * are kept in main.css — see "Carried over from the PrimeVue theme" there.
+ * primeicons is not imported: PrimeVue 3.5x draws its own icons as inline SVG
+ * and nothing in the site uses a `pi pi-*` class.
+ */
+@import "primevue/resources/themes/lara-light-blue/theme.css";
+@import "primevue/resources/primevue.min.css";

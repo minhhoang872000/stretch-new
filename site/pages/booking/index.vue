@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import BookingLanding from '~/components/booking/BookingLanding.vue'
-import IndividualBookingFlow from '~/components/booking/IndividualBookingFlow.vue'
-import BusinessBookingFlow from '~/components/booking/BusinessBookingFlow.vue'
+
+// The two flows carry PrimeVue (its components and a 230 KB theme stylesheet).
+// Imported statically they were part of this page's chunk, and Nuxt prefetches
+// a page's chunk wherever a link to it is on screen — the "Đặt lịch" button in
+// the header — so every page of the site downloaded PrimeVue. As async
+// components they load only here, and only once this page is open.
+const loadIndividualFlow = () => import('~/components/booking/IndividualBookingFlow.vue')
+const loadBusinessFlow = () => import('~/components/booking/BusinessBookingFlow.vue')
+const IndividualBookingFlow = defineAsyncComponent(loadIndividualFlow)
+const BusinessBookingFlow = defineAsyncComponent(loadBusinessFlow)
 
 const { t } = useI18n()
-const { trackPageView } = useTracking()
 
 useSeo({
-  title: t('nav.bookSession') + ' – Stretch.vn',
+  title: t('seo.booking_title'),
   description: t('seo.booking_desc'),
   type: 'website',
 })
@@ -18,7 +25,9 @@ const currentStep = ref(1)
 
 // Pre-select flow if needed (e.g. from query params)
 onMounted(() => {
-  trackPageView()
+  // Fetch both flows as soon as the landing is up, so choosing one is instant.
+  loadIndividualFlow()
+  loadBusinessFlow()
   if (route.query.type === 'business') {
     bookingFlow.value = 'business'
   } else if (route.query.type === 'individual') {

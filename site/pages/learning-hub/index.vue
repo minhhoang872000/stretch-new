@@ -7,19 +7,15 @@
  * from the "Learning Hub" entry in the main site header.
  */
 const { t } = useI18n()
-const { trackPageView } = useTracking()
 
 useSeo({
   viOnly: true,
   title: t('seo.learning_hub_title'),
   description: t('seo.learning_hub_desc'),
-  image: '/education-workshop.png',
+  image: '/education-workshop.webp',
   type: 'website',
 })
 
-onMounted(() => {
-  trackPageView()
-})
 </script>
 
 <template>

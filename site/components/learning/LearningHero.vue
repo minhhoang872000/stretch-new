@@ -118,9 +118,9 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
         <div class="swiper-wrapper">
           <!-- ══ 1. Khóa học thịnh hành ══ -->
           <div class="swiper-slide hub-slide hub-slide--0" role="group" aria-roledescription="slide" :aria-label="`1 / ${total}`" :aria-hidden="index !== 0">
-            <NuxtImg
-              src="/education-gallery-2.png"
-              alt=""
+            <NuxtImg width="1024" height="1024"
+              src="/education-gallery-2.webp"
+              alt="Học viên thực hành kỹ thuật phục hồi trong lớp của Stretch Academy"
               class="hub-slide__img"
               format="webp"
               sizes="100vw lg:1200px"
@@ -160,9 +160,9 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
 
           <!-- ══ 2. Workshop ══ -->
           <div class="swiper-slide hub-slide hub-slide--2" role="group" aria-roledescription="slide" :aria-label="`2 / ${total}`" :aria-hidden="index !== 1">
-            <NuxtImg
-              src="/education-workshop.png"
-              alt=""
+            <NuxtImg width="1024" height="1024"
+              src="/education-workshop.webp"
+              alt="Workshop trực tiếp về vận động và phục hồi"
               class="hub-slide__img"
               format="webp"
               sizes="100vw lg:1200px"
@@ -195,9 +195,9 @@ const tab = (i: number) => (index.value === i ? 0 : -1)
 
           <!-- ══ 3. Đội ngũ ══ -->
           <div class="swiper-slide hub-slide hub-slide--1" role="group" aria-roledescription="slide" :aria-label="`3 / ${total}`" :aria-hidden="index !== 2">
-            <NuxtImg
+            <NuxtImg width="1920" height="1280"
               src="/education.webp"
-              alt=""
+              alt="Buổi đào tạo chuyên môn của Stretch.vn"
               class="hub-slide__img"
               format="webp"
               sizes="100vw lg:1200px"

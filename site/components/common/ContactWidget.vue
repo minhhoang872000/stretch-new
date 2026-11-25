@@ -18,14 +18,14 @@ const contactItems = computed(() => [
   {
     key: 'zalo',
     label: t('contact_widget.zalo'),
-    href: 'http://zalo.me/4237229823551208502?src=qr&f=1',
+    href: 'https://zalo.me/4237229823551208502?src=qr&f=1',
     color: '#0068FF',
     icon: 'zalo',
   },
   {
     key: 'messenger',
     label: t('contact_widget.messenger'),
-    href: 'https://www.facebook.com/share/1c3ffE4Wir/?mibextid=wwXIfr',
+    href: 'https://m.me/345147842023287',
     color: '#0084FF',
     icon: 'messenger',
   },

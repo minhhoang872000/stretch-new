@@ -1,0 +1,17 @@
+# Cloudflare Pages serves anything without a rule here as
+# `max-age=0, must-revalidate`, so every page view re-checked every image.
+# Nitro appends its own rules for /_nuxt/* (hashed, immutable) at build time.
+#
+# 30 days, not a year and not `immutable`: these file names carry no content
+# hash, so a replaced image keeps its URL. To change one sooner than that,
+# give the new file a new name.
+/*.webp
+  Cache-Control: public, max-age=2592000
+/*.png
+  Cache-Control: public, max-age=2592000
+/*.jpg
+  Cache-Control: public, max-age=2592000
+/*.jpeg
+  Cache-Control: public, max-age=2592000
+/favicon.ico
+  Cache-Control: public, max-age=2592000

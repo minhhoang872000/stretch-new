@@ -17,9 +17,9 @@
             </svg>
           </div>
           <div>
-            <h4 class="text-[15px] font-heading font-extrabold text-navy leading-tight mb-0.5">
+            <h3 class="text-[15px] font-heading font-extrabold text-navy leading-tight mb-0.5">
               {{ $t('individual_page.trust_features.title1') }}
-            </h4>
+            </h3>
             <p class="text-[13px] text-navy/60 font-medium">
               {{ $t('individual_page.trust_features.desc1') }}
             </p>
@@ -39,9 +39,9 @@
             </svg>
           </div>
           <div>
-            <h4 class="text-[15px] font-heading font-extrabold text-navy leading-tight mb-0.5">
+            <h3 class="text-[15px] font-heading font-extrabold text-navy leading-tight mb-0.5">
               {{ $t('individual_page.trust_features.title2') }}
-            </h4>
+            </h3>
             <p class="text-[13px] text-navy/60 font-medium">
               {{ $t('individual_page.trust_features.desc2') }}
             </p>
@@ -58,9 +58,9 @@
             </svg>
           </div>
           <div>
-            <h4 class="text-[15px] font-heading font-extrabold text-navy leading-tight mb-0.5">
+            <h3 class="text-[15px] font-heading font-extrabold text-navy leading-tight mb-0.5">
               {{ $t('individual_page.trust_features.title3') }}
-            </h4>
+            </h3>
             <p class="text-[13px] text-navy/60 font-medium">
               {{ $t('individual_page.trust_features.desc3') }}
             </p>
@@ -78,9 +78,9 @@
             </svg>
           </div>
           <div>
-            <h4 class="text-[15px] font-heading font-extrabold text-navy leading-tight mb-0.5">
+            <h3 class="text-[15px] font-heading font-extrabold text-navy leading-tight mb-0.5">
               {{ $t('individual_page.trust_features.title4') }}
-            </h4>
+            </h3>
             <p class="text-[13px] text-navy/60 font-medium">
               {{ $t('individual_page.trust_features.desc4') }}
             </p>

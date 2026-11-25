@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const localePath = useLocalePath()
-const { openContact } = useContact()
 const isVisible = ref(false)
 const isDismissed = ref(false)
 const isShaking = ref(false)
@@ -64,13 +63,15 @@ function dismiss() {
             <NuxtLink :to="localePath('/booking')" class="btn-orange text-sm px-5 py-2.5">
               {{ $t('nav.bookSession') }}
             </NuxtLink>
-            <button 
-              @click="openContact"
+            <a
+              href="https://zalo.me/4237229823551208502?src=qr&f=1"
+              target="_blank"
+              rel="noopener noreferrer"
               class="btn-outline text-sm px-5 py-2.5 transition-all"
               :class="isShaking ? 'shake-button' : ''"
             >
               {{ $t('cta_bar.get_advice') }}
-            </button>
+            </a>
           </div>
 
           <!-- Close -->

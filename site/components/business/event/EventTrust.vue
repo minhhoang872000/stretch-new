@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const partners = [
-  { name: 'Pickleball Vietnam', logo: '/logos/pickleball-vietnam.png', height: 'h-14 md:h-22' },
-  { name: 'Ironman 70.3 Vietnam', logo: '/logos/ironman.png', height: 'h-18 md:h-28' },
+  { name: 'Pickleball Vietnam', logo: '/logos/pickleball-vietnam.webp', height: 'h-14 md:h-22' },
+  { name: 'Ironman 70.3 Vietnam', logo: '/logos/ironman.webp', height: 'h-18 md:h-28' },
   { name: 'Lululemon', logo: '/logos/lululemon.webp', height: 'h-14 md:h-22' },
-  { name: 'Decathlon', logo: '/logos/decathlon.png', height: 'h-12 md:h-18' },
-  { name: 'Garmin', logo: '/logos/garmin.png', height: 'h-6 md:h-9' },
+  { name: 'Decathlon', logo: '/logos/decathlon.webp', height: 'h-12 md:h-18' },
+  { name: 'Garmin', logo: '/logos/garmin.webp', height: 'h-6 md:h-9' },
   { name: 'Hyrox', logo: '/logos/hyrox.webp', height: 'h-7 md:h-10' },
 ]
 </script>
@@ -27,6 +27,7 @@ const partners = [
           class="flex items-center justify-center w-[40%] sm:w-[28%] lg:w-auto transition-all duration-300"
         >
           <NuxtImg
+            loading="lazy"
             :src="p.logo"
             :alt="p.name"
             :class="[

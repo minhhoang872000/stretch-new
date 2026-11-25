@@ -81,7 +81,7 @@ useSchemaOrg([
     'address': {
       '@type': 'PostalAddress',
       'streetAddress': '493 Điện Biên Phủ',
-      'addressLocality': 'Phường Bàn Cờ, Quận 3',
+      'addressLocality': 'Phường Bàn Cờ',
       'addressRegion': 'TP. Hồ Chí Minh',
       'postalCode': '700000',
       'addressCountry': 'VN',
@@ -100,11 +100,11 @@ useSchemaOrg([
         '@type': 'OpeningHoursSpecification',
         'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         'opens': '08:00',
-        'closes': '18:00',
+        'closes': '20:00',
       },
     ],
     'sameAs': [
-      'https://www.facebook.com/stretch.vn',
+      'https://www.facebook.com/StretchVietnam/',
       'https://www.instagram.com/stretch.vn',
     ],
     'hasOfferCatalog': {

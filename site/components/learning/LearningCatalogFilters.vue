@@ -77,7 +77,7 @@ const activeCount = computed(() => (kind.value !== 'all' ? 1 : 0) + modes.value.
     <div id="catalog-filters-body" class="filters__body">
     <!-- ══ Programme type — single choice, chips ══ -->
     <section class="filters__group">
-      <h3 class="filters__title">{{ t('learning.catalog.kind_title') }}</h3>
+      <h2 class="filters__title">{{ t('learning.catalog.kind_title') }}</h2>
       <div class="chips" role="radiogroup" :aria-label="t('learning.catalog.kind_title')">
         <button
           v-for="option in KINDS"
@@ -98,7 +98,7 @@ const activeCount = computed(() => (kind.value !== 'all' ? 1 : 0) + modes.value.
 
     <!-- ══ Format — multi choice, two tiles; none picked = all ══ -->
     <section class="filters__group">
-      <h3 class="filters__title">{{ t('learning.catalog.mode_title') }}</h3>
+      <h2 class="filters__title">{{ t('learning.catalog.mode_title') }}</h2>
       <div class="tiles">
         <button
           v-for="option in MODES"
@@ -127,7 +127,7 @@ const activeCount = computed(() => (kind.value !== 'all' ? 1 : 0) + modes.value.
 
     <!-- ══ Topic — multi choice, custom checkboxes ══ -->
     <section class="filters__group">
-      <h3 class="filters__title">{{ t('learning.catalog.topic_title') }}</h3>
+      <h2 class="filters__title">{{ t('learning.catalog.topic_title') }}</h2>
       <ul class="checks">
         <li v-for="option in TOPICS" :key="option">
           <label class="check" :class="{ 'check--on': topics.includes(option), 'check--empty': emptyTopic(option) }">

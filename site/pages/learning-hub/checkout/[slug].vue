@@ -17,7 +17,6 @@ const { t } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
 const config = useRuntimeConfig()
-const { trackPageView } = useTracking()
 const { loggedIn, whenReady } = useHubSession()
 const { open: openAuth } = useAuthModal()
 const { notify } = useNotification()
@@ -170,7 +169,6 @@ onMounted(async () => {
     navigateTo(learnPath.value)
     return
   }
-  trackPageView()
 
   try {
     const res = await $fetch<{ orders: CheckoutOrder[] }>('/api/checkout/orders', {

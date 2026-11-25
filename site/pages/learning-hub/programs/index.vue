@@ -14,7 +14,6 @@ const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const localePath = useLocalePath()
-const { trackPageView } = useTracking()
 const { programs, counts, PROGRAMS_PER_PAGE, ready: catalogReady } = useLearningCatalog()
 // Server-rendered: wait for the catalogue so it lands in the SSR payload.
 await catalogReady
@@ -155,14 +154,11 @@ watch([query, kind, modes, topics, sort, page], () => {
 useSeo({
   viOnly: true,
   title: t('learning.catalog.title'),
-  description: t('learning.catalog.subtitle'),
-  image: '/education-workshop.png',
+  description: t('seo.programs_desc'),
+  image: '/education-workshop.webp',
   type: 'website',
 })
 
-onMounted(() => {
-  trackPageView()
-})
 </script>
 
 <template>

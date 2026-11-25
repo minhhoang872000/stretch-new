@@ -154,38 +154,17 @@ export default defineNuxtConfig({
         { name: 'geo.placename', content: 'Ho Chi Minh City' },
         { name: 'ICBM', content: '10.7725, 106.6784' },
       ],
-      script: [
-        // SMAX chat plugin. `smAsyncInit` must be defined BEFORE sdk.min.js
-        // evaluates, so both tags are injected at bodyClose in this order.
-        {
-          tagPosition: 'bodyClose',
-          innerHTML: `window.smAsyncInit = function () {
-  SM.init({
-    page_pid: 'ctm6a827fa7f4ed6d532ceeb454',
-    trigger_id: '6a82806628e2f4ae79767757',
-    chat_type: 'PLUGIN',
-    env: 'prod'
-  })
-}`,
-        },
-        {
-          tagPosition: 'bodyClose',
-          src: 'https://chatbox.smax.ai/sdk.min.js',
-          async: true,
-          defer: true,
-        },
-      ],
+      // The SMAX chat widget is loaded by plugins/smax-chat.client.ts once the
+      // visitor interacts, not from a <script> here: its SDK and everything it
+      // pulls in competed with the page's own first render.
+      //
+      // No icon-font stylesheet either. Material Symbols was a render-blocking
+      // request to fonts.googleapis.com plus a variable font of every icon, for
+      // the two glyphs the site used (now inline SVG in BaseButton/BaseModal).
+      // Text fonts are self-hosted by @nuxtjs/google-fonts (`download: true`),
+      // so nothing needs a connection to fonts.gstatic.com.
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        {
-          rel: 'preconnect',
-          href: 'https://fonts.gstatic.com',
-          crossorigin: '',
-        },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
-        },
       ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -386,6 +365,19 @@ export default defineNuxtConfig({
   // 5 minutes cuts how often the origin is hit ~5x while still picking up CMS
   // edits well within a business day.
   routeRules: {
+    // Security headers on every response (Nitro writes these into dist/_headers
+    // for the static pages and sets them itself on Worker-rendered ones). HSTS
+    // without includeSubDomains/preload on purpose: other hosts under stretch.vn
+    // are not all behind the same certificate. No CSP yet — the chat widget,
+    // Google sign-in and the R2 image host would each need an allowance, and a
+    // wrong policy breaks the page silently.
+    '/**': {
+      headers: {
+        'Strict-Transport-Security': 'max-age=31536000',
+        'X-Frame-Options': 'SAMEORIGIN',
+        'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+      },
+    },
     // The /products listing + detail pages were removed (2026-07-31). They were
     // in the sitemap, so old URLs may still be indexed / linked — 301 them to the
     // closest topical page instead of serving a 404.

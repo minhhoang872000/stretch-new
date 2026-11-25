@@ -9,7 +9,6 @@
  */
 const { t } = useI18n()
 const localePath = useLocalePath()
-const { trackPageView } = useTracking()
 const { programs } = useLearningCatalog()
 const { saved, synced } = useSavedPrograms()
 
@@ -17,7 +16,6 @@ const { saved, synced } = useSavedPrograms()
 const mounted = ref(false)
 onMounted(() => {
   mounted.value = true
-  trackPageView()
 })
 
 /** Newest saved first. */
@@ -29,7 +27,7 @@ const items = computed(() => {
 useSeo({
   title: t('learning.saved.title'),
   description: t('learning.saved.subtitle'),
-  image: '/education-class.png',
+  image: '/education-class.webp',
   type: 'website',
   noIndex: true,
 })

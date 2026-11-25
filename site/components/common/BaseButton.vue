@@ -48,10 +48,18 @@ const classes = computed(() => {
     :class="classes"
     class="disabled:cursor-not-allowed"
   >
-    <span
+    <svg
       v-if="loading"
-      class="material-symbols-outlined animate-spin text-lg"
-    >progress_activity</span>
+      class="animate-spin size-6 shrink-0"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      aria-hidden="true"
+    >
+      <path d="M12 3a9 9 0 1 0 9 9" />
+    </svg>
     <slot />
   </button>
 </template>

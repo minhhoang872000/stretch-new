@@ -50,7 +50,7 @@ const localePath = useLocalePath()
 
         <!-- Company -->
         <div>
-          <h4 class="text-sm font-heading font-semibold text-white mb-4">{{ $t('footer.company') }}</h4>
+          <h2 class="text-sm font-heading font-semibold text-white mb-4">{{ $t('footer.company') }}</h2>
           <ul class="space-y-2.5">
             <li>
               <a 
@@ -77,7 +77,7 @@ const localePath = useLocalePath()
 
         <!-- Connect & Address -->
         <div class="lg:col-span-1">
-          <h4 class="text-sm font-heading font-semibold text-white mb-4">{{ $t('footer.contact') }}</h4>
+          <h2 class="text-sm font-heading font-semibold text-white mb-4">{{ $t('footer.contact') }}</h2>
           <ul class="space-y-4 mb-6">
             <li class="flex items-start gap-3 group">
               <svg class="text-accent w-[18px] h-[18px] shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -115,13 +115,13 @@ const localePath = useLocalePath()
 
           <!-- Opening Hours -->
           <div class="border-t border-white/10 pt-5 mb-6">
-            <h5 class="text-xs font-heading font-semibold text-white/80 uppercase tracking-wider mb-3 flex items-center gap-2">
+            <h3 class="text-xs font-heading font-semibold text-white/80 uppercase tracking-wider mb-3 flex items-center gap-2">
               <svg class="text-accent w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 6 12 12 16 14" />
               </svg>
               {{ $t('footer.opening_hours') }}
-            </h5>
+            </h3>
             <ul class="space-y-1.5">
               <li class="text-sm text-white/60">{{ $t('footer.hours_weekday') }}</li>
               <li class="text-sm text-white/60">{{ $t('footer.hours_last_booking') }}</li>
@@ -131,7 +131,7 @@ const localePath = useLocalePath()
           
           <div class="flex gap-3">
             <!-- Social links -->
-            <a href="https://www.facebook.com/stretchvn/" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Facebook">
+            <a href="https://www.facebook.com/StretchVietnam/" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Facebook">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="text-white/70">
                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
               </svg>

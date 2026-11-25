@@ -10,16 +10,16 @@ interface Partner {
 }
 
 const partners: Partner[] = [
-  { name: "Decathlon", logo: "/logos/decathlon.png" },
-  { name: "Garmin", logo: "/logos/garmin.png" },
+  { name: "Decathlon", logo: "/logos/decathlon.webp" },
+  { name: "Garmin", logo: "/logos/garmin.webp" },
   { name: "Hyrox", logo: "/logos/hyrox.webp" },
-  { name: "Ironman", logo: "/logos/ironman.png" },
+  { name: "Ironman", logo: "/logos/ironman.webp" },
   { name: "Lululemon", logo: "/logos/lululemon.webp" },
-  { name: "Partner 1", logo: "/logos/partner-1.png" },
-  { name: "Partner 10", logo: "/logos/partner-10.png" },
-  { name: "Partner 11", logo: "/logos/partner-11.png" },
-  { name: "Partner 12", logo: "/logos/partner-12.png" },
-  { name: "Partner 13", logo: "/logos/partner-13.png" },
+  { name: "Partner 1", logo: "/logos/partner-1.webp" },
+  { name: "Partner 10", logo: "/logos/partner-10.webp" },
+  { name: "Partner 11", logo: "/logos/partner-11.webp" },
+  { name: "Partner 12", logo: "/logos/partner-12.webp" },
+  { name: "Partner 13", logo: "/logos/partner-13.webp" },
 ];
 
 // Continuous logo ticker (Swiper, linear, never stops unless hovered).

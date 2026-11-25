@@ -7,7 +7,6 @@
  */
 const { t } = useI18n()
 const localePath = useLocalePath()
-const { trackPageView } = useTracking()
 const { loggedIn, whenReady } = useHubSession()
 const { open: openAuth } = useAuthModal()
 const { active, completed } = useMyLearning()
@@ -31,7 +30,7 @@ useSeo({
   noIndex: true,
   title: t('learning.my.title'),
   description: t('learning.my.subtitle'),
-  image: '/education-class.png',
+  image: '/education-class.webp',
   type: 'website',
 })
 
@@ -43,7 +42,6 @@ onMounted(async () => {
     openAuth('login')
     return
   }
-  trackPageView()
 })
 </script>
 

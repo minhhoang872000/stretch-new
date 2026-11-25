@@ -47,7 +47,7 @@ function mapApiPost(p: any, catMap: Record<string, string>, locale: string): Sit
     slug: p.slug,
     hasEn: postHasEnglish(p),
     title: (en ? p.titleEn : p.titleVi || p.titleEn) || '',
-    excerpt: (en ? p.excerptEn || p.excerptVi : p.excerptVi || p.excerptEn) || '',
+    excerpt: String((en ? p.excerptEn || p.excerptVi : p.excerptVi || p.excerptEn) || '').trim(),
     category: catMap[p.category] || p.category,
     categoryKey: p.category,
     image: p.coverImage || '',

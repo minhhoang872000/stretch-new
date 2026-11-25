@@ -1,0 +1,537 @@
+{
+ "services": {
+  "individual": {
+   "vi": [
+    "/vi/individual",
+    "dịch vụ giãn cơ trị liệu và phục hồi cá nhân tại Quận 3"
+   ],
+   "en": [
+    "/individual",
+    "one-to-one recovery sessions in District 3, Ho Chi Minh City"
+   ]
+  },
+  "yhct": {
+   "vi": [
+    "/vi/individual",
+    "châm cứu, xoa bóp bấm huyệt và phục hồi tại Stretch.vn Quận 3"
+   ],
+   "en": [
+    "/individual",
+    "acupuncture, acupressure and recovery sessions at Stretch.vn in District 3"
+   ]
+  },
+  "corporate": {
+   "vi": [
+    "/vi/business/corporate-wellness",
+    "chương trình wellness và giãn cơ tại văn phòng cho doanh nghiệp"
+   ],
+   "en": [
+    "/business/corporate-wellness",
+    "corporate wellness and on-site stretching for office teams"
+   ]
+  },
+  "event": {
+   "vi": [
+    "/vi/business/recovery-event",
+    "trạm phục hồi cho giải chạy và sự kiện thể thao"
+   ],
+   "en": [
+    "/business/recovery-event",
+    "recovery stations for races and sports events"
+   ]
+  },
+  "education": {
+   "vi": [
+    "/vi/business/education-training",
+    "khoá đào tạo phục hồi vận động cho huấn luyện viên"
+   ],
+   "en": [
+    "/business/education-training",
+    "movement-recovery training for coaches and teams"
+   ]
+  }
+ },
+ "posts": {
+  "y-hoc-co-truyen-la-gi": {
+   "kw": [
+    "y học cổ truyền là gì",
+    "what is traditional medicine"
+   ],
+   "anchors_vi": [
+    "y học cổ truyền(?! (?:là gì|có an toàn|trong thể thao|&|và y học))"
+   ],
+   "anchors_en": [
+    "traditional medicine(?! (?:safety|in sport|&|and modern|department|& rehabilitation))"
+   ],
+   "link_vi": "Y học cổ truyền là gì? Nguyên lý, phương pháp và vai trò trong phục hồi",
+   "link_en": "What traditional medicine is and how it fits modern recovery",
+   "related": [
+    "what-is-acupuncture",
+    "electroacupuncture-how-it-works-benefits-and-safety-considerations",
+    "xoa-bop-bam-huyet-la-gi",
+    "y-hoc-co-truyen-co-an-toan-khong",
+    "traditional-medicine-and-modern-medicine"
+   ],
+   "service": "yhct",
+   "tags": [
+    "y học cổ truyền là gì",
+    "YHCT",
+    "châm cứu",
+    "giác hơi",
+    "xoa bóp bấm huyệt"
+   ]
+  },
+  "what-is-acupuncture": {
+   "kw": [
+    "châm cứu là gì",
+    "what is acupuncture"
+   ],
+   "anchors_vi": [
+    "(?<!điện )châm cứu"
+   ],
+   "anchors_en": [
+    "acupuncture(?! needles?)"
+   ],
+   "link_vi": "Châm cứu là gì, châm có đau không và một buổi châm diễn ra thế nào",
+   "link_en": "What acupuncture is, whether it hurts and what happens in a session",
+   "related": [
+    "electroacupuncture-how-it-works-benefits-and-safety-considerations",
+    "y-hoc-co-truyen-co-an-toan-khong",
+    "traditional-medicine-neck-shoulder-pain"
+   ],
+   "service": "yhct",
+   "tags": [
+    "châm cứu là gì",
+    "châm cứu có đau không",
+    "kim châm cứu",
+    "YHCT"
+   ]
+  },
+  "electroacupuncture-how-it-works-benefits-and-safety-considerations": {
+   "kw": [
+    "điện châm khác châm cứu thế nào",
+    "electroacupuncture vs acupuncture"
+   ],
+   "anchors_vi": [
+    "điện châm"
+   ],
+   "anchors_en": [
+    "electroacupuncture"
+   ],
+   "link_vi": "Điện châm khác châm cứu thủ công như thế nào",
+   "link_en": "How electroacupuncture differs from manual acupuncture",
+   "related": [
+    "what-is-acupuncture",
+    "y-hoc-co-truyen-co-an-toan-khong",
+    "traditional-medicine-neck-shoulder-pain"
+   ],
+   "service": "yhct",
+   "tags": [
+    "điện châm",
+    "điện châm khác châm cứu",
+    "châm cứu",
+    "YHCT"
+   ]
+  },
+  "xoa-bop-bam-huyet-la-gi": {
+   "kw": [
+    "xoa bóp bấm huyệt khác massage",
+    "acupressure vs massage"
+   ],
+   "anchors_vi": [
+    "xoa bóp bấm huyệt",
+    "bấm huyệt"
+   ],
+   "anchors_en": [
+    "acupressure massage",
+    "acupressure"
+   ],
+   "link_vi": "Xoa bóp bấm huyệt khác massage thư giãn ở điểm nào",
+   "link_en": "How acupressure massage differs from a relaxation massage",
+   "related": [
+    "traditional-medicine-neck-shoulder-pain",
+    "y-hoc-co-truyen-co-an-toan-khong",
+    "y-hoc-co-truyen-la-gi"
+   ],
+   "service": "yhct",
+   "tags": [
+    "xoa bóp bấm huyệt",
+    "bấm huyệt",
+    "massage trị liệu",
+    "YHCT"
+   ]
+  },
+  "y-hoc-co-truyen-co-an-toan-khong": {
+   "kw": [
+    "ai không nên châm cứu",
+    "acupuncture contraindications"
+   ],
+   "anchors_vi": [
+    "chống chỉ định"
+   ],
+   "anchors_en": [
+    "contraindications?"
+   ],
+   "link_vi": "Ai không nên châm cứu, giác hơi: chỉ định và chống chỉ định",
+   "link_en": "Who should avoid acupuncture or cupping: indications and contraindications",
+   "related": [
+    "what-is-acupuncture",
+    "electroacupuncture-how-it-works-benefits-and-safety-considerations",
+    "traditional-medicine-and-modern-medicine"
+   ],
+   "service": "yhct",
+   "tags": [
+    "chống chỉ định châm cứu",
+    "ai không nên châm cứu",
+    "an toàn y học cổ truyền",
+    "YHCT"
+   ]
+  },
+  "traditional-medicine-and-modern-medicine": {
+   "kw": [
+    "kết hợp đông y và tây y",
+    "traditional vs modern medicine"
+   ],
+   "anchors_vi": [
+    "y học hiện đại"
+   ],
+   "anchors_en": [
+    "modern medicine"
+   ],
+   "link_vi": "Nên chọn y học cổ truyền hay y học hiện đại, hay kết hợp cả hai",
+   "link_en": "Traditional or modern medicine: when to choose, when to combine",
+   "related": [
+    "y-hoc-co-truyen-la-gi",
+    "y-hoc-co-truyen-co-an-toan-khong",
+    "dau-co-khi-nao-dang-lo"
+   ],
+   "service": "yhct",
+   "tags": [
+    "y học cổ truyền và y học hiện đại",
+    "kết hợp đông y tây y",
+    "YHCT"
+   ]
+  },
+  "y-hoc-co-truyen-trong-the-thao-phuc-hoi": {
+   "kw": [
+    "châm cứu giác hơi cho vận động viên",
+    "acupuncture and cupping for athletes"
+   ],
+   "anchors_vi": [
+    "giác hơi"
+   ],
+   "anchors_en": [
+    "cupping"
+   ],
+   "link_vi": "Châm cứu, giác hơi cho vận động viên: y học cổ truyền trong thể thao",
+   "link_en": "Acupuncture and cupping for athletes: traditional medicine in sport",
+   "related": [
+    "what-is-sport-recovery",
+    "what-is-acupuncture",
+    "y-hoc-co-truyen-co-an-toan-khong",
+    "hustle-competition-2026-x-stretchvn"
+   ],
+   "service": "individual",
+   "tags": [
+    "châm cứu cho vận động viên",
+    "giác hơi thể thao",
+    "phục hồi thể thao",
+    "YHCT"
+   ]
+  },
+  "traditional-medicine-neck-shoulder-pain": {
+   "kw": [
+    "châm cứu chữa đau vai gáy",
+    "acupuncture for neck and shoulder pain"
+   ],
+   "anchors_vi": [
+    "đau cổ vai gáy"
+   ],
+   "anchors_en": [
+    "neck and shoulder pain"
+   ],
+   "link_vi": "Châm cứu và bấm huyệt hỗ trợ đau cổ vai gáy như thế nào",
+   "link_en": "How acupuncture and acupressure may help neck and shoulder pain",
+   "related": [
+    "dau-co-khi-nao-dang-lo",
+    "gian-co-vai-gay-dung-cach-dan-van-phong",
+    "what-is-acupuncture"
+   ],
+   "service": "yhct",
+   "tags": [
+    "đau cổ vai gáy",
+    "châm cứu đau vai gáy",
+    "bấm huyệt cổ vai gáy",
+    "YHCT"
+   ]
+  },
+  "dau-co-khi-nao-dang-lo": {
+   "kw": [
+    "đau cổ khi nào cần đi khám",
+    "when to worry about neck pain"
+   ],
+   "anchors_vi": [
+    "đau cổ(?! (?:vai|khi nào))"
+   ],
+   "anchors_en": [
+    "neck pain"
+   ],
+   "link_vi": "Đau cổ khi nào cần đi khám: các dấu hiệu cảnh báo",
+   "link_en": "When neck pain needs a doctor: the warning signs",
+   "related": [
+    "gian-co-vai-gay-dung-cach-dan-van-phong",
+    "traditional-medicine-neck-shoulder-pain",
+    "nguoi-lon-tuoi-dau-moi"
+   ],
+   "service": "individual",
+   "tags": [
+    "đau cổ cần đi khám",
+    "đau cổ tê tay",
+    "dấu hiệu nguy hiểm đau cổ",
+    "đau cổ vai gáy"
+   ]
+  },
+  "gian-co-vai-gay-dung-cach-dan-van-phong": {
+   "kw": [
+    "bài giãn cổ vai gáy cho dân văn phòng",
+    "neck stretches for office workers"
+   ],
+   "anchors_vi": [
+    "dân văn phòng",
+    "giãn cổ vai gáy",
+    "ngồi (?:máy tính|làm việc) (?:nhiều|lâu)"
+   ],
+   "anchors_en": [
+    "office workers?",
+    "desk work"
+   ],
+   "link_vi": "3 bài giãn cổ vai gáy 5–10 phút cho dân văn phòng",
+   "link_en": "Three 5–10 minute neck and shoulder stretches for office workers",
+   "related": [
+    "dau-co-khi-nao-dang-lo",
+    "traditional-medicine-neck-shoulder-pain",
+    "6-mon-the-thao-keo-dai-tuoi-tho"
+   ],
+   "service": "corporate",
+   "tags": [
+    "giãn cổ vai gáy",
+    "bài tập cho dân văn phòng",
+    "đau vai gáy văn phòng",
+    "giãn cơ tại bàn làm việc"
+   ]
+  },
+  "nguoi-lon-tuoi-dau-moi": {
+   "kw": [
+    "người lớn tuổi đau mỏi cứng khớp",
+    "aches and stiffness in older adults"
+   ],
+   "anchors_vi": [
+    "người lớn tuổi",
+    "người cao tuổi"
+   ],
+   "anchors_en": [
+    "older adults"
+   ],
+   "link_vi": "Vì sao người lớn tuổi dễ đau mỏi, cứng khớp và cách giữ vận động",
+   "link_en": "Why older adults ache and stiffen, and how to keep moving",
+   "related": [
+    "dau-co-khi-nao-dang-lo",
+    "6-mon-the-thao-keo-dai-tuoi-tho",
+    "y-hoc-co-truyen-la-gi"
+   ],
+   "service": "individual",
+   "tags": [
+    "người lớn tuổi đau mỏi",
+    "cứng khớp người cao tuổi",
+    "vận động cho người lớn tuổi"
+   ]
+  },
+  "what-is-sport-recovery": {
+   "kw": [
+    "phục hồi sau tập luyện cường độ cao",
+    "sports recovery"
+   ],
+   "anchors_vi": [
+    "phục hồi sau (?:tập luyện|thể thao|thi đấu|vận động)",
+    "phục hồi thể thao"
+   ],
+   "anchors_en": [
+    "sports? recovery",
+    "recovery after (?:training|exercise)"
+   ],
+   "link_vi": "Phục hồi sau tập luyện cường độ cao: những điều thường bị bỏ qua",
+   "link_en": "Recovery after hard training: what most people skip",
+   "related": [
+    "y-hoc-co-truyen-trong-the-thao-phuc-hoi",
+    "6-mon-the-thao-keo-dai-tuoi-tho",
+    "warm-up-newworld-invitational-pickleball-2025",
+    "road2rehab-elitefitness"
+   ],
+   "service": "individual",
+   "tags": [
+    "phục hồi sau tập luyện",
+    "phục hồi thể thao",
+    "đau cơ sau tập"
+   ]
+  },
+  "6-mon-the-thao-keo-dai-tuoi-tho": {
+   "kw": [
+    "môn thể thao kéo dài tuổi thọ",
+    "sports that help you live longer"
+   ],
+   "anchors_vi": [
+    "kéo dài tuổi thọ"
+   ],
+   "anchors_en": [
+    "live longer",
+    "longevity"
+   ],
+   "link_vi": "5 môn thể thao giúp kéo dài tuổi thọ, hợp với dân văn phòng",
+   "link_en": "Five sports that may help you live longer",
+   "related": [
+    "what-is-sport-recovery",
+    "gian-co-vai-gay-dung-cach-dan-van-phong",
+    "nguoi-lon-tuoi-dau-moi"
+   ],
+   "service": "individual",
+   "tags": [
+    "thể thao kéo dài tuổi thọ",
+    "thể thao cho dân văn phòng",
+    "vận động mỗi ngày"
+   ]
+  },
+  "warm-up-newworld-invitational-pickleball-2025": {
+   "kw": [
+    "khởi động trước khi chơi pickleball",
+    "pickleball warm-up"
+   ],
+   "anchors_vi": [
+    "pickleball",
+    "khởi động"
+   ],
+   "anchors_en": [
+    "pickleball",
+    "warm-up"
+   ],
+   "link_vi": "Khởi động trước khi chơi pickleball: Reset → Activate → Move",
+   "link_en": "Warming up before pickleball: Reset → Activate → Move",
+   "related": [
+    "what-is-sport-recovery",
+    "hustle-competition-2026-x-stretchvn",
+    "y-hoc-co-truyen-trong-the-thao-phuc-hoi"
+   ],
+   "service": "event",
+   "tags": [
+    "khởi động pickleball",
+    "chấn thương pickleball",
+    "sự kiện thể thao"
+   ]
+  },
+  "hustle-competition-2026-x-stretchvn": {
+   "kw": [
+    "phục hồi sau thi đấu hybrid fitness",
+    "hybrid fitness recovery"
+   ],
+   "anchors_vi": [
+    "Hustle Competition",
+    "hybrid fitness"
+   ],
+   "anchors_en": [
+    "Hustle Competition",
+    "hybrid fitness"
+   ],
+   "link_vi": "Recovery Zone tại Hustle Competition 2026: phục hồi sau thi đấu hybrid fitness",
+   "link_en": "The Recovery Zone at Hustle Competition 2026",
+   "related": [
+    "what-is-sport-recovery",
+    "warm-up-newworld-invitational-pickleball-2025",
+    "y-hoc-co-truyen-trong-the-thao-phuc-hoi",
+    "road2rehab-elitefitness"
+   ],
+   "service": "event",
+   "tags": [
+    "Hustle Competition 2026",
+    "hybrid fitness",
+    "phục hồi sau thi đấu",
+    "recovery zone"
+   ]
+  },
+  "road2rehab-elitefitness": {
+   "kw": [
+    "đào tạo phục hồi vận động cho huấn luyện viên",
+    "movement recovery training for coaches"
+   ],
+   "anchors_vi": [
+    "Road2Rehab"
+   ],
+   "anchors_en": [
+    "Road2Rehab"
+   ],
+   "link_vi": "Road2Rehab™: 3 ngày đào tạo phục hồi vận động cho huấn luyện viên",
+   "link_en": "Road2Rehab™: three days of movement-recovery training for coaches",
+   "related": [
+    "what-is-sport-recovery",
+    "meet-the-team-dr-huu-danh",
+    "le-ra-mat-y-hoc-co-truyen-phuc-hoi-chuc-nang-stretch-vn-monaco-healthcare"
+   ],
+   "service": "education",
+   "tags": [
+    "Road2Rehab",
+    "đào tạo huấn luyện viên",
+    "phục hồi vận động",
+    "Elite Fitness"
+   ]
+  },
+  "meet-the-team-dr-huu-danh": {
+   "kw": [
+    "bác sĩ y học cổ truyền Quận 3",
+    "traditional medicine doctor Saigon"
+   ],
+   "anchors_vi": [
+    "(?:bác sĩ|BS\\.?) (?:Nguyễn Võ Hữu )?Danh"
+   ],
+   "anchors_en": [
+    "Dr\\.? (?:Nguyen Vo Huu )?Danh"
+   ],
+   "link_vi": "Gặp bác sĩ y học cổ truyền Nguyễn Võ Hữu Danh",
+   "link_en": "Meet Dr. Nguyen Vo Huu Danh, our traditional medicine doctor",
+   "related": [
+    "le-ra-mat-y-hoc-co-truyen-phuc-hoi-chuc-nang-stretch-vn-monaco-healthcare",
+    "y-hoc-co-truyen-la-gi",
+    "what-is-acupuncture"
+   ],
+   "service": "yhct",
+   "tags": [
+    "bác sĩ y học cổ truyền",
+    "đội ngũ Stretch.vn",
+    "châm cứu Quận 3"
+   ]
+  },
+  "le-ra-mat-y-hoc-co-truyen-phuc-hoi-chuc-nang-stretch-vn-monaco-healthcare": {
+   "kw": [
+    "khoa y học cổ truyền và phục hồi chức năng Quận 3",
+    "traditional medicine clinic District 3"
+   ],
+   "anchors_vi": [
+    "Khoa Y học Cổ truyền(?: (?:&amp;|&) Phục hồi Chức năng)?"
+   ],
+   "anchors_en": [
+    "Traditional Medicine (?:&amp;|&|and) Rehabilitation Department"
+   ],
+   "link_vi": "Stretch.vn ra mắt Khoa Y học Cổ truyền & Phục hồi Chức năng",
+   "link_en": "Our new Traditional Medicine & Rehabilitation Department",
+   "related": [
+    "meet-the-team-dr-huu-danh",
+    "y-hoc-co-truyen-la-gi",
+    "what-is-acupuncture"
+   ],
+   "service": "yhct",
+   "tags": [
+    "khoa y học cổ truyền",
+    "phục hồi chức năng",
+    "Monaco Healthcare",
+    "Quận 3"
+   ]
+  }
+ }
+}

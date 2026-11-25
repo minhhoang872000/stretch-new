@@ -94,7 +94,7 @@ const localePath = useLocalePath()
 
       <!-- Right: Image -->
       <div class="relative w-full lg:w-[48%] min-h-[400px] lg:min-h-0 overflow-hidden">
-        <NuxtImg
+        <NuxtImg width="1920" height="1080"
           src="/recovery-homepage.webp"
           alt="Recovery Event Solutions"
           class="w-full h-full object-cover object-center lg:absolute lg:inset-0 transition-transform duration-[1200ms] ease-out hover:scale-[1.02]"

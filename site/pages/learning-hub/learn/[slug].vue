@@ -16,7 +16,6 @@ const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const localePath = useLocalePath()
-const { trackPageView } = useTracking()
 const detailFromApi = await useProgramDetailFor(computed(() => String(route.params.slug)))
 const { loggedIn, whenReady } = useHubSession()
 const { open: openAuth } = useAuthModal()
@@ -166,7 +165,6 @@ onMounted(async () => {
     openAuth('login')
     return
   }
-  trackPageView()
 })
 </script>
 

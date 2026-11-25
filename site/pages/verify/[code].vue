@@ -102,7 +102,7 @@ useSeo({
   description: cert.value
     ? `${t('learning.cert.awarded')} ${cert.value.learnerName} ${t('learning.cert.for')} ${cert.value.programTitle}. ${t('learning.cert.code')}: ${cert.value.code}`
     : t('learning.cert.verify_sub'),
-  image: '/education-class.png',
+  image: '/education-class.webp',
   type: 'website',
   noIndex: true,
 })
@@ -134,7 +134,7 @@ useSeo({
         <article class="cert" :class="{ 'cert--void': !valid }">
           <div class="cert__frame">
             <header class="cert__top">
-              <img src="/stretch.jpg" alt="Stretch.vn" class="cert__logo" />
+              <img width="477" height="144" src="/stretch-logo.webp" alt="Stretch.vn" class="cert__logo" />
               <span class="cert__org">Stretch Academy</span>
             </header>
 

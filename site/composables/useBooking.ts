@@ -1,5 +1,4 @@
 import emailjs from '@emailjs/browser'
-import { useTrackingStore } from '~/stores/tracking'
 
 /**
  * Booking composable — adaptive API calls + EmailJS notification.
@@ -11,12 +10,11 @@ import { useTrackingStore } from '~/stores/tracking'
  * Additionally sends a notification email via EmailJS so the team
  * receives booking details immediately.
  *
- * Automatically attaches session_id from tracking store for
- * lead-to-booking attribution.
+ * After a successful submit, `bookingId` holds the new booking's id; the
+ * booking flows send it to GA so the CRM can look up the booking's source.
  */
 export function useBooking() {
   const config = useRuntimeConfig()
-  const trackingStore = useTrackingStore()
 
   // EmailJS credentials from runtime config
   const emailjsServiceId = config.public.emailjsServiceId as string
@@ -27,6 +25,7 @@ export function useBooking() {
   const loading = ref(false)
   const success = ref(false)
   const error = ref<string | null>(null)
+  const bookingId = ref<string | null>(null)
 
   /**
    * Send booking notification email via EmailJS.
@@ -82,20 +81,20 @@ export function useBooking() {
   async function submit(payload: Record<string, any>) {
     loading.value = true
     error.value = null
+    bookingId.value = null
 
-    // Attach session_id for lead attribution
     const body = {
       ...payload,
       email: payload.email || '',
       note: payload.note || '',
-      session_id: trackingStore.sessionId || null,
     }
 
     try {
       // Booking is a client-side POST (no SSR path), so calling the API directly
       // from the browser would be blocked by CORS. Go through the Nuxt server
       // route instead → it forwards to the lead-tracker-api server-to-server.
-      await $fetch('/api/bookings', { method: 'POST', body })
+      const res = await $fetch<{ booking?: { id?: string } | null }>('/api/bookings', { method: 'POST', body })
+      bookingId.value = res?.booking?.id || null
 
       // Gửi email thông báo qua EmailJS (không chặn luồng chính)
       sendEmailNotification(body).catch((e: any) => {
@@ -118,7 +117,8 @@ export function useBooking() {
     loading.value = false
     success.value = false
     error.value = null
+    bookingId.value = null
   }
 
-  return { submit, loading, success, error, reset }
+  return { submit, loading, success, error, bookingId, reset }
 }

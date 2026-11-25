@@ -71,7 +71,7 @@ const solutions = computed(() => [
           <!-- Image -->
           <div class="relative h-[220px] p-3 pb-0">
             <div class="w-full h-full rounded-[20px] overflow-hidden relative">
-              <NuxtImg :src="sol.img" :alt="sol.title" class="w-full h-full object-cover transition-transform duration-[1500ms] group-hover:scale-105" format="webp" />
+              <NuxtImg loading="lazy" :src="sol.img" :alt="sol.title" class="w-full h-full object-cover transition-transform duration-[1500ms] group-hover:scale-105" format="webp" />
             </div>
             
             <!-- Number badge -->

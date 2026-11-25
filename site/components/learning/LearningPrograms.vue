@@ -33,6 +33,7 @@ const sessions = computed(() => upcoming.value.slice(0, 3))
           >
             <div class="course-card__media">
               <NuxtImg
+                loading="lazy"
                 :src="course.image"
                 :alt="course.title"
                 class="w-full h-full object-cover"

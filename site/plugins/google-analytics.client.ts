@@ -61,4 +61,31 @@ export default defineNuxtPlugin((nuxtApp) => {
     if ('requestIdleCallback' in window) w.requestIdleCallback(load, { timeout: 3000 })
     else setTimeout(load, 1500)
   })
+
+  // Contact clicks, site-wide: one listener instead of a handler on every
+  // phone / Zalo / Messenger link (footer, contact widget, CTAs, blog posts…).
+  // Capture phase, so it still runs when a component stops propagation.
+  document.addEventListener('click', (e) => {
+    const link = (e.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null
+    if (!link) return
+    const method = contactMethod(link.href)
+    if (!method) return
+    w.gtag('event', 'contact_click', {
+      contact_method: method,
+      link_url: link.href,
+      page_path: window.location.pathname,
+    })
+  }, { capture: true })
 })
+
+/** Which contact channel a link opens, or null if it is not a contact link. */
+function contactMethod(href: string): string | null {
+  if (href.startsWith('tel:')) return 'phone'
+  if (href.startsWith('mailto:')) return 'email'
+  let host = ''
+  try { host = new URL(href).hostname.replace(/^www\./, '') } catch { return null }
+  if (host === 'zalo.me') return 'zalo'
+  if (host === 'm.me' || host === 'messenger.com') return 'messenger'
+  if (host === 'wa.me' || host === 'api.whatsapp.com') return 'whatsapp'
+  return null
+}

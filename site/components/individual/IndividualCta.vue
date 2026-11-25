@@ -27,7 +27,7 @@ const localePath = useLocalePath()
             {{ $t('individual_page.final_cta.cta1') }}
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M7.5 15l5-5-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </NuxtLink>
-          <a href="http://zalo.me/4237229823551208502?src=qr&f=1" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-transparent border border-white/30 text-white font-heading font-bold text-[15px] rounded-lg hover:bg-white/10 transition-all hover:-translate-y-0.5 active:scale-[0.98]">
+          <a href="https://zalo.me/4237229823551208502?src=qr&f=1" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-transparent border border-white/30 text-white font-heading font-bold text-[15px] rounded-lg hover:bg-white/10 transition-all hover:-translate-y-0.5 active:scale-[0.98]">
             {{ $t('individual_page.final_cta.cta2') }}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>

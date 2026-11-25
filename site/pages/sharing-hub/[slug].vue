@@ -136,6 +136,18 @@ useHead({
 
 // JSON-LD structured data (BlogPosting) → Google rich results. Values are read
 // at setup; on the SEO-critical server render the article is always present.
+//
+// The author is a Person whenever the CMS names one. For health articles Google
+// weighs who wrote or reviewed the text; "Stretch Team" (the CMS default) stays
+// an Organization. A named practitioner with a profile post links to it, which
+// is what lets a reader, and Google, check the credentials.
+const AUTHOR_PROFILES: [RegExp, string][] = [[/h[ữu]u\s+danh/i, '/sharing-hub/meet-the-team-dr-huu-danh']]
+function articleAuthor(name?: string) {
+  const n = String(name || '').trim()
+  if (!n || /^stretch(\.vn)?\s*team$/i.test(n)) return { '@type': 'Organization', name: n || 'Stretch Team' }
+  const profile = AUTHOR_PROFILES.find(([re]) => re.test(n))?.[1]
+  return { '@type': 'Person', name: n, ...(profile ? { url: `${siteUrl}${localePath(profile)}` } : {}) }
+}
 useSchemaOrg([
   defineArticle({
     '@type': 'BlogPosting',
@@ -144,10 +156,11 @@ useSchemaOrg([
     image: activeArticle.value?.image || undefined,
     datePublished: activeArticle.value?.createdAt || undefined,
     dateModified: activeArticle.value?.updatedAt || activeArticle.value?.createdAt || undefined,
-    author: { '@type': 'Organization', name: activeArticle.value?.author || 'Stretch Team' },
+    author: articleAuthor(activeArticle.value?.author),
     keywords: (activeArticle.value?.tags || []).join(', ') || undefined,
   }),
 ]);
+useBreadcrumbSchema(() => seoTitle.value)
 
 // Render the CKEditor HTML and derive a Table of Contents from its <h2> headings.
 const processed = computed(() => {
@@ -165,7 +178,19 @@ const processed = computed(() => {
     toc.push({ id, title: text })
     return `<h2 id="${id}"${attrs}>${inner}</h2>`
   })
-  return { html, toc }
+  // Images pasted into the CMS arrive without alt text and load eagerly. Give
+  // each one the article title as alt when the editor left it empty (better
+  // than nothing for Google Images and screen readers; a real description set
+  // in the CMS wins), and let the browser defer the ones below the fold.
+  const title = String(activeArticle.value?.title || '').replace(/"/g, '&quot;')
+  const withImages = html.replace(/<img\b([^>]*)>/gi, (_m: string, attrs: string) => {
+    let a = attrs.replace(/\s*\/\s*$/, '')
+    if (!/\salt\s*=\s*"[^"]+"/i.test(a)) a = `${a.replace(/\salt\s*=\s*(""|'')/i, '')} alt="${title}"`
+    if (!/\sloading\s*=/i.test(a)) a += ' loading="lazy"'
+    if (!/\sdecoding\s*=/i.test(a)) a += ' decoding="async"'
+    return `<img${a}>`
+  })
+  return { html: withImages, toc }
 })
 
 // Category Badge Color
@@ -485,7 +510,7 @@ onUnmounted(() => {
                 >
                 <div class="flex items-center gap-2">
                   <a
-                    href="https://www.facebook.com/stretchvn/"
+                    href="https://www.facebook.com/StretchVietnam/"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="w-11 h-11 rounded-full bg-[#0B2A4A] hover:bg-accent text-white flex items-center justify-center transition-colors duration-200"
@@ -681,8 +706,9 @@ onUnmounted(() => {
               <div
                 class="rounded-xl overflow-hidden aspect-[16/10] w-full mb-5 border border-[#E6ECF2]"
               >
-                <NuxtImg
-                  src="/business_solution_sidebar.png"
+                <NuxtImg width="1024" height="1024"
+                  loading="lazy"
+                  src="/business_solution_sidebar.webp"
                   alt="Business Solutions"
                   class="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
                   format="webp"
@@ -757,6 +783,7 @@ onUnmounted(() => {
               >
                 <div class="aspect-[16/10] overflow-hidden">
                   <NuxtImg
+                    loading="lazy"
                     :src="post.image"
                     :alt="post.title"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const { trackPageView } = useTracking()
 const { t } = useI18n()
 
 useSeo({
@@ -8,9 +7,6 @@ useSeo({
   type: 'website',
 })
 
-onMounted(() => {
-  trackPageView()
-})
 </script>
 
 <template>

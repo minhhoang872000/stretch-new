@@ -13,9 +13,10 @@ function go() {
 }
 
 useSeo({
+  viOnly: true,
   title: `${t('learning.cert.verify_title')} — Stretch Academy`,
   description: t('learning.cert.verify_sub'),
-  image: '/education-class.png',
+  image: '/education-class.webp',
   type: 'website',
 })
 </script>

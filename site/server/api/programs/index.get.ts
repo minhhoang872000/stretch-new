@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
         mode: program.mode,
         topic: program.topic,
         title: program.title,
-        image: program.image || '/images/man-neck-pain.png',
+        image: program.image || '/images/man-neck-pain.webp',
         price: program.price,
         // Drives "Khoá học thịnh hành" on the hub banner.
         enrolled: Number(program.enrolled) || 0,

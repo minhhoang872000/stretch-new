@@ -38,8 +38,9 @@
               </div>
 
               <!-- Monaco Logo from Project -->
-              <img 
-                src="/monaco.jpeg" 
+              <img width="203" height="288" 
+                loading="lazy"
+                src="/monaco-logo.webp" 
                 alt="Monaco Healthcare" 
                 class="w-20 h-20 md:w-24 md:h-24 object-contain rounded-xl flex-shrink-0 transition-transform duration-500 group-hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.03)] border border-slate-200/20"
               />

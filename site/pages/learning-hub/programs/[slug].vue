@@ -14,7 +14,6 @@
 const { t } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
-const { trackPageView } = useTracking()
 const detailFromApi = await useProgramDetailFor(computed(() => String(route.params.slug)))
 const { formatPrice } = useLearningCatalog()
 const { loggedIn } = useHubSession()
@@ -206,7 +205,6 @@ useSchemaOrg(nodes)
 const { track: trackRecent } = useRecentlyViewed()
 
 onMounted(() => {
-  trackPageView()
   trackRecent(slug.value)
   // Lets global CSS lift the third-party chat bubble above the mobile action
   // bar (see .has-action-bar in assets/css/main.css).

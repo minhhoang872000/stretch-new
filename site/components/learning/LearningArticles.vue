@@ -63,6 +63,7 @@ onMounted(async () => {
         >
           <span class="article-row__thumb">
             <NuxtImg
+              loading="lazy"
               v-if="post.image"
               :src="post.image"
               :alt="post.title"

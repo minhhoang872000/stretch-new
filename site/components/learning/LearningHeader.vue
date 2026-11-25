@@ -65,7 +65,7 @@ async function logout() {
           class="flex flex-col justify-center flex-shrink-0 leading-none"
           @click="closeMobileMenu"
         >
-          <img src="/stretch.jpg" alt="Stretch.vn" class="h-7 w-auto object-contain" />
+          <img width="477" height="144" src="/stretch-logo.webp" alt="Stretch.vn" class="h-7 w-auto object-contain" />
           <span class="brand-sub">{{ t('learning.brand') }}</span>
         </NuxtLink>
 

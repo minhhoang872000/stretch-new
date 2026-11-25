@@ -59,7 +59,7 @@ export default defineEventHandler(async (event) => {
       mode: program.mode,
       topic: program.topic,
       title: program.title,
-      image: program.image || '/images/man-neck-pain.png',
+      image: program.image || '/images/man-neck-pain.webp',
       price: program.price,
       ...(program.lessons
         ? { lessons: program.lessons, duration: durationLabel(program.minutes) }

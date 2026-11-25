@@ -98,8 +98,8 @@ function switchLanguage(code: string) {
           class="flex flex-col items-start justify-center flex-shrink-0 leading-none"
           @click="closeMobileMenu"
         >
-          <img
-            src="/stretch.jpg"
+          <img width="477" height="144"
+            src="/stretch-logo.webp"
             alt="Stretch.vn"
             class="h-12 w-auto object-contain opacity-80"
           />
